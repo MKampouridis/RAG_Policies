@@ -141,8 +141,8 @@ def eval_one(item: dict) -> dict:
     return result
 
 
-def run(output_name: str) -> None:
-    questions = json.loads(QUESTIONS_PATH.read_text())
+def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
+    questions = json.loads(questions_path.read_text())
     output_path = Path(f"eval/results_{output_name}.json")
 
     results = []
@@ -168,4 +168,5 @@ def run(output_name: str) -> None:
 
 if __name__ == "__main__":
     name = sys.argv[1] if len(sys.argv) > 1 else "run"
-    run(name)
+    q_path = Path(sys.argv[2]) if len(sys.argv) > 2 else QUESTIONS_PATH
+    run(name, q_path)

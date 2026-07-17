@@ -6,12 +6,10 @@ with ground-truth answers and key phrases for scoring. Output is reviewed
 and hand-edited afterward, not used blind."""
 
 import json
+import sys
 from pathlib import Path
 
 from src.llm import chat
-
-SELECTED_PATH = Path("eval/selected_docs.json")
-OUTPUT_PATH = Path("eval/questions.json")
 
 GEN_SYSTEM_PROMPT = """You write evaluation questions for a RAG system over University of Essex \
 policy and rules-of-assessment documents. Given the title and text of ONE document, produce:
@@ -52,8 +50,8 @@ def generate_for_doc(doc: dict) -> dict:
     }
 
 
-def run() -> None:
-    selected = json.loads(SELECTED_PATH.read_text())
+def run(selected_path: Path, output_path: Path) -> None:
+    selected = json.loads(selected_path.read_text())
     results = []
     for i, doc in enumerate(selected, 1):
         try:
@@ -62,8 +60,10 @@ def run() -> None:
             print(f"[{i}/{len(selected)}] OK: {item['question'][:80]}", flush=True)
         except Exception as exc:
             print(f"[{i}/{len(selected)}] FAILED for {doc['title']}: {exc}", flush=True)
-        OUTPUT_PATH.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+        output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False))
 
 
 if __name__ == "__main__":
-    run()
+    selected_arg = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("eval/selected_docs.json")
+    output_arg = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("eval/questions.json")
+    run(selected_arg, output_arg)
