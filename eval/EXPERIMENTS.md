@@ -20,7 +20,7 @@ table for why), same 40-question original set unless noted.
 | `stage4` (rejected) | nomic-embed-text | yes | yes | v1 | raw-string family max | yes | yes (qwen listwise, top-24→6) | unanchored regex → fully unfiltered | `results_stage4.json` |
 | `postfix` (superseded) | nomic-embed-text | yes | yes | v2 (1yr grace, normalized years, sibling-sync) | canonical-year family max, unknown-year always kept | yes | no | anchored regex → **hard filter** to that year | `results_postfix.json` |
 | `postfix2` **(= "Final", current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max, unknown-year always kept | yes | no | anchored regex → **soft preference** (RRF-fuse year pool + current pool) | `results_postfix2.json` |
-| `holdout_set2` (in progress) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference | `results_holdout_set2.json`, question set: `questions_set2.json` |
+| `holdout_set2` | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference | `results_holdout_set2.json`, question set: `questions_set2.json` |
 
 ## Headline metrics (strict, 80 turns unless noted)
 
@@ -34,7 +34,15 @@ table for why), same 40-question original set unless noted.
 | `stage4` (rejected) | 87.5% / 0.73 | 47.5% / 0.36 | 67.5% / 0.54 | 3.62 |
 | `postfix` (superseded) | 90.0% / 0.81 | 57.5% / 0.43 | 73.8% / 0.62 | 3.75 |
 | `postfix2` (production) | 95.0% / 0.81 | 55.0% / 0.41 | 75.0% / 0.61 | 3.88 |
-| `holdout_set2` | _pending_ | _pending_ | _pending_ | _pending_ |
+| `holdout_set2` (raw) | 70.0% / 0.60 | 52.5% / 0.38 | 61.3% / 0.49 | 3.81 |
+| `holdout_set2` (confound-corrected*) | 93.3% / 0.80 | 52.5% / 0.38 | 70.0% / 0.56 | 3.79 |
+
+\* 5 of 30 holdout-set2 policy documents were selected at question-construction
+time as superseded-year editions (2024-25/2023-24) whose questions don't
+mention a year; `is_current` correctly excludes them from default retrieval
+in favor of the current edition, which the strict metric scores as a miss.
+This is a test-set construction flaw (fixed by excluding those 5 documents),
+not a retrieval regression — see report.md's generalization section.
 
 ## Non-retrieval parameters also in play
 

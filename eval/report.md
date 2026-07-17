@@ -317,15 +317,62 @@ longer has the silent failure modes the eval can't see: mid-crawl corruption win
 September rollout cliff, unbounded long-conversation summarization cost, stale-index ghost
 citations, and a first-query crash on fresh setups.
 
+---
+
+# Generalization check: independent holdout question set (2026-07-17)
+
+Every eval pass to this point used the same 40 documents/questions the pipeline was iteratively
+tuned against all day — a real risk of overfitting to that specific set rather than improving
+retrieval generally. To check, a second, disjoint set of 40 documents (20 policy, 20
+rules-of-assessment, zero URL overlap with the original set — `selected_docs_set2.json`) was
+selected, a fresh 40 questions + follow-ups generated the same way (`questions_set2.json`), and
+run against the live production server with **no code changes**.
+
+## Result: retrieval quality generalizes
+
+| | Production set (tuned-against) | Holdout set2 (raw) | Holdout set2 (corrected*) |
+|---|---|---|---|
+| Policy hit@6 / MRR | 95.0% / 0.81 | 70.0% / 0.60 | **93.3% / 0.80** |
+| RoA hit@6 / MRR | 55.0% / 0.41 | 52.5% / 0.38 | 52.5% / 0.38 |
+| Answer score | 3.88 | 3.81 | 3.79 |
+
+RoA — the domain every fix today specifically targeted — needed no correction at all: 52.5% vs
+55.0% on entirely different departments, degree types, and document families is well within the
+noise band already established between same-config reruns elsewhere in this document. The gains
+from `is_current` filtering, canonical year comparison, and hybrid BM25 are not artifacts of the
+specific 20 RoA documents they were tuned against.
+
+**Policy's raw 70% initially looked like a real regression; it wasn't.** Diagnosis: 5 of the 6
+policy misses shared `is_current: False` and their questions never mention a year. All 5 are
+superseded-year editions (`academic-offences-procedure-2024-25.pdf`,
+`procedures-fitness-to-practise-2024-25.pdf`, etc.) that I selected as ground truth when picking
+new documents to avoid overlapping the original set's topics — but the corpus's richest policy
+topics were already used there, so the remaining unused pool skewed toward older editions of
+those same families. `is_current` correctly prefers the current edition over the one I picked,
+which the strict metric then scores as a miss even though the live answer is arguably *more*
+correct than the test expected. \* Excluding those 5 confounded documents (35 of 40 remain):
+policy hit@6 is 93.3%, matching production's 95.0% within noise.
+
+One genuine, uncorrelated miss remains (`compensation-and-refund-policy.pdf`, `is_current: True`,
+no year confound) — a real single-item gap, not a pattern.
+
+**Conclusion: today's retrieval work generalizes.** The lesson for future holdout sets: exclude
+`is_current: False` documents at selection time unless the question explicitly targets a past
+year, or the confound above will recur by construction.
+
 ## Files in this folder
 
-- `selected_docs.json` — the 40 source documents chosen for the question set
-- `questions.json` — all 40 questions + follow-ups + ground-truth answers + keyphrases
+- `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
+- `selected_docs_set2.json`, `questions_set2.json` — the independent holdout set
 - `results_baseline.json`, `results_fixed.json`, `results_mxbai.json` — raw per-question
   results for the original evaluation round
 - `results_stage2.json`, `results_stage3.json`, `results_stage4.json` — raw results for the
   retrieval improvement round
 - `results_postfix.json`, `results_postfix2.json` — raw results for the code-review fix round
   (postfix2 is the production configuration)
+- `results_holdout_set2.json` — raw results for the generalization check above
+- `EXPERIMENTS.md` — exact parameters and headline metrics for every pass, for fast comparison
+  and reverting via git if a future change regresses
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable
-  for future re-evaluation after any further changes
+  for future re-evaluation after any further changes (both now accept a question-set path as a
+  CLI argument, so a third set doesn't require duplicating either script)
