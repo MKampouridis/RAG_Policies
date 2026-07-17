@@ -360,6 +360,63 @@ no year confound) — a real single-item gap, not a pattern.
 `is_current: False` documents at selection time unless the question explicitly targets a past
 year, or the confound above will recur by construction.
 
+---
+
+# User-reported bug: contextualizer topic drift in long conversations (2026-07-17)
+
+Manually testing the live app (not via the eval harness), the user asked two questions in a
+single conversation that had already drifted across several unrelated topics (exam-chair
+requirements → CSEE programme listings → back to Professional Doctorate governance). Both got a
+"the provided context does not include..." non-answer, despite both being directly answerable
+from ingested documents.
+
+## Root cause
+
+`_contextualize_query()` rewrites every follow-up question into a standalone form before
+retrieval, using the last 6 messages of conversation history. With a long, topic-switching
+history, the small local contextualizer model sometimes **echoed a different, earlier question
+from the transcript instead of rewriting the actual new one**. Reproduced exactly against the
+real stored conversation: asked about "Professional Doctorate Director responsibilities," the
+rewrite came back as "Are any of the CSEE programs listed earlier running in 2025-26?" — a
+question from six turns earlier. Retrieval dutifully fetched CSEE documents; the real answer was
+never in context. The next question suffered the same failure in reverse. Neither of this
+project's eval sets exercises multi-topic conversations (every eval conversation is one topic,
+two turns), so this failure mode was invisible to all retrieval testing done today.
+
+## Fix and a lesson about isolating changes
+
+`_is_faithful_rewrite()` in `src/rag.py`: a deterministic content-word-overlap check comparing
+the rewrite against the original question. If the rewrite shares too few significant words with
+the original, it's discarded in favor of the raw question — a topic-hijacked rewrite and the
+original share essentially zero content words, so this catches the failure directly regardless
+of why the small model drifted.
+
+The first attempt at this fix (bundled a reworded contextualize prompt — "if already
+self-contained, output unchanged" — together with the new guard) regressed RoA hit@6 by 7.5pp in
+the standard eval. Diffing retrieved documents between passes showed why: the reworded prompt
+made the model skip adding disambiguating programme/document names to follow-ups that read as
+grammatically self-contained but still needed that detail to distinguish among near-identical RoA
+sibling documents (e.g. "what happens if a student fails a core module?" needs "...in the MSc HRM
+programme" injected to retrieve the right one out of dozens of structurally identical
+department-specific rules documents). Reverting to the original prompt wording and keeping only
+the guard (current production) restored RoA to its prior level while still catching the original
+bug, re-verified against the exact real conversation that triggered it.
+
+| Pass | Policy hit@6 / MRR | RoA hit@6 / MRR | Overall hit@6 / MRR | Answer |
+|---|---|---|---|---|
+| Before this fix | 95.0% / 0.81 | 55.0% / 0.41 | 75.0% / 0.61 | 3.88 |
+| Guard + reworded prompt (rejected) | 95.0% / 0.81 | 47.5% / 0.35 | 71.3% / 0.58 | 3.77 |
+| **Guard only, original prompt — production** | 95.0% / 0.84 | 55.0% / 0.43 | 75.0% / 0.64 | 3.73 |
+
+**Lesson applied going forward:** don't bundle a prompt wording change with a structural/code
+fix in the same eval pass — attributing a regression to the right one of two simultaneous changes
+after the fact takes a full extra eval cycle that isolating them up front would have avoided.
+
+Separately, this incident is also the reason the ~450 conversations the day's automated eval runs
+had accumulated in `data/chat.db` were cleared out (identified precisely by matching each
+conversation's message count and first-message text against the known eval question sets, so the
+user's own real conversations — including the one that surfaced this bug — were left untouched).
+
 ## Files in this folder
 
 - `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
@@ -369,8 +426,9 @@ year, or the confound above will recur by construction.
 - `results_stage2.json`, `results_stage3.json`, `results_stage4.json` — raw results for the
   retrieval improvement round
 - `results_postfix.json`, `results_postfix2.json` — raw results for the code-review fix round
-  (postfix2 is the production configuration)
-- `results_holdout_set2.json` — raw results for the generalization check above
+- `results_holdout_set2.json` — raw results for the generalization check
+- `results_postfix3.json` (rejected), `results_postfix4.json` (current production) — raw results
+  for the contextualizer-drift fix described above
 - `EXPERIMENTS.md` — exact parameters and headline metrics for every pass, for fast comparison
   and reverting via git if a future change regresses
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable

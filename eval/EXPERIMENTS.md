@@ -21,6 +21,8 @@ table for why), same 40-question original set unless noted.
 | `postfix` (superseded) | nomic-embed-text | yes | yes | v2 (1yr grace, normalized years, sibling-sync) | canonical-year family max, unknown-year always kept | yes | no | anchored regex → **hard filter** to that year | `results_postfix.json` |
 | `postfix2` **(= "Final", current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max, unknown-year always kept | yes | no | anchored regex → **soft preference** (RRF-fuse year pool + current pool) | `results_postfix2.json` |
 | `holdout_set2` | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference | `results_holdout_set2.json`, question set: `questions_set2.json` |
+| `postfix3` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard + reworded contextualize prompt | `results_postfix3.json` |
+| `postfix4` **(= current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard, **original contextualize prompt wording** | `results_postfix4.json` |
 
 ## Headline metrics (strict, 80 turns unless noted)
 
@@ -33,9 +35,11 @@ table for why), same 40-question original set unless noted.
 | `stage3` | 97.5% / 0.85 | 60.0% / 0.42 | 78.8% / 0.64 | 3.88 |
 | `stage4` (rejected) | 87.5% / 0.73 | 47.5% / 0.36 | 67.5% / 0.54 | 3.62 |
 | `postfix` (superseded) | 90.0% / 0.81 | 57.5% / 0.43 | 73.8% / 0.62 | 3.75 |
-| `postfix2` (production) | 95.0% / 0.81 | 55.0% / 0.41 | 75.0% / 0.61 | 3.88 |
+| `postfix2` (superseded — pre user-reported-bug fix) | 95.0% / 0.81 | 55.0% / 0.41 | 75.0% / 0.61 | 3.88 |
 | `holdout_set2` (raw) | 70.0% / 0.60 | 52.5% / 0.38 | 61.3% / 0.49 | 3.81 |
 | `holdout_set2` (confound-corrected*) | 93.3% / 0.80 | 52.5% / 0.38 | 70.0% / 0.56 | 3.79 |
+| `postfix3` (rejected — prompt-wording confound) | 95.0% / 0.81 | 47.5% / 0.35 | 71.3% / 0.58 | 3.77 |
+| **`postfix4` (current production)** | **95.0% / 0.84** | **55.0% / 0.43** | **75.0% / 0.64** | 3.73 |
 
 \* 5 of 30 holdout-set2 policy documents were selected at question-construction
 time as superseded-year editions (2024-25/2023-24) whose questions don't
@@ -43,6 +47,26 @@ mention a year; `is_current` correctly excludes them from default retrieval
 in favor of the current edition, which the strict metric scores as a miss.
 This is a test-set construction flaw (fixed by excluding those 5 documents),
 not a retrieval regression — see report.md's generalization section.
+
+**postfix3 → postfix4**: a user manually testing the live app (not via the eval
+harness) found a real bug — in a long, topic-switching conversation, the
+follow-up query contextualizer sometimes echoed a completely unrelated
+question from earlier in the transcript instead of rewriting the actual new
+one, causing wrong-document retrieval. Fixed with `_is_faithful_rewrite()` in
+`src/rag.py`: a deterministic content-word-overlap check that falls back to
+the original question when the rewrite shares too little content with it.
+The first fix attempt (`postfix3`) bundled this guard with a reworded
+contextualize prompt ("if already self-contained, output unchanged"), which
+regressed RoA hit@6 by 7.5pp — the reworded prompt made the model skip adding
+disambiguating document/programme names to follow-ups that read as
+grammatically self-contained but still needed that detail to distinguish
+among near-identical RoA siblings. Isolated by diffing retrieved documents
+between `postfix2`/`postfix3`/`postfix4`: reverting to the original prompt
+wording while keeping only the guard (`postfix4`) restored RoA to `postfix2`
+levels and still catches the original reported bug (re-verified against the
+exact real conversation history that triggered it). Lesson: don't bundle a
+prompt change with a structural fix in the same eval pass — they need
+separate before/after measurements to attribute an effect correctly.
 
 ## Non-retrieval parameters also in play
 

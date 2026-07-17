@@ -37,6 +37,37 @@ follow-up question into a standalone question that contains all context needed t
 without the conversation (e.g. replace "it"/"this policy"/"these" with the specific thing they \
 refer to). Do not answer the question. Output ONLY the rewritten standalone question, nothing else."""
 
+_STOPWORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "but", "by", "can", "could", "did", "do", "does",
+    "for", "from", "had", "has", "have", "how", "i", "in", "is", "it", "its", "of", "on", "or",
+    "should", "that", "the", "their", "there", "these", "they", "this", "those", "to", "was",
+    "were", "what", "when", "where", "which", "who", "why", "will", "with", "would", "you", "your",
+}
+_WORD_RE = re.compile(r"[a-z0-9]+")
+
+
+def _content_words(text: str) -> set[str]:
+    return {w for w in _WORD_RE.findall(text.lower()) if len(w) >= 3 and w not in _STOPWORDS}
+
+
+def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
+    """Guards against a real failure mode of small local models on long/dense
+    multi-topic conversation transcripts: instead of rewriting the new
+    question, the contextualizer echoes a DIFFERENT question from earlier in
+    the transcript (observed live: asked about "Professional Doctorate
+    Director", got back a rewrite about "CSEE programmes" from six turns
+    earlier - a completely unrelated retrieval followed). A faithful rewrite
+    keeps most of the original's content words (replacing pronouns/references
+    with specifics); a hijacked one shares almost none of them. Short
+    questions with too few content words to judge are always trusted, since
+    a heavily-abbreviated legitimate follow-up ("how about an independent
+    chair?") can legitimately share little surface text with its expansion."""
+    original_words = _content_words(original)
+    if len(original_words) < 3:
+        return True
+    overlap = original_words & _content_words(rewritten)
+    return len(overlap) / len(original_words) >= 0.3
+
 
 def _contextualize_query(question: str, history: list[dict], summary: str = "") -> str:
     """Retrieval only sees the current turn's text, so a follow-up like "what
@@ -58,7 +89,10 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
         {"role": "system", "content": CONTEXTUALIZE_SYSTEM_PROMPT},
         {"role": "user", "content": f"{transcript}\n\nFollow-up question: {question}\n\nStandalone question:"},
     ]).strip()
-    return rewritten or question
+
+    if not rewritten or not _is_faithful_rewrite(question, rewritten):
+        return question
+    return rewritten
 
 
 def _mentioned_year(text: str) -> str:
