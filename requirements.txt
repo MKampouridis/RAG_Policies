@@ -1,0 +1,8 @@
+chromadb
+ollama
+requests
+beautifulsoup4
+pypdf
+fastapi
+uvicorn[standard]
+rank_bm25

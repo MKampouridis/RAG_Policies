@@ -1,0 +1,166 @@
+"""Chunk kept documents, embed them, and upsert into the persistent Chroma
+vector store."""
+
+import hashlib
+import re
+import uuid
+from pathlib import Path
+
+import chromadb
+
+from src.docid import normalize_year
+from src.llm import EMBED_DOCUMENT_PREFIX, EMBED_MODEL, EMBED_QUERY_PREFIX, embed_batch
+
+CHROMA_DIR = "data/chroma"
+CORPUS_VERSION_PATH = Path("data/corpus_version")
+# Different embedding models produce different-dimension vectors that can't
+# share a collection, and results aren't comparable across models anyway -
+# keying the collection name to EMBED_MODEL keeps them cleanly separated and
+# means switching models back and forth never requires re-embedding twice.
+COLLECTION_NAME = "policies_" + re.sub(r"[^a-zA-Z0-9_-]", "_", EMBED_MODEL)
+
+CHUNK_WORDS = 300
+CHUNK_OVERLAP_WORDS = 50
+
+DOT_LEADER_RE = re.compile(r"\.{4,}")
+REPEATED_LINE_MIN_COUNT = 5
+REPEATED_LINE_MAX_LEN = 120
+
+_client = None
+
+
+def bump_corpus_version() -> None:
+    """Mark the chunk store as changed. src/lexical.py's in-memory BM25 index
+    (possibly in a different process, e.g. the running server while a crawl
+    executes) checks this marker per query and rebuilds when it moves - the
+    only cross-process signal that upserts/deletes/flag-flips happened."""
+    CORPUS_VERSION_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CORPUS_VERSION_PATH.write_text(uuid.uuid4().hex)
+
+
+def read_corpus_version() -> str | None:
+    try:
+        return CORPUS_VERSION_PATH.read_text()
+    except FileNotFoundError:
+        return None
+
+
+def clean_text(text: str) -> str:
+    """Strip PDF extraction noise before chunking: dot-leader runs from
+    tables of contents, and short lines that repeat across many pages
+    (running headers/footers like "Return to Contents Page 4 of 23"),
+    which otherwise dilute every chunk with identical low-signal tokens."""
+    text = DOT_LEADER_RE.sub(" ", text)
+    lines = text.splitlines()
+    counts: dict[str, int] = {}
+    for line in lines:
+        stripped = line.strip()
+        if stripped and len(stripped) <= REPEATED_LINE_MAX_LEN:
+            counts[stripped] = counts.get(stripped, 0) + 1
+    repeated = {s for s, c in counts.items() if c >= REPEATED_LINE_MIN_COUNT}
+    kept = [line for line in lines if line.strip() not in repeated]
+    return "\n".join(kept)
+
+
+def _readable_title(title: str) -> str:
+    """Filenames-as-titles ("csee-ft-masters-accredited-variations-25.pdf")
+    carry the degree/department identity that the chunk body lacks - turn
+    them into plain words so the embedder and BM25 can use them."""
+    title = re.sub(r"\.pdf$", "", title, flags=re.I)
+    return re.sub(r"[-_]+", " ", title).strip()
+
+
+def build_chunk_header(url: str, metadata: dict) -> str:
+    """One-line document-identity header prepended to every chunk at
+    embedding time. RoA chunk bodies are near-identical boilerplate across
+    degree types/departments/years; the distinguishing facts live only on
+    the title page (chunk 0) and in metadata, so without this header the
+    embedder cannot tell sibling documents apart (see eval/report.md)."""
+    parts = [f"Document: {_readable_title(metadata.get('title') or url.rsplit('/', 1)[-1])}"]
+    if metadata.get("doc_type"):
+        parts.append(metadata["doc_type"].replace("_", " "))
+    if metadata.get("department"):
+        parts.append(f"department: {metadata['department']}")
+    if metadata.get("academic_year"):
+        parts.append(f"academic year {metadata['academic_year']}")
+    return " | ".join(parts)
+
+
+def _get_collection():
+    global _client
+    if _client is None:
+        _client = chromadb.PersistentClient(path=CHROMA_DIR)
+    return _client.get_or_create_collection(COLLECTION_NAME)
+
+
+def chunk_text(text: str, chunk_words: int = CHUNK_WORDS, overlap_words: int = CHUNK_OVERLAP_WORDS) -> list[str]:
+    words = text.split()
+    if not words:
+        return []
+    chunks = []
+    start = 0
+    step = max(chunk_words - overlap_words, 1)
+    while start < len(words):
+        chunks.append(" ".join(words[start:start + chunk_words]))
+        if start + chunk_words >= len(words):
+            break
+        start += step
+    return chunks
+
+
+def url_hash(url: str) -> str:
+    return hashlib.sha256(url.encode("utf-8")).hexdigest()[:16]
+
+
+def _sanitize_metadata(metadata: dict) -> dict:
+    # Chroma metadata values must be str/int/float/bool, not None.
+    return {k: v for k, v in metadata.items() if v is not None}
+
+
+def upsert_document(url: str, text: str, metadata: dict) -> int:
+    """Chunk + embed + upsert a single document. Returns the number of
+    chunks written. Existing chunks for this URL are deleted first so
+    re-running ingestion on an updated document doesn't leave stale chunks
+    behind."""
+    collection = _get_collection()
+
+    existing = collection.get(where={"source_url": url})
+    if existing and existing.get("ids"):
+        collection.delete(ids=existing["ids"])
+
+    chunks = chunk_text(clean_text(text))
+    if not chunks:
+        return 0
+
+    header = build_chunk_header(url, metadata)
+    embeddings = embed_batch([EMBED_DOCUMENT_PREFIX + header + "\n" + c for c in chunks])
+    doc_hash = url_hash(url)
+    ids = [f"{doc_hash}_{i}" for i in range(len(chunks))]
+    metadatas = [
+        _sanitize_metadata({
+            **metadata,
+            "source_url": url,
+            "chunk_index": i,
+            "chunk_header": header,
+            "academic_year_norm": normalize_year(metadata.get("academic_year")),
+        })
+        for i in range(len(chunks))
+    ]
+
+    collection.upsert(ids=ids, embeddings=embeddings, documents=chunks, metadatas=metadatas)
+    bump_corpus_version()
+    return len(chunks)
+
+
+def delete_document(url: str) -> None:
+    collection = _get_collection()
+    existing = collection.get(where={"source_url": url})
+    if existing and existing.get("ids"):
+        collection.delete(ids=existing["ids"])
+        bump_corpus_version()
+
+
+def query(text: str, n_results: int = 6, where: dict | None = None) -> dict:
+    collection = _get_collection()
+    query_embedding = embed_batch([EMBED_QUERY_PREFIX + text])[0]
+    return collection.query(query_embeddings=[query_embedding], n_results=n_results, where=where)

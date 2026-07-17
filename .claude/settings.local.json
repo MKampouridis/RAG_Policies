@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ollama list *)",
+      "Bash(sw_vers)",
+      "WebFetch(domain:www.essex.ac.uk)",
+      "Bash(python3 -c \"import sys; print\\(sys.executable\\)\")",
+      "Bash(pip3 list *)",
+      "Bash(ollama --version)",
+      "Bash(python3 -c ' *)"
+    ]
+  }
+}
