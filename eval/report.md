@@ -457,21 +457,55 @@ reranking (which change how the *existing* signal is used) worked while model sw
 generation/chat model was not retested, since every pass all day shows answer quality staying
 strong (3.5-4.1/5) whenever retrieval succeeds - no evidence points at generation as a bottleneck.
 
+## Stage 4: contextual per-chunk embeddings (piloted, rejected)
+
+RoA hit@6 (60%) sat below the plan's ~70% threshold for considering this option, so with the
+user's go-ahead it was attempted - but the full scope (843 documents, 14,006 chunks, one LLM call
+per chunk to generate a situating sentence) turned out to cost an estimated **~20 hours**, far
+more than anticipated. Before committing to that, a **bounded pilot** was run: just the 34
+documents/580 chunks behind the current 18 known misses (~48 minutes of generation), re-embedded,
+and measured.
+
+An initial single-call-per-document design (send the whole document once, ask for all its
+chunks' situating context back in one structured response) failed outright - the local 7B model
+couldn't reliably track alignment between many chunks and produced malformed output. Switched to
+one call per chunk (simpler task, ~5-7s each, reliable output) - which is what set the ~20-hour
+full-scope estimate.
+
+**Pilot result: negative.** The 80-turn aggregate looks close to neutral, but that's misleading -
+only 34 of 843 in-scope documents were touched, so 758 documents' worth of untouched questions
+dominate the aggregate. Isolating just the 22 turns that actually target pilot-scope documents:
+**zero turns improved, one regressed** (a glossary follow-up that previously ranked the correct
+document at rank 4 now doesn't retrieve it at all). Manually re-tested the specific hard exemplar
+this was meant to fix (4-year vs 5-year integrated masters confusion) - still wrong, identically
+to every other configuration tried today, suggesting this is a case where the two documents'
+content is genuinely too similar for any of today's techniques to disambiguate reliably, not a
+gap contextual embeddings happened to fill.
+
+Reverted (`rm -rf data/chunk_context_cache`, re-embedded from cache) rather than accept a known
+regression on the exact cases it was meant to fix, or spend ~20 more hours chasing a technique
+whose validation pilot came back negative. This is the third consecutive rejected experiment
+after header-boost and bge-m3 - reasonably strong evidence that the remaining RoA gap (documents
+whose content is nearly indistinguishable from a sibling's) needs either a fundamentally
+different approach (e.g. a bigger/differently-trained reranker, or restructuring the corpus
+itself) or may simply be close to this system's practical ceiling without much larger
+engineering investment than justified by the size of the remaining gap.
+
 ## Where this leaves things
 
-| | Start of this round (`postfix4`) | Current production (`stage1_rerank`) |
-|---|---|---|
-| RoA hit@1 / hit@3 / hit@6 / MRR | 38% / 50% / 55% / 0.43 | 38% / 57% / 60% / 0.45 |
-| Policy hit@6 / MRR | 95% / 0.84 | 100% / 0.86 |
-| Overall hit@6 / MRR | 75% / 0.64 | 80% / 0.66 |
+| | Start of the day | After first RoA round (`postfix4`) | Current production (`stage1_rerank`) |
+|---|---|---|---|
+| RoA hit@1 / hit@3 / hit@6 / MRR | 2.5% / — / 22.5% / 0.06 | 38% / 50% / 55% / 0.43 | 38% / 57% / 60% / 0.45 |
+| Policy hit@6 / MRR | 77.5% / 0.63 | 95% / 0.84 | 100% / 0.86 |
+| Overall hit@6 / MRR | 50% / 0.35 | 75% / 0.64 | 80% / 0.66 |
 
-A real, if modest, RoA improvement (+5pp hit@6, +7pp hit@3) and a clean policy improvement, with
-two honestly-reported negative results (header-boost, bge-m3) along the way. RoA hit@6 remains
-below the plan's original "pursue contextual per-chunk embeddings" threshold of ~70%, so that
-option (a one-time LLM-generated situating description per chunk, substantial engineering and
-compute cost) remains on the table but undecided - it's a bigger investment than anything tried
-today, and the two most recent experiments' mixed results are a reason for a deliberate go/no-go
-decision rather than an automatic next step.
+RoA hit@6 went from 22.5% to 60% over the full day (both improvement rounds combined) - a real,
+substantial gain, even though the final three experiments (header-boost, bge-m3, contextual
+embeddings) all came back negative. Two embedding models were tested and both underperformed
+`nomic-embed-text`; a purpose-built reranker and smaller chunks both helped; a richer per-chunk
+LLM-generated context signal, at real compute cost, didn't. The practical takeaway for future
+work on this corpus: further gains are more likely to come from changes to how retrieval *uses*
+existing signal (chunking, ranking) than from bigger models or richer per-chunk metadata.
 
 ## Files in this folder
 
@@ -486,8 +520,11 @@ decision rather than an automatic next step.
 - `results_postfix3.json` (rejected), `results_postfix4.json` — raw results for the
   contextualizer-drift fix
 - `results_stage0_chunks.json`, `results_stage1_rerank.json` (current production),
-  `results_stage2_header_boost.json` (rejected), `results_stage3_bgem3.json` (rejected) — raw
-  results for the second RoA improvement round described above
+  `results_stage2_header_boost.json` (rejected), `results_stage3_bgem3.json` (rejected),
+  `results_stage4_context_pilot.json` (rejected, reverted) — raw results for the second RoA
+  improvement round described above
+- `generate_chunk_context.py` — the stage-4 contextual-embedding pilot script (kept for
+  reference/reuse; not part of the active pipeline since the pilot was rejected)
 - `EXPERIMENTS.md` — exact parameters and headline metrics for every pass, for fast comparison
   and reverting via git if a future change regresses
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable

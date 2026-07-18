@@ -117,11 +117,19 @@ def _sanitize_metadata(metadata: dict) -> dict:
     return {k: v for k, v in metadata.items() if v is not None}
 
 
-def upsert_document(url: str, text: str, metadata: dict) -> int:
+def upsert_document(url: str, text: str, metadata: dict, chunk_contexts: list[str] | None = None) -> int:
     """Chunk + embed + upsert a single document. Returns the number of
     chunks written. Existing chunks for this URL are deleted first so
     re-running ingestion on an updated document doesn't leave stale chunks
-    behind."""
+    behind.
+
+    `chunk_contexts`, if given (one string per chunk, aligned by index, from
+    generate_chunk_context.py's cache), is an LLM-written sentence situating
+    that specific chunk within its document - richer, chunk-specific signal
+    than the document-level chunk_header, for the near-identical-boilerplate
+    RoA siblings header alone doesn't always disambiguate. Ignored (with a
+    print warning) if its length doesn't match the chunk count, since a
+    misaligned list would attach the wrong context to the wrong chunk."""
     collection = _get_collection()
 
     existing = collection.get(where={"source_url": url})
@@ -132,8 +140,16 @@ def upsert_document(url: str, text: str, metadata: dict) -> int:
     if not chunks:
         return 0
 
+    if chunk_contexts is not None and len(chunk_contexts) != len(chunks):
+        print(f"    WARNING: chunk_contexts length {len(chunk_contexts)} != {len(chunks)} chunks for {url}, ignoring")
+        chunk_contexts = None
+
     header = build_chunk_header(url, metadata)
-    embeddings = embed_batch([EMBED_DOCUMENT_PREFIX + header + "\n" + c for c in chunks])
+    embed_texts = []
+    for i, c in enumerate(chunks):
+        situating = chunk_contexts[i] if chunk_contexts else ""
+        embed_texts.append(EMBED_DOCUMENT_PREFIX + header + "\n" + situating + "\n" + c)
+    embeddings = embed_batch(embed_texts)
     doc_hash = url_hash(url)
     ids = [f"{doc_hash}_{i}" for i in range(len(chunks))]
     metadatas = [
@@ -142,6 +158,7 @@ def upsert_document(url: str, text: str, metadata: dict) -> int:
             "source_url": url,
             "chunk_index": i,
             "chunk_header": header,
+            "chunk_context": chunk_contexts[i] if chunk_contexts else None,
             "academic_year_norm": normalize_year(metadata.get("academic_year")),
         })
         for i in range(len(chunks))

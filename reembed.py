@@ -17,7 +17,7 @@ import re
 from pathlib import Path
 
 from src.docid import document_family, normalize_year, previous_year
-from src.ingest import _get_collection, bump_corpus_version, upsert_document
+from src.ingest import _get_collection, bump_corpus_version, chunk_text, clean_text, upsert_document
 
 MANIFEST_PATH = Path("data/manifest.json")
 
@@ -107,6 +107,19 @@ def recompute_current_flags() -> None:
     print(f"recompute_current_flags: updated {updated} chunks")
 
 
+def _load_chunk_contexts(url: str, expected_len: int) -> list[str] | None:
+    """Per-chunk situating context from generate_chunk_context.py's cache, if
+    present and aligned to the current chunking. Most documents have none
+    (single-document families, or outside the pilot scope) - that's normal,
+    not an error."""
+    from src.ingest import url_hash
+    path = Path("data/chunk_context_cache") / f"{url_hash(url)}.json"
+    if not path.exists():
+        return None
+    contexts = json.loads(path.read_text())
+    return contexts if len(contexts) == expected_len else None
+
+
 def run() -> None:
     manifest = json.loads(MANIFEST_PATH.read_text())
     documents = manifest["documents"]
@@ -123,9 +136,12 @@ def run() -> None:
             "academic_year": doc.get("academic_year"),
             "is_current": flags[doc["url"]],
         }
-        n_chunks = upsert_document(doc["url"], text, metadata)
+        expected_chunks = chunk_text(clean_text(text))
+        chunk_contexts = _load_chunk_contexts(doc["url"], len(expected_chunks))
+        n_chunks = upsert_document(doc["url"], text, metadata, chunk_contexts=chunk_contexts)
         doc["chunk_count"] = n_chunks
-        print(f"[{i}/{len(kept)}] re-embedded ({n_chunks} chunks): {doc['title']}", flush=True)
+        tag = " +context" if chunk_contexts else ""
+        print(f"[{i}/{len(kept)}] re-embedded ({n_chunks} chunks{tag}): {doc['title']}", flush=True)
 
     MANIFEST_PATH.write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
 
