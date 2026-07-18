@@ -507,6 +507,100 @@ LLM-generated context signal, at real compute cost, didn't. The practical takeaw
 work on this corpus: further gains are more likely to come from changes to how retrieval *uses*
 existing signal (chunking, ranking) than from bigger models or richer per-chunk metadata.
 
+---
+
+# Literature-grounded improvement round (2026-07-18, later)
+
+With RoA hit@6 stuck at 60% after three consecutive negative experiments, the user asked for
+deep research into the academic and practitioner literature on this exact failure class before
+proposing more changes, plus a direct answer on whether different models would help.
+
+## What "the RoA problem" actually is
+
+Academic-year duplication was a large piece of the *original* problem, and it's already solved
+(the `is_current` filter + canonical year normalization earlier today). What remains is the same
+underlying phenomenon - near-identical boilerplate regulatory text - recurring along dimensions
+that don't have year's clean, regex-matchable structure: wrong degree length (4yr vs 5yr
+Integrated Masters), wrong department/programme (CSEE vs Social Work), wrong award type (Grad
+Cert vs Grad Dip), and primary questions that are genuinely underspecified (no identifying detail
+at all, ambiguous across dozens of documents).
+
+## Research findings
+
+Eight web searches plus three full-paper fetches (arXiv + practitioner sources):
+
+- **This is a named, well-documented problem class.** Legal-tech practitioners describe the
+  identical failure in NDA retrieval - documents "structurally almost identical...differing only
+  in critical variables like party names or dates" confusing vector similarity - solved there via
+  checksum-guarded citations and metadata-encoded disambiguation rules.
+- **["When More Documents Hurt RAG"](https://arxiv.org/pdf/2606.11350)** names our exact symptom
+  ("vector search dilution") and proposes **domain-scoped retrieval**: hard-partition the corpus
+  by metadata *before* ranking, rather than soft-preferring it after. A materially different
+  mechanism than the soft RRF-fusion already used for academic year.
+- **["Metadata, Structure, or Strategy?"](https://arxiv.org/pdf/2606.29645)** explains *why* two
+  of today's earlier experiments (BM25 header-boost, contextual embeddings) backfired: retrieval
+  *strategy* (which documents get selected/ranked) dominates outcomes, while chunk-level metadata
+  /context enrichment has diminishing returns that go **negative** past a threshold - independent
+  literature confirmation of an independently-discovered result.
+- **["Retrieval Improvements Do Not Guarantee Better Answers"](https://arxiv.org/html/2603.24580v1)**
+  (a 947-document AI-policy corpus study) found retrieval gains don't help when the query is
+  genuinely ambiguous - the generator produces a fluent, confidently wrong answer instead of
+  surfacing uncertainty. Matches several of our remaining misses precisely (primary questions
+  with zero identifying information).
+- **ColBERT-style late interaction** (via [RAGatouille](https://github.com/AnswerDotAI/RAGatouille)
+  / [PyLate](https://github.com/lightonai/pylate)) and **SPLADE learned sparse retrieval** were
+  identified as established, locally-deployable alternative mechanisms not yet tried (token-level
+  MaxSim matching and learned sparse term expansion, respectively - both fundamentally different
+  from the single-vector dense embeddings and raw-frequency BM25 used all day).
+
+## What was tried: two ideas killed by pre-validation, one real win
+
+**Facet-based hard filtering (degree-length/award-type) - killed before writing any code.**
+Rigorously checked whether the distinguishing fact for each of the 16 current misses appears
+*anywhere in the question text* (not just in the document): **13 of 16 (81%) don't mention it at
+all.** No filter, however well-designed, can act on a fact the question never states - the same
+coverage problem that killed the original department-field attempt, caught this time before any
+implementation cost.
+
+**Ambiguity detection + clarifying question - killed before writing any code.** Tested the two
+candidate signals available in the pipeline (family diversity in the top-6; query content-word
+count as a proxy for "genericness") against the full eval set. Family diversity correlates in
+aggregate (hits average 3.5 same-family repeats in top-6; misses average 1.6) but the
+distributions overlap too much for a safe threshold - even the strictest cutoff caught only 56%
+of misses while wrongly flagging 14% of *currently-correct* answers. Content-word count didn't
+separate hits from misses at all: "minimum weighted average...to pass a Master's degree with
+Merit" (a hit) and "...for a student to pass with Merit" (a miss) are nearly identical phrasings
+with opposite outcomes - whether a query hits or misses depends on retrieval internals invisible
+from the query's surface form. Building a clarification trigger on either signal would have meant
+either missing most real ambiguity or interrupting currently-working answers for uncertain gain.
+
+**ColBERT reranker (PyLate, `lightonai/GTE-ModernColBERT-v1`) - the day's best single result.**
+RAGatouille (the more famous wrapper) turned out to be broken against the currently-installed
+langchain version (an unrelated transitive-dependency incompatibility); PyLate, a more actively
+maintained library the RAGatouille project itself is migrating to, worked cleanly instead - both
+installed via pip, no new infrastructure. Swapped in as a direct replacement for the existing
+`BAAI/bge-reranker-base` cross-encoder over the same fused candidate pool (`src/rerank.py`,
+`BACKEND = "colbert"`).
+
+| Pass | Policy hit@6 / MRR | RoA hit@6 / MRR | Overall hit@6 / MRR | Answer |
+|---|---|---|---|---|
+| Cross-encoder (prior production) | 100% / 0.86 | 60% / 0.45 | 80% / 0.66 | 3.81 |
+| **ColBERT late interaction — production** | **100% / 0.91** | **70% / 0.45** | **85% / 0.68** | 3.89 |
+
+RoA hit@6 jumped 10 percentage points - the single largest gain since the original hybrid
+dense+BM25 retrieval fix. Flip analysis: 5 turns gained, 1 lost, spread across 5 different
+document families - a genuine, well-distributed improvement, not a fluke concentrated in one
+area. Worth noting for process: manual spot-checks on the hardest known exemplar (4-year vs
+5-year Integrated Masters) looked unconvincing beforehand (near-identical MaxSim scores, wrong
+document still ranking first) - the full 80-turn aggregate told a materially better story. Same
+lesson as the header-boost experiment, in the opposite direction: trust the full eval over
+hand-picked spot-checks, whether they look promising or not.
+
+**Not yet tried** (remaining items from the research): SPLADE as a third RRF-fused retrieval
+channel, and a cheap embedding-model ensemble (`nomic-embed-text` + the already-embedded
+`bge-m3` collection, fused via the existing RRF mechanism) - both still on the table if further
+gains are wanted, per `tender-strolling-storm.md`'s plan.
+
 ## Files in this folder
 
 - `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
@@ -519,12 +613,14 @@ existing signal (chunking, ranking) than from bigger models or richer per-chunk 
 - `results_holdout_set2.json` — raw results for the generalization check
 - `results_postfix3.json` (rejected), `results_postfix4.json` — raw results for the
   contextualizer-drift fix
-- `results_stage0_chunks.json`, `results_stage1_rerank.json` (current production),
+- `results_stage0_chunks.json`, `results_stage1_rerank.json` (superseded),
   `results_stage2_header_boost.json` (rejected), `results_stage3_bgem3.json` (rejected),
   `results_stage4_context_pilot.json` (rejected, reverted) — raw results for the second RoA
-  improvement round described above
+  improvement round
 - `generate_chunk_context.py` — the stage-4 contextual-embedding pilot script (kept for
   reference/reuse; not part of the active pipeline since the pilot was rejected)
+- `results_stage_colbert.json` (current production) — raw results for the literature-grounded
+  round's ColBERT reranker swap
 - `EXPERIMENTS.md` — exact parameters and headline metrics for every pass, for fast comparison
   and reverting via git if a future change regresses
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable

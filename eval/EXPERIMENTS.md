@@ -25,7 +25,8 @@ unchanged since.
 | `postfix3` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard + reworded contextualize prompt | `results_postfix3.json` |
 | `postfix4` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard, **original contextualize prompt wording** | `results_postfix4.json` |
 | `stage0_chunks` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | same as postfix4 | `results_stage0_chunks.json` — **CHUNK_WORDS=175, CHUNK_OVERLAP_WORDS=30** (was 300/50) |
-| `stage1_rerank` **(= current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | **yes, `BAAI/bge-reranker-base` over top-30 fused candidates** | same as stage0_chunks | `results_stage1_rerank.json` — pool size widened `FETCH_POOL_MULTIPLIER` 4→8 (24→48 candidates) to give the reranker real depth to work with |
+| `stage1_rerank` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | **yes, `BAAI/bge-reranker-base` over top-30 fused candidates** | same as stage0_chunks | `results_stage1_rerank.json` — pool size widened `FETCH_POOL_MULTIPLIER` 4→8 (24→48 candidates) to give the reranker real depth to work with |
+| `stage_colbert` **(= current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | **yes, ColBERT late-interaction (`lightonai/GTE-ModernColBERT-v1` via PyLate) replacing the cross-encoder** | same as stage1 | `results_stage_colbert.json` — `src/rerank.py` `BACKEND = "colbert"`; new deps `pylate`, `ragatouille` (the latter installed but unused after a langchain-version incompatibility, kept installed as a no-op) |
 | `stage2_header_boost` (rejected — regressed RoA) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | yes | same as stage1 | `results_stage2_header_boost.json` — BM25 `chunk_header` repeated 5x in indexed text; regressed RoA hit@6 60%→53%, reverted (`HEADER_WEIGHT=1` in `src/lexical.py`) |
 | `stage3_bgem3` (rejected — wash/regression) | **bge-m3** (8192 ctx, no prefix) | yes | yes | v2 | canonical-year family max | yes | yes | same as stage1 | `results_stage3_bgem3.json` — apples-to-apples embedding swap on top of stage1's full pipeline; RoA hit@6 60%→57%, hit@3 57%→50%, reverted (`EMBED_MODEL` back to `nomic-embed-text` in `src/llm.py`); `policies_bge-m3` collection left in Chroma, non-destructive |
 | `stage4_context_pilot` (rejected — no improvement, one regression) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | yes | same as stage1 | `results_stage4_context_pilot.json` — per-chunk LLM-generated situating context (`generate_chunk_context.py`), piloted on the 34 documents/580 chunks behind current misses only (full 843-doc/14,006-chunk scope estimated at ~20h, not run). Isolated to just the 22 pilot-scope turns: 0 new hits, 1 regression (glossary follow-up, rank 4→absent). Reverted (`rm -rf data/chunk_context_cache`, re-embedded) |
@@ -51,13 +52,26 @@ unchanged since.
 | `stage2_header_boost` (rejected) | 97.0% / 0.88 | 53.0% / 0.43 | 75.0% / 0.65 | 3.90 |
 | `stage3_bgem3` (rejected) | 97.0% / 0.86 | 57.0% / 0.44 | 78.0% / 0.65 | 3.90 |
 | `stage4_context_pilot` (rejected, then reverted) | 97.0% / 0.88 | 57.0% / 0.45 | 78.0% / 0.66 | 3.95 |
-| **`stage1_rerank` config, restored (= current production)** | **100.0% / 0.86** | **60.0% / 0.45** | **80.0% / 0.66** | 3.81 |
+| `stage1_rerank` config, restored (superseded) | 100.0% / 0.86 | 60.0% / 0.45 | 80.0% / 0.66 | 3.81 |
+| **`stage_colbert` (= current production)** | **100.0% / 0.91** | **70.0% / 0.45** | **85.0% / 0.68** | 3.89 |
 
 Note on `stage4_context_pilot`'s topline row: only 34 of 843 in-scope documents were actually
 touched, so the 80-turn aggregate (which looks almost flat/slightly positive on answer score) is
 mostly noise from the 758 untouched documents. The real signal is in the isolated pilot-scope
 comparison below (22 turns actually affected) - 0 improvements, 1 regression - which is what
 drove the revert, not the aggregate row.
+
+**`stage_colbert`: the day's best single result** (literature-motivated: see the "second literature
+research round" section of report.md). Swapped the cross-encoder reranker for ColBERT-style late
+interaction (`lightonai/GTE-ModernColBERT-v1` via the `pylate` library) over the same fused
+candidate pool. RoA hit@6 60%->70%, the single largest jump since the original hybrid-retrieval
+fix. Flip analysis: 5 turns gained, 1 lost, all in RoA, spread across 5 different document
+families (not concentrated in one) - a genuine, well-distributed improvement, not a fluke.
+Notable process point: manual spot-checks on the hardest known exemplar (4yr vs 5yr integrated
+masters) looked unconvincing before running the eval (near-identical scores, wrong doc still on
+top) - the full 80-turn aggregate told a different, better story. Same lesson as
+`stage2_header_boost` in the opposite direction: trust the full eval over spot-checks, both when
+spot-checks look promising and when they don't.
 
 **Stage 1 (cross-encoder reranker):** first implementation scored the raw stored chunk text,
 which does NOT include `chunk_header` (that's only prepended at embedding time, never stored) -
