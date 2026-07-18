@@ -5,13 +5,18 @@ generate an answer via the local chat model."""
 import re
 
 from src import lexical
+from src import rerank as _rerank
 from src.docid import document_family as _document_family
 from src.docid import normalize_year
 from src.ingest import query as vector_query
 from src.llm import chat
 
 N_RESULTS = 6
-FETCH_POOL_MULTIPLIER = 4  # over-fetch so recency filtering has candidates to work with
+# over-fetch so recency filtering AND reranking have real depth to work with -
+# failure analysis (eval/report.md) found relevant-but-mis-ranked documents as
+# deep as rank 60 in a wide dense+BM25 union, so 4x (24 candidates) wasn't
+# enough room for a reranker to ever see them
+FETCH_POOL_MULTIPLIER = 8
 RRF_K = 60
 
 # Academic-year mention: requires the paired "2025-26" / "2025/26" / "2025-2026"
@@ -218,11 +223,7 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         bm25_hits = lexical.query(retrieval_query, n_results=pool_size, current_only=True)
         candidates = _prefer_most_recent_year(_rrf_fuse(_dense_as_hits(dense), bm25_hits))
 
-    results = {
-        "documents": [candidates["documents"][0][:N_RESULTS]],
-        "metadatas": [candidates["metadatas"][0][:N_RESULTS]],
-        "distances": [candidates["distances"][0][:N_RESULTS]],
-    }
+    results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
 
     return results, retrieval_query
 

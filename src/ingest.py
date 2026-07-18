@@ -19,8 +19,8 @@ CORPUS_VERSION_PATH = Path("data/corpus_version")
 # means switching models back and forth never requires re-embedding twice.
 COLLECTION_NAME = "policies_" + re.sub(r"[^a-zA-Z0-9_-]", "_", EMBED_MODEL)
 
-CHUNK_WORDS = 300
-CHUNK_OVERLAP_WORDS = 50
+CHUNK_WORDS = 175
+CHUNK_OVERLAP_WORDS = 30
 
 DOT_LEADER_RE = re.compile(r"\.{4,}")
 REPEATED_LINE_MIN_COUNT = 5

@@ -6,9 +6,10 @@ reverted via git (`git log --oneline`, `git checkout <hash> -- src/ reembed.py
 run_ingest.py`). Prose narrative for these same experiments is in `report.md`;
 this file is the fast-scan parameter reference.
 
-All passes: `qwen2.5:7b-instruct` chat model, `CHUNK_WORDS=300`,
-`CHUNK_OVERLAP_WORDS=50` (never varied — see report.md's rejected-proposals
-table for why), same 40-question original set unless noted.
+All passes: `qwen2.5:7b-instruct` chat model, same 40-question original set
+unless noted. `CHUNK_WORDS=300`/`CHUNK_OVERLAP_WORDS=50` through `postfix4`;
+changed to **175/30** at `stage0_chunks` (a later improvement round) and
+unchanged since.
 
 | Experiment | Embed model | Chunk headers | Text cleaning | `is_current` filter | Recency dedupe | Hybrid BM25 | Reranker | Year-mention handling | Results file |
 |---|---|---|---|---|---|---|---|---|---|
@@ -22,7 +23,11 @@ table for why), same 40-question original set unless noted.
 | `postfix2` **(= "Final", current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max, unknown-year always kept | yes | no | anchored regex → **soft preference** (RRF-fuse year pool + current pool) | `results_postfix2.json` |
 | `holdout_set2` | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference | `results_holdout_set2.json`, question set: `questions_set2.json` |
 | `postfix3` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard + reworded contextualize prompt | `results_postfix3.json` |
-| `postfix4` **(= current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard, **original contextualize prompt wording** | `results_postfix4.json` |
+| `postfix4` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | soft preference + contextualize faithfulness guard, **original contextualize prompt wording** | `results_postfix4.json` |
+| `stage0_chunks` (superseded) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | no | same as postfix4 | `results_stage0_chunks.json` — **CHUNK_WORDS=175, CHUNK_OVERLAP_WORDS=30** (was 300/50) |
+| `stage1_rerank` **(= current production)** | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | **yes, `BAAI/bge-reranker-base` over top-30 fused candidates** | same as stage0_chunks | `results_stage1_rerank.json` — pool size widened `FETCH_POOL_MULTIPLIER` 4→8 (24→48 candidates) to give the reranker real depth to work with |
+| `stage2_header_boost` (rejected — regressed RoA) | nomic-embed-text | yes | yes | v2 | canonical-year family max | yes | yes | same as stage1 | `results_stage2_header_boost.json` — BM25 `chunk_header` repeated 5x in indexed text; regressed RoA hit@6 60%→53%, reverted (`HEADER_WEIGHT=1` in `src/lexical.py`) |
+| `stage3_bgem3` (rejected — wash/regression) | **bge-m3** (8192 ctx, no prefix) | yes | yes | v2 | canonical-year family max | yes | yes | same as stage1 | `results_stage3_bgem3.json` — apples-to-apples embedding swap on top of stage1's full pipeline; RoA hit@6 60%→57%, hit@3 57%→50%, reverted (`EMBED_MODEL` back to `nomic-embed-text` in `src/llm.py`); `policies_bge-m3` collection left in Chroma, non-destructive |
 
 ## Headline metrics (strict, 80 turns unless noted)
 
@@ -39,7 +44,34 @@ table for why), same 40-question original set unless noted.
 | `holdout_set2` (raw) | 70.0% / 0.60 | 52.5% / 0.38 | 61.3% / 0.49 | 3.81 |
 | `holdout_set2` (confound-corrected*) | 93.3% / 0.80 | 52.5% / 0.38 | 70.0% / 0.56 | 3.79 |
 | `postfix3` (rejected — prompt-wording confound) | 95.0% / 0.81 | 47.5% / 0.35 | 71.3% / 0.58 | 3.77 |
-| **`postfix4` (current production)** | **95.0% / 0.84** | **55.0% / 0.43** | **75.0% / 0.64** | 3.73 |
+| `postfix4` (superseded) | 95.0% / 0.84 | 55.0% / 0.43 | 75.0% / 0.64 | 3.73 |
+| `stage0_chunks` (superseded) | 95.0% / 0.83 | 62.0% / 0.45 | 79.0% / 0.64 | 3.81 |
+| **`stage1_rerank` (current production)** | **100.0% / 0.86** | 60.0% / 0.45 | 80.0% / 0.66 | 3.81 |
+| `stage2_header_boost` (rejected) | 97.0% / 0.88 | 53.0% / 0.43 | 75.0% / 0.65 | 3.90 |
+
+**Stage 1 (cross-encoder reranker):** first implementation scored the raw stored chunk text,
+which does NOT include `chunk_header` (that's only prepended at embedding time, never stored) -
+so the reranker was working with strictly less identity signal than the embedder had, and a
+manual test (4yr vs 5yr integrated masters sibling confusion) confirmed it failed to rescue a
+target document even though it was in its scoring pool at rank 16. Fixed by scoring
+`chunk_header + chunk_text` pairs instead. Result: policy hit@6 now 100%, RoA hit@3/MRR improved,
+RoA hit@6 roughly flat (62%->60%, within observed noise). Net positive, kept in production.
+Required widening `FETCH_POOL_MULTIPLIER` 4->8 so there's real depth (48 candidates) for the
+reranker to search, per the failure analysis finding relevant documents as deep as rank 60.
+
+**Stage 2 (BM25 header boost) — rejected, see table above.** Originally scoped as literal
+department-metadata-field matching (per the approved plan), but a fresh diagnostic found only
+1 of 8 documents behind current misses has a department value that would plausibly appear in
+natural query text (the rest are either untagged or tagged with an administrative unit name,
+e.g. "Health and Social Care" instead of the actual programme name "Social Work") - low expected
+coverage. Pivoted (user-approved) to boosting the BM25 weight of `chunk_header` instead, a more
+general mechanism reusing existing infrastructure. Manual exemplar tests looked strong (CSEE and
+"MA Social Work" queries both correctly surfaced their target document top-of-list), but the full
+80-turn eval showed a net regression - boosting amplifies the header's shared generic words
+("masters", "rules", "year") right along with the genuinely distinguishing ones, and apparently
+the corpus has proportionally more of the former. Reverted (`HEADER_WEIGHT=1` in
+`src/lexical.py`, no re-embed needed - BM25 indexes lazily from stored Chroma data at server
+start, so this revert took effect on restart alone).
 
 \* 5 of 30 holdout-set2 policy documents were selected at question-construction
 time as superseded-year editions (2024-25/2023-24) whose questions don't

@@ -417,6 +417,62 @@ had accumulated in `data/chat.db` were cleared out (identified precisely by matc
 conversation's message count and first-message text against the known eval question sets, so the
 user's own real conversations — including the one that surfaced this bug — were left untouched).
 
+---
+
+# Second RoA improvement round (2026-07-18)
+
+RoA retrieval held at 55% hit@6 / 0.43 MRR even after the fixes above — much better than the
+original 22.5%, but still weak in absolute terms, and confirmed on the independent holdout set
+too, so a real ceiling rather than a measurement artifact. A fresh failure analysis of the 18
+current RoA misses found the same pattern almost everywhere: retrieval lands in the exact right
+topical neighborhood but picks the wrong sibling document (wrong year, wrong degree length, wrong
+department, wrong award type) - the underlying boilerplate-similarity problem the chunk headers
+only partially fixed. A larger-pool check found 13 of 18 misses (72%) were present somewhere in a
+top-50 union, just poorly ranked - a genuine reranking opportunity - while 5 of 18 (28%) were
+absent even from a top-50 pool, which no reranker can fix.
+
+## What was tested
+
+| Change | Result | Kept? |
+|---|---|---|
+| **Smaller chunks** (300→175 words, overlap 50→30) | RoA hit@6 55%→62%, MRR 0.43→0.45, no policy regression | **Yes** |
+| **Cross-encoder reranker** (`BAAI/bge-reranker-base`, rescoring top-30 fused candidates; `sentence-transformers`/`torch` were already installed, no new dependency) | Policy hit@6 reached 100%; RoA hit@3/MRR improved, hit@6 flat (62%→60%, within noise) | **Yes** |
+| BM25 header-boost (repeat `chunk_header` 5x so identity terms outweigh boilerplate body text) | Regressed RoA hit@6 60%→53% - amplifies the header's generic shared words right along with the genuinely distinguishing ones | No, reverted |
+| Embedding model retest: **`bge-m3`** (8192-token context, no truncation risk) | Wash-to-slight-regression on RoA (hit@6 60%→57%, hit@3 57%→50%); answer quality improved slightly | No, reverted |
+
+**Cross-encoder reranker note:** the first implementation scored the raw stored chunk text,
+which doesn't include `chunk_header` (only prepended at embedding time, never stored) - so the
+reranker was working with less identity signal than the embedder had, and failed a manual
+exemplar test as a result. Fixed by scoring `chunk_header + chunk_text` together, which is what
+actually delivered the policy/RoA gains above.
+
+**On "would testing different models help" specifically:** two embedding models were tested
+today (`mxbai-embed-large` in the first round, `bge-m3` in this one) and neither beat
+`nomic-embed-text` - `mxbai` regressed RoA outright (its 512-token window likely truncates dense
+technical chunks), and `bge-m3` (chosen specifically to rule out that truncation risk) still came
+out a wash-to-slight-regression. This is reasonably strong evidence that the embedding model
+isn't the lever that unlocks further RoA gains on this corpus - the near-duplicate boilerplate
+structure of the documents themselves is the dominant constraint, which is why chunk size and
+reranking (which change how the *existing* signal is used) worked while model swaps didn't. The
+generation/chat model was not retested, since every pass all day shows answer quality staying
+strong (3.5-4.1/5) whenever retrieval succeeds - no evidence points at generation as a bottleneck.
+
+## Where this leaves things
+
+| | Start of this round (`postfix4`) | Current production (`stage1_rerank`) |
+|---|---|---|
+| RoA hit@1 / hit@3 / hit@6 / MRR | 38% / 50% / 55% / 0.43 | 38% / 57% / 60% / 0.45 |
+| Policy hit@6 / MRR | 95% / 0.84 | 100% / 0.86 |
+| Overall hit@6 / MRR | 75% / 0.64 | 80% / 0.66 |
+
+A real, if modest, RoA improvement (+5pp hit@6, +7pp hit@3) and a clean policy improvement, with
+two honestly-reported negative results (header-boost, bge-m3) along the way. RoA hit@6 remains
+below the plan's original "pursue contextual per-chunk embeddings" threshold of ~70%, so that
+option (a one-time LLM-generated situating description per chunk, substantial engineering and
+compute cost) remains on the table but undecided - it's a bigger investment than anything tried
+today, and the two most recent experiments' mixed results are a reason for a deliberate go/no-go
+decision rather than an automatic next step.
+
 ## Files in this folder
 
 - `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
@@ -424,11 +480,14 @@ user's own real conversations — including the one that surfaced this bug — w
 - `results_baseline.json`, `results_fixed.json`, `results_mxbai.json` — raw per-question
   results for the original evaluation round
 - `results_stage2.json`, `results_stage3.json`, `results_stage4.json` — raw results for the
-  retrieval improvement round
+  first retrieval improvement round
 - `results_postfix.json`, `results_postfix2.json` — raw results for the code-review fix round
 - `results_holdout_set2.json` — raw results for the generalization check
-- `results_postfix3.json` (rejected), `results_postfix4.json` (current production) — raw results
-  for the contextualizer-drift fix described above
+- `results_postfix3.json` (rejected), `results_postfix4.json` — raw results for the
+  contextualizer-drift fix
+- `results_stage0_chunks.json`, `results_stage1_rerank.json` (current production),
+  `results_stage2_header_boost.json` (rejected), `results_stage3_bgem3.json` (rejected) — raw
+  results for the second RoA improvement round described above
 - `EXPERIMENTS.md` — exact parameters and headline metrics for every pass, for fast comparison
   and reverting via git if a future change regresses
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable

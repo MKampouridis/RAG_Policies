@@ -20,6 +20,15 @@ from src.ingest import _get_collection, read_corpus_version
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 
+# Tried boosting this (repeating the header several times so identity terms
+# like "CSEE"/"4yr" outweigh generic boilerplate body text) to help
+# disambiguate near-identical RoA siblings - regressed RoA hit@6 in the full
+# eval (60%->53%) despite improving hand-picked exemplars, because boosting
+# amplifies the header's generic shared words ("masters", "rules", "year")
+# right along with the genuinely distinguishing ones, and the corpus has more
+# of the former. Reverted to 1x (see eval/EXPERIMENTS.md "stage2_header_boost").
+HEADER_WEIGHT = 1
+
 _index = None
 _index_version = None
 _lock = threading.Lock()
@@ -36,10 +45,10 @@ class _BM25Index:
         self.ids = data["ids"]
         self.documents = data["documents"]
         self.metadatas = data["metadatas"]
-        # index header + body so document identity (title/department/year)
-        # is searchable even though chunk bodies are boilerplate
+        # index header (repeated HEADER_WEIGHT times) + body so document
+        # identity is searchable and isn't drowned out by shared boilerplate
         corpus = [
-            _tokenize((meta.get("chunk_header") or "") + " " + doc)
+            _tokenize(meta.get("chunk_header") or "") * HEADER_WEIGHT + _tokenize(doc)
             for doc, meta in zip(self.documents, self.metadatas)
         ]
         # BM25Okapi divides by corpus size; an empty collection (fresh setup,
