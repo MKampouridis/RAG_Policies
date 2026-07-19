@@ -61,15 +61,17 @@ unchanged since.
 | `stageH_crag_verification` (rejected) | 100.0% / 0.86 | 65.0% / 0.42 | 82.5% / 0.64 | 2.88 |
 | `stageD_splade` (rejected) | 100.0% / 0.91 | 65.0% / 0.45 | 82.5% / 0.68 | 3.90 |
 | `stageE_embedding_ensemble` (rejected) | 100.0% / 0.89 | 57.5% / 0.40 | 78.8% / 0.65 | 3.80 |
+| `stageI_multihop_decomposition` (rejected) | 100.0% / 0.89 | 62.5% / 0.40 | 81.2% / 0.65 | 3.88 |
 
 (Stage F, weighted score fusion vs RRF, isn't in this table - it was decided from a fast
 retrieval-only sweep, not a full 80-turn/judge-scored pass, since no weight config beat RRF
 enough to warrant one; see `eval/sweep_fusion_weights.py` / `eval/sweep_fusion.log`.)
 
-All seven rows above are detailed in report.md's "Try-everything round: eight more experiments,
-all reverted (2026-07-19)" section - each implemented behind an off-by-default flag in
-`src/rag.py` (`FACET_PREFERENCE_ENABLED`, `WEIGHTED_FUSION_ENABLED`, `PSEUDO_QUERY_ENABLED`,
-`CRAG_VERIFICATION_ENABLED`, `SPLADE_ENABLED`, `EMBEDDING_ENSEMBLE_ENABLED`), all confirmed back
+All eight rows above are detailed in report.md's "Try-everything round" section and the later
+"Stage I: selective multi-hop query decomposition" section - each implemented behind an
+off-by-default flag in `src/rag.py` (`FACET_PREFERENCE_ENABLED`, `WEIGHTED_FUSION_ENABLED`,
+`PSEUDO_QUERY_ENABLED`, `CRAG_VERIFICATION_ENABLED`, `SPLADE_ENABLED`,
+`EMBEDDING_ENSEMBLE_ENABLED`, `MULTIHOP_DECOMPOSITION_ENABLED`), all confirmed back
 to `False` in the current production checkout.
 
 Note on `stage4_context_pilot`'s topline row: only 34 of 843 in-scope documents were actually

@@ -91,6 +91,28 @@ ONLY a JSON object: {"supported": true or false, "reason": "<one short sentence>
 if the excerpts are off-topic, only tangentially related, or missing the key fact needed - not \
 just because the wording differs from the question."""
 
+# Stage I: selective multi-hop query decomposition. Triggered only when the
+# initial reranked top-6 is fragmented across many different document
+# families (reusing Stage B's AMBIGUITY_FAMILY_COUNT_THRESHOLD signal). A
+# pre-validation check (eval/report.md, "Pre-validation: facet-overlap graph
+# killed...") predicted neither of the two dominant current failure modes
+# (underspecified queries; same-family sibling confusion needing a
+# finer-grained identifier) obviously calls for decomposition - tried anyway,
+# and the full eval confirmed it: RoA hit@6 70%->62.5% (net -3 turns: +1/-4,
+# see eval/report.md "Stage I"). It occasionally helped (recovered one
+# genuine former miss) but more often diluted the rerank pool with a wrong
+# hypothesis's candidates, displacing documents the single-shot retrieval
+# had already found correctly. Off by default; kept for reference.
+MULTIHOP_DECOMPOSITION_ENABLED = False
+
+DECOMPOSE_SYSTEM_PROMPT = """A question was searched against a university policy/rules-of-\
+assessment document corpus and the results were scattered across several different, seemingly \
+unrelated documents - a sign the question may be ambiguous across multiple specific programmes, \
+departments, or document types. Given the question and a list of the distinct candidate \
+documents actually found, write up to 3 alternative, more specific versions of the SAME \
+question, each one assuming it refers to one specific candidate document (use its title to make \
+the rephrasing concrete). Respond with ONLY a JSON object: {"subqueries": ["...", "...", "..."]}."""
+
 # Academic-year mention: requires the paired "2025-26" / "2025/26" / "2025-2026"
 # shape with word boundaries, so money ("£2000"), course codes ("CE2025"), and
 # bare years don't trip it and silently degrade retrieval to the full archive.
@@ -341,24 +363,67 @@ def _top_family_count(metadatas: list[dict]) -> int:
     return sum(1 for m in metadatas if _document_family(m.get("source_url", "")) == top_family)
 
 
-def _clarifying_question(metadatas: list[dict]) -> str:
-    """Built from the distinct document families in the ambiguous pool, most
-    dominant first, so the question names the actual candidates instead of a
-    generic "please clarify"."""
+def _distinct_family_titles(metadatas: list[dict], limit: int = 4) -> list[str]:
+    """Distinct document families in a candidate pool, most-relevant-first,
+    named by title (falling back to the family key). Shared by the
+    clarifying-question (Stage B) and query-decomposition (Stage I) paths,
+    both of which need to name the actual candidate documents rather than
+    speak generically about "a few different documents"."""
     seen_families: dict[str, str] = {}
     for meta in metadatas:
         family = _document_family(meta.get("source_url", ""))
         if family not in seen_families:
             seen_families[family] = meta.get("title") or family
-        if len(seen_families) >= 4:
+        if len(seen_families) >= limit:
             break
-    titles = list(seen_families.values())
-    listed = "; ".join(titles)
+    return list(seen_families.values())
+
+
+def _clarifying_question(metadatas: list[dict]) -> str:
+    """Built from the distinct document families in the ambiguous pool, most
+    dominant first, so the question names the actual candidates instead of a
+    generic "please clarify"."""
+    listed = "; ".join(_distinct_family_titles(metadatas))
     return (
         "Your question could relate to a few different documents, and I want to point you to the "
         f"right one rather than guess: {listed}. Could you tell me which programme, department, or "
         "academic year you mean?"
     )
+
+
+def _surrogate_hits(docs: list[str], metas: list[dict]) -> list[tuple[str, str, dict]]:
+    """Re-keys (doc, meta) pairs by (source_url, chunk_index) instead of a
+    Chroma embedding-store id, so the same real chunk found via two
+    different representations (e.g. a decomposed subquery's own dense hit
+    vs. the original unified pool) is recognized as the SAME candidate by
+    _rrf_fuse's id-keyed accumulation, rather than double-counted under two
+    different id strings. Needed because the pre-existing fused `candidates`
+    dict (already an _rrf_fuse output) doesn't carry Chroma ids forward, only
+    documents/metadatas - this is the uniform id scheme for combining it with
+    freshly-queried lists that do have Chroma ids."""
+    return [(f"{m.get('source_url')}::{m.get('chunk_index')}", d, m) for d, m in zip(docs, metas)]
+
+
+def _decompose_query(question: str, candidate_titles: list[str]) -> list[str]:
+    """Asks the local chat model to rewrite an ambiguous question into up to
+    3 concrete, document-specific hypotheses, one per plausible candidate
+    found in the initial fragmented pool - selective multi-hop decomposition
+    (Consensus review's rank-4 suggestion), triggered only when initial
+    retrieval shows genuine cross-document ambiguity, not on every query
+    (always-on decomposition is reported to hurt ranking precision)."""
+    titles_list = "\n".join(f"- {t}" for t in candidate_titles)
+    raw = chat(
+        messages=[
+            {"role": "system", "content": DECOMPOSE_SYSTEM_PROMPT},
+            {"role": "user", "content": f"Question: {question}\n\nCandidate documents found:\n{titles_list}"},
+        ],
+        format="json",
+    )
+    try:
+        subqueries = json.loads(raw).get("subqueries", [])
+        return [s for s in subqueries if isinstance(s, str) and s.strip()][:3]
+    except Exception:
+        return []
 
 
 def _context_supports_answer(question: str, context: str) -> bool:
@@ -500,6 +565,23 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*ranked_lists)))
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
+
+    if MULTIHOP_DECOMPOSITION_ENABLED:
+        prelim_metas = results.get("metadatas", [[]])[0]
+        if _top_family_count(prelim_metas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
+            candidate_titles = _distinct_family_titles(candidates.get("metadatas", [[]])[0], limit=5)
+            subqueries = _decompose_query(retrieval_query, candidate_titles)
+            if subqueries:
+                expanded_lists = [_surrogate_hits(candidates.get("documents", [[]])[0],
+                                                   candidates.get("metadatas", [[]])[0])]
+                for sq in subqueries:
+                    sq_dense = vector_query(sq, n_results=pool_size, where={"is_current": True})
+                    sq_bm25 = lexical.query(sq, n_results=pool_size, current_only=True)
+                    expanded_lists.append(_surrogate_hits(sq_dense.get("documents", [[]])[0],
+                                                           sq_dense.get("metadatas", [[]])[0]))
+                    expanded_lists.append(_surrogate_hits([h[1] for h in sq_bm25], [h[2] for h in sq_bm25]))
+                expanded_candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*expanded_lists)))
+                results = _rerank.rerank(retrieval_query, expanded_candidates, N_RESULTS)
 
     return results, retrieval_query
 

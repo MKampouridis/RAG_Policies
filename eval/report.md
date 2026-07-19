@@ -750,6 +750,44 @@ granularity - see Stage A/A2 above). The dominant real failure modes (underspeci
 same-family sibling confusion needing finer-grained identifiers than we can reliably extract) are
 not addressed by modeling facet overlap.
 
+## Stage I: selective multi-hop query decomposition (2026-07-19, later still)
+
+Tried anyway, at the user's request, despite the pre-validation finding above predicting low
+value (neither dominant failure mode obviously calls for decomposition). Triggered only when the
+initial reranked top-6 is fragmented across many document families (reusing Stage B's validated
+`_top_family_count` signal - a false-positive trigger here only costs extra retrieval/rerank
+compute, not a wrong response type, so the same imprecise signal is more defensible here than it
+was for Stage B's clarifying-question behavior). On trigger, asks the local chat model to rewrite
+the ambiguous question into up to 3 concrete, document-specific hypotheses (one per plausible
+candidate family found), retrieves for each, and RRF-fuses the union with the original pool
+before a second rerank pass.
+
+| Pass | Policy hit@6 / MRR | RoA hit@6 / MRR | Overall hit@6 / MRR | Answer |
+|---|---|---|---|---|
+| `stage_colbert` (baseline) | 100% / 0.91 | 70.0% / 0.45 | 85.0% / 0.68 | 3.89 |
+| `stageI_multihop_decomposition` (rejected) | 100% / 0.89 | 62.5% / 0.40 | 81.2% / 0.65 | 3.88 |
+
+Regressed: RoA hit@6 70%→62.5% (net -3 turns: +1/-4). Manual spot-checks on the two dominant
+failure-mode exemplars (Capped Mark glossary term; MSc Periodontology home-vs-partner-institution
+confusion) both still missed after decomposition, exactly as predicted - neither underspecified
+queries (nothing to hypothesize a distinguishing fact from) nor same-family sibling confusion
+(the generated hypotheses don't reliably surface facts like "home institution, not a partner
+variant" that aren't implied by the question or the candidate titles) benefit from this
+mechanism. The one flip analysis surprise: it *did* recover one genuine former miss
+(`roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf` follow-up) - decomposition can occasionally
+help - but the 4 turns lost elsewhere show the added candidate pool more often dilutes the rerank
+step with a wrong hypothesis's results, displacing documents the original single-shot retrieval
+had already found correctly. Off by default (`MULTIHOP_DECOMPOSITION_ENABLED` in `src/rag.py`);
+kept for reference, not a dead end worth deleting.
+
+This brings the total to nine tried-and-reverted ideas from the literature-grounded round, with a
+consistent verdict: this corpus's remaining RoA misses are dominated by (a) genuinely
+underspecified questions with no exploitable signal, and (b) same-family sibling confusion
+needing a finer-grained document identifier than anything reliably extractable so far - neither
+of which has responded to any retrieval-side mechanism tried (facet filtering/preference,
+weighted fusion, pseudo-query indexing, verification/gating, SPLADE, embedding ensemble, or
+query decomposition).
+
 ## Files in this folder
 
 - `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
