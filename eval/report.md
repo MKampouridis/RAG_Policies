@@ -720,6 +720,36 @@ decomposition (Consensus rank 4, triggered only on detected cross-document ambig
 still on the table as conditional next steps, not attempted this round given the consistent
 negative signal from cheaper mechanisms tried first.
 
+## Pre-validation: facet-overlap graph killed before writing any code (2026-07-19, later)
+
+Before building the facet-overlap graph, categorized all 12 current RoA misses (`stage_colbert`
+baseline, across both primary and follow-up turns) by actual failure mode:
+
+- **7/12 turns: genuinely underspecified query, no identifying facet mentioned at all** (Capped
+  Mark glossary term, "types of classifications", CSEE variations x2, Diploma in HE x2, MA Social
+  Work "minimum weighted average to pass with Merit"). No department, degree length, award type,
+  or programme name appears in the question - there's nothing for any facet mechanism, graph or
+  otherwise, to route on.
+- **5/12 turns: same-facet-family sibling confusion, wrong granularity** (Integrated Masters x2,
+  MSc Periodontology, Aegean-Omiros partner programme x2). The wrongly-retrieved document shares
+  the *same* degree_length/award_type as the correct one - the miss is between siblings that only
+  differ by department, specific programme, or partner institution, none of which are extracted
+  reliably (department-field coverage was already checked earlier in the corpus and found too
+  sparse to use - see the second RoA improvement round).
+- **0/12: genuine cross-reference/overlap** (a document tagged with one facet legitimately
+  holding the answer to a different facet's question) - the motivating case for the graph. The
+  one real example we found (`masters-25.pdf` correctly holding a Postgraduate Diploma
+  exit-award answer) is a **hit** in the `stage_colbert` baseline; it only became a miss when
+  Stage A2's own soft facet-preference mechanism wrongly deprioritized it. That failure was
+  self-inflicted by our attempted fix, not a naturally occurring gap in the unmodified pipeline.
+
+**Conclusion: not building the facet-overlap graph.** It targets a failure mode that doesn't
+appear in the current miss set, and even if built, it would only re-enable a facet-preference
+mechanism already shown net-negative for unrelated reasons (sparse extraction, insufficient
+granularity - see Stage A/A2 above). The dominant real failure modes (underspecified queries;
+same-family sibling confusion needing finer-grained identifiers than we can reliably extract) are
+not addressed by modeling facet overlap.
+
 ## Files in this folder
 
 - `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
