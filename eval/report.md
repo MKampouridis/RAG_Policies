@@ -596,10 +596,129 @@ document still ranking first) - the full 80-turn aggregate told a materially bet
 lesson as the header-boost experiment, in the opposite direction: trust the full eval over
 hand-picked spot-checks, whether they look promising or not.
 
-**Not yet tried** (remaining items from the research): SPLADE as a third RRF-fused retrieval
-channel, and a cheap embedding-model ensemble (`nomic-embed-text` + the already-embedded
-`bge-m3` collection, fused via the existing RRF mechanism) - both still on the table if further
-gains are wanted, per `tender-strolling-storm.md`'s plan.
+**Not yet tried at the time** (remaining items from the research): SPLADE as a third RRF-fused
+retrieval channel, and a cheap embedding-model ensemble (`nomic-embed-text` + the already-embedded
+`bge-m3` collection, fused via the existing RRF mechanism) - both attempted in the follow-up
+round below.
+
+# Try-everything round: eight more experiments, all reverted (2026-07-19)
+
+The user explicitly asked to try every remaining idea from the research plan (`tender-strolling-
+storm.md`), including the two killed by pre-validation above, plus a fresh literature review via
+Consensus focused specifically on retrieval over corpora with **overlapping, non-mutually-
+exclusive facets** (this corpus's actual structure: a masters RoA document can legitimately hold
+the correct answer to a diploma-exit-award question). Every one of the eight experiments below
+was measured against the same 80-turn eval and the `stage_colbert` production baseline (RoA
+hit@6 70%, overall 85%, policy 100%); every one regressed or washed. All are implemented behind
+off-by-default flags in `src/rag.py` rather than deleted, in case a future refinement makes one
+of them viable.
+
+| Pass | Policy hit@6 / MRR | RoA hit@6 / MRR | Overall hit@6 / MRR | Answer | Verdict |
+|---|---|---|---|---|---|
+| `stage_colbert` (baseline) | 100% / 0.91 | 70% / 0.45 | 85% / 0.68 | 3.89 | — |
+| **Stage A**: hard facet filter | 100% / 0.89 | 47.5% / 0.33 | 73.8% / 0.61 | 3.73 | rejected |
+| **Stage A v2**: hard filter, `3yr`/`4yr` regex bug fixed | 100% / 0.92 | 57.5% / 0.41 | 78.8% / 0.66 | 3.74 | rejected |
+| **Stage A2**: soft RRF-fuse instead of hard filter | 100% / 0.89 | 60.0% / 0.40 | 80.0% / 0.65 | 3.86 | rejected |
+| **Stage F**: weighted fusion vs RRF (fast sweep, not a full eval) | — | best tie 67.5% | best tie 83.8% | — | rejected (no config beat RRF) |
+| **Stage G**: deterministic pseudo-query index | 100% / 0.90 | 70.0% / 0.45 | 85.0% / 0.68 | 3.81 | rejected (net-zero wash) |
+| **Stage H**: CRAG-style verification/gating | 100% / 0.86 | 65.0% / 0.42 | 82.5% / 0.64 | 2.88 | rejected |
+| **Stage D**: SPLADE third retrieval channel | 100% / 0.91 | 65.0% / 0.45 | 82.5% / 0.68 | 3.90 | rejected |
+| **Stage E**: embedding ensemble (nomic + bge-m3) | 100% / 0.89 | 57.5% / 0.40 | 78.8% / 0.65 | 3.80 | rejected |
+
+**Stage A / A2 (facet filtering, hard then soft).** The user asked for this despite the earlier
+pre-validation finding (13/16 misses don't mention a facet in the question text at all) - correctly
+predicted low value, but the actual result was worse than "low value": a **regression**. First
+attempt had a real bug (degree-length regex required spelled-out "year" but filenames abbreviate
+`3yr`/`4yr`/`5yr`, so many documents' own facet extraction came back empty even when the query's
+did match) - fixing it recovered some ground (RoA 47.5%→57.5%) but the regression persisted.
+Root cause, confirmed by manual inspection: this corpus's facets are **not mutually-exclusive
+partitions** - a masters-labeled document can legitimately hold the correct diploma-exit-award
+answer, so excluding non-matching documents throws away real answers (exactly what "When More
+Documents Hurt RAG"'s domain-scoped-filtering fix assumes ISN'T true, but is here). Converting to
+a soft RRF-fuse (same mechanism already proven for year-mentions) per a follow-up Consensus
+literature review recovered further ground (RoA 57.5%→60%) but still net-regressed, because
+extraction-side gaps mean many correct documents (filenames like `east15-25.pdf`,
+`mscperiodontology_25.pdf`) never get tagged with any facet at all, so they get no boost from the
+soft preference while occasional false-positive matches on unrelated documents do - net negative
+even without ever hard-excluding anyone. Conclusion: this corpus's facet signal is too sparse and
+non-exclusive for either mechanism; not worth pursuing further without a fundamentally different
+(e.g. graph-based, non-exclusive) representation - see Consensus's rank-6 suggestion, held as a
+conditional future option.
+
+**Stage F (weighted score fusion vs RRF, Bruch et al. 2022).** Built a fast retrieval-only sweep
+(`eval/sweep_fusion_weights.py`, skips answer-generation/judge calls entirely) across five
+dense/BM25 weight splits plus the RRF baseline. No weighted config decisively beat RRF on RoA
+hit@6 - best case was an exact tie (50/50 and 40/60 both matched RRF's 67.5%); pushing weight
+toward either extreme actively hurt (70/30→62.5%, 30/70→65%). Concluded RRF is already
+competitive and didn't spend a full 80-turn production eval validating a config that only ties at
+best - consistent with Bruch et al.'s own caveat that weighted fusion needs real in-domain tuning
+signal to beat RRF, which this sweep didn't surface. `_weighted_dense_bm25()` and
+`WEIGHTED_FUSION_ENABLED`/`DENSE_WEIGHT`/`BM25_WEIGHT` remain in `src/rag.py`, off by default.
+
+**Stage G (deterministic pseudo-query index, Tang 2021 / Lee 2025).** Built a second Chroma
+collection (`build_pseudo_query_index.py`) indexing each chunk with 1-2 metadata-filled question
+templates (e.g. "What are the rules of assessment for a {degree_length} {award_type}
+programme?"), deliberately *not* another LLM narrative-generation pass like the rejected
+stage4_context_pilot - templates are filled from already-extracted metadata, no chat calls.
+11,202 pseudo-queries generated from 20,498 chunks. Queried as a fourth RRF channel
+(`src/pseudo_query.py`), with a new post-fusion dedup step (`_dedup_by_chunk`) added to collapse
+the same real chunk surfacing under two different ids (its own + a pseudo-query's). Result: an
+exact hit@6 tie with baseline at every level (100%/70%/85%) - flip analysis showed this wasn't a
+true no-op but a genuine 1-for-1 cancel-out (gained one follow-up turn, lost a different one).
+Not harmful, but not worth the added complexity (a second collection to keep in sync, one more
+embedding call per query) for zero net benefit. Off by default.
+
+**Stage H (CRAG-style retrieval verification, Yan et al. 2024).** Added a lightweight LLM check
+(`_context_supports_answer()`) before generation: ask the same local chat model whether the
+retrieved excerpts actually support answering, and return an explicit uncertainty message instead
+of a confident guess when they don't - intended as a better-founded alternative to the
+family-fragmentation heuristic considered (and rejected) for Stage B. Regressed clearly, for two
+distinct reasons, not just the anticipated "judge doesn't reward abstention" scoring caveat: (1)
+the verifier massively **over-triggered** - 66 of 80 turns (82.5%), including turns where
+retrieval had actually succeeded, meaning the local model's calibration on "confidently and
+specifically" is far too conservative as currently prompted; (2) a genuine, previously
+unanticipated **architectural side effect**: gating the primary turn's answer with a generic
+uncertainty message means the follow-up turn's query-contextualizer sees that generic message in
+history instead of a real answer, which measurably regressed follow-up-turn retrieval itself
+(34/40→32/40) even though primary-turn retrieval was completely unaffected (34/40→34/40, since
+`retrieve()` itself doesn't read this flag) - a single-turn QA benchmark (CRAG's original
+evaluation context) wouldn't surface this multi-turn knock-on cost. Off by default.
+
+**Stage D (SPLADE third retrieval channel).** Built a `naver/splade-cocondenser-ensembledistil`
+sparse index over all 20,498 chunks (`build_splade_index.py`, ~105 minutes on this hardware,
+cached to `data/splade_matrix.npz`), queried via `src/splade.py` as a third RRF channel alongside
+dense+BM25. Regressed: RoA hit@6 70%→65%, overall 85%→82.5% (net -2 turns: +3/-5), almost
+entirely on follow-up retrieval - the extra channel appears to add noise to the 3-way RRF fusion
+that disproportionately affects follow-up queries, similar to Stage G's dilution risk but without
+Stage G's offsetting gains. Combined with the real build cost, not worth keeping. Off by default.
+
+**Stage E (embedding-model ensemble, nomic + bge-m3).** Queried the already-populated
+`policies_bge-m3` collection (left over from the earlier `stage3_bgem3` experiment) as a second
+dense channel, RRF-fused alongside the primary `nomic-embed-text` channel. The worst regression
+of the eight: RoA hit@6 70%→57.5%, overall 85%→78.8%. Consistent with `stage3_bgem3`'s original
+finding that bge-m3 alone was a wash/slight regression on RoA specifically - fusing its weaker RoA
+rankings in via RRF introduces enough noise to displace `nomic-embed-text`'s correct results from
+the top ranks rather than complementing them. Off by default.
+
+## Where this leaves things (2026-07-19)
+
+Production configuration is unchanged from `stage_colbert`: hybrid dense+BM25, `is_current`
+pre-filtering, family-based recency dedupe, ColBERT late-interaction reranking. RoA hit@6 remains
+at 70% (up from 22.5% at the start of the original round). Eight further ideas - two from the
+original research plan (SPLADE, embedding ensemble) and five suggested by a second, more targeted
+literature review (soft facet fusion, weighted fusion, pseudo-query indexing, CRAG verification,
+plus the facet-filtering retry) - were each implemented, measured in isolation, and reverted. The
+recurring theme across all eight: **this corpus's remaining misses don't respond to more
+retrieval-side machinery** - every new signal either has too many extraction/coverage gaps to be
+trustworthy (facets, pseudo-queries), or adds noise that a 2-source RRF fusion doesn't have
+(SPLADE, bge-m3 ensemble), or fails in a way specific to this being a *conversational* system
+rather than a single-shot QA benchmark (CRAG's follow-up knock-on effect). The genuinely
+unexplored options left from the original research are the higher-effort, more architecturally
+different ones: a small deterministic facet-*overlap* graph (Consensus rank 6, modeling
+cross-references explicitly rather than assuming exclusivity) and selective multi-hop
+decomposition (Consensus rank 4, triggered only on detected cross-document ambiguity) - both
+still on the table as conditional next steps, not attempted this round given the consistent
+negative signal from cheaper mechanisms tried first.
 
 ## Files in this folder
 
@@ -621,6 +740,20 @@ gains are wanted, per `tender-strolling-storm.md`'s plan.
   reference/reuse; not part of the active pipeline since the pilot was rejected)
 - `results_stage_colbert.json` (current production) — raw results for the literature-grounded
   round's ColBERT reranker swap
+- `results_stageA_facets.json`, `results_stageA_facets_v2.json`, `results_stageA2_soft_facets.json`
+  (all rejected) — raw results for the facet-filtering retry (hard, hard+regex-fix, soft)
+- `eval/sweep_fusion_weights.py`, `eval/sweep_fusion.log` — the fast retrieval-only weighted-fusion
+  sweep (Stage F); no full 80-turn results file since no config beat RRF enough to warrant one
+- `results_stageG_pseudo_query.json` (rejected — net-zero wash) — raw results for the
+  deterministic pseudo-query index; `build_pseudo_query_index.py`/`src/pseudo_query.py` build and
+  query it, gated by `PSEUDO_QUERY_ENABLED` in `src/rag.py`
+- `results_stageH_crag_verification.json` (rejected) — raw results for CRAG-style retrieval
+  verification, gated by `CRAG_VERIFICATION_ENABLED`
+- `results_stageD_splade.json` (rejected) — raw results for the SPLADE third retrieval channel;
+  `build_splade_index.py`/`src/splade.py` build and query it, gated by `SPLADE_ENABLED`
+- `results_stageE_embedding_ensemble.json` (rejected) — raw results for the nomic+bge-m3
+  embedding ensemble; `src/ensemble.py` queries the existing `policies_bge-m3` collection, gated
+  by `EMBEDDING_ENSEMBLE_ENABLED`
 - `EXPERIMENTS.md` — exact parameters and headline metrics for every pass, for fast comparison
   and reverting via git if a future change regresses
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable

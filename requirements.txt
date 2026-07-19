@@ -8,3 +8,4 @@ uvicorn[standard]
 rank_bm25
 sentence-transformers
 pylate
+scipy

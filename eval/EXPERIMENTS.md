@@ -54,6 +54,23 @@ unchanged since.
 | `stage4_context_pilot` (rejected, then reverted) | 97.0% / 0.88 | 57.0% / 0.45 | 78.0% / 0.66 | 3.95 |
 | `stage1_rerank` config, restored (superseded) | 100.0% / 0.86 | 60.0% / 0.45 | 80.0% / 0.66 | 3.81 |
 | **`stage_colbert` (= current production)** | **100.0% / 0.91** | **70.0% / 0.45** | **85.0% / 0.68** | 3.89 |
+| `stageA_facets` (rejected — hard filter, regex bug) | 100.0% / 0.89 | 47.5% / 0.33 | 73.8% / 0.61 | 3.73 |
+| `stageA_facets_v2` (rejected — hard filter, regex fixed) | 100.0% / 0.92 | 57.5% / 0.41 | 78.8% / 0.66 | 3.74 |
+| `stageA2_soft_facets` (rejected — soft RRF-fuse) | 100.0% / 0.89 | 60.0% / 0.40 | 80.0% / 0.65 | 3.86 |
+| `stageG_pseudo_query` (rejected — net-zero wash) | 100.0% / 0.90 | 70.0% / 0.45 | 85.0% / 0.68 | 3.81 |
+| `stageH_crag_verification` (rejected) | 100.0% / 0.86 | 65.0% / 0.42 | 82.5% / 0.64 | 2.88 |
+| `stageD_splade` (rejected) | 100.0% / 0.91 | 65.0% / 0.45 | 82.5% / 0.68 | 3.90 |
+| `stageE_embedding_ensemble` (rejected) | 100.0% / 0.89 | 57.5% / 0.40 | 78.8% / 0.65 | 3.80 |
+
+(Stage F, weighted score fusion vs RRF, isn't in this table - it was decided from a fast
+retrieval-only sweep, not a full 80-turn/judge-scored pass, since no weight config beat RRF
+enough to warrant one; see `eval/sweep_fusion_weights.py` / `eval/sweep_fusion.log`.)
+
+All seven rows above are detailed in report.md's "Try-everything round: eight more experiments,
+all reverted (2026-07-19)" section - each implemented behind an off-by-default flag in
+`src/rag.py` (`FACET_PREFERENCE_ENABLED`, `WEIGHTED_FUSION_ENABLED`, `PSEUDO_QUERY_ENABLED`,
+`CRAG_VERIFICATION_ENABLED`, `SPLADE_ENABLED`, `EMBEDDING_ENSEMBLE_ENABLED`), all confirmed back
+to `False` in the current production checkout.
 
 Note on `stage4_context_pilot`'s topline row: only 34 of 843 in-scope documents were actually
 touched, so the 80-turn aggregate (which looks almost flat/slightly positive on answer score) is

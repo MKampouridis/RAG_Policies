@@ -8,7 +8,7 @@ from pathlib import Path
 
 import chromadb
 
-from src.docid import normalize_year
+from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.llm import EMBED_DOCUMENT_PREFIX, EMBED_MODEL, EMBED_QUERY_PREFIX, embed_batch
 
 CHROMA_DIR = "data/chroma"
@@ -160,6 +160,8 @@ def upsert_document(url: str, text: str, metadata: dict, chunk_contexts: list[st
             "chunk_header": header,
             "chunk_context": chunk_contexts[i] if chunk_contexts else None,
             "academic_year_norm": normalize_year(metadata.get("academic_year")),
+            "degree_length": extract_degree_length(header),
+            "award_type": extract_award_type(header),
         })
         for i in range(len(chunks))
     ]

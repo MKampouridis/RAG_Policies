@@ -10,6 +10,28 @@ import re
 _FAMILY_YEAR_SUFFIX_RE = re.compile(r"[-_]?(20)?\d{2}(-\d{2,4})?\.pdf$")
 _YEAR_START_RE = re.compile(r"20(\d{2})")
 
+# Closed, small vocabularies (unlike the open-ended `department` field that
+# failed on query-text coverage before) - deliberately deterministic
+# regex/keyword matching, not an LLM pass, since the vocabulary is this
+# tractable. Order matters: first match wins, most specific first.
+_DEGREE_LENGTH_PATTERNS = [
+    ("foundation", re.compile(r"\bfoundation\b", re.I)),
+    # document filenames abbreviate this as "3yr"/"4yr"/"5yr" (no space before
+    # "yr"), while questions tend to say "3-year"/"three-year" in full - both
+    # forms need to match or the doc-side and query-side extractions silently
+    # disagree (see eval/report.md, Stage A first attempt)
+    ("5yr", re.compile(r"\b5[\s-]?year\b|\bfive[\s-]?year\b|\b5yr\b", re.I)),
+    ("4yr", re.compile(r"\b4[\s-]?year\b|\bfour[\s-]?year\b|\b4yr\b", re.I)),
+    ("3yr", re.compile(r"\b3[\s-]?year\b|\bthree[\s-]?year\b|\b3yr\b", re.I)),
+]
+
+_AWARD_TYPE_PATTERNS = [
+    ("phd", re.compile(r"\bphd\b|\bdoctorate\b", re.I)),
+    ("certificate", re.compile(r"\bcertificate\b|\b(?:grad(?:uate)?|pg)\s*cert\b", re.I)),
+    ("diploma", re.compile(r"\bdiploma\b|\b(?:grad(?:uate)?|pg)\s*dip\b", re.I)),
+    ("masters", re.compile(r"\bmasters?\b|\bmsc\b|\bm\.?a\.?(?=\s)", re.I)),
+]
+
 
 def document_family(source_url: str) -> str:
     """Groups yearly reissues of the same document together by filename with
@@ -42,3 +64,27 @@ def previous_year(normalized: str) -> str:
         return ""
     start = int(normalized[:4]) - 1
     return f"{start}-{str(start + 1)[-2:]}"
+
+
+def extract_degree_length(text: str) -> str:
+    """Closed-vocabulary degree-length facet ('3yr'/'4yr'/'5yr'/'foundation'),
+    used both at ingest time (against the document title/header) and at
+    retrieval time (against the contextualized query) so a hard `where`
+    filter can narrow the search space the way "When More Documents Hurt
+    RAG" (arXiv 2606.11350) recommends for near-identical sibling documents
+    that differ mainly in programme length. Returns '' when no facet is
+    mentioned - callers must treat that as "unknown", not "none of these"."""
+    for label, pattern in _DEGREE_LENGTH_PATTERNS:
+        if pattern.search(text or ""):
+            return label
+    return ""
+
+
+def extract_award_type(text: str) -> str:
+    """Closed-vocabulary award-type facet ('certificate'/'diploma'/'masters'/
+    'phd'). Same rationale and same '' = unknown convention as
+    extract_degree_length."""
+    for label, pattern in _AWARD_TYPE_PATTERNS:
+        if pattern.search(text or ""):
+            return label
+    return ""

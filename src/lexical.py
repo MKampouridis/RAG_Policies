@@ -55,9 +55,15 @@ class _BM25Index:
         # or EMBED_MODEL switched before re-embedding) must not crash queries
         self.bm25 = BM25Okapi(corpus) if corpus else None
 
-    def query(self, text: str, n_results: int, current_only: bool, year: str) -> list[tuple[str, str, dict]]:
-        """Returns [(chunk_id, document, metadata)] best-first. `year` (canonical
-        '2025-26' form) filters to chunks labeled with that academic year."""
+    def query(self, text: str, n_results: int, current_only: bool, year: str,
+              degree_length: str = "", award_type: str = "") -> list[tuple[str, str, dict, float]]:
+        """Returns [(chunk_id, document, metadata, bm25_score)] best-first.
+        `year` (canonical '2025-26' form) filters to chunks labeled with that
+        academic year. `degree_length`/`award_type`, if given, filter to that
+        closed-vocabulary facet value (see src/docid.py) - same hard-narrowing
+        intent as `year`. The score is exposed (not just rank) so callers can
+        do weighted score fusion (src/rag.py's _weighted_dense_bm25), not just
+        reciprocal-rank fusion - a 3-tuple-only interface would discard it."""
         if self.bm25 is None:
             return []
         scores = self.bm25.get_scores(_tokenize(text))
@@ -71,17 +77,22 @@ class _BM25Index:
                 continue
             if year and meta.get("academic_year_norm") != year:
                 continue
-            hits.append((self.ids[i], self.documents[i], meta))
+            if degree_length and meta.get("degree_length") != degree_length:
+                continue
+            if award_type and meta.get("award_type") != award_type:
+                continue
+            hits.append((self.ids[i], self.documents[i], meta, float(scores[i])))
             if len(hits) >= n_results:
                 break
         return hits
 
 
-def query(text: str, n_results: int, current_only: bool = False, year: str = "") -> list[tuple[str, str, dict]]:
+def query(text: str, n_results: int, current_only: bool = False, year: str = "",
+          degree_length: str = "", award_type: str = "") -> list[tuple[str, str, dict, float]]:
     global _index, _index_version
     version = read_corpus_version()
     with _lock:
         if _index is None or _index_version != version:
             _index = _BM25Index()
             _index_version = version
-        return _index.query(text, n_results, current_only, year)
+        return _index.query(text, n_results, current_only, year, degree_length, award_type)

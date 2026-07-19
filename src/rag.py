@@ -2,12 +2,16 @@
 assemble a prompt with retrieved context + conversation history, and
 generate an answer via the local chat model."""
 
+import json
 import re
 
+from src import ensemble as _ensemble
 from src import lexical
+from src import pseudo_query as _pseudo_query
 from src import rerank as _rerank
+from src import splade as _splade
 from src.docid import document_family as _document_family
-from src.docid import normalize_year
+from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.ingest import query as vector_query
 from src.llm import chat
 
@@ -18,6 +22,74 @@ N_RESULTS = 6
 # enough room for a reranker to ever see them
 FETCH_POOL_MULTIPLIER = 8
 RRF_K = 60
+
+# Stage D (SPLADE third retrieval channel) - regressed in the full eval
+# (eval/report.md "Stage D"): RoA hit@6 70%->65%, overall 85%->82.5% (net
+# -2 turns: +3/-5, almost entirely on follow-up retrieval) - the extra
+# channel appears to add noise to the 3-way RRF fusion that disproportionately
+# hurts follow-up queries. Combined with real cost (index build ~105 min,
+# extra encode pass per query), not worth keeping. Off by default; kept for
+# reference, not a dead end worth deleting.
+SPLADE_ENABLED = False
+
+# Stage E (embedding-model ensemble, nomic + bge-m3 RRF-fused) - the worst
+# regression of the four new stages tried (eval/report.md "Stage E"): RoA
+# hit@6 70%->57.5%, overall 85%->78.8%. Consistent with the earlier
+# stage3_bgem3 finding (bge-m3 alone was a wash/slight regression on RoA) -
+# fusing its weaker RoA rankings in via RRF introduces enough noise to
+# displace nomic-embed-text's correct results from the top ranks rather than
+# complementing them. Off by default; kept for reference.
+EMBEDDING_ENSEMBLE_ENABLED = False
+
+# Stage B (ambiguity detection + clarifying question) - same isolation
+# discipline: off by default so Stage A can be evaluated on its own first.
+AMBIGUITY_DETECTION_ENABLED = False
+
+# Stage A / A2 (degree_length/award_type facet preference, hard then soft) -
+# both regressed hit@6 in the full eval (eval/report.md "Stage A"/"Stage A2");
+# off by default. degree_length/award_type metadata and extraction functions
+# stay in place (src/docid.py, src/ingest.py) since they're harmless to keep
+# computing, just not used for retrieval preference.
+FACET_PREFERENCE_ENABLED = False
+
+# Stage F: tuned weighted score fusion for the base dense+BM25 pair, as an
+# alternative to reciprocal-rank fusion - Bruch et al. 2022 found a small
+# amount of in-domain-tuned convex/weighted combination of normalized scores
+# outperforms RRF, which only sees rank position and discards how much better
+# one candidate scored than the next. Off by default (RRF is the proven,
+# parameter-free baseline); DENSE_WEIGHT/BM25_WEIGHT are only read when on.
+WEIGHTED_FUSION_ENABLED = False
+DENSE_WEIGHT = 0.5
+BM25_WEIGHT = 0.5
+
+# Stage G: deterministic pseudo-query index (build_pseudo_query_index.py) as
+# a fourth retrieval channel. Full-eval result was a net-zero wash (exact
+# same hit@6 as baseline: 1 turn gained, 1 different turn lost - see
+# eval/report.md "Stage G") - not harmful, but not worth the added
+# complexity (extra collection, extra embed call per query) either. Off by
+# default; kept for reference.
+PSEUDO_QUERY_ENABLED = False
+
+# Stage H: CRAG-style retrieval verification (Yan et al. 2024) - a lightweight
+# LLM check on whether the retrieved context actually supports answering the
+# question, surfacing uncertainty instead of a confident guess when it
+# doesn't. Regressed in the full eval (eval/report.md "Stage H") for two
+# reasons: (1) the verifier massively over-triggered (66/80 turns, 82.5%,
+# including turns where retrieval had actually succeeded), tanking answer
+# quality far beyond what abstention-on-genuine-misses would explain; (2)
+# gating the primary turn's answer has a real knock-on cost in a
+# conversational system - the follow-up turn's query contextualizer sees a
+# generic uncertainty message instead of a real answer in history, which
+# measurably regressed follow-up hit@6 (34/40->32/40) even though primary
+# hit@6 was unaffected (retrieve() itself is untouched by this flag). Off by
+# default; kept for reference, not a dead end worth deleting.
+CRAG_VERIFICATION_ENABLED = False
+
+VERIFICATION_SYSTEM_PROMPT = """You are checking whether a set of retrieved document excerpts \
+contains enough information to confidently and specifically answer a question. Respond with \
+ONLY a JSON object: {"supported": true or false, "reason": "<one short sentence>"}. Say false \
+if the excerpts are off-topic, only tangentially related, or missing the key fact needed - not \
+just because the wording differs from the question."""
 
 # Academic-year mention: requires the paired "2025-26" / "2025/26" / "2025-2026"
 # shape with word boundaries, so money ("£2000"), course codes ("CE2025"), and
@@ -151,16 +223,68 @@ def _dense_as_hits(dense: dict) -> list[tuple[str, str, dict]]:
     ))
 
 
-def _rrf_fuse(*ranked_lists: list[tuple[str, str, dict]]) -> dict:
-    """Reciprocal-rank fusion of any number of ranked (id, doc, meta) lists,
-    keyed by chunk id. Dense embeddings and BM25 fail on different queries
-    (semantic paraphrase vs exact terms like "Capped Mark" or course codes),
-    so the union ranked by combined reciprocal rank beats either alone."""
+def _normalize(scores: dict[str, float]) -> dict[str, float]:
+    """Min-max normalize to [0, 1] within the given pool. Relative, not tied
+    to a specific distance metric's absolute scale - works whether the
+    incoming values are Chroma distances (lower=better, metric-dependent) or
+    BM25 scores (higher=better, unbounded), as long as the caller flips the
+    sign consistently before calling this."""
+    if not scores:
+        return {}
+    values = list(scores.values())
+    lo, hi = min(values), max(values)
+    if hi == lo:
+        return {k: 1.0 for k in scores}
+    return {k: (v - lo) / (hi - lo) for k, v in scores.items()}
+
+
+def _weighted_dense_bm25(dense: dict, bm25_hits: list[tuple[str, str, dict, float]],
+                          dense_weight: float, bm25_weight: float) -> list[tuple[str, str, dict]]:
+    """Combines one dense result and one BM25 result list via a normalized
+    weighted score sum (Stage F) instead of reciprocal rank, per Bruch et al.
+    2022's finding that tuned convex fusion outperforms RRF because it uses
+    how much better a candidate scored, not just its rank position. Returns
+    a single best-first (id, doc, meta) list, drop-in compatible with
+    _rrf_fuse's inputs so it can still be combined with other signals
+    (soft facet/year preference, SPLADE, embedding ensemble) upstream."""
+    ids = dense.get("ids", [[]])[0]
+    docs = dense.get("documents", [[]])[0]
+    metas = dense.get("metadatas", [[]])[0]
+    dists = dense.get("distances", [[]])[0]
+
+    # lower distance = better match; negate before normalizing so higher
+    # normalized value = better, matching BM25's own orientation
+    dense_scores = _normalize({i: -d for i, d in zip(ids, dists)})
+    entries: dict[str, tuple[str, dict]] = {i: (doc, meta) for i, doc, meta in zip(ids, docs, metas)}
+
+    bm25_raw = {id_: score for id_, doc, meta, score in bm25_hits}
+    for id_, doc, meta, _score in bm25_hits:
+        entries.setdefault(id_, (doc, meta))
+    bm25_scores = _normalize(bm25_raw)
+
+    all_ids = set(dense_scores) | set(bm25_scores)
+    combined = {
+        i: dense_weight * dense_scores.get(i, 0.0) + bm25_weight * bm25_scores.get(i, 0.0)
+        for i in all_ids
+    }
+    ordered = sorted(all_ids, key=lambda i: combined[i], reverse=True)
+    return [(i, entries[i][0], entries[i][1]) for i in ordered]
+
+
+def _rrf_fuse(*ranked_lists: list[tuple]) -> dict:
+    """Reciprocal-rank fusion of any number of ranked (id, doc, meta, ...)
+    lists, keyed by chunk id. Dense embeddings and BM25 fail on different
+    queries (semantic paraphrase vs exact terms like "Capped Mark" or course
+    codes), so the union ranked by combined reciprocal rank beats either
+    alone. Items may carry extra trailing elements (e.g. BM25's raw score,
+    used elsewhere for weighted fusion) - only the first three are used
+    here, so both 3- and 4-tuple inputs work unchanged."""
     scores: dict[str, float] = {}
     entries: dict[str, tuple[str, dict]] = {}
 
     for ranked in ranked_lists:
-        for rank, (id_, doc, meta) in enumerate(ranked, 1):
+        for rank, item in enumerate(ranked, 1):
+            id_, doc, meta = item[0], item[1], item[2]
             scores[id_] = scores.get(id_, 0.0) + 1.0 / (RRF_K + rank)
             entries.setdefault(id_, (doc, meta))
 
@@ -170,6 +294,100 @@ def _rrf_fuse(*ranked_lists: list[tuple[str, str, dict]]) -> dict:
         "metadatas": [[entries[i][1] for i in ordered]],
         "distances": [[None] * len(ordered)],
     }
+
+
+def _dedup_by_chunk(results: dict) -> dict:
+    """Stage G's pseudo-query entries share a real chunk's (source_url,
+    chunk_index) but carry a distinct id ("<chunk_id>_pqN"), so after fusion
+    the same real content can appear twice under two different ids - once
+    found via its own embedding, once via a pseudo-query's. Collapse to one
+    entry per (source_url, chunk_index), keeping whichever occurrence ranked
+    higher (results are already best-first at this point)."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    distances = results.get("distances", [[None] * len(documents)])[0]
+
+    seen: set[tuple] = set()
+    kept_docs, kept_metas, kept_dists = [], [], []
+    for doc, meta, dist in zip(documents, metadatas, distances):
+        key = (meta.get("source_url"), meta.get("chunk_index"))
+        if key in seen:
+            continue
+        seen.add(key)
+        kept_docs.append(doc)
+        kept_metas.append(meta)
+        kept_dists.append(dist)
+
+    return {"documents": [kept_docs], "metadatas": [kept_metas], "distances": [kept_dists]}
+
+
+AMBIGUITY_FAMILY_COUNT_THRESHOLD = 1
+
+
+def _top_family_count(metadatas: list[dict]) -> int:
+    """Among the reranked top-N results, how many chunks share the same
+    document family as the #1 result. A low count means the pool is
+    fragmented across many different documents with no single one
+    dominating - the best-validated proxy found during Stage B
+    pre-validation (eval/report.md) for "this query is ambiguous across
+    genuinely different documents" (per arXiv 2603.24580's finding that
+    genuine ambiguity needs surfacing, not more retrieval tuning). It is an
+    imperfect signal (56% recall on known misses at 14% false-positive rate
+    on known hits, measured on `stage1_rerank`) - not strong enough to have
+    justified building this unprompted, but the least-bad option available."""
+    if not metadatas:
+        return 0
+    top_family = _document_family(metadatas[0].get("source_url", ""))
+    return sum(1 for m in metadatas if _document_family(m.get("source_url", "")) == top_family)
+
+
+def _clarifying_question(metadatas: list[dict]) -> str:
+    """Built from the distinct document families in the ambiguous pool, most
+    dominant first, so the question names the actual candidates instead of a
+    generic "please clarify"."""
+    seen_families: dict[str, str] = {}
+    for meta in metadatas:
+        family = _document_family(meta.get("source_url", ""))
+        if family not in seen_families:
+            seen_families[family] = meta.get("title") or family
+        if len(seen_families) >= 4:
+            break
+    titles = list(seen_families.values())
+    listed = "; ".join(titles)
+    return (
+        "Your question could relate to a few different documents, and I want to point you to the "
+        f"right one rather than guess: {listed}. Could you tell me which programme, department, or "
+        "academic year you mean?"
+    )
+
+
+def _context_supports_answer(question: str, context: str) -> bool:
+    """CRAG-style lightweight retrieval evaluator (Yan et al. 2024): asks the
+    same local chat model whether the retrieved excerpts actually contain
+    what's needed to answer, as a corrective gate before generation - one
+    short extra call, not the full answer-generation prompt. Fails open
+    (treats unparseable output as "supported") so a judge-format hiccup
+    doesn't block an otherwise-fine answer."""
+    raw = chat(
+        messages=[
+            {"role": "system", "content": VERIFICATION_SYSTEM_PROMPT},
+            {"role": "user", "content": f"Question: {question}\n\nRetrieved excerpts:\n{context}"},
+        ],
+        format="json",
+    )
+    try:
+        return bool(json.loads(raw).get("supported", True))
+    except Exception:
+        return True
+
+
+def _uncertainty_response(sources: list[str]) -> str:
+    return (
+        "I wasn't able to find information in the retrieved policy/rules-of-assessment excerpts "
+        "that directly and confidently answers this question. You may want to check the source "
+        "document(s) below directly, or rephrase your question with more specific details (e.g. "
+        "programme, department, or academic year)."
+    )
 
 
 def _format_context(results: dict) -> str:
@@ -211,17 +429,75 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         year_bm25 = lexical.query(retrieval_query, n_results=pool_size, year=asked_year)
         cur_dense = vector_query(retrieval_query, n_results=pool_size, where={"is_current": True})
         cur_bm25 = lexical.query(retrieval_query, n_results=pool_size, current_only=True)
-        candidates = _rrf_fuse(
+        ranked_lists = [
             _dense_as_hits(year_dense), year_bm25,
             _dense_as_hits(cur_dense), cur_bm25,
-        )
+        ]
+        if SPLADE_ENABLED:
+            ranked_lists.append(_splade.query(retrieval_query, n_results=pool_size, year=asked_year))
+            ranked_lists.append(_splade.query(retrieval_query, n_results=pool_size, current_only=True))
+        if EMBEDDING_ENSEMBLE_ENABLED:
+            ranked_lists.append(_ensemble.query(retrieval_query, n_results=pool_size,
+                                                 where={"academic_year_norm": asked_year}))
+            ranked_lists.append(_ensemble.query(retrieval_query, n_results=pool_size,
+                                                 where={"is_current": True}))
+        if PSEUDO_QUERY_ENABLED:
+            ranked_lists.append(_pseudo_query.query(retrieval_query, n_results=pool_size,
+                                                     where={"is_current": True}))
+        candidates = _dedup_by_chunk(_rrf_fuse(*ranked_lists))
     else:
         # default case: pre-filter the historical archive out of both pools
         # (~70% of chunks), fuse dense + BM25, then apply the family-level
         # recency dedupe as a safety net for docs the is_current flag missed
+        degree_length = extract_degree_length(retrieval_query)
+        award_type = extract_award_type(retrieval_query)
+
         dense = vector_query(retrieval_query, n_results=pool_size, where={"is_current": True})
         bm25_hits = lexical.query(retrieval_query, n_results=pool_size, current_only=True)
-        candidates = _prefer_most_recent_year(_rrf_fuse(_dense_as_hits(dense), bm25_hits))
+        if WEIGHTED_FUSION_ENABLED:
+            # one already-combined list, still handed to _rrf_fuse below
+            # alongside the other heterogeneous preference signals (facet,
+            # SPLADE, ensemble) - see _weighted_dense_bm25's docstring
+            ranked_lists = [_weighted_dense_bm25(dense, bm25_hits, DENSE_WEIGHT, BM25_WEIGHT)]
+        else:
+            ranked_lists = [_dense_as_hits(dense), bm25_hits]
+
+        if FACET_PREFERENCE_ENABLED and (degree_length or award_type):
+            # soft facet preference, not a hard exclusion filter - a first
+            # attempt at hard-filtering on these facets regressed hit@6
+            # (eval/report.md, "Stage A") because degree_length/award_type
+            # are not mutually-exclusive partitions of the corpus: a masters
+            # document can legitimately hold the correct diploma-exit-award
+            # answer, so excluding non-matching documents throws away real
+            # answers. The soft version (this branch) regressed too, though
+            # less badly (RoA hit@6 70%->60% vs 70%->57.5% hard-filtered,
+            # see eval/report.md "Stage A2") - extraction gaps mean many
+            # correct documents (filenames like "east15"/"mscperiodontology")
+            # never get tagged with a facet at all, so they get no boost
+            # while occasional false-positive matches on unrelated documents
+            # do, net-negative even without ever excluding anyone. Off by
+            # default; kept for reference, not a dead end worth deleting.
+            facet_conditions = [{"is_current": True}]
+            if degree_length:
+                facet_conditions.append({"degree_length": degree_length})
+            if award_type:
+                facet_conditions.append({"award_type": award_type})
+            facet_dense = vector_query(retrieval_query, n_results=pool_size, where={"$and": facet_conditions})
+            facet_bm25 = lexical.query(retrieval_query, n_results=pool_size, current_only=True,
+                                        degree_length=degree_length, award_type=award_type)
+            ranked_lists.append(_dense_as_hits(facet_dense))
+            ranked_lists.append(facet_bm25)
+
+        if SPLADE_ENABLED:
+            ranked_lists.append(_splade.query(retrieval_query, n_results=pool_size, current_only=True,
+                                               degree_length=degree_length, award_type=award_type))
+        if EMBEDDING_ENSEMBLE_ENABLED:
+            ranked_lists.append(_ensemble.query(retrieval_query, n_results=pool_size,
+                                                 where={"is_current": True}))
+        if PSEUDO_QUERY_ENABLED:
+            ranked_lists.append(_pseudo_query.query(retrieval_query, n_results=pool_size,
+                                                     where={"is_current": True}))
+        candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*ranked_lists)))
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
 
@@ -231,7 +507,17 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
 def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str]]:
     """Returns (answer_text, source_urls_used)."""
     results, _ = retrieve(question, history, summary)
+    metadatas = results.get("metadatas", [[]])[0]
+
+    if AMBIGUITY_DETECTION_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
+        sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
+        return _clarifying_question(metadatas), sources
+
     context = _format_context(results)
+
+    if CRAG_VERIFICATION_ENABLED and not _context_supports_answer(question, context):
+        sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
+        return _uncertainty_response(sources), sources
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     if summary:
@@ -241,6 +527,5 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
 
     response_text = chat(messages=messages)
 
-    metadatas = results.get("metadatas", [[]])[0]
     sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
     return response_text, sources
