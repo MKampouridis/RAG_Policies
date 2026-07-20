@@ -18,7 +18,14 @@ CROSS_ENCODER_MODEL_NAME = "BAAI/bge-reranker-base"
 COLBERT_MODEL_NAME = "lightonai/GTE-ModernColBERT-v1"
 # how many of the fused candidates to actually score - failure analysis
 # (eval/report.md) found relevant-but-mis-ranked documents as deep as rank 60
-# in a top-50 dense+BM25 union, so this needs to be generous, not just N_RESULTS
+# in a top-50 dense+BM25 union, so this needs to be generous, not just N_RESULTS.
+# Tried widening 30 -> 100 (J0b, eval/report.md): the J0 diagnostic found 4 of
+# 12 misses in the fused pool at ranks 32-69, beyond this window. Widening DID
+# rescue 2 of them - but lost 5 previously-correct turns (RoA hit@6 70%->62.5%)
+# because the extra ~60 candidates per query are mostly near-duplicate
+# boilerplate the reranker can't reliably distinguish from the right sibling.
+# Reverted to 30. Worth re-testing IF header identity enrichment (J2) improves
+# the reranker's sibling discrimination enough to make depth safe.
 RERANK_POOL_SIZE = 30
 
 _cross_encoder = None

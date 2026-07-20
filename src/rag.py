@@ -5,6 +5,7 @@ generate an answer via the local chat model."""
 import json
 import re
 
+from src import doc_index as _doc_index
 from src import ensemble as _ensemble
 from src import lexical
 from src import pseudo_query as _pseudo_query
@@ -91,6 +92,20 @@ ONLY a JSON object: {"supported": true or false, "reason": "<one short sentence>
 if the excerpts are off-topic, only tangentially related, or missing the key fact needed - not \
 just because the wording differs from the question."""
 
+# J3: document-level identity routing prior. A separate ~1,200-record index
+# of per-document "identity cards" (title + J1's extracted programme/
+# department/partner/aliases - src/doc_index.py) queried alongside chunk
+# retrieval, softly boosting identity-matched documents' chunks via one extra
+# RRF list. Unlike J2's header enrichment this left chunk embeddings
+# untouched - and still regressed on every metric (eval/report.md "J3": RoA
+# hit@6 70%->62.5%, 0 rescues / 3 losses). The routing prior never pulled a
+# missing document into the top-6 (identity cards of true siblings - e.g.
+# home vs partner-institution MSc Periodontology - are themselves near-
+# identical), while the extra fused list diluted previously-correct results.
+# Off by default; kept for reference.
+DOC_ROUTING_ENABLED = False
+DOC_ROUTING_TOP_DOCS = 5
+
 # Stage I: selective multi-hop query decomposition. Triggered only when the
 # initial reranked top-6 is fragmented across many different document
 # families (reusing Stage B's AMBIGUITY_FAMILY_COUNT_THRESHOLD signal). A
@@ -130,6 +145,11 @@ recent academic year unless the user asks about a specific past year.
 - Always cite the source_url(s) you used, inline or in a short "Sources" list at the end.
 - Be concise and direct.
 """
+# J7 tried adding a "quote specific numbers/thresholds verbatim" rule here to
+# raise keyphrase coverage - flat-to-negative result (overall keyphrase +1.7pp
+# but RoA keyphrase -1.4pp and answer score -0.06; eval/report.md "J7"). The
+# 7B generator doesn't reliably follow the instruction; retry this lever with
+# a stronger generator in the deferred LLM-experiments phase.
 
 CONTEXTUALIZE_SYSTEM_PROMPT = """Given a conversation and a follow-up question, rewrite the \
 follow-up question into a standalone question that contains all context needed to understand it \
@@ -168,6 +188,24 @@ def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
     return len(overlap) / len(original_words) >= 0.3
 
 
+# J4: build the rewriter's transcript from the user's turns only, not the
+# assistant's rendered answers. Two motivations (eval/report.md "J4"): the
+# Stage H experiment showed that whatever the assistant says becomes the
+# rewriter's input - a gated/uncertain answer measurably degraded follow-up
+# retrieval - so coupling the rewriter to assistant prose makes retrieval
+# hostage to generation; and the original live topic-drift bug came from the
+# rewriter echoing the wrong part of a long mixed transcript, which a
+# user-turns-only transcript halves. The user's own question sequence is
+# usually what carries the topic thread.
+# Tried always-on (J4, eval/report.md): small net regression (+1/-2 flips,
+# follow-up-only hit@6 85%->82.5% - the very split it targeted). In normal
+# operation the assistant's answers DO carry referents follow-ups point at
+# ("what happens if a student fails that?" refers to something the answer
+# introduced). Worth reconsidering only as a conditional fix if answer-gating
+# (Stage H-style) ever returns. Off by default.
+CONTEXTUALIZE_USER_TURNS_ONLY = False
+
+
 def _contextualize_query(question: str, history: list[dict], summary: str = "") -> str:
     """Retrieval only sees the current turn's text, so a follow-up like "what
     happens after that?" carries no signal about what "that" is. Rewriting it
@@ -177,11 +215,16 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
     if not history and not summary:
         return question
 
+    if CONTEXTUALIZE_USER_TURNS_ONLY:
+        recent = [m for m in history if m.get("role") == "user"][-4:]
+    else:
+        recent = history[-6:]
+
     parts = []
     if summary:
         parts.append(f"Earlier conversation summary: {summary}")
-    if history:
-        parts.append("\n".join(f"{m['role']}: {m['content']}" for m in history[-6:]))
+    if recent:
+        parts.append("\n".join(f"{m['role']}: {m['content']}" for m in recent))
     transcript = "\n".join(parts)
 
     rewritten = chat(messages=[
@@ -562,6 +605,16 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         if PSEUDO_QUERY_ENABLED:
             ranked_lists.append(_pseudo_query.query(retrieval_query, n_results=pool_size,
                                                      where={"is_current": True}))
+        if DOC_ROUTING_ENABLED:
+            # chunks of the top identity-matched documents, as one extra soft
+            # RRF list - identity matching happens in the document index
+            # (src/doc_index.py), then this pulls those documents' best chunks
+            # into the fusion so they can outrank identity-less siblings
+            routed_urls = _doc_index.query(retrieval_query, n_results=DOC_ROUTING_TOP_DOCS)
+            if routed_urls:
+                routed_dense = vector_query(retrieval_query, n_results=pool_size,
+                                            where={"source_url": {"$in": routed_urls}})
+                ranked_lists.append(_dense_as_hits(routed_dense))
         candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*ranked_lists)))
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
@@ -586,6 +639,28 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     return results, retrieval_query
 
 
+# J6: disclose-don't-gate. When the reranked top-6 is fragmented across many
+# document families (the same imprecise ambiguity signal Stage B would have
+# used to refuse/clarify, and Stage H to gate), answer anyway from the
+# retrieved context but append a short disclosure naming the primary source
+# document and inviting correction. Unlike gating (Stage H) the history keeps
+# a real answer, so the follow-up contextualizer knock-on can't occur; unlike
+# a clarifying question (Stage B) a false-positive trigger costs only an
+# occasionally-unneeded caveat, not a wrong response type - which makes the
+# signal's known 14% false-positive rate tolerable.
+DISCLOSE_AMBIGUITY_ENABLED = True
+
+
+def _ambiguity_disclosure(metadatas: list[dict]) -> str:
+    titles = _distinct_family_titles(metadatas, limit=3)
+    primary = titles[0] if titles else "the retrieved document"
+    return (
+        f"\n\n_Note: this answer is based primarily on \"{primary}\". Your question could also "
+        "relate to other documents (rules often differ by programme, department, or academic "
+        "year) - tell me which programme or year you mean if this isn't the right one._"
+    )
+
+
 def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str]]:
     """Returns (answer_text, source_urls_used)."""
     results, _ = retrieve(question, history, summary)
@@ -608,6 +683,9 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     messages.append({"role": "user", "content": f"Context:\n{context}\n\nQuestion: {question}"})
 
     response_text = chat(messages=messages)
+
+    if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
+        response_text += _ambiguity_disclosure(metadatas)
 
     sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
     return response_text, sources

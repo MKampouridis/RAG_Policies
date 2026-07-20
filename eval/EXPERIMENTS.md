@@ -62,6 +62,22 @@ unchanged since.
 | `stageD_splade` (rejected) | 100.0% / 0.91 | 65.0% / 0.45 | 82.5% / 0.68 | 3.90 |
 | `stageE_embedding_ensemble` (rejected) | 100.0% / 0.89 | 57.5% / 0.40 | 78.8% / 0.65 | 3.80 |
 | `stageI_multihop_decomposition` (rejected) | 100.0% / 0.89 | 62.5% / 0.40 | 81.2% / 0.65 | 3.88 |
+| `j0b_wide_rerank_pool` (rejected) | 100.0% / 0.88 | 62.5% / 0.42 | 81.2% / 0.65 | 3.92 |
+| `j2_identity_headers` (rejected) | 100.0% / 0.91 | 60.0% / 0.50 | 80.0% / 0.70 | 3.84 |
+| `j3_doc_routing` (rejected) | 100.0% / 0.90 | 62.5% / 0.42 | 81.2% / 0.66 | 3.80 |
+| `j4_user_turns_contextualizer` (rejected) | 100.0% / 0.93 | 67.5% / 0.41 | 83.8% / 0.67 | 3.88 |
+| `set3_sibling_baseline` (measurement, 40 turns, programme-named questions) | — | 90.0% / 0.72 | 90.0% / 0.72 | 4.12 |
+| **`j6_disclose_ambiguity` (= current production)** | **100.0% / 0.87** | **67.5% / 0.43** | **83.8% / 0.65** | **3.86** |
+| `j7_keyphrase_prompt` (rejected) | 100.0% / 0.91 | 62.5% / 0.40 | 81.2% / 0.66 | 3.80 |
+
+J-round note: `j6_disclose_ambiguity` changes NO retrieval code (it appends a source-naming
+disclosure to answers when the top-6 is family-fragmented), so its hit@6 deltas vs
+`stage_colbert` are a direct measurement of the eval's run-to-run noise floor (~1-2 turns,
+Ollama nondeterminism via the contextualizer). Judge that band into every ±1-2-turn verdict in
+this table. Full J-round narrative incl. the J1 identity-extraction asset
+(`data/doc_identity/`), the evidence-sufficiency metric (RoA 87.5% vs strict 70%), and the
+sibling-discriminating question set (`questions_set3_sibling.json`, 90% hit@6) is in report.md's
+"Identity-first round" section.
 
 (Stage F, weighted score fusion vs RRF, isn't in this table - it was decided from a fast
 retrieval-only sweep, not a full 80-turn/judge-scored pass, since no weight config beat RRF

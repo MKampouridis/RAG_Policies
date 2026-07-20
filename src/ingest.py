@@ -2,6 +2,7 @@
 vector store."""
 
 import hashlib
+import json
 import re
 import uuid
 from pathlib import Path
@@ -70,17 +71,58 @@ def _readable_title(title: str) -> str:
     return re.sub(r"[-_]+", " ", title).strip()
 
 
+# J2 tried enriching chunk headers with the extracted identity records at
+# embedding time - net regression (RoA hit@6 70%->60%, eval/report.md "J2")
+# with a revealing mechanism: documents with EMPTY identity records (byte-
+# identical headers and embeddings to baseline) still flipped hit->miss,
+# because ~450 other documents' chunks moved in embedding space and crowded
+# into queries they didn't previously win. Corpus-wide header changes perturb
+# every query's neighborhood, not just the enriched documents'. The identity
+# data itself was locally effective (rescued a target miss, improved MRR) -
+# it now feeds the document-level identity index (J3) instead, which can't
+# displace chunk embeddings. Off by default.
+IDENTITY_HEADER_ENABLED = False
+
+
+def _load_doc_identity(url: str) -> dict:
+    """J1's per-document extracted identity record (programme name,
+    department, partner institution, awards, aliases - see
+    extract_doc_identity.py), or {} when absent. These fields carry the
+    document identity that filenames don't (e.g. 'east15-25.pdf' says
+    nothing about it being East 15 Acting School's MA/MSc rules) - the
+    coverage gap behind every filename-derived facet attempt's failure."""
+    path = Path("data/doc_identity") / f"{url_hash(url)}.json"
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text())
+    except Exception:
+        return {}
+
+
 def build_chunk_header(url: str, metadata: dict) -> str:
     """One-line document-identity header prepended to every chunk at
     embedding time. RoA chunk bodies are near-identical boilerplate across
     degree types/departments/years; the distinguishing facts live only on
     the title page (chunk 0) and in metadata, so without this header the
-    embedder cannot tell sibling documents apart (see eval/report.md)."""
+    embedder cannot tell sibling documents apart (see eval/report.md).
+    Enriched (J2) with the per-document extracted identity record when one
+    exists - programme names, partner institution, and user-style aliases
+    that the filename-derived title lacks."""
     parts = [f"Document: {_readable_title(metadata.get('title') or url.rsplit('/', 1)[-1])}"]
     if metadata.get("doc_type"):
         parts.append(metadata["doc_type"].replace("_", " "))
-    if metadata.get("department"):
-        parts.append(f"department: {metadata['department']}")
+    identity = _load_doc_identity(url) if IDENTITY_HEADER_ENABLED else {}
+    if identity.get("programme_name"):
+        parts.append(f"programme: {identity['programme_name']}")
+    if identity.get("department") or metadata.get("department"):
+        parts.append(f"department: {identity.get('department') or metadata['department']}")
+    if identity.get("partner_institution"):
+        parts.append(f"partner institution: {identity['partner_institution']}")
+    if identity.get("awards"):
+        parts.append(f"awards: {', '.join(identity['awards'])}")
+    if identity.get("aliases"):
+        parts.append(f"also known as: {', '.join(identity['aliases'])}")
     if metadata.get("academic_year"):
         parts.append(f"academic year {metadata['academic_year']}")
     return " | ".join(parts)

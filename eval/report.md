@@ -788,6 +788,38 @@ of which has responded to any retrieval-side mechanism tried (facet filtering/pr
 weighted fusion, pseudo-query indexing, verification/gating, SPLADE, embedding ensemble, or
 query decomposition).
 
+# Identity-first round ("J round", 2026-07-19/20)
+
+Plan synthesized from four external LLM responses (Fablo/ChatGPT/Gemini/DeepSeek via Grok) to a
+detailed problem prompt. Their convergent diagnosis: the remaining misses are entity-
+identification failures, the per-document extraction cost had been mispriced ~19x, and the eval
+itself was becoming a bottleneck. Ten stages run; one kept (J6), the rest were diagnostics
+(several highly valuable) or reverted experiments.
+
+| Stage | What | Verdict |
+|---|---|---|
+| J0 | Diagnostics: pool-recall split + judge scores on the 12 misses | 4 misses out-of-pool, 4 in-pool-beyond-rerank-window, 4 seen-and-misranked; all 12 misses still judged 3-4 |
+| J0b | Widen `RERANK_POOL_SIZE` 30→100 | **Reverted**: rescued 2 deep-pool targets but lost 5 (RoA 70→62.5%) - more candidates = more indistinguishable boilerplate |
+| J1 | Per-document identity extraction (1,188 docs, first ~2 pages + filename → programme/dept/partner/awards/aliases JSON) | **Kept as data asset** (`data/doc_identity/`): 0 failures, all 5 sibling-confusion miss docs got real identity |
+| J2 | Identity-enriched chunk headers (re-embed) | **Reverted**: RoA 70→60% despite +1 target rescue and improved MRR - documents with EMPTY identity records still flipped hit→miss because ~450 other docs' embeddings moved (corpus-wide displacement) |
+| J3 | Document-level identity index + soft routing prior (1,188 identity cards, chunk embeddings untouched) | **Reverted**: 0 rescues / 3 losses, all four metrics down - true siblings' identity cards are themselves near-identical (home vs partner MSc Periodontology) |
+| J4 | User-turns-only follow-up contextualizer | **Reverted**: small net regression incl. the follow-up-only split it targeted - assistant answers DO carry referents follow-ups point at; reconsider only if answer-gating returns |
+| J5a | Evidence-sufficiency metric (`eval/score_evidence_sufficiency.py`) | **Key finding**: 7 of 12 strict misses retrieved a sibling containing ≥half the key facts - effective RoA evidence retrieval is **87.5%**, true deficit is 5 turns |
+| J5b | Sibling-discriminating question set (`eval/questions_set3_sibling.json`, 20 programme-named pairs from identity records) | **Key finding**: when the question names the programme, production scores **90% hit@6 / 95% primary** (2 of 4 misses are test artifacts - superseded-edition gold docs). Sibling discrimination is already strong when identity is in the query |
+| J6 | Disclose-don't-gate: append a source-naming disclosure when the top-6 is family-fragmented | **KEPT (production)**: retrieval untouched, answer score ~flat (3.89→3.86, within noise), fired on 9/12 actual misses (converting silent wrong-sibling answers into correctable ones) at a truthful-caveat cost on 26% of hits. Also incidentally measured the eval's noise floor (~1-2 turns of hit@6 swing between runs with zero retrieval changes) |
+| J7 | "Quote figures verbatim" rule in SYSTEM_PROMPT | **Reverted**: overall keyphrase +1.7pp but RoA keyphrase -1.4pp, answer -0.06 - the 7B generator doesn't reliably follow the instruction; retry with a stronger generator (deferred LLM phase) |
+
+**Where this leaves the system (2026-07-20).** Production = `stage_colbert` retrieval + J6
+disclosure. Strict RoA hit@6 remains 70%, but the round's diagnostics reframed what that number
+means: evidence-sufficient retrieval is 87.5% (only 5 turns fail to bring the key facts into
+context), sibling discrimination is ~95% when the query names its programme, and the answers on
+strict misses still score 3-4 because sibling boilerplate carries most of the substance. The
+dominant remaining costs are (a) underspecified queries - now mitigated by J6's disclosure
+inviting correction - and (b) generation-side imprecision (68% keyphrase coverage even on hits),
+which is the deferred LLM-experiments phase's target. The J1 identity records and the set3
+question set remain as durable assets for future retrieval exploration, which the user intends
+to continue.
+
 ## Files in this folder
 
 - `selected_docs.json`, `questions.json` — the original 40-document/question set (tuned-against)
