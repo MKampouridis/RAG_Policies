@@ -4,6 +4,23 @@ constants below — nothing else in the codebase needs to change."""
 import ollama
 
 CHAT_MODEL = "qwen2.5:7b-instruct"
+# generator bake-off (2026-07-20, deferred LLM-experiments phase) tested
+# qwen2.5:14b and llama3.1:8b as replacements - both rejected (see
+# eval/report.md): llama3.1:8b was cleanly, independently judged worse across
+# the board; qwen2.5:14b looked best but only under self-judging (it was also
+# JUDGE_MODEL), a bias already proven as large as +0.3 on RoA specifically -
+# not trustworthy without an independent judge we don't have access to.
+# qwen2.5:7b-instruct remains the best-supported choice.
+
+# Query contextualizer (src/rag.py's _contextualize_query) pinned separately
+# from CHAT_MODEL. First bake-off pass (qwen2.5:14b as CHAT_MODEL, no
+# separate constant yet) showed CHAT_MODEL swaps silently changed BOTH answer
+# generation and follow-up query rewriting - follow-up hit@6 regressed
+# 82.5%->75.0% while primary hit@6 (contextualizer doesn't run without
+# history) was unchanged, isolating the rewriter as the cause. Pinning it to
+# the validated qwen2.5:7b-instruct (the model _is_faithful_rewrite's guard
+# was tuned against) lets CHAT_MODEL vary for a clean generation-only test.
+CONTEXTUALIZE_MODEL = "qwen2.5:7b-instruct"
 
 # Embedding model + its required task prefixes (asymmetric embedding models
 # need different prefix text for indexed documents vs search queries, and get

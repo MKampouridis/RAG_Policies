@@ -14,7 +14,7 @@ from src import splade as _splade
 from src.docid import document_family as _document_family
 from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.ingest import query as vector_query
-from src.llm import chat
+from src.llm import CONTEXTUALIZE_MODEL, chat
 
 N_RESULTS = 6
 # over-fetch so recency filtering AND reranking have real depth to work with -
@@ -230,7 +230,7 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
     rewritten = chat(messages=[
         {"role": "system", "content": CONTEXTUALIZE_SYSTEM_PROMPT},
         {"role": "user", "content": f"{transcript}\n\nFollow-up question: {question}\n\nStandalone question:"},
-    ]).strip()
+    ], model=CONTEXTUALIZE_MODEL).strip()
 
     if not rewritten or not _is_faithful_rewrite(question, rewritten):
         return question
@@ -556,9 +556,15 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     else:
         # default case: pre-filter the historical archive out of both pools
         # (~70% of chunks), fuse dense + BM25, then apply the family-level
-        # recency dedupe as a safety net for docs the is_current flag missed
-        degree_length = extract_degree_length(retrieval_query)
-        award_type = extract_award_type(retrieval_query)
+        # recency dedupe as a safety net for docs the is_current flag missed.
+        # degree_length/award_type are only consumed by FACET_PREFERENCE_ENABLED
+        # and SPLADE_ENABLED below (both off by default) - skip the regex scan
+        # when neither is on rather than computing it unconditionally.
+        if FACET_PREFERENCE_ENABLED or SPLADE_ENABLED:
+            degree_length = extract_degree_length(retrieval_query)
+            award_type = extract_award_type(retrieval_query)
+        else:
+            degree_length = award_type = ""
 
         dense = vector_query(retrieval_query, n_results=pool_size, where={"is_current": True})
         bm25_hits = lexical.query(retrieval_query, n_results=pool_size, current_only=True)

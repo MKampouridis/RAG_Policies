@@ -4,7 +4,13 @@ eval/EXPERIMENTS.md "stage3_bgem3") alongside the primary nomic-embed-text
 collection, fused via RRF in src/rag.py. Different embedding models make
 different, often uncorrelated mistakes; fusing rankings from two models can
 beat either alone even when neither wins outright as a standalone
-replacement (bge-m3 was a wash/slight RoA regression solo)."""
+replacement (bge-m3 was a wash/slight RoA regression solo).
+
+NOTE: the bge-m3 Ollama model itself was removed during a 2026-07-20 disk
+cleanup (this stage was already reverted, so the model was unused). The
+Chroma collection's stored vectors are untouched, but re-enabling
+EMBEDDING_ENSEMBLE_ENABLED now needs `ollama pull bge-m3` first, or query()
+will fail immediately when it tries to embed the query text."""
 
 import chromadb
 

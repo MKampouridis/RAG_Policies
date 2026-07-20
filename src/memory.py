@@ -34,19 +34,30 @@ MAX_TURNS_BEFORE_SUMMARY = 20
 TURNS_TO_KEEP_AFTER_SUMMARY = 10
 
 
+_migrated = False
+
+
 def _connect() -> sqlite3.Connection:
+    global _migrated
     Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
-    conn.executescript(SCHEMA)
-    # migration for databases created before the summarization watermark:
-    # summarized_through is the id of the last message already folded into
-    # the rolling summary, so each message is summarized exactly once
-    try:
-        conn.execute("ALTER TABLE conversations ADD COLUMN summarized_through INTEGER DEFAULT 0")
-    except sqlite3.OperationalError:
-        pass  # column already exists
+    if not _migrated:
+        # schema creation + the summarized_through migration only need to run
+        # once per process, not on every connection (every message send,
+        # every history fetch) - re-running an ALTER TABLE wrapped in a
+        # try/except on every call means paying real exception-handling
+        # overhead on every DB access for the entire life of the process
+        conn.executescript(SCHEMA)
+        # migration for databases created before the summarization watermark:
+        # summarized_through is the id of the last message already folded into
+        # the rolling summary, so each message is summarized exactly once
+        try:
+            conn.execute("ALTER TABLE conversations ADD COLUMN summarized_through INTEGER DEFAULT 0")
+        except sqlite3.OperationalError:
+            pass  # column already exists
+        _migrated = True
     return conn
 
 

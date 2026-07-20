@@ -22,6 +22,16 @@ API_BASE = "http://127.0.0.1:8000"
 QUESTIONS_PATH = Path("eval/questions.json")
 N_RESULTS = 6
 
+# Judge model upgraded from qwen2.5:7b-instruct (2026-07-20, eval/rejudge.py):
+# re-scoring the existing baseline's answers with a stronger judge, unchanged
+# otherwise, found the 7b judge - which also generates the answers - was
+# specifically over-crediting RoA wrong-sibling boilerplate answers (RoA mean
+# 3.80->3.48, misses-only 3.33->2.67, catching genuine factual contradictions
+# the 7b judge missed) while policy scores were unaffected or slightly higher
+# (3.98->4.15). All answer_score comparisons before this date used the 7b
+# judge; comparing across the switch requires re-judging, not just re-running.
+JUDGE_MODEL = "qwen2.5:14b-instruct"
+
 JUDGE_SYSTEM_PROMPT = """You are grading an AI assistant's answer to a question about University of \
 Essex policy/rules-of-assessment documents. You are given the question, a ground-truth reference \
 answer, and the assistant's actual answer. Score the assistant's answer on a 1-5 scale:
@@ -78,7 +88,7 @@ def keyphrase_coverage(answer: str, keyphrases: list[str]) -> float:
     return hits / len(keyphrases)
 
 
-def judge_answer(question: str, expected_answer: str, actual_answer: str) -> dict:
+def judge_answer(question: str, expected_answer: str, actual_answer: str, model: str = JUDGE_MODEL) -> dict:
     user_prompt = (
         f"Question: {question}\n\nReference answer: {expected_answer}\n\n"
         f"Assistant's answer: {actual_answer}"
@@ -89,6 +99,7 @@ def judge_answer(question: str, expected_answer: str, actual_answer: str) -> dic
             {"role": "user", "content": user_prompt},
         ],
         format="json",
+        model=model,
     )
     try:
         parsed = json.loads(raw)

@@ -21,7 +21,7 @@ from pathlib import Path
 import chromadb
 from rank_bm25 import BM25Okapi
 
-from src.ingest import CHROMA_DIR, _readable_title, url_hash
+from src.ingest import CHROMA_DIR, _readable_title, read_corpus_version, url_hash
 from src.llm import EMBED_DOCUMENT_PREFIX, EMBED_MODEL, EMBED_QUERY_PREFIX, embed_batch
 
 DOC_INDEX_COLLECTION = "doc_identity_" + re.sub(r"[^a-zA-Z0-9_-]", "_", EMBED_MODEL)
@@ -34,6 +34,7 @@ _client = None
 _bm25 = None
 _bm25_urls = None
 _bm25_cards = None
+_bm25_version = None
 _lock = threading.Lock()
 
 
@@ -111,8 +112,15 @@ def _tokenize(text: str) -> list[str]:
 
 
 def _load_bm25():
-    global _bm25, _bm25_urls, _bm25_cards
-    if _bm25 is not None:
+    """Rebuilds when the corpus version marker moves, same staleness
+    mechanism as src/lexical.py's BM25 index. This index is only rebuilt
+    offline (build_index()), not incrementally on every upsert like the
+    chunk collection, so this is a conservative approximation - it reloads
+    on any corpus change, not just ones that touched identity cards - but
+    that only costs an extra rebuild, never serves stale data."""
+    global _bm25, _bm25_urls, _bm25_cards, _bm25_version
+    version = read_corpus_version()
+    if _bm25 is not None and _bm25_version == version:
         return
     data = _get_collection().get(include=["metadatas"])
     metas = data["metadatas"]
@@ -120,6 +128,7 @@ def _load_bm25():
     _bm25_cards = [(m.get("identity_card") or "", bool(m.get("is_current"))) for m in metas]
     corpus = [_tokenize(card) for card, _cur in _bm25_cards]
     _bm25 = BM25Okapi(corpus) if corpus else None
+    _bm25_version = version
 
 
 def query(text: str, n_results: int = 10, current_only: bool = True) -> list[str]:

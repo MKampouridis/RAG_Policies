@@ -886,3 +886,119 @@ to continue.
 - `run_eval.py`, `score_summary.py`, `generate_questions.py` — the eval harness itself, reusable
   for future re-evaluation after any further changes (both now accept a question-set path as a
   CLI argument, so a third set doesn't require duplicating either script)
+
+# LLM-experiments phase: judge upgrade + generator bake-off (2026-07-20)
+
+## Judge upgrade
+
+`qwen2.5:7b-instruct` both generated and judged answers in every eval to date - a self-judging
+risk. Re-scored the existing `stage_colbert` and `j6_disclose_ambiguity` results with
+`qwen2.5:14b-instruct` as an independent judge, regenerating nothing (`eval/rejudge.py`).
+
+| Group | 7B judge | 14B judge | Delta |
+|---|---|---|---|
+| Policy | 3.98 | 4.15 | +0.18 |
+| **RoA** | **3.80** | **3.48** | **-0.32** |
+| RoA misses only | 3.33 | 2.67 | **-0.66** |
+| RoA hits only | 4.00 | 3.82 | -0.18 |
+
+Not a uniform rescale: the 7B judge specifically over-credited RoA wrong-sibling boilerplate
+answers (justifications show it catching genuine factual contradictions the 7B judge missed,
+e.g. "contradicts the reference by incorrectly defining a capped mark" on an answer 7B scored
+3/5). The true policy-vs-RoA answer-quality gap is ~4x wider than previously reported (0.18 vs
+0.67). `JUDGE_MODEL = "qwen2.5:14b-instruct"` is now the standard judge for all future evals
+(`eval/run_eval.py`); comparing scores across the switch requires re-judging, not just re-running.
+
+## Generator bake-off
+
+Tested `qwen2.5:14b` and `llama3.1:8b` as CHAT_MODEL replacements, each judged independently by
+`qwen2.5:14b` where possible. First pass conflated the generator swap with an unintended
+contextualizer swap (`CHAT_MODEL` was used for both roles) - `CONTEXTUALIZE_MODEL` was split out
+as its own constant in `src/llm.py`, pinned to the validated `qwen2.5:7b-instruct`, so later
+passes test generation in isolation.
+
+| Metric | Production (7B gen) | llama3.1:8b (indep. judged) | qwen2.5:14b (self-judged, caveat) |
+|---|---|---|---|
+| Overall hit@6 | 83.8% | 82.5% | 82.5% |
+| Overall answer | 3.98 | 3.84 | 4.00 |
+| RoA answer | 3.70 | 3.58 | 3.67 |
+| Follow-up hit@6 | 82.5% | 80.0% | 80.0% |
+
+**Both rejected.** `llama3.1:8b` is cleanly, independently judged worse across the board -
+higher keyphrase coverage (+2.9pp) but lower holistic answer quality, suggesting it states more
+raw figures without getting them more consistently right. `qwen2.5:14b` looks best but is
+self-judged (it was also `JUDGE_MODEL` for that pass) - given the judge-upgrade finding above
+already proved self-judging bias as large as +0.3 on RoA specifically, this number isn't
+trustworthy without an independent judge stronger than 14B, which isn't practical on this
+hardware. `qwen2.5:7b-instruct` remains `CHAT_MODEL`; `qwen2.5:14b-instruct` stays installed only
+as `JUDGE_MODEL` (not used in the live app - only invoked by `eval/run_eval.py`).
+
+Deferred next step, not yet attempted: retrying the "quote figures verbatim" prompt rule (J7,
+rejected under the 7B generator) under a stronger generator, since the mechanism needing a more
+capable model to follow the instruction was J7's own stated hypothesis.
+
+# Code review round (2026-07-20)
+
+Full read-through of `src/` end to end (`rag.py`, `ingest.py`, `lexical.py`, `rerank.py`,
+`docid.py`, `doc_index.py`, `memory.py`, `app.py`, `llm.py`, `splade.py`, `ensemble.py`,
+`pseudo_query.py`, `reembed.py`, `run_ingest.py`).
+
+**Fixed:**
+- **Critical**: `CHAT_MODEL` was still `qwen2.5:14b-instruct` in production - the bake-off's
+  revert-to-7B decision was stated but never applied to code. Live traffic had been running on
+  the unproven 14B generator since the bake-off concluded. Reverted and restarted.
+- `src/memory.py`: schema creation + the `summarized_through` ALTER TABLE migration (wrapped in a
+  try/except) ran on every single DB connection - every message send, every history fetch - for
+  the life of the process. Now runs once per process.
+- `src/ingest.py`: `upsert_document`/`delete_document` fetched full documents+metadatas via
+  `collection.get()` just to read `ids` for deletion. Added `include=[]`.
+- `src/rag.py`: `degree_length`/`award_type` were extracted from every query regardless of
+  whether `FACET_PREFERENCE_ENABLED`/`SPLADE_ENABLED` (both off) would ever consume them. Now
+  skipped when neither is on.
+- `src/doc_index.py`: its BM25 cache had no staleness check against the corpus version marker
+  (unlike `src/lexical.py`'s equivalent) - would have silently served a stale identity index
+  forever if `DOC_ROUTING_ENABLED` were ever reactivated after a re-embed. Fixed to match
+  `lexical.py`'s pattern.
+- `src/splade.py`: documented (not auto-fixed - a ~105-minute offline rebuild shouldn't happen
+  silently) that its index has no staleness check; re-run `build_splade_index.py` by hand after
+  any re-embed if `SPLADE_ENABLED` is ever reactivated.
+- `src/ensemble.py`: documented that its `bge-m3` Ollama model dependency was removed during a
+  disk cleanup this session - reactivating `EMBEDDING_ENSEMBLE_ENABLED` now needs `ollama pull
+  bge-m3` first, or `query()` fails immediately.
+
+All fixes verified behavior-preserving: full module import check, live `retrieve()`/`answer()`
+smoke test, and a 10-question regression check comparing fresh retrieval output against the
+stored `stage_colbert` baseline - 0 mismatches.
+
+**Not changed**: the ~11 experimental flags accumulated in `retrieve()`/`answer()` (one per
+reverted stage) add real reading complexity to the hot path, but restructuring them into a
+cleaner extension-point pattern is a larger, riskier change than this pass's fixes - proposed to
+the user as a separate decision rather than done unprompted.
+
+**New ideas surfaced for RoA retrieval, not yet attempted:**
+1. **Precompute and cache ColBERT document-side (token) embeddings.** `src/rerank.py`'s
+   `_rerank_colbert()` currently re-encodes all ~30 pool documents from scratch on *every single
+   query* - the same chunk gets re-embedded by the BERT model again and again across different
+   queries, pure waste (production ColBERT/PLAID systems precompute document embeddings once,
+   only encoding the query at search time). Fixing this is also the natural stepping stone to:
+2. **ColBERT as a genuine first-stage retrieval channel, not just a reranker.** J0's diagnostic
+   found 4 of 12 misses were never even in the dense+BM25 candidate pool to begin with - no
+   reranker can rescue a document reranking never sees. ColBERT's token-level MaxSim was the
+   single biggest win this project found (RoA 60%->70%) precisely because it can discriminate on
+   the identity terms in `chunk_header` that dense pooling washes out; extending it to score
+   against the full corpus (or a much wider candidate set) rather than only reranking whatever
+   dense+BM25 already surfaced could directly address the out-of-pool miss class. Requires #1's
+   caching to be computationally practical.
+3. **Show J1 identity data in the LLM's answer context, not in embeddings or retrieval.**
+   J2 (embedding-time) and J3 (retrieval-time) both failed by touching retrieval; neither touched
+   the one place identity data can't perturb retrieval at all - the context block
+   (`_format_context()`) shown to the answering model *after* retrieval is already done. Adding
+   the target document's own `programme_name`/`department`/`partner_institution`/`aliases` there
+   is zero-retrieval-risk and could sharpen both the J6 disclosure's specificity (name the actual
+   differentiator, e.g. "3yr vs 4yr", not a generic "tell me the programme") and general answer
+   precision (the deferred LLM-phase's keyphrase-coverage goal).
+4. **Targeted rerank-pool widening.** J0b widened `RERANK_POOL_SIZE` globally (30->100) and lost
+   more than it gained (noise on the ~90% of queries that didn't need the extra depth). A
+   version gated on `_top_family_count` already looking fragmented at 30 - i.e. only pay the
+   depth cost on the specific queries where the right document plausibly isn't in the shallow
+   pool - could isolate the 2-rescue benefit without the 5-turn cost.

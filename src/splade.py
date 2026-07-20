@@ -35,6 +35,13 @@ def _get_model():
 
 
 def _load_index() -> None:
+    """No staleness check against the corpus version marker (unlike
+    src/lexical.py/src/doc_index.py's BM25 indexes) - the SPLADE index is a
+    ~105-minute offline build (build_splade_index.py), not something to
+    silently rebuild on a version mismatch the way cheap in-memory indexes
+    do. If SPLADE_ENABLED is ever reactivated, re-run the build script by
+    hand after any re-embed and restart the server; a version check here
+    would only mask staleness with a hint to do the same thing manually."""
     global _matrix, _ids, _documents, _metadatas
     if _matrix is not None:
         return

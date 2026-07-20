@@ -174,7 +174,7 @@ def upsert_document(url: str, text: str, metadata: dict, chunk_contexts: list[st
     misaligned list would attach the wrong context to the wrong chunk."""
     collection = _get_collection()
 
-    existing = collection.get(where={"source_url": url})
+    existing = collection.get(where={"source_url": url}, include=[])
     if existing and existing.get("ids"):
         collection.delete(ids=existing["ids"])
 
@@ -215,7 +215,7 @@ def upsert_document(url: str, text: str, metadata: dict, chunk_contexts: list[st
 
 def delete_document(url: str) -> None:
     collection = _get_collection()
-    existing = collection.get(where={"source_url": url})
+    existing = collection.get(where={"source_url": url}, include=[])
     if existing and existing.get("ids"):
         collection.delete(ids=existing["ids"])
         bump_corpus_version()
