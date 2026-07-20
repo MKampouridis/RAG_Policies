@@ -808,6 +808,33 @@ itself was becoming a bottleneck. Ten stages run; one kept (J6), the rest were d
 | J5b | Sibling-discriminating question set (`eval/questions_set3_sibling.json`, 20 programme-named pairs from identity records) | **Key finding**: when the question names the programme, production scores **90% hit@6 / 95% primary** (2 of 4 misses are test artifacts - superseded-edition gold docs). Sibling discrimination is already strong when identity is in the query |
 | J6 | Disclose-don't-gate: append a source-naming disclosure when the top-6 is family-fragmented | **KEPT (production)**: retrieval untouched, answer score ~flat (3.89→3.86, within noise), fired on 9/12 actual misses (converting silent wrong-sibling answers into correctable ones) at a truthful-caveat cost on 26% of hits. Also incidentally measured the eval's noise floor (~1-2 turns of hit@6 swing between runs with zero retrieval changes) |
 | J7 | "Quote figures verbatim" rule in SYSTEM_PROMPT | **Reverted**: overall keyphrase +1.7pp but RoA keyphrase -1.4pp, answer -0.06 - the 7B generator doesn't reliably follow the instruction; retry with a stronger generator (deferred LLM phase) |
+| J8 | Nameable-identity clarifying question: ask only when the candidate pool's J1 identity records contain >=2 distinct nameable labels; else fall through to J6 | **Killed by manual pre-validation, no full eval run** - see below |
+
+**J8 in detail.** Prompted by the user asking whether the system could proactively identify
+sibling documents and ask the user to confirm which one they meant. Manual simulation first
+tested the core hypothesis directly: for the 7 "underspecified" misses, reformulating the query
+with the correct missing fact (from the target document's own J1 identity record) and re-running
+retrieval. Result: all 3 documents that actually have a real identity to name (CSEE, MA Social
+Work) recovered cleanly (rank 1-2); the other 4 turns (2 genuinely university-wide documents -
+the glossary and the generic Diploma of Higher Education - with no programme to name at all) stayed
+broken even with a realistic "no, it's not programme-specific" answer, since that carries almost
+no distinguishing content. This confirmed clarification only helps when a real identity exists to
+solicit - a materially sharper diagnosis than Stage B's original blanket signal.
+
+But implementing the auto-detection step (which candidates to name) surfaced a harder problem:
+scanning identity labels among documents retrieval ALREADY GOT WRONG has no way to surface the
+CORRECT option. Tested on the MA Social Work miss: the wrongly-retrieved candidates' identities
+were MSc AI, East 15, Sport/Rehab Science, and CSEE - four confident, plausible-sounding, entirely
+wrong choices, none of them Social Work. Re-sourcing candidates from the J3 document-identity
+index queried against the raw question text (rather than the retrieved chunk pool) failed
+identically, for the identical root reason: a genuinely underspecified query carries no signal for
+any index - chunk-level or document-level - to match "Social Work" against. Conclusion: you
+cannot auto-detect good clarification options for exactly the queries that need them most; the
+missing fact is only recoverable by asking a fully generic question with no named guesses (which
+risks nothing since it commits to no guess) - and that's what J6's disclosure already does,
+without reintroducing the gating cost Stage H demonstrated. Killed before any full eval was run;
+`NAMEABLE_CLARIFICATION_ENABLED` in `src/rag.py` stays `False`, code kept only as documented
+reference.
 
 **Where this leaves the system (2026-07-20).** Production = `stage_colbert` retrieval + J6
 disclosure. Strict RoA hit@6 remains 70%, but the round's diagnostics reframed what that number

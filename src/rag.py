@@ -661,6 +661,61 @@ def _ambiguity_disclosure(metadatas: list[dict]) -> str:
     )
 
 
+# J8: nameable-identity clarification - KILLED BY MANUAL PRE-VALIDATION,
+# never run through a full eval (eval/report.md "J8"). Motivating idea: ask a
+# clarifying question only when the candidate pool's J1 identity records
+# contain >=2 distinct nameable labels, since a hand simulation confirmed
+# supplying the RIGHT missing fact fixes retrieval cleanly (CSEE/MA Social
+# Work both went to rank 1-2 after reformulation). But the candidate-sourcing
+# step - scanning identity labels among documents retrieval ALREADY GOT
+# WRONG - has no way to surface the correct option: tested on the MA Social
+# Work miss, it offered 4 confidently-wrong programme names (MSc AI, East 15,
+# Sport/Rehab, CSEE - none correct) as clarification choices, since none of
+# retrieval's wrong picks happened to be the right one. Also tried sourcing
+# candidates from the J3 document-identity index queried against the raw
+# question text instead of the retrieved pool - same failure, for the same
+# reason: a genuinely underspecified query has no signal for ANY index (chunk
+# or document level) to match "Social Work" against. Conclusion: you can't
+# auto-detect good clarification options for the queries that need them most
+# - the missing information is only recoverable by asking a fully GENERIC
+# question with no named guesses, which is what J6's disclosure already does
+# without gating's demonstrated follow-up cost (Stage H). Left off; kept only
+# as documented dead code, not wired to run.
+NAMEABLE_CLARIFICATION_ENABLED = False
+
+
+def _nameable_identity_labels(metadatas: list[dict], limit: int = 4) -> list[str]:
+    """Distinct, non-empty identity labels (programme name, else partner
+    institution, else department - the J1 fields, in specificity order)
+    across the distinct document families in a candidate pool. Documents
+    with an empty identity record (generic/university-wide) contribute
+    nothing, which is exactly what lets this signal tell "ask which
+    programme" apart from "there's no programme to ask about"."""
+    from src.ingest import _load_doc_identity
+    seen_families: set[str] = set()
+    labels: list[str] = []
+    for meta in metadatas:
+        family = _document_family(meta.get("source_url", ""))
+        if family in seen_families:
+            continue
+        seen_families.add(family)
+        identity = _load_doc_identity(meta.get("source_url", ""))
+        label = identity.get("programme_name") or identity.get("partner_institution") or identity.get("department")
+        if label and label not in labels:
+            labels.append(label)
+        if len(labels) >= limit:
+            break
+    return labels
+
+
+def _identity_clarifying_question(labels: list[str]) -> str:
+    listed = "; ".join(labels)
+    return (
+        "Your question could relate to a few different programmes, and I want to give you the "
+        f"right answer rather than guess: {listed}. Could you tell me which one you mean?"
+    )
+
+
 def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str]]:
     """Returns (answer_text, source_urls_used)."""
     results, _ = retrieve(question, history, summary)
@@ -669,6 +724,14 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     if AMBIGUITY_DETECTION_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
         return _clarifying_question(metadatas), sources
+
+    if NAMEABLE_CLARIFICATION_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
+        labels = _nameable_identity_labels(metadatas)
+        if len(labels) >= 2:
+            sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
+            return _identity_clarifying_question(labels), sources
+        # no nameable identity among the candidates - nothing productive to
+        # ask, fall through to a normal answer (+ J6 disclosure, if enabled)
 
     context = _format_context(results)
 
