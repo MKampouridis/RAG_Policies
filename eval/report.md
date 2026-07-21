@@ -1224,15 +1224,18 @@ real problem, but flagged plainly rather than asserted with more confidence than
 supports - if a future eval pass shows the same 2 documents losing again, that would upgrade this
 from "probably noise" to "worth investigating."
 
-**Operational note from this run**: the server process died mid-run (crashed silently between
-turns 24 and 25, no traceback, no crash report - macOS's unified log couldn't produce a definitive
-signature either) coinciding with a ~12GB drop in swap usage, consistent with an OOM-driven kill
-under this session's sustained memory pressure (see the RAM/swap discussion this session - three
-concurrent Ollama models, `qwen2.5:14b-instruct` judge + `qwen2.5:7b-instruct` chat +
-`nomic-embed-text`, on a 16GB machine). Resumed from the point of failure (a small ad hoc script
-re-ran just the 16 failed questions and merged into the existing 24-entry results file) rather than
-restarting the full run. Concrete evidence for the earlier RAM discussion, not just a theoretical
-concern.
+**Operational note from this run**: the server process died mid-run (turns 24-25). Initially
+attributed this to an OOM-driven kill under the session's memory pressure, based on circumstantial
+evidence (no traceback, no crash report, macOS's unified log produced no definitive signature
+either, coinciding with a ~12GB drop in swap usage) - flagged as "consistent with", never
+confirmed. **Correction (same day): this was the user manually killing the Ollama server, not a
+spontaneous crash.** The RAM/swap pressure observed throughout this session (three concurrent
+Ollama models - `qwen2.5:14b-instruct` judge + `qwen2.5:7b-instruct` chat + `nomic-embed-text` - on
+a 16GB machine, repeatedly measured near-full via `vm.swapusage`) is still real and independently
+measured, just not the cause of *this specific* incident - don't conflate a genuinely tight memory
+budget with an unconfirmed causal story for one event. Resumed from the point of failure (a small
+ad hoc script re-ran just the 16 failed questions and merged into the existing 24-entry results
+file) rather than restarting the full run.
 
 `current_prod_verify` is now the reference "current production" row in `EXPERIMENTS.md`,
 superseding `j6_disclose_ambiguity`.
