@@ -1,0 +1,230 @@
+[
+  {
+    "conversation_id": "mt1_simple_switch",
+    "description": "2-topic conversation, one clean switch, no return - baseline case",
+    "turns": [
+      {
+        "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "expected_keyphrases": ["in the public interest", "serious wrongdoing"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "Who can someone raise that concern with?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "continuation"
+      },
+      {
+        "question": "What constitutes plagiarism according to the academic offences procedure?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "expected_keyphrases": ["using or copying", "proper acknowledgment"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "What penalties can be applied for that?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "continuation"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt2_switch_and_return",
+    "description": "topic A, switch to B, explicit return to A - tests whether the contextualizer resolves the return to the correct distant topic, not the intervening one",
+    "turns": [
+      {
+        "question": "What does the Fitness to Study policy address in terms of student behavior?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+        "expected_keyphrases": ["health", "impact on their studies"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "What does the term 'Capped Mark' mean in the undergraduate rules of assessment?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "expected_keyphrases": ["capped mark", "maximum mark"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "Going back to my earlier question about student behavior concerns - who initiates that process?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "return"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt3_comparison",
+    "description": "ask about A, then explicitly compare to B - requires shifting focus while retaining awareness of A",
+    "turns": [
+      {
+        "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": ["maximum", "30 credits"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "How does that compare to the minimum pass mark for East 15 Acting School's Masters programmes?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "expected_keyphrases": ["pass mark", "50"],
+        "turn_type": "comparison"
+      },
+      {
+        "question": "And what's the equivalent progression credit limit for that East 15 programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "continuation"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt4_long_multi_switch",
+    "description": "3 topics with an explicit return to the FIRST after 2 intervening switches - longer-distance reference resolution",
+    "turns": [
+      {
+        "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "expected_keyphrases": ["in the public interest", "serious wrongdoing"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "How long do MBA students have to complete their studies at Essex?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+        "expected_keyphrases": ["complete their studies", "5 years"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "What reassessment opportunities exist at the end of Year One for the Four-Year Honours Degree?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "expected_keyphrases": ["reassessment", "subsequent academic year"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "Earlier you mentioned the whistleblowing policy - is there a time limit on raising a concern under it?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "return"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt5_return_to_second_of_three",
+    "description": "3 topics, return to the MIDDLE one (not the most recent, not the first) - the specific ambiguity class the real contextualizer-drift bug hit",
+    "turns": [
+      {
+        "question": "What constitutes plagiarism according to the academic offences procedure?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "expected_keyphrases": ["using or copying", "proper acknowledgment"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": ["maximum", "30 credits"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "What's the minimum pass mark for all modules in East 15 Acting School's Masters programmes?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "expected_keyphrases": ["pass mark", "50"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "Going back to the periodontology question - does that credit limit apply the same way in Year 2 and Year 3?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "return"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt6_roa_family_switch",
+    "description": "switch between two RoA documents in DIFFERENT families (glossary vs 4yr rules) that share generic assessment vocabulary - tests whether the switch is clean or drags terminology from the wrong document",
+    "turns": [
+      {
+        "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "expected_keyphrases": ["reassessment", "subsequent academic year"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "Separately, what does 'Capped Mark' mean in the glossary?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "expected_keyphrases": ["capped mark", "maximum mark"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "Does a capped mark ever apply to that Year One reassessment I asked about earlier?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "return"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt7_rapid_switches",
+    "description": "4 single-turn topics in a row, no follow-ups, no returns - stress test for whether rapid-fire topic changes confuse the contextualizer even without deep multi-turn history",
+    "turns": [
+      {
+        "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "expected_keyphrases": ["in the public interest", "serious wrongdoing"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "What does the Fitness to Study policy address in terms of student behavior?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+        "expected_keyphrases": ["health", "impact on their studies"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "How long do MBA students have to complete their studies at Essex?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+        "expected_keyphrases": ["complete their studies", "5 years"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "What constitutes plagiarism according to the academic offences procedure?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "expected_keyphrases": ["using or copying", "proper acknowledgment"],
+        "turn_type": "switch"
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt8_deep_then_distant_return",
+    "description": "3 turns deep on one topic, switch away, then a distant return referencing something from turn 1 specifically (not the most recent turn on that topic)",
+    "turns": [
+      {
+        "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": ["maximum", "30 credits"],
+        "turn_type": "new_topic"
+      },
+      {
+        "question": "Is that limit the same for both the MSc and the Postgraduate Diploma route?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "continuation"
+      },
+      {
+        "question": "What happens if a student exceeds that trailing credit limit?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "continuation"
+      },
+      {
+        "question": "Switching topics - what's the minimum pass mark for all modules in East 15 Acting School's Masters programmes?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "expected_keyphrases": ["pass mark", "50"],
+        "turn_type": "switch"
+      },
+      {
+        "question": "Back to the very first thing I asked about the credit limit - which department administers that programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "expected_keyphrases": [],
+        "turn_type": "return"
+      }
+    ]
+  }
+]
