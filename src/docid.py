@@ -9,6 +9,7 @@ import re
 
 _FAMILY_YEAR_SUFFIX_RE = re.compile(r"[-_]?(20)?\d{2}(-\d{2,4})?\.pdf$")
 _YEAR_START_RE = re.compile(r"20(\d{2})")
+_YEAR_DIR_RE = re.compile(r"/(20\d{2}-\d{2,4})/")
 
 # Closed, small vocabularies (unlike the open-ended `department` field that
 # failed on query-text coverage before) - deliberately deterministic
@@ -56,6 +57,32 @@ def normalize_year(raw: str | None) -> str:
         return ""
     start = 2000 + int(m.group(1))
     return f"{start}-{str(start + 1)[-2:]}"
+
+
+def effective_year(source_url: str, raw_academic_year: str | None) -> str:
+    """normalize_year(), capped (never raised) at the document's own URL
+    year-folder for rules-of-assessment/pgt documents. Found via the Idea 2
+    investigation (eval/report.md): PGT "January starts" documents describe
+    the academic year the cohort finishes in, not the edition/publish year,
+    so content-extracted academic_year can overstate a superseded edition's
+    year enough to tie with the true current edition (e.g. a document filed
+    under .../pgt/2024-25/... but whose extracted academic_year reads
+    "2025-26") - silently marking a stale document is_current alongside the
+    real one. Only ever lowers the year, matching compute_current_flags's
+    existing convention that overrides only ever force False, never True -
+    the safe direction, since correcting the opposite mismatch (content
+    understating a doc's year relative to its folder) is not clearly a bug
+    and a first attempt at correcting both directions introduced a NEW
+    false-tie elsewhere (part-time-taught-masters family) that this
+    one-directional version doesn't."""
+    content_year = normalize_year(raw_academic_year)
+    if "/rules-of-assessment/pgt/" in source_url:
+        m = _YEAR_DIR_RE.search(source_url)
+        if m:
+            dir_year = normalize_year(m.group(1))
+            if dir_year and content_year:
+                return min(content_year, dir_year)
+    return content_year
 
 
 def previous_year(normalized: str) -> str:

@@ -29,6 +29,18 @@ INDEX_FOLDER = "data/colbert_index"
 INDEX_NAME = "chunks"
 DOCS_PATH = Path("data/colbert_docs.json")
 
+# query()'s over-fetch (n_results * 6, up to n_results=48 in production ->
+# k=288) exceeds Voyager's constructor default ef_search=200, and the
+# underlying HNSW search requires ef_search >= k ("queryEf must be equal to
+# or greater than the requested number of neighbors" - hit 40/40 turns in
+# the first Idea 2 eval run). ef_search is a per-instance query-time knob
+# (pylate/indexes/voyager.py: stored as self.ef_search, only read in
+# __call__'s query_ef=self.ef_search), not baked into the persisted graph -
+# safe to raise here without rebuilding the index built by
+# build_colbert_index.py. Comfortable headroom over the 288 max, not tied
+# exactly to it so a future pool_size bump doesn't silently reopen this.
+EF_SEARCH = 400
+
 _model = None
 _index = None
 _retriever = None
@@ -53,7 +65,9 @@ def _load() -> None:
         return
     if not DOCS_PATH.exists():
         raise RuntimeError("ColBERT index not built yet - run `python build_colbert_index.py` first")
-    _index = indexes.Voyager(index_folder=INDEX_FOLDER, index_name=INDEX_NAME, override=False)
+    _index = indexes.Voyager(
+        index_folder=INDEX_FOLDER, index_name=INDEX_NAME, override=False, ef_search=EF_SEARCH
+    )
     _retriever = retrieve.ColBERT(index=_index)
     cached = json.loads(DOCS_PATH.read_text())
     _ids = cached["ids"]

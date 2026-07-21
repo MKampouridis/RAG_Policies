@@ -1051,3 +1051,146 @@ serves both ideas:
   fresh encoding per-candidate when the index isn't built yet or a candidate isn't in it, verified
   by inspection to be logically identical to the old unconditional encode call in that case (all
   entries fall back, in original order).
+
+**Idea 1 (cache ColBERT doc embeddings) - kept.** Verified correct by inspection (fallback path
+for uncached candidates is logically identical to the old unconditional-encode call) and by a
+live 10-question regression check against the stored `stage_colbert` baseline - 0 mismatches.
+Measurably beneficial: ~47% reduction in average retrieval latency (1.69s vs 3.21s average).
+Pure efficiency win, no retrieval-quality tradeoff, so kept on unconditionally
+(`USE_CACHED_COLBERT_EMBEDDINGS = True` in `src/rerank.py`) independent of Idea 2's outcome.
+Note this saving is scoped to the reranking step alone - it doesn't move the needle on total
+per-question eval wall-clock time, which is dominated by the contextualize/generate/judge LLM
+round trips (each 80-turn eval question now runs 150-350s end to end; the ColBERT
+retrieval/rerank step inside that is single-digit seconds even before caching).
+
+## Idea 2 (ColBERT first-stage retrieval) - implemented, evaluated, rejected (2026-07-21)
+
+Machine transfer (M1 -> M1 Pro) picked this up mid-flight: `COLBERT_FIRST_STAGE_ENABLED = True`
+was already set but the eval hadn't been re-run since a bugfix. First eval attempt after the
+transfer hit `queryEf must be equal to or greater than the requested number of neighbors` on
+40/40 turns - `query()`'s over-fetch (`n_results * 6`, up to `n_results=48` in production ->
+k=288) exceeds Voyager's constructor default `ef_search=200`, and Voyager's underlying HNSW
+search requires `ef_search >= k`. `ef_search` is a per-instance query-time knob
+(`pylate/indexes/voyager.py`: stored as `self.ef_search`, only read in `__call__`'s
+`query_ef=self.ef_search`), not baked into the persisted graph, so safe to raise without
+rebuilding the index. Fixed with `EF_SEARCH = 400` in `src/colbert_index.py` (comfortable
+headroom over the 288 max, not tied exactly to it so a future pool_size bump doesn't silently
+reopen this).
+
+Verified the fix with two 10-question retrieval-only regression checks (no live server, direct
+`src.rag.retrieve()` calls) before committing to a full run: 10 policy questions (0/10 hit@6
+changes vs `stage_colbert`) and, since the first check's sample happened to be entirely policy
+documents (already 100% hit@6, so it couldn't show a RoA gain either way), a second check
+targeting the first 10 RoA questions specifically (also 0/10 hit@6 changes, no crashes). Both
+clean - confirmed the `ef_search` fix works and introduces no regressions - but neither sample
+showed the target out-of-pool misses being rescued, so inconclusive on whether Idea 2 actually
+helps.
+
+**Full 80-turn eval (`idea2_colbert_firststage`) - net regression, rejected:**
+
+| | Policy hit@6/MRR | RoA hit@6/MRR | Overall hit@6/MRR | Answer score |
+|---|---|---|---|---|
+| `stage_colbert` (baseline) | 100.0% / 0.91 | 70.0% / 0.45 | 85.0% / 0.68 | 3.89 |
+| `idea2_colbert_firststage` (rejected) | 100.0% / 0.90 | **65.0% / 0.43** | 82.5% / 0.66 | 3.84 |
+
+RoA - exactly where Idea 2 was meant to help - regressed on both hit@6 (-5pp) and answer score
+(3.80->3.55, a real quality drop, not just a retrieval-metric wobble). Policy stayed flat as
+expected (Idea 2 only adds a competing channel, doesn't touch the already-saturated policy pool).
+Flip analysis: 2 gained / 4 lost (net -2 turns) - gained
+`roa-ug-integrated-masters-4yr-year-1.pdf` [follow-up] and
+`roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf` [follow-up]; lost `roa-ug-glossary.pdf`
+[follow-up], `roa-ug-3yr-year-1-rules.pdf` [follow-up], `pgt-credit-framework-25.pdf` [primary],
+`integrated-phd-roa-model-a-25.pdf` [follow-up].
+
+**Root-cause investigation of the 4 losses** (compared exact top-6 URLs and retrieval queries,
+baseline vs new, for each): in all 4 cases the correct document was already only marginally in
+the pool at baseline (rank 4-6, right at the edge of top-6) - Idea 2 doesn't cause wildly wrong
+retrievals, it adds 1-2 more RRF channels that dilute any document only weakly supported by a
+couple of existing channels.
+- `roa-ug-glossary.pdf` - confounded, not really an Idea 2 effect. The query contextualizer
+  produced a materially different rewrite between runs ("Can the Capped Mark exceed 40..." vs
+  "Can the capped mark be exceeded by...", dropping the "40" and the exact glossary term) -
+  known Ollama non-determinism noise (no `temperature`/`seed` set), not something Idea 2 caused.
+- `roa-ug-3yr-year-1-rules.pdf` - genuine sibling over-recall: the new ColBERT channel pulled in
+  several "variations" sibling documents (same family, different content) that outcompeted the
+  already-marginal (rank 6) correct "rules" document in the fusion.
+- `pgt-credit-framework-25.pdf` - clean case, identical retrieval query both runs. The new
+  channel surfaced unrelated partner-institution documents (`roa-ug-aegean-omiros-*`, even
+  duplicated at ranks 3+4) sharing generic assessment-framework boilerplate language, displacing
+  the marginal (rank 6) correct document.
+- `integrated-phd-roa-model-a-25.pdf` - clean case, identical query. Traced to a **pre-existing
+  `is_current` metadata bug**, unrelated to Idea 2's design: the `pgt-model-1-january-starts-
+  rules-of-assessment` document family has multiple editions simultaneously tagged
+  `is_current: True` (at least the current `jan-26` edition, correctly, and the superseded
+  `jan-25` edition, incorrectly - the latter also mistagged `academic_year_norm: "2025-26"`
+  despite living in the `2024-25` URL path). Idea 2's new channel was simply sensitive enough to
+  newly surface this already-mistagged sibling, displacing the marginal (rank 4) correct
+  document. Filed separately below - fixing it doesn't change Idea 2's verdict (3 of 4 losses are
+  unrelated to it).
+
+Same lesson as J0b/Idea 4 (targeted rerank-pool widening, also rejected): adding retrieval depth
+or channels rescues out-of-pool misses rarely and dilutes already-fragile marginal hits often -
+the dilution cost outweighs the rescue benefit on this corpus. `COLBERT_FIRST_STAGE_ENABLED`
+reverted to `False` in `src/rag.py`. Idea 1 (embedding caching) is unaffected and stays kept -
+it's a pure latency win independent of whether the first-stage channel is enabled.
+
+### `is_current` metadata bug fix (unrelated to Idea 2, fixed as a follow-up)
+
+Investigated the `integrated-phd-roa-model-a-25.pdf` loss's root cause further since it traced to
+a data bug rather than Idea 2's mechanism. Confirmed via direct inspection of
+`data/manifest.json` that the `pgt-model-1-january-starts-rules-of-assessment` family had **3** of
+its 6 editions simultaneously tagged `is_current: True` (should only ever be 1: the newest).
+Root cause: `reembed.py`'s `compute_current_flags()` picks the max-year member per family using
+each document's *content-extracted* `academic_year` field - but PGT "January starts" documents
+describe the academic year the cohort **finishes in**, not the document's own edition/publish
+year, so a superseded `jan-25` edition (filed under `.../pgt/2024-25/...`) had its
+content-extracted `academic_year` misread as `"2025-26"` - tying it with the true current `jan-26`
+edition and marking both `is_current: True`.
+
+Corpus-wide scan (all 1,188 kept documents, `compute_current_flags()` re-run standalone) found 4
+families total with this "≥2 simultaneous `is_current: True`" symptom. Investigated all 4 before
+fixing anything, since a broad fix risked being worse than the narrow bug:
+- **2 confirmed as the same PGT January-starts content/folder-year mismatch**
+  (`pgt-model-1-january-starts-rules-of-assessment`, `pgt-model-2-january-starts-rules-of-assessment`)
+  - fixed, see below.
+- **`student-engagement-policy.pdf`** - a one-off: the `-2024-25.pdf`-suffixed edition's own
+  content-extracted `academic_year` reads `"2025-26"`, contradicting its own filename. No
+  generalizable pattern found (isolated extraction anomaly on this one document) - left as-is,
+  flagged for manual follow-up if it surfaces in a future eval miss.
+- **`roa-ug-northwest.pdf`** - NOT clearly a bug: both editions (`-2022.pdf` covering 2022-23/
+  2023-24, `-2017-2021.pdf` covering 2017-2021) live under Essex's literal `/current/` UG-archive
+  folder, which unconditionally forces `is_current: True` by design (`"Essex's UG archive reuses
+  identical filenames across years"` per `compute_current_flags`'s own docstring). Plausibly
+  intentional - different partner-institution cohorts may legitimately follow different-vintage
+  rules simultaneously. Left as-is; fixing would risk hiding a legitimately-current document for
+  some cohort.
+
+**Considered and rejected a broad fix first**: tried unconditionally preferring the URL's
+year-folder over content-extracted `academic_year` wherever they disagree. A corpus-wide scan
+found 61 such mismatches - but 52 of them were UG `/previous-years/` archive documents where the
+folder-year is consistently *one year ahead* of the content-year by an apparently intentional,
+different convention (already harmless, since `/previous-years/` unconditionally forces
+`is_current: False` regardless of any year computation) - broadly "fixing" this would have
+silently changed a correct, unrelated convention. Narrowed to the 9 mismatches that actually
+participate in live `is_current` computation (not already covered by an override); a first
+attempt at unconditional preference fixed the 2 target families but **introduced a new bug**:
+`part-time-taught-masters-24.pdf` (content year understating its own folder year) tied with the
+true current `part-time-taught-masters-25.pdf`, creating a 5th "≥2 True" family that didn't exist
+before.
+
+**Shipped fix**: `effective_year()` in `src/docid.py` - `normalize_year()`, capped (never raised)
+at the URL's year-folder, scoped to `/rules-of-assessment/pgt/` paths only. One-directional by
+design (only ever lowers a document's effective year, never raises it) - matches
+`compute_current_flags`'s existing convention that all its path-based overrides only ever force
+`False`, never `True`. Verified via a full corpus diff (all 1,188 kept documents, old flags vs
+new): exactly 3 flags changed, all `True -> False`, all on the 2 target families, zero collateral
+changes elsewhere. Wired into all 3 places that independently computed this value before
+(`reembed.py`'s `compute_current_flags()` and `recompute_current_flags()`, `src/ingest.py`'s
+`upsert_document()`) so they can't drift apart again, matching `docid.py`'s existing "single
+shared definition" charter. Applied live via `reembed.recompute_current_flags()` (metadata-only,
+no re-embed needed) - 109 chunks updated across the 3 affected documents. Verified: direct Chroma
+query confirms the `jan-25` edition now reads `is_current: False`, `academic_year_norm: "2024-25"`;
+a live retrieval check for the original `integrated-phd-roa-model-a-25.pdf` follow-up question now
+ranks the target document 3rd (was 4th in the `stage_colbert` baseline, and dropped out of top-6
+entirely under Idea 2) with the stale `jan-25` sibling no longer in the pool at all. A 10-question
+policy+RoA regression check post-fix showed 0 hit@6 changes vs baseline elsewhere.

@@ -108,14 +108,18 @@ DOC_ROUTING_ENABLED = False
 DOC_ROUTING_TOP_DOCS = 5
 
 # Idea 2 (ColBERT first-stage retrieval, see eval/report.md "Code review
-# round"): src/colbert_index.py's persisted Voyager index (built by
-# build_colbert_index.py) provides a genuine retrieval channel over the
+# round") - rejected. src/colbert_index.py's persisted Voyager index (built
+# by build_colbert_index.py) provides a genuine retrieval channel over the
 # FULL corpus - token-level ANN search + exact MaxSim - not just a rerank of
-# whatever dense+BM25 already surfaced. Targets the out-of-pool miss class
+# whatever dense+BM25 already surfaced. Targeted the out-of-pool miss class
 # J0 found (4/12 misses whose correct document was never in the fused
-# candidate pool at all, so no reranker downstream could have rescued it).
-# Fused via RRF alongside the other channels, same as splade/ensemble/
-# pseudo_query. Requires the index to be built first; off by default.
+# candidate pool at all, so no reranker downstream could have rescued it),
+# but the 80-turn eval showed a net RoA regression (hit@6 70%->65%, answer
+# score 3.80->3.55): adding 1-2 more RRF channels dilutes already-marginal
+# (rank 4-6) correct documents, and the new channel's token-level MaxSim
+# over-recalls topically-similar sibling/superseded-edition documents. None
+# of the 4 known out-of-pool misses were rescued. See eval/report.md
+# "Idea 2 eval result" for the full flip analysis. Off by default.
 COLBERT_FIRST_STAGE_ENABLED = False
 
 # Stage I: selective multi-hop query decomposition. Triggered only when the

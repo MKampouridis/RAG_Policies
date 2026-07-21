@@ -16,7 +16,7 @@ import json
 import re
 from pathlib import Path
 
-from src.docid import document_family, normalize_year, previous_year
+from src.docid import document_family, effective_year, normalize_year, previous_year
 from src.ingest import _get_collection, bump_corpus_version, chunk_text, clean_text, upsert_document
 
 MANIFEST_PATH = Path("data/manifest.json")
@@ -34,23 +34,26 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
     families whose filename stem was later renamed (no within-family
     successor exists even though the edition is clearly superseded), while
     the one-year grace keeps departments alive during the staggered
-    start-of-year rollout when their new edition hasn't been published yet."""
+    start-of-year rollout when their new edition hasn't been published yet.
+    Per-document year comes from effective_year() (docid.py), not raw
+    normalize_year() - see its docstring for the PGT "January starts"
+    content/folder-year mismatch this guards against."""
     kept = [d for d in documents.values() if d.get("keep")]
 
-    corpus_max_year = max((normalize_year(d.get("academic_year")) for d in kept), default="")
+    corpus_max_year = max((effective_year(d["url"], d.get("academic_year")) for d in kept), default="")
     grace_floor = previous_year(corpus_max_year)
 
     max_year_per_family: dict[str, str] = {}
     for doc in kept:
         family = document_family(doc["url"])
-        year = normalize_year(doc.get("academic_year"))
+        year = effective_year(doc["url"], doc.get("academic_year"))
         if family not in max_year_per_family or year > max_year_per_family[family]:
             max_year_per_family[family] = year
 
     flags = {}
     for doc in kept:
         url = doc["url"]
-        year = normalize_year(doc.get("academic_year"))
+        year = effective_year(url, doc.get("academic_year"))
         year_dir = YEAR_DIR_RE.search(url)
         if "/previous-years/" in url:
             flags[url] = False
@@ -72,7 +75,7 @@ def recompute_current_flags() -> None:
     documents = manifest["documents"]
     flags = compute_current_flags(documents)
     year_norms = {
-        d["url"]: normalize_year(d.get("academic_year"))
+        d["url"]: effective_year(d["url"], d.get("academic_year"))
         for d in documents.values() if d.get("keep")
     }
 

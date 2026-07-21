@@ -69,6 +69,7 @@ unchanged since.
 | `set3_sibling_baseline` (measurement, 40 turns, programme-named questions) | — | 90.0% / 0.72 | 90.0% / 0.72 | 4.12 |
 | **`j6_disclose_ambiguity` (= current production)** | **100.0% / 0.87** | **67.5% / 0.43** | **83.8% / 0.65** | **3.86** |
 | `j7_keyphrase_prompt` (rejected) | 100.0% / 0.91 | 62.5% / 0.40 | 81.2% / 0.66 | 3.80 |
+| `idea2_colbert_firststage` (rejected — RRF dilution) | 100.0% / 0.90 | 65.0% / 0.43 | 82.5% / 0.66 | 3.84 |
 
 J-round note: `j6_disclose_ambiguity` changes NO retrieval code (it appends a source-naming
 disclosure to answers when the top-6 is family-fragmented), so its hit@6 deltas vs
