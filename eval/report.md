@@ -1468,3 +1468,73 @@ idea. Would need either a broader/differently-constructed question set that actu
 partner-institution ambiguity in its top-6 candidates, or a corpus-wide audit of how often
 partner/home pairs co-occur in real retrieval pools at all, to get a real read on this mechanism's
 value - neither attempted this round.
+
+## Phase 5: scripted multi-turn conversation probe
+
+Fable 5's fourth question-set proposal (this project's other 3 sets are all single-topic, 2-turn
+primary+follow-up): 8 scripted conversations (`eval/questions_set4_multiturn.json`, 30 turns
+total), grounded in 8 real documents (3 policy, 5 RoA) with ground truth reused from
+`eval/questions.json`, covering clean topic switches, switch-then-explicit-return,
+cross-document comparison, 3-topic return-to-first, return-to-middle-of-three (the specific
+ambiguity class the real live contextualizer-drift bug hit), same-vocabulary cross-family
+switching, rapid single-turn switching, and deep-then-distant-return. `eval/run_multiturn_eval.py`
+runs each conversation sequentially against the live API (real conversation memory/history, not a
+simplified stand-in), scoring hit@6 per turn and logging the contextualizer's actual
+`retrieval_query` for every turn rather than automating an unvalidated "faithfulness" classifier.
+
+**Result by turn type** (30 turns, `RAG_DETERMINISTIC=1`):
+
+| Turn type | n | hit@6 |
+|---|---|---|
+| new_topic | 8 | 100.0% |
+| switch | 11 | 100.0% |
+| comparison | 1 | 100.0% |
+| continuation | 5 | 80.0% |
+| return | 5 | 80.0% |
+
+**Topic switching itself is flawless** (19/19 clean, including a long-distance return past 2
+intervening switches and a return specifically to the *middle* of three prior topics - the exact
+ambiguity class the historical live bug hit). The 2 misses are both in `mt8_deep_then_distant_return`
+and are two genuinely different failure mechanisms, not one:
+
+- **Turn 3** ("What happens if a student exceeds that trailing credit limit?"): the contextualizer's
+  rewrite is fully correct - `"What happens if a student exceeds the 30-credit trailing limit for
+  the MSc Periodontology or Postgraduate Diploma in Periodontology programmes?"` - but retrieval
+  still misses. A genuine retrieval-pipeline gap (this specific procedural "what if exceeded"
+  scenario isn't well-matched against the corpus text), not a contextualizer problem.
+- **Turn 5** ("Back to the very first thing I asked about the credit limit - which department
+  administers that programme?"): a real, precisely-diagnosed bug, confirmed by reproducing the
+  exact contextualizer call standalone. The LLM's raw rewrite attempt was actually **correct**:
+  `"Which department administers the MSc and Postgraduate Diploma in Periodontology programme?"`
+  - but `src/rag.py`'s `_is_faithful_rewrite()` guard rejected it (27% content-word overlap with
+  the original, just under its 30% threshold), falling back to the raw unresolved question. That
+  raw text - dominated by pure referential scaffolding ("back", "very", "first", "thing", "asked",
+  "credit", "limit" - 7 of 11 content words, none of them the actual topic) - then retrieved and
+  generated an answer about a completely unrelated document ("MRes Government programme's rules...
+  administered by the Government department"), reproducing the same class of wrong-document
+  hallucination as the original live-reported bug (`eval/report.md`, "postfix3 -> postfix4"), just
+  via a different mechanism (guard-rejects-a-good-rewrite, not contextualizer-echoes-a-different-
+  question).
+
+**Root cause of the guard's gap**: `_is_faithful_rewrite()`'s content-word-overlap heuristic
+assumes "a faithful rewrite keeps most of the original's content words" - true for the failure
+mode it was built to catch (hijacking to an unrelated question), but structurally false for a
+distant "going back to the very first/distant thing" reference, where a *correct* rewrite must
+drop nearly all of the referential scaffolding and substitute in the real topic name, guaranteeing
+low literal overlap with the original by construction. The guard can't currently distinguish
+"rewrite dropped the original's words because it hijacked to something unrelated" from "rewrite
+dropped the original's words because it correctly resolved a heavy reference" - both look
+identical under a pure overlap-ratio metric.
+
+**Not fixed this round** - a real fix (e.g. weighting the overlap check by whether the *dropped*
+words were referential/scaffolding vs topical, or checking whether the rewrite's added content
+appears verbatim earlier in the conversation transcript rather than being novel) needs the same
+corpus-wide-safe verification discipline as every other change this session, and this was found
+via the newly-built probe rather than something with an existing broader validation harness to
+lean on. Flagged as a known, precisely-diagnosed gap for a future session rather than patched
+reactively off one example.
+
+This is exactly the class of finding Fable 5 predicted this probe would surface that the existing
+2-turn question sets structurally cannot - not a retrieval-signal-engineering problem at all, but
+a measurement gap (single-follow-up sets never construct a reference distant enough to hit this
+guard's blind spot).
