@@ -1538,3 +1538,83 @@ This is exactly the class of finding Fable 5 predicted this probe would surface 
 2-turn question sets structurally cannot - not a retrieval-signal-engineering problem at all, but
 a measurement gap (single-follow-up sets never construct a reference distant enough to hit this
 guard's blind spot).
+
+## Follow-up items 1-4 (2026-07-21, continuation)
+
+Four open items after Phases 1-5: (1) fix the `_is_faithful_rewrite()` distant-reference gap;
+(2) investigate the genuine retrieval-pipeline miss; (3) the deferred architectural direction
+(hierarchical retrieval / boilerplate dedup); (4) a third reviewer round.
+
+### Item 1: faithful-rewrite fix (kept - see regression eval below for the verdict)
+
+Excluded conversation-reference scaffolding (`_REFERENTIAL_WORDS`: "back", "earlier", "first",
+"asked"...) from the original's word set in the overlap check. Verified the exact Phase 5 failing
+case now passes at 60% topical overlap (was 27%), a simulated hijack still rejects at 0% (the fix
+doesn't weaken the guard's actual purpose), and a normal follow-up still passes. Re-running the
+multi-turn probe showed the fix delivers a real answer-quality win the strict metric hides: the
+guard now accepts the correct rewrite instead of falling back to the raw question, turning a
+wrong-document hallucination ("MRes Government programme... Government department") into the
+factually correct answer ("Postgraduate Diploma Periodontology... Health and Social Care
+department"). Strict hit@6 on that turn is still a miss, but only because of the separate
+sibling-confusion problem in items 2/3, not the contextualizer.
+
+### Item 2: the genuine retrieval-pipeline miss - it's the same sibling confusion
+
+The Phase 5 turn-3 miss ("What happens if a student exceeds that trailing credit limit?") had a
+fully-correct contextualizer rewrite yet still missed. Diagnosed it directly: the correct query
+retrieves periodontology documents, but the WRONG ones - the Alexandria partner-institution MSc
+variants and the PG Dip crowd the home `mscperiodontology_25.pdf` out of the top-6 entirely. It's
+the same home-vs-partner sibling confusion the Phase 4 tie-break targeted, except here the home
+document falls out of the candidate pool completely (not merely ranks below the partner), which is
+precisely why that tie-break couldn't have helped it - there was no home candidate in the pool to
+promote. The retrieval failure and the Phase 5 turn-5 residual miss are the same underlying
+problem: when a query names a programme generically ("Periodontology"), the near-identical
+sibling/partner editions are collectively closer than any single one, and the intended home
+edition doesn't reliably survive into the pool.
+
+### Item 3: architectural direction - quantified, and dedup is the WRONG lever
+
+Multiple reviewers proposed boilerplate deduplication (collapse identical chunks to one vector with
+multiple source URLs). Measured whether it applies here:
+- **31.7% of all chunks (6,508 of 20,498) are exact duplicates** (whitespace/case-normalized) of
+  another chunk's BODY text, spanning 2-12 source documents each - the boilerplate problem is real
+  and large.
+- **But only 0.1% (12 chunks) are duplicates of the actually-EMBEDDED text** (header+body). The
+  per-document `chunk_header` - prepended at embedding time - makes each vector distinct even when
+  the body is identical boilerplate.
+
+So the vectors are already ~not duplicated; the "duplication" lives only in the stored body, and
+the system deliberately keeps siblings distinct via headers. **Naive dedup would be actively
+harmful** - collapsing 6,508 chunks to shared vectors would strip exactly the header signal that
+is the only thing letting retrieval tell siblings apart at all. The problem this corpus has isn't
+redundant vectors to remove; it's that the header identity signal is too WEAK to reliably rank the
+right sibling on top - a different problem with a different (non-dedup) set of levers.
+
+Mapped where the current RoA misses actually live (15 miss turns; primary-turn pool checks are
+exact, follow-up pool checks approximate since they omit conversation history):
+- **~5 out-of-pool**: gold document absent from even a 48-candidate fused pool. Only
+  document-level routing (surface the right document BEFORE chunk retrieval) could rescue these.
+- **~9 in-pool but ranked deep** (ranks 8-76): present but not pulled into the top-6. A stronger
+  reranker/discriminator could rescue these - but J0b/Idea 4 already showed global rerank-pool
+  widening hurts more than it helps.
+- **~1 lost in reranking**: in the top-6 of raw fusion, dropped by the reranker.
+
+**Honest conclusion**: the remaining headroom is NOT dedup, and NOT another RRF channel (four
+rejected this session, ~20 before). It splits between (a) genuinely underspecified questions with
+no exploitable signal (unfixable at retrieval), and (b) a hard sibling/partner-discrimination
+problem where the home edition either falls out of the pool or ranks below near-identical variants.
+The one architectural lever not yet tried in a HARD form is document-level macro-routing (restrict
+chunk retrieval to the top-K identity-routed documents) - but J3's SOFT version (routing prior as
+an extra RRF list) already failed (0 rescues / 3 losses), and a hard version has an obvious
+unrecoverable failure mode (wrong routing = guaranteed miss with no fallback). The smallest
+de-risking experiment before any build: measure document-level routing precision in isolation - for
+the ~5 out-of-pool misses, does an identity-only query over the document index (src/doc_index.py)
+even rank the correct document top-K? If it can't, hard routing can't help and the honest answer is
+this corpus is at its retrieval ceiling; the remaining gains are generation-side or UX
+(clarification on underspecified queries), not retrieval.
+
+### Item 4: third reviewer round
+
+Prepared a follow-up prompt (results of acting on round 2 + the two open failure modes + the
+revisited ceiling question + the specific dedup tradeoff) to send back to the genuine reviewers -
+see the session for the text.
