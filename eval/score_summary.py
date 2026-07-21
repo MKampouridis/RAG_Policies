@@ -1,13 +1,24 @@
 #!/usr/bin/env python3
 """Aggregate a results_*.json file into summary statistics.
 
-Reports two views of retrieval quality:
+Reports three views of retrieval quality:
 - strict: the retrieved URL must equal the question's exact source document
 - lenient: a retrieved URL counts if it is the same document family (filename
   stem with year suffix stripped, src.rag._document_family) AND the same
   academic year as the expected document. This is fairer for boilerplate-heavy
   corpora where several near-identical siblings could serve the user equally,
   without crediting wrong-year or wrong-family retrievals.
+- evidence_sufficient@6: at least one top-6 document's full text contains at
+  least half the turn's expected keyphrases, regardless of which exact
+  document it is (J5a, eval/report.md - promoted from a one-off diagnostic
+  script to a standing headline column per external code review, 2026-07-21:
+  it's the number that tracks what a user actually experiences, and reframes
+  strict hit@6 deltas that are really about test-set construction rather
+  than retrieval quality).
+
+Needs eval/questions.json (for keyphrases) - pass a different path as the
+optional second CLI arg if scoring against a different question set than the
+default.
 """
 
 import json
@@ -19,12 +30,50 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from src.docid import document_family, effective_year
 
-MANIFEST_PATH = Path(__file__).resolve().parent.parent / "data" / "manifest.json"
+ROOT = Path(__file__).resolve().parent.parent
+MANIFEST_PATH = ROOT / "data" / "manifest.json"
+DEFAULT_QUESTIONS_PATH = ROOT / "eval" / "questions.json"
 
 K_MAX = 6
 
 _year_by_url: dict[str, str] = {}
 _dated_families: set[str] = set()
+_doc_text_cache: dict[str, str] = {}
+
+
+def _doc_text(url: str, manifest: dict) -> str:
+    if url not in _doc_text_cache:
+        doc = manifest.get(url) or {}
+        path = Path(doc.get("text_cache_path", ""))
+        _doc_text_cache[url] = path.read_text(encoding="utf-8").lower() if path.exists() else ""
+    return _doc_text_cache[url]
+
+
+def _evidence_sufficient(top_urls: list[str], keyphrases: list[str], manifest: dict) -> bool | None:
+    """Same convention as run_eval.py's answer-side keyphrase_coverage:
+    case-insensitive substring match, "sufficient" at >= half the
+    keyphrases. Returns None (not scoreable) when the question has no
+    keyphrases annotated."""
+    if not keyphrases:
+        return None
+    for url in dict.fromkeys(top_urls):  # dedup, keep order
+        text = _doc_text(url, manifest)
+        if not text:
+            continue
+        found = sum(1 for kp in keyphrases if kp.lower() in text)
+        if found >= (len(keyphrases) + 1) // 2:
+            return True
+    return False
+
+
+def _load_questions_by_url(questions_path: Path) -> dict[str, list[dict]]:
+    # per-URL queue, not a flat {source_url: question} dict - a future
+    # question set with 2+ questions on one document would otherwise
+    # silently drop all but the last (external code review, 2026-07-21)
+    by_url: dict[str, list[dict]] = {}
+    for q in json.loads(questions_path.read_text()):
+        by_url.setdefault(q["source_url"], []).append(q)
+    return by_url
 
 
 def _load_years() -> None:
@@ -61,9 +110,22 @@ def _lenient_rank(top_urls: list[str], expected_url: str) -> int | None:
     return None
 
 
-def summarize(results: list[dict]) -> dict:
+def summarize(results: list[dict], questions_path: Path = DEFAULT_QUESTIONS_PATH) -> dict:
     if not _year_by_url:
         _load_years()
+
+    manifest = json.loads(MANIFEST_PATH.read_text())["documents"]
+    questions_by_url = _load_questions_by_url(questions_path)
+
+    # annotate each turn in-place with its evidence-sufficiency verdict,
+    # matched via the same per-URL queue as score_evidence_sufficiency.py
+    for r in results:
+        queue = questions_by_url.get(r["source_url"])
+        q = queue.pop(0) if queue else None
+        for tk, kp_key in (("primary", "keyphrases"), ("follow_up", "follow_up_keyphrases")):
+            turn = r[tk]
+            keyphrases = (q.get(kp_key) if q else None) or []
+            turn["_evidence_sufficient"] = _evidence_sufficient(turn["retrieval"]["top_urls"], keyphrases, manifest)
 
     def turns(doc_type_filter=None):
         out = []
@@ -93,10 +155,18 @@ def summarize(results: list[dict]) -> dict:
 
         scores = [t["judge"]["score"] for _, t in turn_list if t["judge"]["score"] is not None]
         kp = [t["keyphrase_coverage"] for _, t in turn_list if t["keyphrase_coverage"] is not None]
+        # strict hit implies the evidence was retrievable, even on the rare
+        # chance the keyphrase substring check itself misses on the exact
+        # gold document's own text
+        ev = [
+            (t["_evidence_sufficient"] or t["retrieval"]["hit_at_6"])
+            for _, t in turn_list if t["_evidence_sufficient"] is not None
+        ]
         return {
             "n": n,
             "strict": {**hit_curve(strict_ranks), "mrr": mrr(strict_ranks)},
             "lenient": {**hit_curve(lenient_ranks), "mrr": mrr(lenient_ranks)},
+            "evidence_sufficient_at_6": (sum(ev) / len(ev)) if ev else None,
             "answer_score_mean": statistics.mean(scores) if scores else None,
             "answer_score_stdev": statistics.stdev(scores) if len(scores) > 1 else None,
             "keyphrase_coverage_mean": statistics.mean(kp) if kp else None,
@@ -113,6 +183,7 @@ def summarize(results: list[dict]) -> dict:
 
 if __name__ == "__main__":
     path = Path(sys.argv[1])
+    q_path = Path(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_QUESTIONS_PATH
     results = json.loads(path.read_text())
-    summary = summarize(results)
+    summary = summarize(results, q_path)
     print(json.dumps(summary, indent=2))
