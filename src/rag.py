@@ -122,6 +122,11 @@ DOC_ROUTING_TOP_DOCS = 5
 # "Idea 2 eval result" for the full flip analysis. Off by default.
 COLBERT_FIRST_STAGE_ENABLED = False
 
+# Phase 4, experiment 2 (external code review round 2, 2026-07-21, Fable 5):
+# home-institution tie-break. See _prefer_home_institution()'s docstring for
+# the mechanism. Off by default pending the validation eval.
+HOME_INSTITUTION_TIEBREAK_ENABLED = False
+
 # Stage I: selective multi-hop query decomposition. Triggered only when the
 # initial reranked top-6 is fragmented across many different document
 # families (reusing Stage B's AMBIGUITY_FAMILY_COUNT_THRESHOLD signal). A
@@ -294,6 +299,75 @@ def _prefer_most_recent_year(results: dict) -> dict:
             kept_dists.append(dist)
 
     return {"documents": [kept_docs], "metadatas": [kept_metas], "distances": [kept_dists]}
+
+
+def _is_partner_institution(meta: dict) -> bool:
+    """True if this chunk's document is a partner-institution edition of a
+    programme, using whichever signal is actually populated: the J1
+    identity record's partner_institution field (only ~63% coverage -
+    checked against the corpus, e.g. the Alexandria periodontology
+    programme's own record has this blank despite genuinely being a
+    partner edition) or the URL path (Essex's own site structure puts
+    every partner-institution document under a /partner-institutions/
+    folder - confirmed reliable structural signal, same category as the
+    /previous-years/ and /current/ path overrides compute_current_flags
+    already trusts)."""
+    from src.ingest import _load_doc_identity
+
+    if _load_doc_identity(meta.get("source_url", "")).get("partner_institution"):
+        return True
+    return "/partner-institutions/" in meta.get("source_url", "")
+
+
+def _aliases(meta: dict) -> set[str]:
+    from src.ingest import _load_doc_identity
+
+    return {a.lower() for a in _load_doc_identity(meta.get("source_url", "")).get("aliases") or []}
+
+
+def _prefer_home_institution(results: dict) -> dict:
+    """Phase 4, experiment 2 (external code review round 2, 2026-07-21,
+    Fable 5): when the final top-k contains both a partner-institution
+    edition and a home (non-partner) edition of what looks like the same
+    programme (sharing at least one J1 alias - e.g. both the home and
+    Alexandria periodontology documents list "perio"), and the home
+    edition currently ranks worse, promote it above the partner edition.
+    Same species of deterministic, high-precision post-rerank rule as
+    _prefer_most_recent_year - doesn't touch retrieval/reranking, just
+    breaks a specific, identifiable tie the same way a human would default
+    to "the home programme" absent the query naming a specific partner.
+    Simplifying assumption for this first attempt: doesn't try to detect
+    whether the query DOES name the partner institution specifically (the
+    partner_institution field's coverage gaps make that unreliable too) -
+    if that turns out to matter, the eval will show it as a loss."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    distances = results.get("distances", [[None] * len(documents)])[0]
+    if len(documents) < 2:
+        return results
+
+    order = list(range(len(documents)))
+    used = set()
+    for i in range(len(order)):
+        if i in used or not _is_partner_institution(metadatas[i]):
+            continue
+        partner_aliases = _aliases(metadatas[i])
+        if not partner_aliases:
+            continue
+        for j in range(i + 1, len(order)):
+            if j in used or _is_partner_institution(metadatas[j]):
+                continue
+            if partner_aliases & _aliases(metadatas[j]):
+                order[i], order[j] = order[j], order[i]
+                used.add(i)
+                used.add(j)
+                break
+
+    return {
+        "documents": [[documents[k] for k in order]],
+        "metadatas": [[metadatas[k] for k in order]],
+        "distances": [[distances[k] for k in order]],
+    }
 
 
 def _dense_as_hits(dense: dict) -> list[tuple[str, str, dict]]:
@@ -685,6 +759,9 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
                     expanded_lists.append(_surrogate_hits([h[1] for h in sq_bm25], [h[2] for h in sq_bm25]))
                 expanded_candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*expanded_lists)))
                 results = _rerank.rerank(retrieval_query, expanded_candidates, N_RESULTS)
+
+    if HOME_INSTITUTION_TIEBREAK_ENABLED:
+        results = _prefer_home_institution(results)
 
     return results, retrieval_query
 
