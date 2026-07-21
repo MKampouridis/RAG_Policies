@@ -63,8 +63,17 @@ def api_post_message(conversation_id: str, payload: NewMessage):
         memory.update_title(conversation_id, payload.content[:60])
 
     history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
-    answer_text, sources = rag_answer(payload.content, history_for_prompt, summary)
+    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(payload.content, history_for_prompt, summary)
 
     memory.add_message(conversation_id, "assistant", answer_text)
 
-    return {"answer": answer_text, "sources": sources}
+    return {
+        "answer": answer_text,
+        "sources": sources,
+        # exposed so callers (the eval harness) can score the exact retrieval
+        # this answer was generated from, instead of re-deriving it via a
+        # second, independently-sampled retrieve() call - see rag.answer()'s
+        # docstring.
+        "retrieval_query": retrieval_query,
+        "ranked_top_urls": ranked_top_urls,
+    }

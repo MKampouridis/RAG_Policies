@@ -777,20 +777,34 @@ def _identity_clarifying_question(labels: list[str]) -> str:
     )
 
 
-def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str]]:
-    """Returns (answer_text, source_urls_used)."""
-    results, _ = retrieve(question, history, summary)
+def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str], str, list[str]]:
+    """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
+
+    The last two are the exact retrieval this call actually used, not a
+    re-derived approximation - external code review (2026-07-21, see
+    eval/report.md "Phase 1") found the eval harness previously called
+    retrieve() a second, independent time (via ranked_retrieval() in
+    eval/run_eval.py) to score retrieval quality, separately from this
+    function's own internal retrieve() call that actually produced the
+    context the answer was generated from. Since _contextualize_query()'s
+    rewrite is an LLM sample, those two calls could diverge on follow-up
+    turns - the eval would then be scoring a retrieval that wasn't the one
+    the answer was actually generated from. Surfacing this call's own
+    retrieval_query/ranked_top_urls lets callers score exactly what happened,
+    with a single retrieve() invocation per turn."""
+    results, retrieval_query = retrieve(question, history, summary)
     metadatas = results.get("metadatas", [[]])[0]
+    ranked_top_urls = [m.get("source_url") for m in metadatas]
 
     if AMBIGUITY_DETECTION_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
-        return _clarifying_question(metadatas), sources
+        return _clarifying_question(metadatas), sources, retrieval_query, ranked_top_urls
 
     if NAMEABLE_CLARIFICATION_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         labels = _nameable_identity_labels(metadatas)
         if len(labels) >= 2:
             sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
-            return _identity_clarifying_question(labels), sources
+            return _identity_clarifying_question(labels), sources, retrieval_query, ranked_top_urls
         # no nameable identity among the candidates - nothing productive to
         # ask, fall through to a normal answer (+ J6 disclosure, if enabled)
 
@@ -798,7 +812,7 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
 
     if CRAG_VERIFICATION_ENABLED and not _context_supports_answer(question, context):
         sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
-        return _uncertainty_response(sources), sources
+        return _uncertainty_response(sources), sources, retrieval_query, ranked_top_urls
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     if summary:
@@ -812,4 +826,4 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
         response_text += _ambiguity_disclosure(metadatas)
 
     sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
-    return response_text, sources
+    return response_text, sources, retrieval_query, ranked_top_urls

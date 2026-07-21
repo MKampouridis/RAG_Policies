@@ -1,7 +1,26 @@
 """Thin wrappers around the local Ollama models. Swap models by changing the
 constants below — nothing else in the codebase needs to change."""
 
+import os
+
 import ollama
+
+# Phase 1 determinism fix (external code-review round, 2026-07-21, see
+# eval/report.md): no call site anywhere in this codebase set temperature,
+# seed, or num_ctx - Ollama's sampling defaults (temperature ~0.8) meant the
+# same code + same corpus could legitimately produce different retrieval
+# queries (via the contextualizer), different generated answers, and
+# different judge scores on repeat runs. This was the project's own
+# documented ~1-2-turn "noise floor" and made every eval delta under that
+# size unreadable. RAG_DETERMINISTIC=1 pins temperature=0/seed=42 (a fixed,
+# arbitrary integer - any constant works, it just has to be the same one
+# every run) and raises num_ctx to a size that comfortably covers a full
+# generation prompt (system + history + context + question), ruling out
+# silent truncation as a confound too. Off by default so normal production
+# traffic keeps natural sampling variation; eval runs opt in by setting the
+# env var before starting both the server and the eval script.
+DETERMINISTIC = os.environ.get("RAG_DETERMINISTIC") == "1"
+DETERMINISTIC_OPTIONS = {"temperature": 0, "seed": 42, "num_ctx": 8192}
 
 CHAT_MODEL = "qwen2.5:7b-instruct"
 # generator bake-off (2026-07-20, deferred LLM-experiments phase) tested
@@ -43,8 +62,12 @@ EMBED_QUERY_PREFIX = "search_query: "
 # EMBED_QUERY_PREFIX = "Represent this sentence for searching relevant passages: "
 
 
-def chat(messages: list[dict], format: str | None = None, model: str = CHAT_MODEL) -> str:
-    response = ollama.chat(model=model, messages=messages, format=format)
+def chat(
+    messages: list[dict], format: str | None = None, model: str = CHAT_MODEL, options: dict | None = None
+) -> str:
+    if options is None and DETERMINISTIC:
+        options = DETERMINISTIC_OPTIONS
+    response = ollama.chat(model=model, messages=messages, format=format, options=options)
     return response["message"]["content"]
 
 

@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
 """Run the eval question set against the live app (HTTP API, so it exercises
-the real conversation/memory path) plus a direct ranked-retrieval check
-(bypassing the alphabetical re-sort used for citation display), and score
-both retrieval and answer quality.
+the real conversation/memory path) and score both retrieval and answer
+quality.
+
+Scores the exact retrieval that produced the answer - src.rag.answer() now
+returns its own retrieval_query/ranked_top_urls (Phase 1 fix, 2026-07-21,
+external code review round: this eval used to call retrieve() a second,
+independently-sampled time via its own ranked_retrieval() helper, which
+could diverge from what the live app actually retrieved on follow-up turns
+since the query contextualizer is an LLM sample. One retrieve() call per
+turn now, via the API response.
+
+For eval runs, start both this script and the server (run_server.py) with
+RAG_DETERMINISTIC=1 set (src/llm.py) - otherwise repeat runs on identical
+code can still show different hit@6/answer scores from Ollama's default
+sampling, not a real change.
 
 Usage: python eval/run_eval.py <output_name>
 Writes eval/results_<output_name>.json
@@ -16,11 +28,11 @@ from pathlib import Path
 import requests
 
 from src.llm import chat
-from src.rag import retrieve as rag_retrieve
 
 API_BASE = "http://127.0.0.1:8000"
 QUESTIONS_PATH = Path("eval/questions.json")
 N_RESULTS = 6
+MAX_ATTEMPTS = 2
 
 # Judge model upgraded from qwen2.5:7b-instruct (2026-07-20, eval/rejudge.py):
 # re-scoring the existing baseline's answers with a stronger judge, unchanged
@@ -58,24 +70,20 @@ def post_message(conv_id: str, content: str) -> dict:
     return resp.json()
 
 
-def ranked_retrieval(question_text: str, expected_url: str, history: list[dict]) -> dict:
-    """Uses the exact same retrieval path as the live app (src.rag.retrieve),
-    including query contextualization and recency preference, so this metric
-    reflects what production actually does - not a simplified stand-in."""
-    results, retrieval_query = rag_retrieve(question_text, history)
-    metadatas = results.get("metadatas", [[]])[0]
-    distances = results.get("distances", [[]])[0]
+def score_retrieval(expected_url: str, retrieval_query: str, ranked_top_urls: list[str]) -> dict:
+    """Scores the retrieval the live app's API response already reports for
+    this turn - not a second, separately-sampled retrieve() call (see module
+    docstring)."""
     rank = None
-    for i, meta in enumerate(metadatas, 1):
-        if meta.get("source_url") == expected_url:
+    for i, url in enumerate(ranked_top_urls, 1):
+        if url == expected_url:
             rank = i
             break
     return {
         "rank": rank,
         "hit_at_6": rank is not None,
         "reciprocal_rank": (1.0 / rank) if rank else 0.0,
-        "top_urls": [m.get("source_url") for m in metadatas],
-        "top_distances": distances,
+        "top_urls": ranked_top_urls,
         "retrieval_query": retrieval_query,
     }
 
@@ -117,8 +125,8 @@ def eval_one(item: dict) -> dict:
     }
 
     # primary question - no prior history
-    retrieval = ranked_retrieval(item["question"], item["source_url"], history=[])
     api_result = post_message(conv_id, item["question"])
+    retrieval = score_retrieval(item["source_url"], api_result["retrieval_query"], api_result["ranked_top_urls"])
     judge = judge_answer(item["question"], item["expected_answer"], api_result["answer"])
     result["primary"] = {
         "question": item["question"],
@@ -130,14 +138,11 @@ def eval_one(item: dict) -> dict:
         "judge": judge,
     }
 
-    # follow-up question, same conversation (tests memory-aware retrieval too) -
-    # history mirrors exactly what the live app would have loaded for this turn
-    prior_history = [
-        {"role": "user", "content": item["question"]},
-        {"role": "assistant", "content": api_result["answer"]},
-    ]
-    fu_retrieval = ranked_retrieval(item["follow_up_question"], item["source_url"], history=prior_history)
+    # follow-up question, same conversation (tests memory-aware retrieval too)
     fu_api_result = post_message(conv_id, item["follow_up_question"])
+    fu_retrieval = score_retrieval(
+        item["source_url"], fu_api_result["retrieval_query"], fu_api_result["ranked_top_urls"]
+    )
     fu_judge = judge_answer(item["follow_up_question"], item["follow_up_expected_answer"], fu_api_result["answer"])
     result["follow_up"] = {
         "question": item["follow_up_question"],
@@ -153,27 +158,50 @@ def eval_one(item: dict) -> dict:
 
 
 def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
+    """Retries a failing question once (transient Ollama/HTTP hiccups
+    shouldn't silently shrink the denominator - a prior run lost 16/40
+    questions to one dropped connection and nobody noticed until the summary
+    line said "Wrote 24 results" instead of 40). Hard-fails after a second
+    failure rather than continuing to write partial results, since a
+    partial-but-silently-succeeding run is exactly the failure mode that
+    caused the original bug."""
     questions = json.loads(questions_path.read_text())
     output_path = Path(f"eval/results_{output_name}.json")
 
     results = []
     for i, item in enumerate(questions, 1):
         t0 = time.time()
-        try:
-            r = eval_one(item)
-            results.append(r)
-            elapsed = time.time() - t0
-            print(
-                f"[{i}/{len(questions)}] ({elapsed:.1f}s) "
-                f"primary hit@6={r['primary']['retrieval']['hit_at_6']} score={r['primary']['judge']['score']} | "
-                f"followup hit@6={r['follow_up']['retrieval']['hit_at_6']} score={r['follow_up']['judge']['score']} "
-                f"-- {item['source_title']}",
-                flush=True,
-            )
-        except Exception as exc:
-            print(f"[{i}/{len(questions)}] FAILED for {item['source_title']}: {exc}", flush=True)
+        last_exc = None
+        for attempt in range(1, MAX_ATTEMPTS + 1):
+            try:
+                r = eval_one(item)
+                elapsed = time.time() - t0
+                results.append(r)
+                print(
+                    f"[{i}/{len(questions)}] ({elapsed:.1f}s) "
+                    f"primary hit@6={r['primary']['retrieval']['hit_at_6']} score={r['primary']['judge']['score']} | "
+                    f"followup hit@6={r['follow_up']['retrieval']['hit_at_6']} score={r['follow_up']['judge']['score']} "
+                    f"-- {item['source_title']}",
+                    flush=True,
+                )
+                last_exc = None
+                break
+            except Exception as exc:
+                last_exc = exc
+                if attempt < MAX_ATTEMPTS:
+                    print(f"[{i}/{len(questions)}] attempt {attempt} FAILED for {item['source_title']}: {exc} - retrying", flush=True)
+                    time.sleep(5)
+        if last_exc is not None:
+            output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False))
+            raise RuntimeError(
+                f"[{i}/{len(questions)}] FAILED for {item['source_title']} after {MAX_ATTEMPTS} attempts: {last_exc}"
+                f" - wrote {len(results)}/{len(questions)} results to {output_path} before stopping"
+            ) from last_exc
         output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False))
 
+    assert len(results) == len(questions), (
+        f"wrote {len(results)} results but expected {len(questions)} - denominator would be silently wrong"
+    )
     print(f"\nDone. Wrote {len(results)} results to {output_path}")
 
 
