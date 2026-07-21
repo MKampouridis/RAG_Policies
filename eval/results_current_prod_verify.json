@@ -2853,5 +2853,337 @@
         "justification": "The assistant's answer is fully correct and matches the reference answer without any additional unnecessary information."
       }
     }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+    "source_title": "masters-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+      "expected_answer": "To obtain a Pass with Merit, in addition to achieving the requirements for a pass, a student should have an overall weighted average mark of 60 or more.",
+      "actual_answer": "The minimum overall weighted average required to pass a Master’s degree with Merit is 60.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf] (masters-25.pdf, rules_of_assessment, 2025-26)\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf] (vsc-part-time-taught-masters-25.pdf, rules_of_assessment, 2025-26)\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf] (tavistock-taught-masters-25.pdf, rules_of_assessment, 2025-26)\n\n_Note: this answer is based primarily on \"tavistock-taught-masters-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mres-gov-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mres-gov-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is correct but lacks the context of 'in addition to achieving the requirements for a pass' as mentioned in the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "Can a dissertation be used to meet the credit requirement for a Postgraduate Diploma?",
+      "expected_answer": "Credits obtained for the dissertation or equivalent can normally be used when considering whether a Postgraduate Diploma can be awarded, provided that the above criteria have been met.",
+      "actual_answer": "Yes, in some cases, dissertation or equivalent credits can be used when considering whether a Postgraduate Diploma can be awarded. However, they cannot be used specifically to obtain a Postgraduate Certificate.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/kol_pg-masters-roa-24.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf]\n\n_Note: this answer is based primarily on \"pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/kol_pg-masters-roa-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 6,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.16666666666666666,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/kol_pg-masters-roa-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "Can a dissertation be used to meet the credit requirement for a Postgraduate Diploma?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but lacks precision regarding the use of dissertation credits for a Postgraduate Diploma only and does not contradict the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+    "source_title": "integrated-phd-roa-model-a-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+      "expected_answer": "The pass mark for all taught modules is 50.",
+      "actual_answer": "The minimum pass mark for taught modules under Model A's rules of assessment is 50.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf]",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-b-2025-26.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-b-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "What is the minimum pass mark for taught modules under Model A's rules of assessment?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "How are marks rounded when determining the overall weighted average in Model A?",
+      "expected_answer": "For the purposes of these rules, taught module averages, the overall weighted average for the taught modules and the mark for the dissertation or equivalent will be rounded to the nearest whole number – i.e. 49.5 will count as 50, 49.4 as 49.",
+      "actual_answer": "Marks are rounded to the nearest whole number for the purposes of calculating the overall weighted average. Specifically, a mark of 49.5 will count as 50, while 49.4 will be counted as 49.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf]\n\n_Note: this answer is based primarily on \"csee_model_1_accredited_january_starts_rules_jan25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-2025-26.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "How are marks rounded when determining the overall weighted average under Model A's rules of assessment?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but lacks detail on rounding taught module averages and dissertation marks as mentioned in the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "source_title": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+      "expected_answer": "The University will endeavour to complete the appeal proceedings within 40 working days from receipt of an appeal and supporting evidence, and any internal review proceedings within 20 working days from receipt of the request.",
+      "actual_answer": "The University will endeavour to complete the appeal proceedings within 40 working days from receipt of an appeal and supporting evidence, and any internal review proceedings within 20 working days from receipt of the request.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf\n\n_Note: this answer is based primarily on \"academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "What is the timeframe for completing academic appeal proceedings and internal review procedures?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if the University needs to extend the timeframe for processing an academic appeal?",
+      "expected_answer": "Where this is the case, the student will be notified and kept regularly informed of progress.",
+      "actual_answer": "If the University needs to extend the timeframe for processing an academic appeal, it will notify the student and keep them regularly informed of progress.\n\n_Sources:\n- [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf]\n- [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf]\n- [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf]\n\n_Note: this answer is based primarily on \"progress-appeals-procedures-research-degree-students.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "What happens if the University needs to extend the timeframe for processing an academic appeal?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully matches the reference answer in substance and is correct."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "source_title": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the general principles for reassessment according to the rules of assessment document?",
+      "expected_answer": "The general principles for reassessment apply throughout all years, including Year One, Two, Three, and the Final Year, but specific details vary by year.",
+      "actual_answer": "The general principles for reassessment according to the documents include:\n\n- Students who fail modules after completing all assessments but have a Year Mark of 20 or above may be required to take reassessment.\n- The Board of Examiners can permit up to two further attempts at any module, with marks capped at 40 unless extenuating circumstances are substantiated.\n- The Board will offer all available reassessment opportunities.\n- Previous higher marks from reassessments are used to determine progression.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf]\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf]\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf] \n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf]\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-1.pdf]\n\n_Note: this answer is based primarily on \"chula---original-course-structure.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-1.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "What are the general principles for reassessment according to the rules of assessment document?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The answer provides detailed information but omits mentioning that these principles apply throughout all years as stated in the reference."
+      }
+    },
+    "follow_up": {
+      "question": "What are the compulsory reassessment opportunities at the end of Year One according to the document?",
+      "expected_answer": "Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.",
+      "actual_answer": "According to the document for students starting in academic year 2025-26, under the Three-Year Honours Degree rules of assessment:\n\n_Reassessment Opportunities at the End of the Year: Students who fail modules after completing all assessments but have a Year Mark of 20 or above may be required to take reassessment._\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf]\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf]",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ecce-portobello-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-2.pdf"
+        ],
+        "top_distances": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "retrieval_query": "What are the compulsory reassessment opportunities at the end of Year One according to the document?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant provides a relevant excerpt but introduces an incorrect academic year and overlooks mentioning the timing before the resit assessment period."
+      }
+    }
   }
 ]

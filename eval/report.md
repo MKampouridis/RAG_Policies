@@ -1194,3 +1194,45 @@ a live retrieval check for the original `integrated-phd-roa-model-a-25.pdf` foll
 ranks the target document 3rd (was 4th in the `stage_colbert` baseline, and dropped out of top-6
 entirely under Idea 2) with the stale `jan-25` sibling no longer in the pool at all. A 10-question
 policy+RoA regression check post-fix showed 0 hit@6 changes vs baseline elsewhere.
+
+### `current_prod_verify` - full-eval validation of today's net changes (= new current production)
+
+Today's session nets out to: Idea 1 (kept) + the `is_current` fix (kept) on top of
+`j6_disclose_ambiguity`, with Idea 2 tried and reverted (net zero vs off). Neither Idea 1 nor the
+metadata fix had been through a full 80-turn eval on their own - both were only spot-checked
+(10-question regression checks, plus the one specific document the metadata fix targeted). Ran a
+full eval to get a clean, complete number for what's actually live now, comparing against
+`j6_disclose_ambiguity` (the correct prior-production baseline - the earlier Idea 2 comparison in
+this document used the older `stage_colbert` checkpoint instead, since that's what the prior
+session's Idea 1-4 work was itself measured against; this run reconciles back to the actual
+current-production lineage).
+
+| | Policy hit@6/MRR | RoA hit@6/MRR | Overall hit@6/MRR | Answer score |
+|---|---|---|---|---|
+| `j6_disclose_ambiguity` (prior production) | 100.0% / 0.87 | 67.5% / 0.42 | 83.8% / 0.65 | 3.86 |
+| `current_prod_verify` (new) | 100.0% / 0.92 | 62.5% / 0.40 | 81.2% / 0.66 | 3.99 |
+
+Mixed result: hit@6 dipped slightly (RoA -5pp, overall -2.6pp; flip analysis: 2 losses / 0 gains,
+both follow-up turns - `roa-ug-3yr-year-1-rules.pdf` and `east15-25.pdf`), but answer quality rose
+across the board (3.86->3.99 overall, up in both policy and RoA). Both losses fall within this
+project's own previously-documented noise floor (~1-2 turns from Ollama's unset
+temperature/seed in the contextualizer, per the `j6_disclose_ambiguity` J-round note above) -
+and neither Idea 1 (independently verified retrieval-neutral) nor the `is_current` fix
+(independently verified to touch only 3 unrelated documents, neither of which appears in the loss
+list) offers a mechanism that would explain a genuine regression here. Read as noise rather than a
+real problem, but flagged plainly rather than asserted with more confidence than the data
+supports - if a future eval pass shows the same 2 documents losing again, that would upgrade this
+from "probably noise" to "worth investigating."
+
+**Operational note from this run**: the server process died mid-run (crashed silently between
+turns 24 and 25, no traceback, no crash report - macOS's unified log couldn't produce a definitive
+signature either) coinciding with a ~12GB drop in swap usage, consistent with an OOM-driven kill
+under this session's sustained memory pressure (see the RAM/swap discussion this session - three
+concurrent Ollama models, `qwen2.5:14b-instruct` judge + `qwen2.5:7b-instruct` chat +
+`nomic-embed-text`, on a 16GB machine). Resumed from the point of failure (a small ad hoc script
+re-ran just the 16 failed questions and merged into the existing 24-entry results file) rather than
+restarting the full run. Concrete evidence for the earlier RAM discussion, not just a theoretical
+concern.
+
+`current_prod_verify` is now the reference "current production" row in `EXPERIMENTS.md`,
+superseding `j6_disclose_ambiguity`.
