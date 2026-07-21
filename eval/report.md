@@ -1002,3 +1002,52 @@ the user as a separate decision rather than done unprompted.
    version gated on `_top_family_count` already looking fragmented at 30 - i.e. only pay the
    depth cost on the specific queries where the right document plausibly isn't in the shallow
    pool - could isolate the 2-rescue benefit without the 5-turn cost.
+
+## Following up on the code review's 4 ideas (2026-07-20/21)
+
+| Idea | Result |
+|---|---|
+| 4: targeted rerank-pool widening | **Rejected** - worse than J0b's naive global widening (0 rescues / 4 losses vs 2/5) |
+| 3: identity data in answer context | **Rejected** - net negative on RoA specifically |
+| 1: cache ColBERT doc embeddings | In progress - see below |
+| 2: ColBERT as first-stage retrieval | In progress - see below |
+
+**Idea 4 (targeted rerank-pool widening) - rejected.** Gated `RERANK_POOL_SIZE`'s widening
+(30->100) on `_top_family_count` already looking fragmented at the shallow depth, hoping to
+isolate J0b's 2-rescue benefit without its 5-turn cost. Result was worse than J0b's blunt global
+version: **0 rescues, 4 losses** (RoA hit@6 70%->60%, MRR 0.450->0.388), all losses on follow-up
+turns. The pre-rerank family-fragmentation signal doesn't correlate with "the right document is
+deeper in the pool" - it fired on queries where extra depth only added noise, and never once on
+an out-of-pool case. `TARGETED_WIDENING_ENABLED` reverted to `False` in `src/rerank.py`.
+
+**Idea 3 (J1 identity data in answer context) - rejected.** Added the retrieved document's
+`programme_name`/`partner_institution`/`aliases` to `_format_context()`'s per-chunk header and
+sharpened the J6 disclosure to name the actual differentiator when available - all strictly
+post-retrieval, so (confirmed) retrieval itself barely moved (1 turn lost, within the established
+noise band). Mixed answer-quality result that looked positive in aggregate but wasn't where it
+mattered: overall/policy answer score rose (3.89->3.95, 3.98->4.25), but policy documents rarely
+have identity data populated, so that's likely noise from a feature that barely engages there.
+**RoA - where it actually fires - moved the wrong way on both quality metrics together**: answer
+score 3.80->3.65, keyphrase coverage 55.2%->53.4%. Extra identity fields in the context block
+appear to add clutter the 7B generator doesn't parse more precisely, rather than sharpening it.
+`IDENTITY_CONTEXT_ENABLED` reverted to `False` in `src/rag.py`; worth retrying if the deferred
+stronger-generator phase changes the outcome.
+
+**Ideas 1+2 (cache ColBERT embeddings + first-stage retrieval) - implementation.** PyLate ships
+a full multi-vector retrieval stack (`indexes.Voyager`, an HNSW-based persistent index - already
+installed, no new dependency; `retrieve.ColBERT`, ANN token search + exact MaxSim rerank over the
+retrieved candidates) rather than needing this built from scratch. One offline-built index now
+serves both ideas:
+- `build_colbert_index.py` encodes every chunk (header+text, matching `src/rerank.py`'s existing
+  `_passages()` convention) once and persists to `data/colbert_index/`.
+- `src/colbert_index.py`'s `query()` does first-stage ANN retrieval over the FULL corpus (Idea 2,
+  gated by `COLBERT_FIRST_STAGE_ENABLED` in `src/rag.py`), targeting the out-of-pool miss class
+  J0 found that no reranker can rescue.
+- The same module's `get_cached_embeddings_by_meta()` looks up a candidate's precomputed
+  embedding by `(source_url, chunk_index)` - a key that survives `src/rag.py`'s whole fusion/
+  dedup pipeline unchanged, unlike a raw Chroma id, which doesn't. `src/rerank.py`'s
+  `_rerank_colbert()` now uses this instead of unconditionally re-encoding every candidate's text
+  from scratch on every query (`USE_CACHED_COLBERT_EMBEDDINGS`, on by default) - falls back to
+  fresh encoding per-candidate when the index isn't built yet or a candidate isn't in it, verified
+  by inspection to be logically identical to the old unconditional encode call in that case (all
+  entries fall back, in original order).

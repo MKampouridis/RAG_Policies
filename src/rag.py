@@ -5,6 +5,7 @@ generate an answer via the local chat model."""
 import json
 import re
 
+from src import colbert_index as _colbert_index
 from src import doc_index as _doc_index
 from src import ensemble as _ensemble
 from src import lexical
@@ -105,6 +106,17 @@ just because the wording differs from the question."""
 # Off by default; kept for reference.
 DOC_ROUTING_ENABLED = False
 DOC_ROUTING_TOP_DOCS = 5
+
+# Idea 2 (ColBERT first-stage retrieval, see eval/report.md "Code review
+# round"): src/colbert_index.py's persisted Voyager index (built by
+# build_colbert_index.py) provides a genuine retrieval channel over the
+# FULL corpus - token-level ANN search + exact MaxSim - not just a rerank of
+# whatever dense+BM25 already surfaced. Targets the out-of-pool miss class
+# J0 found (4/12 misses whose correct document was never in the fused
+# candidate pool at all, so no reranker downstream could have rescued it).
+# Fused via RRF alongside the other channels, same as splade/ensemble/
+# pseudo_query. Requires the index to be built first; off by default.
+COLBERT_FIRST_STAGE_ENABLED = False
 
 # Stage I: selective multi-hop query decomposition. Triggered only when the
 # initial reranked top-6 is fragmented across many different document
@@ -498,18 +510,41 @@ def _uncertainty_response(sources: list[str]) -> str:
     )
 
 
+# Idea 3 (identity data in answer context) - tried, mixed but net negative
+# on RoA specifically (eval/report.md "Code review round"): overall/policy
+# answer score rose (3.89->3.95, 3.98->4.25) but that's likely noise from a
+# feature that barely engages on policy docs (little identity data
+# populated there); RoA - where it actually fires - moved the wrong way on
+# BOTH quality metrics together (answer 3.80->3.65, keyphrase coverage
+# 55.2%->53.4%), suggesting the extra context fields add clutter the 7B
+# generator doesn't parse as precisely, rather than sharpening it. Off by
+# default; kept for reference (e.g. worth retrying if the deferred
+# stronger-generator phase changes this).
+IDENTITY_CONTEXT_ENABLED = False
+
+
 def _format_context(results: dict) -> str:
     docs = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
     blocks = []
     for doc, meta in zip(docs, metadatas):
-        header = (
+        parts = [
             f"[source_url: {meta.get('source_url')}] "
             f"[title: {meta.get('title')}] "
             f"[doc_type: {meta.get('doc_type')}] "
             f"[department: {meta.get('department', 'n/a')}] "
             f"[academic_year: {meta.get('academic_year', 'n/a')}]"
-        )
+        ]
+        if IDENTITY_CONTEXT_ENABLED:
+            from src.ingest import _load_doc_identity
+            identity = _load_doc_identity(meta.get("source_url", ""))
+            if identity.get("programme_name"):
+                parts.append(f"[programme: {identity['programme_name']}]")
+            if identity.get("partner_institution"):
+                parts.append(f"[partner institution: {identity['partner_institution']}]")
+            if identity.get("aliases"):
+                parts.append(f"[also known as: {', '.join(identity['aliases'])}]")
+        header = " ".join(parts)
         blocks.append(f"{header}\n{doc}")
     return "\n\n---\n\n".join(blocks)
 
@@ -552,6 +587,9 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         if PSEUDO_QUERY_ENABLED:
             ranked_lists.append(_pseudo_query.query(retrieval_query, n_results=pool_size,
                                                      where={"is_current": True}))
+        if COLBERT_FIRST_STAGE_ENABLED:
+            ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, year=asked_year))
+            ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, current_only=True))
         candidates = _dedup_by_chunk(_rrf_fuse(*ranked_lists))
     else:
         # default case: pre-filter the historical archive out of both pools
@@ -621,6 +659,8 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
                 routed_dense = vector_query(retrieval_query, n_results=pool_size,
                                             where={"source_url": {"$in": routed_urls}})
                 ranked_lists.append(_dense_as_hits(routed_dense))
+        if COLBERT_FIRST_STAGE_ENABLED:
+            ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, current_only=True))
         candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*ranked_lists)))
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
@@ -660,9 +700,20 @@ DISCLOSE_AMBIGUITY_ENABLED = True
 def _ambiguity_disclosure(metadatas: list[dict]) -> str:
     titles = _distinct_family_titles(metadatas, limit=3)
     primary = titles[0] if titles else "the retrieved document"
+    # Idea 3 extension: name the actual differentiator (e.g. the specific
+    # programme) when the J1 identity record has one, instead of only a
+    # generic "tell me which programme" ask - post-retrieval, so it carries
+    # none of J2/J3's retrieval-side risk.
+    detail = ""
+    if IDENTITY_CONTEXT_ENABLED and metadatas:
+        from src.ingest import _load_doc_identity
+        identity = _load_doc_identity(metadatas[0].get("source_url", ""))
+        label = identity.get("programme_name") or identity.get("partner_institution")
+        if label:
+            detail = f" ({label})"
     return (
-        f"\n\n_Note: this answer is based primarily on \"{primary}\". Your question could also "
-        "relate to other documents (rules often differ by programme, department, or academic "
+        f"\n\n_Note: this answer is based primarily on \"{primary}\"{detail}. Your question could "
+        "also relate to other documents (rules often differ by programme, department, or academic "
         "year) - tell me which programme or year you mean if this isn't the right one._"
     )
 
