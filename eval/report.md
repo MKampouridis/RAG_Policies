@@ -1426,3 +1426,45 @@ multiple pool candidates have identity records, so a lone generic document isn't
 disadvantaged) rather than enriching unconditionally whenever data happens to exist - not
 attempted this round; the two remaining Phase 4/5 items (home-institution tie-break, multi-turn
 conversation probe) were prioritized instead.
+
+### Phase 4, experiment 2: home-institution tie-break - null result, rejected
+
+Fable 5's second proposal: post-rerank, when the final top-k contains both a partner-institution
+edition and a home edition of what looks like the same programme, and the home edition currently
+ranks worse, promote it - the same species of deterministic, high-precision post-rerank rule as
+`_prefer_most_recent_year`, targeting the Periodontology-class sibling-confusion misses J3's
+post-mortem specifically named (home vs partner-institution MSc Periodontology identity cards are
+"themselves near-identical").
+
+**Verified the proposed detection signal before implementing it**: Fable 5's design used the J1
+identity record's `partner_institution` field to detect partner editions, but a corpus-wide check
+found only ~63% coverage - the Alexandria periodontology programme's own identity record has this
+field blank despite genuinely being a partner edition. Combined it with the URL path
+(`/partner-institutions/`, a structural signal Essex's site consistently uses, same category as
+the `/previous-years/`/`/current/` overrides `compute_current_flags` already trusts) for full
+coverage, and used J1 alias overlap (both the home and Alexandria periodontology documents list
+"perio") to detect "same programme" rather than exact `programme_name` matching, since those
+strings differ even for genuine home/partner pairs ("MSc Periodontology (36 months...)" vs
+"MSc Periodontology Science and Practice"). Implemented in `src/rag.py`
+(`_prefer_home_institution()`, `HOME_INSTITUTION_TIEBREAK_ENABLED`), unit-tested against the real
+periodontology pair before running the eval - confirmed the home candidate gets correctly promoted
+above the partner one when both are present.
+
+**Full 80-turn eval - null result**: 0 gained / 0 lost vs `current_prod_deterministic`, headline
+numbers identical to two decimal places on every metric (Policy 100.0%/0.87, RoA 62.5%/0.40,
+overall 81.2%/0.63, answer score 3.84). Verified this wasn't a silently-broken no-op by diffing the
+*entire* retrieved `top_urls` list (not just hit@6 status) across all 80 turns against the
+baseline - 0 differences anywhere, confirming the mechanism never actually fired, not that it
+fired and happened to net out neutral. Its precondition (a partner candidate and an alias-sharing
+home candidate both present in the *same final top-6*, with home ranking worse) never arose for
+any of these 40 questions - even the periodontology test question itself never surfaced the
+Alexandria variant into its own final pool, so there was nothing to break a tie on.
+
+Following this project's own precedent (Stage G's "net-zero wash" was reverted despite causing no
+measured harm, since added complexity without demonstrated benefit isn't worth keeping): reverted
+(`HOME_INSTITUTION_TIEBREAK_ENABLED = False`). Correctly implemented and unit-verified against a
+real confusable pair - simply unproven on this specific 40-question eval set, not disproven as an
+idea. Would need either a broader/differently-constructed question set that actually surfaces
+partner-institution ambiguity in its top-6 candidates, or a corpus-wide audit of how often
+partner/home pairs co-occur in real retrieval pools at all, to get a real read on this mechanism's
+value - neither attempted this round.
