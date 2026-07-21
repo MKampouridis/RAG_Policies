@@ -40,6 +40,24 @@ TARGETED_WIDENING_ENABLED = False
 WIDE_RERANK_POOL_SIZE = 100
 FRAGMENTATION_THRESHOLD = 1
 
+# Phase 4, experiment 1 (external code review round 2, 2026-07-21, Fable 5):
+# identity-enriched passages AT RERANK TIME ONLY, not re-embedding. J2
+# (eval/report.md, "Identity-first round") tried enriching chunk_header with
+# the same J1 identity record and re-embedding - regressed RoA 70%->60%
+# despite the identity data itself being locally effective (MRR rose),
+# because re-embedding moved ~450 OTHER documents' embeddings corpus-wide
+# (a side effect of changing the indexed text, unrelated to whether the
+# identity data helps), silently flipping unrelated hit->miss turns. This
+# targets the same identity-data hypothesis through a channel that
+# structurally cannot cause that: only the reranker's passage TEXT changes,
+# for the already-small pool of candidates already retrieved - no embedding
+# in the vector store is touched, so corpus-wide displacement is impossible
+# by construction, not just "wasn't observed this time." MaxSim/cross-encoder
+# scoring can only reward added header tokens the query itself contains -
+# irrelevant identity data added to an irrelevant candidate can't newly
+# outrank a relevant one on tokens the query doesn't mention.
+IDENTITY_ENRICHED_RERANK_ENABLED = False
+
 # Idea 1 (cached ColBERT embeddings, see eval/report.md "Code review round"):
 # once build_colbert_index.py has run, reuse each candidate's precomputed
 # token embedding (looked up by (source_url, chunk_index), which survives
@@ -69,13 +87,46 @@ def _get_cross_encoder():
     return _cross_encoder
 
 
+def _identity_suffix(meta: dict) -> str:
+    """J1 identity fields (programme/department/partner institution/awards/
+    aliases) not already in the stored chunk_header, formatted the same way
+    build_chunk_header() does for consistency with the J2 attempt this is
+    deliberately NOT repeating the mistake of (see
+    IDENTITY_ENRICHED_RERANK_ENABLED's comment above) - empty string when no
+    identity record exists for this document (most policy documents), which
+    is the common case and must be a no-op, not an error."""
+    from src.ingest import _load_doc_identity
+
+    identity = _load_doc_identity(meta.get("source_url", ""))
+    if not identity:
+        return ""
+    parts = []
+    if identity.get("programme_name"):
+        parts.append(f"programme: {identity['programme_name']}")
+    if identity.get("department"):
+        parts.append(f"department: {identity['department']}")
+    if identity.get("partner_institution"):
+        parts.append(f"partner institution: {identity['partner_institution']}")
+    if identity.get("awards"):
+        parts.append(f"awards: {', '.join(identity['awards'])}")
+    if identity.get("aliases"):
+        parts.append(f"also known as: {', '.join(identity['aliases'])}")
+    return " | ".join(parts)
+
+
 def _passages(pool_docs: list[str], pool_metas: list[dict]) -> list[str]:
     # score against header+text, not the bare stored chunk - the document
     # identity (degree length, department, year) that actually disambiguates
     # near-identical RoA siblings lives only in chunk_header (prepended at
     # embedding time, never stored in `documents`); without it the reranker
     # sees strictly less signal than the embedder already had
-    return [f"{meta.get('chunk_header', '')}\n{doc}" for doc, meta in zip(pool_docs, pool_metas)]
+    passages = [f"{meta.get('chunk_header', '')}\n{doc}" for doc, meta in zip(pool_docs, pool_metas)]
+    if IDENTITY_ENRICHED_RERANK_ENABLED:
+        passages = [
+            f"{p}\n{suffix}" if (suffix := _identity_suffix(meta)) else p
+            for p, meta in zip(passages, pool_metas)
+        ]
+    return passages
 
 
 def _rerank_cross_encoder(query: str, pool_docs: list[str], pool_metas: list[dict], top_n: int) -> list[int]:
@@ -95,6 +146,14 @@ def _rerank_colbert(query: str, pool_docs: list[str], pool_metas: list[dict], to
     cached = colbert_index.get_cached_embeddings_by_meta(pool_metas) if USE_CACHED_COLBERT_EMBEDDINGS else None
     if cached is None:
         cached = [None] * len(pool_metas)
+    if IDENTITY_ENRICHED_RERANK_ENABLED:
+        # The cache is keyed by (source_url, chunk_index), computed offline
+        # from the non-enriched passage - stale, not just unavailable, for
+        # any candidate _passages() actually appended an identity suffix to.
+        # Force a cache miss for exactly those (most candidates have no
+        # identity record and are genuinely unaffected, so still benefit
+        # from the cache) rather than disabling caching wholesale.
+        cached = [None if _identity_suffix(meta) else c for c, meta in zip(cached, pool_metas)]
     to_encode = [i for i, c in enumerate(cached) if c is None]
     fresh = iter(model.encode([passages[i] for i in to_encode], is_query=False)) if to_encode else iter([])
     d_emb = [c if c is not None else next(fresh) for c in cached]
