@@ -1545,7 +1545,7 @@ Four open items after Phases 1-5: (1) fix the `_is_faithful_rewrite()` distant-r
 (2) investigate the genuine retrieval-pipeline miss; (3) the deferred architectural direction
 (hierarchical retrieval / boilerplate dedup); (4) a third reviewer round.
 
-### Item 1: faithful-rewrite fix (kept - see regression eval below for the verdict)
+### Item 1: faithful-rewrite fix - KEPT (pure improvement, zero regression)
 
 Excluded conversation-reference scaffolding (`_REFERENTIAL_WORDS`: "back", "earlier", "first",
 "asked"...) from the original's word set in the overlap check. Verified the exact Phase 5 failing
@@ -1557,6 +1557,19 @@ wrong-document hallucination ("MRes Government programme... Government departmen
 factually correct answer ("Postgraduate Diploma Periodontology... Health and Social Care
 department"). Strict hit@6 on that turn is still a miss, but only because of the separate
 sibling-confusion problem in items 2/3, not the contextualizer.
+
+**Full 80-turn regression eval (`faithfulfix_regression`, `RAG_DETERMINISTIC=1`)**: 0 gained / 0
+lost vs `current_prod_deterministic`, headline numbers byte-identical (Policy 100.0%/0.87, RoA
+62.5%/0.40, overall 81.2%/0.63, answer score 3.84). Critically, **0/40 follow-up retrieval queries
+differ** from baseline - on the standard 40-question set the guard never once behaved differently,
+because none of its follow-ups are distant-reference questions that hit the blind spot. So the fix
+is a pure improvement: measurably helps the distant-reference case (a real hallucination-to-correct
+-answer flip on the multi-turn probe), provably zero effect on everything else. This is itself the
+point - the bug lives in a conversational regime the single-follow-up sets structurally never
+construct, which is exactly why building the multi-turn probe (Phase 5) was necessary to find it.
+Kept in production - the first substantive retrieval-path change this session to survive its eval
+(every Phase 4 experiment was reverted), and it survived precisely because it's a targeted
+correctness fix for a real bug, not a speculative retrieval-signal tweak.
 
 ### Item 2: the genuine retrieval-pipeline miss - it's the same sibling confusion
 

@@ -85,6 +85,7 @@ on the same noise-free footing.
 | **`current_prod_deterministic` (= current production, `RAG_DETERMINISTIC=1`)** | **100.0% / 0.87** | **62.5% / 0.40** | **81.2% / 0.63** | **3.84** |
 | `identity_rerank_only` (rejected — asymmetric enrichment dilution) | 100.0% / 0.83 | 57.5% / 0.43 | 78.8% / 0.63 | 3.56 |
 | `home_institution_tiebreak` (rejected — null result, mechanism never fired) | 100.0% / 0.87 | 62.5% / 0.40 | 81.2% / 0.63 | 3.84 |
+| **`faithfulfix_regression` (= current production, faithful-rewrite fix kept)** | **100.0% / 0.87** | **62.5% / 0.40** | **81.2% / 0.63** | **3.84** |
 
 J-round note: `j6_disclose_ambiguity` changes NO retrieval code (it appends a source-naming
 disclosure to answers when the top-6 is family-fragmented), so its hit@6 deltas vs
