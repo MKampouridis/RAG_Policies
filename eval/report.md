@@ -1367,3 +1367,62 @@ mandatory broke 45 documents' correct family grouping to guard against a case th
 currently exist in this corpus (`east15-25.pdf`/`east15-23.pdf`, the concrete example raised,
 already group correctly under the existing regex). Left as-is, documented inline in `docid.py` for
 future reference.
+
+### Phase 4, experiment 1: identity-enriched rerank passages - evaluated, rejected
+
+Fable 5's proposed answer to "have we hit a ceiling": J2 (eval/report.md, "Identity-first round")
+enriched `chunk_header` with the J1 per-document identity record (programme name, department,
+partner institution, awards, aliases) and re-embedded - regressed RoA 70%->60% despite the
+identity data itself being locally effective (MRR rose), because re-embedding moved ~450 *other*
+documents' embeddings corpus-wide, a side effect of changing indexed text unrelated to whether the
+identity data helps. Fable 5's version enriches only the reranker's passage text for the
+already-small candidate pool - no embedding in the vector store is touched, so corpus-wide
+displacement is structurally impossible, not just "wasn't observed this time." Implemented in
+`src/rerank.py` (`_identity_suffix()`, reusing the existing `_load_doc_identity()` helper),
+`IDENTITY_ENRICHED_RERANK_ENABLED` flag. Also fixed a stale-cache bug this change would otherwise
+introduce (the ColBERT embedding cache is keyed by chunk identity, not content - enriching a
+candidate's passage without invalidating its cache entry would score it against the wrong,
+pre-enrichment embedding; `_rerank_colbert()` now forces a cache miss only for candidates that
+actually got a non-empty suffix).
+
+**Full 80-turn eval - net regression, rejected:**
+
+| | Policy hit@6/MRR | RoA hit@6/MRR | Overall hit@6/MRR | Answer score |
+|---|---|---|---|---|
+| `current_prod_deterministic` (baseline) | 100.0% / 0.87 | 62.5% / 0.40 | 81.2% / 0.63 | 3.84 |
+| `identity_rerank_only` (rejected) | 100.0% / 0.83 | 57.5% / 0.43 | 78.8% / 0.63 | 3.56 |
+
+Flip analysis: 4 gained / 6 lost (net -2). Gained `roa-ug-4yr-year-1-rules.pdf` [follow-up],
+`roa-ug-integrated-masters-4yr-year-1.pdf` [primary], `ug-grad-cert-year-1.pdf` [follow-up],
+`mscperiodontology_25.pdf` [follow-up] - notably, 3 of these 4 gains are exactly the turns Phase
+1's determinism work had identified as real (non-noise) losses vs `j6_disclose_ambiguity`,
+suggesting the identity signal genuinely helps some sibling-confusion cases. But lost
+`east15-25.pdf` [follow-up], `msc-physiotherapy-25.pdf` [primary], `mba-25.pdf` [primary],
+`pgt-credit-framework-25.pdf` [primary], `masters-25.pdf` [primary], and
+`integrated-phd-roa-model-a-25.pdf` [primary] (the exact document the `is_current` fix targeted,
+hitting cleanly in every run since) - 5 of these 6 losses on primary turns.
+
+**Root-cause investigation** (checked the actual J1 identity records for the lost documents, not
+just the retrieval output): enrichment isn't neutral across candidates. `masters-25.pdf` and
+`pgt-credit-framework-25.pdf` are generic PGT "framework" documents that don't belong to any one
+specific programme - their identity records are thin-to-empty (`masters-25.pdf`'s is just
+`{"awards": ["MSc"]}`, everything else blank). Their competitors in the pool
+(`mres-gov-25.pdf`: full `programme_name`, `department`, `aliases` including "government MRes")
+have rich records. On a generically-worded query ("minimum overall weighted average... to pass a
+Master's degree"), the rich sibling's newly-added text picks up semantic proximity to the query
+that its old passage didn't have, raising its rerank score - while the correct-but-generic
+document gets essentially no boost, since it has almost nothing to enrich with. The correct
+document doesn't get pushed down because it's wrong; it gets diluted because it's generic in a
+corpus where "generic" and "programme-specific" documents now compete on structurally uneven
+footing once enrichment is added.
+
+This is a different failure mechanism than every previous "adding depth/channels dilutes marginal
+hits" rejection (Idea 2, Idea 4, J0b) - those diluted via RRF fusion math (more candidate lists,
+same document, lower fused rank); this dilutes via asymmetric content enrichment (same candidate
+list, but some candidates get more new signal than others, unrelated to relevance). Reverted
+(`IDENTITY_ENRICHED_RERANK_ENABLED = False`), mechanism documented inline in `src/rerank.py`. A
+real fix would need to gate enrichment on relative fairness within the pool (e.g. only enrich when
+multiple pool candidates have identity records, so a lone generic document isn't structurally
+disadvantaged) rather than enriching unconditionally whenever data happens to exist - not
+attempted this round; the two remaining Phase 4/5 items (home-institution tie-break, multi-turn
+conversation probe) were prioritized instead.
