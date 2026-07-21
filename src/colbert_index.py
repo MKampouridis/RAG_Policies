@@ -111,7 +111,18 @@ def query(text: str, n_results: int, current_only: bool = False, year: str = "")
     _load()
     model = get_model()
     q_emb = model.encode([text], is_query=True)
-    raw = _retriever.retrieve(queries_embeddings=q_emb, k=min(n_results * 6, len(_ids)))
+    k = min(n_results * 6, len(_ids))
+    # Defensive per-query clamp (external code review, 2026-07-21): EF_SEARCH
+    # was a fixed constant with comfortable headroom over today's k=288 max,
+    # but headroom isn't a guarantee - a future n_results/pool_size increase
+    # could silently reopen the exact "queryEf must be >= k" crash this was
+    # first raised to fix. Bumping the live index's ef_search here (a
+    # query-time-only attribute, not baked into the persisted graph, so this
+    # is always safe) guarantees k is covered regardless of what future pool
+    # sizing looks like.
+    if k > _index.ef_search:
+        _index.ef_search = k
+    raw = _retriever.retrieve(queries_embeddings=q_emb, k=k)
 
     hits = []
     for r in raw[0]:

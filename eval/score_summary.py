@@ -17,7 +17,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from src.docid import document_family, normalize_year
+from src.docid import document_family, effective_year
 
 MANIFEST_PATH = Path(__file__).resolve().parent.parent / "data" / "manifest.json"
 
@@ -28,9 +28,17 @@ _dated_families: set[str] = set()
 
 
 def _load_years() -> None:
+    """Uses effective_year(), not raw normalize_year() - external code review
+    (2026-07-21) found this module had drifted from production's own
+    currency logic (reembed.py/src/ingest.py switched to effective_year() to
+    fix a real is_current bug earlier the same day; this file was missed).
+    Matters concretely for the two PGT "January starts" families the bug
+    affected - without this, a lenient-match check could still credit a
+    retrieved document as "the current year" using the same mis-extracted
+    year that caused the original bug."""
     manifest = json.loads(MANIFEST_PATH.read_text())
     for doc in manifest["documents"].values():
-        year = normalize_year(doc.get("academic_year"))
+        year = effective_year(doc["url"], doc.get("academic_year"))
         _year_by_url[doc["url"]] = year
         if year:
             _dated_families.add(document_family(doc["url"]))

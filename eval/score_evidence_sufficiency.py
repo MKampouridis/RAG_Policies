@@ -49,7 +49,17 @@ def evidence_sufficient(top_urls: list[str], keyphrases: list[str], manifest: di
 
 def main():
     results = json.loads(RESULTS_PATH.read_text())
-    questions = {q["source_url"]: q for q in json.loads(QUESTIONS_PATH.read_text())}
+    # A plain {source_url: question} dict silently drops all but the last
+    # question if a future set ever has 2+ questions on the same document
+    # (external code review, 2026-07-21) - keep a queue per URL instead and
+    # consume in order, so duplicates match up correctly rather than one
+    # overwriting another. Safe for both old results files (which could have
+    # gaps from the pre-Phase-1 run_eval.py silently dropping failed
+    # questions - entries are dropped, never reordered, so per-URL order is
+    # preserved) and new ones (guaranteed complete, same reasoning applies).
+    questions_by_url: dict[str, list[dict]] = {}
+    for q in json.loads(QUESTIONS_PATH.read_text()):
+        questions_by_url.setdefault(q["source_url"], []).append(q)
     manifest = json.loads(MANIFEST_PATH.read_text())["documents"]
 
     stats = {"overall": [0, 0, 0], "rules_of_assessment": [0, 0, 0], "policy": [0, 0, 0]}
@@ -57,9 +67,10 @@ def main():
     upgraded = []  # strict miss but evidence-sufficient
 
     for item in results:
-        q = questions.get(item["source_url"])
-        if not q:
+        queue = questions_by_url.get(item["source_url"])
+        if not queue:
             continue
+        q = queue.pop(0)
         for tk, kp_key in [("primary", "keyphrases"), ("follow_up", "follow_up_keyphrases")]:
             turn = item[tk]
             keyphrases = q.get(kp_key) or []

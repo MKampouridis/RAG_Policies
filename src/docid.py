@@ -41,7 +41,30 @@ def document_family(source_url: str) -> str:
     than path-based because "current" and "previous-years" archives use
     different folder structures but keep the same filename. Heuristic, not
     exact - good enough to stop an older year's chunk from crowding out the
-    current year's in the top-k."""
+    current year's in the top-k.
+
+    The leading `[-_]?` in _FAMILY_YEAR_SUFFIX_RE is deliberately optional,
+    not a bug left unfixed: external code review (2026-07-21) flagged that
+    an optional separator lets a bare-digit identity token that isn't a year
+    (e.g. "east15" in "east15-25.pdf", where "15" names the institution -
+    East 15 Acting School - not an edition) get swallowed into the year
+    match, and hypothesized this could merge two genuinely different
+    document families that happen to share a base name plus bare digits.
+    Tried making the separator mandatory and audited the corpus-wide effect
+    before shipping (same methodology as the is_current fix above): it
+    changed 45 documents' computed family, and the audit showed Essex's
+    DOMINANT real filename convention is exactly a bare 2-digit year suffix
+    with no separator ("ug-dip-he22.pdf", "variations22.pdf", "mlang20.pdf",
+    etc, confirmed via manifest inspection to be genuine same-document
+    yearly reissues, not distinct documents) - making the separator
+    mandatory broke correct grouping for dozens of real families to guard
+    against a hypothetical (an "east16" sibling) that doesn't currently
+    exist in this corpus. Reverted; left optional. Real latent risk, but a
+    proper fix needs to distinguish "bare year suffix" from "bare
+    identity-bearing digits" (e.g. a small denylist of known non-year
+    prefixes like "east15"), which isn't worth building for a currently
+    zero-impact case - revisit only if a real cross-family collision like
+    this is ever actually observed."""
     filename = source_url.rsplit("/", 1)[-1]
     filename = _FAMILY_YEAR_SUFFIX_RE.sub(".pdf", filename)
     return filename.lower()

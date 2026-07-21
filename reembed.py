@@ -66,6 +66,35 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
     return flags
 
 
+def _patch_colbert_snapshot(flags: dict[str, bool], year_norms: dict[str, str]) -> int:
+    """data/colbert_docs.json is a frozen metadata snapshot taken at
+    build_colbert_index.py time (external code review, 2026-07-21: found
+    this snapshot still carried the pre-fix is_current for the 109 chunks
+    patched by the is_current bug fix earlier this session - Chroma had the
+    correct flags, the ColBERT index's own copy didn't, since this function
+    only ever updated Chroma). No-ops (returns 0) if the index hasn't been
+    built - nothing to patch, and this must never be the thing that requires
+    building it. Metadata-only, same as the Chroma update above - the token
+    embeddings themselves don't depend on currency/year."""
+    path = Path("data/colbert_docs.json")
+    if not path.exists():
+        return 0
+    snapshot = json.loads(path.read_text())
+    updated = 0
+    for meta in snapshot["metadatas"]:
+        url = meta.get("source_url", "")
+        if url not in flags:
+            continue
+        is_current, year_norm = flags[url], year_norms[url]
+        if meta.get("is_current") != is_current or meta.get("academic_year_norm") != year_norm:
+            meta["is_current"] = is_current
+            meta["academic_year_norm"] = year_norm
+            updated += 1
+    if updated:
+        path.write_text(json.dumps(snapshot, ensure_ascii=False))
+    return updated
+
+
 def recompute_current_flags() -> None:
     """Update is_current and academic_year_norm in chunk metadata only - no
     re-embedding. Run after any incremental crawl (run_ingest.py does so
@@ -104,6 +133,10 @@ def recompute_current_flags() -> None:
                        for _, meta in stale],
         )
         updated += len(stale)
+
+    colbert_updated = _patch_colbert_snapshot(flags, year_norms)
+    if colbert_updated:
+        print(f"recompute_current_flags: also patched {colbert_updated} chunks in data/colbert_docs.json")
 
     if updated:
         bump_corpus_version()
