@@ -11,6 +11,17 @@ unless noted. `CHUNK_WORDS=300`/`CHUNK_OVERLAP_WORDS=50` through `postfix4`;
 changed to **175/30** at `stage0_chunks` (a later improvement round) and
 unchanged since.
 
+All passes through `current_prod_verify` ran with Ollama's default (unset)
+temperature/seed - the ~1-2 turn "noise floor" mentioned throughout this
+file and report.md applied to every one of them. Starting at
+`current_prod_deterministic` (external code review round 2, 2026-07-21),
+`RAG_DETERMINISTIC=1` (src/llm.py) pins temperature=0/seed=42/num_ctx=8192,
+confirmed via a byte-for-byte-identical repeat run to eliminate run-to-run
+noise entirely. Set this env var for both `run_server.py` and
+`eval/run_eval.py` for any future pass intended as a headline-number
+comparison - otherwise it's not comparable to `current_prod_deterministic`
+on the same noise-free footing.
+
 | Experiment | Embed model | Chunk headers | Text cleaning | `is_current` filter | Recency dedupe | Hybrid BM25 | Reranker | Year-mention handling | Results file |
 |---|---|---|---|---|---|---|---|---|---|
 | `baseline` | nomic-embed-text | no | no | no | no | no | no | n/a | `results_baseline.json` |
@@ -70,7 +81,8 @@ unchanged since.
 | `j6_disclose_ambiguity` (superseded) | 100.0% / 0.87 | 67.5% / 0.43 | 83.8% / 0.65 | 3.86 |
 | `j7_keyphrase_prompt` (rejected) | 100.0% / 0.91 | 62.5% / 0.40 | 81.2% / 0.66 | 3.80 |
 | `idea2_colbert_firststage` (rejected — RRF dilution) | 100.0% / 0.90 | 65.0% / 0.43 | 82.5% / 0.66 | 3.84 |
-| **`current_prod_verify` (= current production)** | **100.0% / 0.92** | **62.5% / 0.40** | **81.2% / 0.66** | **3.99** |
+| `current_prod_verify` (superseded — non-deterministic) | 100.0% / 0.92 | 62.5% / 0.40 | 81.2% / 0.66 | 3.99 |
+| **`current_prod_deterministic` (= current production, `RAG_DETERMINISTIC=1`)** | **100.0% / 0.87** | **62.5% / 0.40** | **81.2% / 0.63** | **3.84** |
 
 J-round note: `j6_disclose_ambiguity` changes NO retrieval code (it appends a source-naming
 disclosure to answers when the top-6 is family-fragmented), so its hit@6 deltas vs

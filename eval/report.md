@@ -1236,3 +1236,131 @@ concern.
 
 `current_prod_verify` is now the reference "current production" row in `EXPERIMENTS.md`,
 superseding `j6_disclose_ambiguity`.
+
+## External code review round 2 (2026-07-21): four independent LLM reviews, verified and acted on
+
+Sent the project (public GitHub repo, full history in this file) to four LLM tools for a second
+review round, asking for code review, code/methodology improvement suggestions, a ceiling
+assessment, and an opinion on whether a new eval question set was worth building. **One of the
+four (DeepSeek) fabricated its entire review** - every file it claimed to read (`src/retrieval/`,
+`src/metadata_manager.py`, `eval/harness.py`, `eval/judge.py`, `src/config.yaml`, etc.) does not
+exist in this repo; it never actually cloned or read the code and invented a plausible-looking
+fictional structure instead. Discarded entirely - none of its file/line-level claims are usable,
+though a couple of its generic points happened to overlap with the other three reviews' verified
+findings. Grok's and Fable 5's reviews referenced real files and were spot-checked against the
+actual code before acting on anything; all checked claims were accurate. Gemini gave strategic/
+methodology feedback without file-specific claims, so there was nothing to hallucination-check
+there.
+
+### Phase 1: fix eval determinism and the double-retrieval-invocation bug
+
+Grok, Fable 5, and (genuinely, despite the fabricated file citations) DeepSeek all independently
+flagged the same root issue: no Ollama call site anywhere set `temperature`/`seed`, so the
+project's own documented "~1-2 turn noise floor" wasn't inherent - it was optional. Fable 5 also
+found something none of the others caught: `eval/run_eval.py`'s `ranked_retrieval()` called
+`retrieve()` a second, independently-sampled time to score retrieval quality, separate from the
+`retrieve()` call inside the live app's `answer()` that actually produced the answer - on
+follow-up turns (where the contextualizer's rewrite is a real LLM sample) these two calls could
+diverge, meaning the eval could score a retrieval that wasn't the one the answer was actually
+generated from.
+
+Both fixed together: `src/llm.py`'s `chat()` gained an `options` parameter; `RAG_DETERMINISTIC=1`
+pins `temperature=0/seed=42/num_ctx=8192` by default for any call that doesn't pass explicit
+options, covering the contextualizer, generator, and judge from one change. `src/rag.py`'s
+`answer()` now returns its own `retrieval_query`/`ranked_top_urls` instead of discarding them, the
+API surfaces them, and `run_eval.py` scores those directly - one `retrieve()` call per turn, not
+two. Also fixed a bug hit firsthand this session: a mid-run server crash had silently dropped
+16/40 questions from `current_prod_verify`'s results with no error, just a smaller "Wrote N
+results" count nobody would notice without checking. `run_eval.py` now retries once, hard-fails
+loudly on a second failure, and asserts the final count matches `len(questions)`.
+
+**Verification, in order of rigor:**
+1. Two-question spot check (identical `retrieval_query`, `ranked_top_urls`, and answer text across
+   two independent calls to the same question under `RAG_DETERMINISTIC=1`) - passed.
+2. 3-question smoke test through the real `eval_one()` - passed.
+3. Full 80-turn run (`current_prod_deterministic_run1`).
+4. A second full 80-turn run on identical code (`current_prod_deterministic_run2`), diffed
+   programmatically against run1 across all 80 turns' answer text, retrieval query, retrieved
+   URLs, and judge score: **0 differences.** Full determinism confirmed at scale, not just on a
+   handful of spot-checked questions.
+
+**Headline numbers (now the confirmed, noise-free reference)**:
+
+| | Policy hit@6/MRR | RoA hit@6/MRR | Overall hit@6/MRR | Answer score |
+|---|---|---|---|---|
+| `current_prod_deterministic` (run1 = run2, exact) | 100.0% / 0.87 | 62.5% / 0.40 | 81.2% / 0.63 | 3.84 |
+
+RoA hit@6 (62.5%) exactly matches `current_prod_verify`'s earlier non-deterministic number, not
+`j6_disclose_ambiguity`'s 67.5% - initial evidence that 62.5% was already the true, stable value
+and the "regression" investigated earlier in this document was substantially a measurement
+artifact, not a real code regression.
+
+**But the full story needed one more step.** Diffing the deterministic run directly against
+`j6_disclose_ambiguity` (not `current_prod_verify`) found a *different* net -2 (0 gained, 2 lost:
+`roa-ug-4yr-year-1-rules.pdf` and `ug-grad-cert-year-1.pdf`, both follow-up turns) than the
+non-deterministic comparison had shown. Investigated both properly rather than writing this off as
+noise, since "noise" was the exact assumption this work was supposed to stop taking on faith:
+
+- `ug-grad-cert-year-1.pdf`: the deterministic contextualizer rewrote the follow-up as "...can
+  still be awarded **the certificate**..."; the old `j6_disclose_ambiguity` run's rewrite (a
+  different, non-deterministic sample) said "...awarded **the Graduate Certificate**...". Dropping
+  "Graduate" cost exactly the identity-bearing word the corpus needs to disambiguate this document
+  from its many siblings (`ug_grad-dip-year-2.pdf`, `ug-grad-dip-year-1.pdf`, etc.) - the target
+  fell from rank 3 to out-of-pool entirely.
+- `roa-ug-4yr-year-1-rules.pdf`: similarly, the deterministic rewrite's phrasing shifted enough
+  that the candidate pool changed completely - `j6_disclose_ambiguity`'s pool was entirely 4-year
+  honours-degree siblings (target at rank 3); the deterministic run's pool was unrelated
+  integrated-masters/nursing documents, none from the right family at all.
+
+**This refines what "noise floor" actually meant.** It wasn't that hit@6 randomly wobbles - under
+a fixed seed it's now proven to be exactly 0. What's real is *seed sensitivity*: a fixed seed
+value is still an arbitrary choice, and different fixed seeds can produce different (but each
+internally reproducible) contextualizer rewrites for the same follow-up question - some
+better-specified, some worse. `seed=42` happened to land on a slightly weaker rewrite than
+whatever non-deterministic sample `j6_disclose_ambiguity` happened to draw for these 2 specific
+questions. This is a genuinely different, more precise finding than any of the four external
+reviews anticipated - they expected fixing determinism to cleanly settle "is the regression real,"
+and it did, but it also surfaced that determinism trades one kind of uncertainty (run-to-run
+variance) for another (seed-choice sensitivity) rather than eliminating uncertainty altogether.
+Not a regression to chase further - the underlying cause (contextualizer rewrite quality on
+follow-ups) is a known, already-tracked class of variance, and now it's at least fully traceable
+turn-by-turn instead of hand-waved as noise.
+
+`current_prod_deterministic` (run1) is now the reference "current production" row in
+`EXPERIMENTS.md`, superseding `current_prod_verify`. `RAG_DETERMINISTIC=1` should be set for any
+future eval run intended for headline-number comparison; leave it unset for normal day-to-day use
+of the live app (production traffic keeps natural sampling variation - determinism was never about
+changing what users experience, only about making evals trustworthy).
+
+### Phase 2 & 3: safe fixes and eval-harness upgrades from the same review round
+
+Verified-and-shipped, all confirmed against real code or corpus-wide data before landing (same
+"verify before shipping" discipline as the `is_current` fix):
+- `src/colbert_index.py`: `ef_search` now clamps dynamically (`max(current, k)`) per query
+  instead of relying on a fixed constant's headroom, closing the risk Fable 5 flagged - a future
+  `pool_size` increase could otherwise silently reopen the exact crash `EF_SEARCH=400` was raised
+  to fix.
+- `reembed.py`: `recompute_current_flags()` now also patches `data/colbert_docs.json` (the
+  ColBERT index's frozen metadata snapshot), not just live Chroma - Fable 5 caught that this had
+  already drifted stale after the `is_current` fix earlier the same day (109 chunks), since
+  nothing previously kept the two in sync. Patched live.
+- `eval/score_summary.py` / `eval/score_evidence_sufficiency.py`: fixed to use `effective_year()`
+  instead of stale `normalize_year()`, and to key questions by a per-URL queue instead of a flat
+  `{source_url: question}` dict that would silently collide if a future set ever has 2+ questions
+  on one document.
+- `eval/score_summary.py`: evidence-sufficient@6 (J5a) promoted from a one-off diagnostic script
+  to a standard column reported alongside strict/lenient hit@6 and answer-score mean/stdev for
+  every group - Fable 5's specific point that it's the number tracking what a user actually
+  experiences. Verified the integration reproduces the exact previously-documented J5a numbers
+  (RoA strict hit@6=70%, evidence_sufficient@6=87.5%) before trusting it.
+
+**Investigated and rejected**: Fable 5's proposed `document_family()` fix (make the year-suffix
+separator mandatory, to prevent a hypothetical cross-family merge like "east15"/"east16" siblings
+colliding). Corpus-wide audit (same methodology as the `is_current` fix) found this would be a net
+regression - Essex's dominant real filename convention is a *bare* 2-digit year suffix with no
+separator (`ug-dip-he22.pdf`, `variations22.pdf`, `mlang20.pdf`, confirmed via manifest inspection
+to be genuine same-document yearly reissues, not distinct documents) - making the separator
+mandatory broke 45 documents' correct family grouping to guard against a case that doesn't
+currently exist in this corpus (`east15-25.pdf`/`east15-23.pdf`, the concrete example raised,
+already group correctly under the existing regex). Left as-is, documented inline in `docid.py` for
+future reference.
