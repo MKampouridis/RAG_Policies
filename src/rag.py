@@ -185,6 +185,26 @@ _STOPWORDS = {
 }
 _WORD_RE = re.compile(r"[a-z0-9]+")
 
+# Conversation-reference / meta words: they point at PRIOR context ("going
+# back to the very first thing I asked...") rather than carrying the current
+# question's own topical content. A correct rewrite of a distant reference
+# NECESSARILY drops these and substitutes the resolved topic in their place,
+# so counting them in _is_faithful_rewrite's denominator penalizes exactly
+# the rewrites that did their job (Phase 5 multi-turn probe found this - a
+# fully-correct rewrite of "Back to the very first thing I asked about the
+# credit limit - which department administers that programme?" was rejected
+# at 27% overlap and fell back to the raw unresolved question, which then
+# retrieved a completely unrelated document; see eval/report.md "Phase 5").
+# Excluded from the ORIGINAL's word set in the faithfulness check only - a
+# hijack still shares ~zero of the current question's real TOPICAL words, so
+# stripping the scaffolding doesn't weaken hijack detection.
+_REFERENTIAL_WORDS = {
+    "about", "above", "again", "already", "asked", "asking", "back", "before", "discussed",
+    "earlier", "first", "going", "initial", "initially", "just", "mentioned", "now", "originally",
+    "point", "previous", "previously", "question", "raised", "said", "talked", "talking", "thing",
+    "things", "told", "very",
+}
+
 
 def _content_words(text: str) -> set[str]:
     return {w for w in _WORD_RE.findall(text.lower()) if len(w) >= 3 and w not in _STOPWORDS}
@@ -197,12 +217,19 @@ def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
     the transcript (observed live: asked about "Professional Doctorate
     Director", got back a rewrite about "CSEE programmes" from six turns
     earlier - a completely unrelated retrieval followed). A faithful rewrite
-    keeps most of the original's content words (replacing pronouns/references
-    with specifics); a hijacked one shares almost none of them. Short
-    questions with too few content words to judge are always trusted, since
-    a heavily-abbreviated legitimate follow-up ("how about an independent
-    chair?") can legitimately share little surface text with its expansion."""
-    original_words = _content_words(original)
+    keeps most of the original's TOPICAL content words (replacing pronouns/
+    references with specifics); a hijacked one shares almost none of them.
+
+    The overlap is measured over topical words only - conversation-reference
+    scaffolding (_REFERENTIAL_WORDS: "back", "earlier", "first", "asked"...)
+    is excluded, because a correct resolution of a distant reference drops
+    exactly those and substitutes the referenced topic, which the pre-Phase-5
+    version mistook for an unfaithful rewrite. Short questions with too few
+    topical words left to judge are always trusted, same as before, since a
+    heavily-abbreviated or heavily-referential legitimate follow-up ("how
+    about an independent chair?", "back to the first thing - who runs it?")
+    can't be judged by surface overlap at all and relies on the transcript."""
+    original_words = _content_words(original) - _REFERENTIAL_WORDS
     if len(original_words) < 3:
         return True
     overlap = original_words & _content_words(rewritten)

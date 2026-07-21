@@ -1,0 +1,650 @@
+[
+  {
+    "conversation_id": "mt1_simple_switch",
+    "description": "2-topic conversation, one clean switch, no return - baseline case",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "retrieval_query": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf"
+        ],
+        "answer": "Under the University of Essex Whistleblowing Policy, concerns or complaints can be made if they involve serious wrongdoing that has an impact beyond the individual making the disclosure. Specifically:\n\n- The concern must be in the public interest.\n- It should tend to show malpractice.\n- Disclosure is made in accordance with these procedures.\n\nThe policy protects individuals who make such disclosures from detriment provided certain conditions are met, as detailed in sections 9 and 13 of the document. Personal matters or financial/business decisions not involving malpractice are outside the scope of this policy. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 35.3
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "continuation",
+        "question": "Who can someone raise that concern with?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "retrieval_query": "Who can someone raise a concern or complaint with under the University of Essex whistleblowing policy?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf"
+        ],
+        "answer": "According to the University of Essex Whistleblowing Policy, concerns or complaints should be raised in the following ways:\n\n- For employees, the initial step is to raise any concerns with their line manager or formally with the University Secretary.\n- For students, if the concern is not personal and in the public interest, it must be raised under the Code of Student Conduct or the Student Concerns and Complaints Procedure. Individuals unsure about which procedure to use should contact People & Culture.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf]",
+        "keyphrase_coverage": null,
+        "elapsed_s": 22.3
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "switch",
+        "question": "What constitutes plagiarism according to the academic offences procedure?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "retrieval_query": "What constitutes plagiarism according to the University of Essex academic offences procedure?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf"
+        ],
+        "answer": "According to the University of Essex Academic Offences Procedure, plagiarism is defined as using or copying someone else's work (whether written, printed, or in any other form) without proper acknowledgment in any assignment, examination, or other assessed work. An example provided is copying a paragraph from a book without citing the original author.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 18.2
+      },
+      {
+        "turn_index": 4,
+        "turn_type": "continuation",
+        "question": "What penalties can be applied for that?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "retrieval_query": "What penalties can be applied for plagiarism according to the University of Essex Academic Offences Procedure?",
+        "rank": 2,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf"
+        ],
+        "answer": "For plagiarism, the following penalties may be applied by Academic Offences Committees:\n\n- **Penalty 2:** The Examiners shall be instructed to consider the non-plagiarised sections of the final submission, for the degree for which it has been submitted.\n- **Penalty 3:** No longer eligible for full award: The Examiners shall be instructed to consider the non-plagiarised sections of the final submission for a lesser award only.\n- **Penalty 4:** Required to withdraw with no qualification awarded.\n\nThese penalties apply specifically to allegations that have occurred prior to the student's final assessment. Sources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf]",
+        "keyphrase_coverage": null,
+        "elapsed_s": 22.6
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt2_switch_and_return",
+    "description": "topic A, switch to B, explicit return to A - tests whether the contextualizer resolves the return to the correct distant topic, not the intervening one",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "What does the Fitness to Study policy address in terms of student behavior?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+        "retrieval_query": "What does the Fitness to Study policy address in terms of student behavior?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf"
+        ],
+        "answer": "The Fitness to Study policy addresses situations where a student's health, mental health, or behavior causes concern and impacts their ability to engage with studies or disrupts others. This includes behaviors within accommodation that affect other students or staff.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf]",
+        "keyphrase_coverage": 0.5,
+        "elapsed_s": 13.5
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "switch",
+        "question": "What does the term 'Capped Mark' mean in the undergraduate rules of assessment?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "retrieval_query": "What does the term 'Capped Mark' mean in the undergraduate rules of assessment?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/msc-ot_24-v1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf"
+        ],
+        "answer": "In the context of the University of Essex's undergraduate rules of assessment for the academic year 2025-26, a Capped Mark when reassessment is offered means that the maximum mark that will be recorded for the Module Aggregate is 40. The actual mark achieved will still be used to determine whether the assessment has been passed and will appear on your transcript.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 19.6
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "return",
+        "question": "Going back to my earlier question about student behavior concerns - who initiates that process?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+        "retrieval_query": "Who initiates the process for addressing student behavior concerns under the Fitness to Study policy?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf"
+        ],
+        "answer": "The process can be initiated by staff members if they have concerns about a student's health, mental health, or behavior that impacts their ability to study. Staff may approach the student directly with any concerns, seeking guidance from the Student Wellbeing and Inclusivity Service on how best to do this confidentially.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf]",
+        "keyphrase_coverage": null,
+        "elapsed_s": 16.5
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt3_comparison",
+    "description": "ask about A, then explicitly compare to B - requires shifting focus while retaining awareness of A",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf"
+        ],
+        "answer": "The maximum number of credits that can be carried forward for progression in the MSc Periodontology programme is 30 credits.\n\nSources:\n- [mscperiodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf) (2025-26 academic year)\n- [pg_dip_periodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf) (2025-26 academic year)",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 19.4
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "comparison",
+        "question": "How does that compare to the minimum pass mark for East 15 Acting School's Masters programmes?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "retrieval_query": "What is the minimum pass mark required for progression in East 15 Acting School's Masters programmes?",
+        "rank": 3,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf"
+        ],
+        "answer": "The pass mark for all modules of the Masters degree at East 15 Acting School is 50.\n\nSources:\n- [east15_24.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf) (2024-25 academic year)\n- [east15-mfa-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf) (2025-25 academic year)\n- [east15-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf) (2025-26 academic year)",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 23.7
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "continuation",
+        "question": "And what's the equivalent progression credit limit for that East 15 programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "retrieval_query": "What is the equivalent progression credit limit for East 15 Acting School's Masters programmes?",
+        "rank": 6,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf"
+        ],
+        "answer": "For the MFA Acting programme at East 15 Acting School, the maximum number of credits that can be carried forward for progression is 40 credits.\n\nSources:\n- [east15-mfa-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf) (2025-26 academic year)\n- [east15-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf) (2025-26 academic year)",
+        "keyphrase_coverage": null,
+        "elapsed_s": 21.5
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt4_long_multi_switch",
+    "description": "3 topics with an explicit return to the FIRST after 2 intervening switches - longer-distance reference resolution",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "retrieval_query": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf"
+        ],
+        "answer": "Under the University of Essex Whistleblowing Policy, concerns or complaints can be made if they involve serious wrongdoing that has an impact beyond the individual making the disclosure. Specifically:\n\n- The concern must be in the public interest.\n- It should tend to show malpractice.\n- Disclosure is made in accordance with these procedures.\n\nThe policy protects individuals who make such disclosures from detriment provided certain conditions are met, as detailed in sections 9 and 13 of the document. Personal matters or financial/business decisions not involving malpractice are outside the scope of this policy. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 8.0
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "switch",
+        "question": "How long do MBA students have to complete their studies at Essex?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+        "retrieval_query": "How long do MBA students have to complete their studies at Essex?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf"
+        ],
+        "answer": "MBA students at the University of Essex have up to 5 years to complete their studies, as per the rules set by accrediting bodies. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf]\n\n_Note: this answer is based primarily on \"mba-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 15.1
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "switch",
+        "question": "What reassessment opportunities exist at the end of Year One for the Four-Year Honours Degree?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "retrieval_query": "What reassessment opportunities exist at the end of Year One for students in a Four-Year Honours Degree at the University of Essex?",
+        "rank": 2,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf"
+        ],
+        "answer": "For students in the Four-Year Honours Degree program starting in academic years 2023-24, 2024-25, and 2022-23 (as detailed in the provided documents), reassessment opportunities at the end of Year One include:\n\n- Reassessment Opportunities at the End of the Year: Students have the opportunity to resit assessments if they do not pass initially.\n\nThese policies apply generally across the specified academic years for the four-year degree program. Sources: [source_url: roa-ug-4yr-year-1-rules.pdf, roa-ug-4yr-year-2-rules.pdf, roa-ug-4yr-year-3-rules.pdf]\n\n_Note: this answer is based primarily on \"roa-ug-4yr-year-3-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": 0.5,
+        "elapsed_s": 21.5
+      },
+      {
+        "turn_index": 4,
+        "turn_type": "return",
+        "question": "Earlier you mentioned the whistleblowing policy - is there a time limit on raising a concern under it?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "retrieval_query": "Is there a time limit for raising a concern under the University of Essex Whistleblowing Policy?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf"
+        ],
+        "answer": "There is no explicit mention of a specific time limit for raising concerns under the University of Essex Whistleblowing Policy in the provided documents. The policy focuses on protecting individuals who raise serious concerns that are in the public interest, but does not specify a deadline for making such disclosures.\n\nFor further clarity, you may want to contact People & Culture or refer to any specific guidelines within the document. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf]",
+        "keyphrase_coverage": null,
+        "elapsed_s": 18.5
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt5_return_to_second_of_three",
+    "description": "3 topics, return to the MIDDLE one (not the most recent, not the first) - the specific ambiguity class the real contextualizer-drift bug hit",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "What constitutes plagiarism according to the academic offences procedure?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "retrieval_query": "What constitutes plagiarism according to the academic offences procedure?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf"
+        ],
+        "answer": "According to the academic offences procedure, plagiarism is defined as using or copying someone else's work (whether written, printed, or in any other form) without proper acknowledgment in any assignment, examination, or other assessed work. This includes both intentional and negligent actions.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 13.7
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "switch",
+        "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf"
+        ],
+        "answer": "The maximum number of credits that can be carried forward for progression in the MSc Periodontology programme is 30 credits.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 18.8
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "switch",
+        "question": "What's the minimum pass mark for all modules in East 15 Acting School's Masters programmes?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "retrieval_query": "What is the minimum pass mark for all modules in East 15 Acting School's Masters programmes?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf"
+        ],
+        "answer": "The minimum pass mark for all modules in East 15 Acting School's Masters programmes is 50.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf]\n\n_Note: this answer is based primarily on \"east15-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 19.0
+      },
+      {
+        "turn_index": 4,
+        "turn_type": "return",
+        "question": "Going back to the periodontology question - does that credit limit apply the same way in Year 2 and Year 3?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "Does the 30-credit limit for carrying forward from Year 1 apply the same way in Year 2 and Year 3 for the MSc Periodontology programme?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-standard-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-standard-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-2.pdf"
+        ],
+        "answer": "According to the rules for the MSc Periodontology programme, students are permitted to progress to Year 2 or Year 3 while trailing a maximum of 30 credits. This means carrying forward the reassessment in up to 30 credits and undertaking it at the earliest opportunity offered by the School during the next year of study.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf]\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf]\n\n_Note: this answer is based primarily on \"mscperiodontology_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": null,
+        "elapsed_s": 22.8
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt6_roa_family_switch",
+    "description": "switch between two RoA documents in DIFFERENT families (glossary vs 4yr rules) that share generic assessment vocabulary - tests whether the switch is clean or drags terminology from the wrong document",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "retrieval_query": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree programme?",
+        "rank": 4,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-4.pdf"
+        ],
+        "answer": "The document does not specify detailed reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree programme. It provides a general framework but does not elaborate on specific procedures or options available at the end of Year One.\n\nSources:\n- [roa-ug-4yr-year-1-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf) (2025-26)\n- [roa-ug-4yr-year-2-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf) (2024-25)\n- [roa-ug-4yr-year-3-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf) (2023-24)\n- [roa-ug-4yr-year-4-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf) (2022-23)\n\n_Note: this answer is based primarily on \"roa-ug-mlang-year-2.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": 0.5,
+        "elapsed_s": 25.5
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "switch",
+        "question": "Separately, what does 'Capped Mark' mean in the glossary?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "retrieval_query": "What does 'Capped Mark' mean in the glossary?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf"
+        ],
+        "answer": "In the context provided, a Capped Mark refers to a maximum mark of 40 that can be recorded for a Module Aggregate when reassessment is offered. If you achieve a Module Mark below 50 through reassessment, only up to 40 will be recorded, but the actual mark achieved will still be used to determine whether the assessment has been passed and will appear on your transcript.\n\nSources:\n- [roa-ug-glossary.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf) (2025-26)",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 21.1
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "return",
+        "question": "Does a capped mark ever apply to that Year One reassessment I asked about earlier?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "retrieval_query": "Does a capped mark of 40 ever apply to the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree programme?",
+        "rank": 4,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/four_year_integrated_masters_21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-1.pdf"
+        ],
+        "answer": "In the context provided, there is no specific mention of a capped mark applying to the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree programme. The documents focus more on reassessments in later years and do not detail the exact procedures or marks for Year One reassessments.\n\nSources:\n- [roa-ug-4yr-year-1-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf) (2025-26)\n- [roa-ug-mlang-year-4.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-4.pdf) (2022-23)\n- [four_year_integrated_masters_21.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/four_year_integrated_masters_21.pdf) (2021-22)\n- [roa-ug-integrated-masters-5yr-year-1.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-1.pdf) (2025-26)\n\n_Note: this answer is based primarily on \"four-year-integrated-masters-22-v4.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": null,
+        "elapsed_s": 30.0
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt7_rapid_switches",
+    "description": "4 single-turn topics in a row, no follow-ups, no returns - stress test for whether rapid-fire topic changes confuse the contextualizer even without deep multi-turn history",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+        "retrieval_query": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing policy?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf"
+        ],
+        "answer": "Under the University of Essex Whistleblowing Policy, concerns or complaints can be made if they involve serious wrongdoing that has an impact beyond the individual making the disclosure. Specifically:\n\n- The concern must be in the public interest.\n- It should tend to show malpractice.\n- Disclosure is made in accordance with these procedures.\n\nThe policy protects individuals who make such disclosures from detriment provided certain conditions are met, as detailed in sections 9 and 13 of the document. Personal matters or financial/business decisions not involving malpractice are outside the scope of this policy. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf]",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 8.5
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "switch",
+        "question": "What does the Fitness to Study policy address in terms of student behavior?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+        "retrieval_query": "What does the Fitness to Study policy address in terms of student behavior?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf"
+        ],
+        "answer": "The Fitness to Study policy addresses situations where a student's health, mental health, or behavior causes concern and may impact their studies, accommodation, or the wellbeing of others. Specifically, it covers scenarios where:\n\n- A student’s behavior within accommodation is causing difficulties for other students or staff.\n- The student’s actions are disrupting teaching, learning, or support provided to other students.\n- There are doubts about the student's fitness to study at the University and/or within a placement, even after reasonable adjustments have been made.\n- The student's health problems present a risk to themselves or others.\n\nThe policy ensures a coordinated response involving various university departments and supports staff in identifying when referral to external agencies is necessary. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf]",
+        "keyphrase_coverage": 0.5,
+        "elapsed_s": 18.2
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "switch",
+        "question": "How long do MBA students have to complete their studies at Essex?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+        "retrieval_query": "How long do MBA students have to complete their studies at Essex?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf"
+        ],
+        "answer": "MBA students at the University of Essex are required to complete their studies within 5 years. This timeframe is due to rules set by accrediting bodies and is specified in the MBA Rules of Assessment document for the 2025-26 academic year.\n\nSource: [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf]\n\n_Note: this answer is based primarily on \"mba-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 17.8
+      },
+      {
+        "turn_index": 4,
+        "turn_type": "switch",
+        "question": "What constitutes plagiarism according to the academic offences procedure?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "retrieval_query": "What constitutes plagiarism according to the University of Essex Academic Offences Procedure?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf"
+        ],
+        "answer": "According to the University of Essex Academic Offences Procedure, plagiarism is defined as using or copying the work of others (whether written, printed, or in any other form) without proper acknowledgement in any assignment, examination, or other assessed work. This includes:\n\n- Copying a paragraph from a book without citing the original author.\n- Reusing parts of a previous assignment without acknowledging the original source.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf] (Academic Offences Procedure 2025-26)\n- [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf] (Academic Offences Procedures 2017-18)",
+        "keyphrase_coverage": 0.5,
+        "elapsed_s": 21.5
+      }
+    ]
+  },
+  {
+    "conversation_id": "mt8_deep_then_distant_return",
+    "description": "3 turns deep on one topic, switch away, then a distant return referencing something from turn 1 specifically (not the most recent turn on that topic)",
+    "turns": [
+      {
+        "turn_index": 1,
+        "turn_type": "new_topic",
+        "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology programme?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf"
+        ],
+        "answer": "The maximum number of credits that can be carried forward for progression in the MSc Periodontology programme is 30 credits.\n\nSources:\n- [mscperiodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf) (2025-26 academic year)\n- [pg_dip_periodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf) (2025-26 academic year)",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 9.3
+      },
+      {
+        "turn_index": 2,
+        "turn_type": "continuation",
+        "question": "Is that limit the same for both the MSc and the Postgraduate Diploma route?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "Is the maximum number of credits that can be carried forward for progression the same for both the MSc and the Postgraduate Diploma routes in the Periodontology programme?",
+        "rank": 6,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf"
+        ],
+        "answer": "Yes, the maximum number of credits that can be carried forward for progression is 30 credits for both the MSc Periodontology programme and the Postgraduate Diploma in Periodontology.\n\nSources:\n- [mscperiodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf) (2025-26 academic year)\n- [pg_dip_periodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf) (2025-26 academic year)\n\n_Note: this answer is based primarily on \"pg_dip_periodontology_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": null,
+        "elapsed_s": 21.0
+      },
+      {
+        "turn_index": 3,
+        "turn_type": "continuation",
+        "question": "What happens if a student exceeds that trailing credit limit?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "What happens if a student exceeds the 30-credit trailing limit for the MSc Periodontology or Postgraduate Diploma in Periodontology programmes?",
+        "rank": null,
+        "hit_at_6": false,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf"
+        ],
+        "answer": "If a student exceeds the trailing credit limit (30 credits), they will not be able to carry forward additional failed credits. The University of Essex policies indicate that students are permitted to progress while trailing a maximum of 30 credits, meaning these credits can be reassessed in the next academic year. Exceeding this limit would likely result in the student being required to address all outstanding failures before progressing or completing their program.\n\nSources:\n- [msc-periodontology-science-alexandria-24.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf) (2024-25 academic year)\n- [msc-periodontology-science-(alexandria)-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf) (2025-26 academic year)\n- [pg_dip_periodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf) (2025-26 academic year)",
+        "keyphrase_coverage": null,
+        "elapsed_s": 28.5
+      },
+      {
+        "turn_index": 4,
+        "turn_type": "switch",
+        "question": "Switching topics - what's the minimum pass mark for all modules in East 15 Acting School's Masters programmes?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "retrieval_query": "What is the minimum pass mark for all modules in East 15 Acting School's Masters programmes?",
+        "rank": 1,
+        "hit_at_6": true,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf"
+        ],
+        "answer": "The minimum pass mark for all modules in East 15 Acting School's Masters programmes is 50.\n\nSources:\n- [east15_24.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east15_24.pdf) (2024-25 academic year)\n- [east15-mfa-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf) (2025-26 academic year)\n- [ea15_mfa_24.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf) (2024-25 academic year)\n- [east15-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf) (2025-26 academic year)\n\n_Note: this answer is based primarily on \"east15-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+        "keyphrase_coverage": 1.0,
+        "elapsed_s": 28.7
+      },
+      {
+        "turn_index": 5,
+        "turn_type": "return",
+        "question": "Back to the very first thing I asked about the credit limit - which department administers that programme?",
+        "expected_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "retrieval_query": "Which department administers the MSc Periodontology and Postgraduate Diploma in Periodontology programmes?",
+        "rank": null,
+        "hit_at_6": false,
+        "ranked_top_urls": [
+          "https://www.essex.ac.uk/student/rules-of-assessment/roa-pgt-previous-years",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/partner-institutions/msc-periodontology-science-alexandria-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/student/rules-of-assessment/roa-pgt-dept-specific",
+          "https://www.essex.ac.uk/student/rules-of-assessment/roa-pgt-previous-years"
+        ],
+        "answer": "The Postgraduate Diploma Periodontology programme is administered by the Health and Social Care department at the University of Essex.\n\nSources:\n- [pg_dip_periodontology_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf) (2025-26 academic year)\n- [msc-periodontology-science-(alexandria)-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf) (2025-26 academic year)",
+        "keyphrase_coverage": null,
+        "elapsed_s": 24.8
+      }
+    ]
+  }
+]
