@@ -40,22 +40,26 @@ TARGETED_WIDENING_ENABLED = False
 WIDE_RERANK_POOL_SIZE = 100
 FRAGMENTATION_THRESHOLD = 1
 
-# Phase 4, experiment 1 (external code review round 2, 2026-07-21, Fable 5):
-# identity-enriched passages AT RERANK TIME ONLY, not re-embedding. J2
-# (eval/report.md, "Identity-first round") tried enriching chunk_header with
-# the same J1 identity record and re-embedding - regressed RoA 70%->60%
-# despite the identity data itself being locally effective (MRR rose),
-# because re-embedding moved ~450 OTHER documents' embeddings corpus-wide
-# (a side effect of changing the indexed text, unrelated to whether the
-# identity data helps), silently flipping unrelated hit->miss turns. This
-# targets the same identity-data hypothesis through a channel that
-# structurally cannot cause that: only the reranker's passage TEXT changes,
-# for the already-small pool of candidates already retrieved - no embedding
-# in the vector store is touched, so corpus-wide displacement is impossible
-# by construction, not just "wasn't observed this time." MaxSim/cross-encoder
-# scoring can only reward added header tokens the query itself contains -
-# irrelevant identity data added to an irrelevant candidate can't newly
-# outrank a relevant one on tokens the query doesn't mention.
+# Phase 4, experiment 1 (external code review round 2, 2026-07-21, Fable 5)
+# - tried, rejected. Identity-enriched passages AT RERANK TIME ONLY, not
+# re-embedding - avoided J2's corpus-wide embedding-displacement failure
+# mode by construction (see eval/report.md, "Identity-first round"), but
+# regressed anyway via a different mechanism: enrichment isn't neutral
+# across candidates. Generic RoA "framework" documents that don't belong to
+# one specific programme (masters-25.pdf, pgt-credit-framework-25.pdf) have
+# thin-to-empty J1 identity records and get little/no enrichment, while
+# programme-specific siblings (mres-gov-25.pdf: full programme_name,
+# department, aliases) get a real content boost - on any query with loose
+# semantic overlap to that added text, the enriched sibling's MaxSim/
+# cross-encoder score rises while the correct-but-generic document's
+# doesn't, regardless of true relevance. Full 80-turn eval: RoA hit@6
+# 62.5%->57.5%, answer score 3.84->3.56, net 4 gained / 6 lost (5 of the 6
+# losses on primary turns, concentrated in exactly this generic-vs-specific
+# pattern). Reverted; kept for reference like the project's other rejected
+# ideas - the mechanism (privileging identity-rich siblings regardless of
+# relevance) would need a real fix (e.g. only enrich when the CANDIDATE and
+# at least one COMPETITOR in the pool both have identity records, so a
+# lone generic document isn't disadvantaged) before this is worth retrying.
 IDENTITY_ENRICHED_RERANK_ENABLED = False
 
 # Idea 1 (cached ColBERT embeddings, see eval/report.md "Code review round"):
