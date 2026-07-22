@@ -1699,3 +1699,37 @@ The one outstanding loss (east15 follow-up, rank 2 -> out-of-pool) is unchanged 
 acceptance test: A3a's reordering shifted the primary answer, cascading into a follow-up rewrite
 that dropped the "East 15" anchor - the identity-token-loss mode the alias-anchor guard (C1, next)
 is designed to catch.
+
+### Phase C1 (alias-anchor guard): RoA 67.5% -> 70.0%, and the round-3 programme lands at net +3 / 0 losses
+
+Full 80-turn deterministic eval. C1 recovers the one outstanding Phase-A loss (east15 follow-up,
+out-of-pool -> both turns hit, answer score 5) with ZERO new losses or regressions - the guard fired
+only where intended.
+
+Cumulative arc of the entire round-3 data-hygiene + guard programme, vs the pre-hygiene
+`current_prod_deterministic` baseline:
+
+| | pre-hygiene | A1+A2+A3 (hygiene_A3b) | +C1 (c1_anchor) |
+|---|---|---|---|
+| RoA hit@6 | 62.5% | 67.5% | **70.0%** |
+| RoA MRR | 0.40 | 0.45 | 0.44 |
+| RoA evidence@6 | 82.5% | 87.5% | **87.5%** |
+| Overall hit@6 | 81.2% | 83.8% | **85.0%** |
+| Overall evidence@6 | 91.2% | 93.8% | **93.8%** |
+| Answer score | 3.84 | 3.90 | **3.92** |
+
+**Net +3 turns, 0 losses.** The three gains - roa-ug-integrated-masters-4yr-year-1, ug-grad-cert-year-1,
+mscperiodontology follow-ups from hygiene; plus east15 follow-up from C1 (the hygiene loss, now
+recovered) - are all the hard sibling-confusion / identity-anchor turns the round-3 defects were
+hurting. RoA hit@6 70.0% matches the historical stage_colbert peak, but that peak was measured under
+the OLD non-deterministic + double-retrieval-bug eval; this 70.0% is under the honest deterministic,
+single-invocation regime, so it's a genuine advance, not a re-tie.
+
+The headline of the whole multi-session effort: ~20 retrieval-SIGNAL experiments after the original
+hybrid+ColBERT wins produced zero net RoA gain (all regression/wash/null). The round-3 DATA-layer
+programme - stale-edition family-split correction (A1), hub-page removal (A2), lexical-visibility
+repair (A3a/A3b), and a deterministic identity-anchor guard (C1), none of which adds a retrieval
+channel or touches the embedding model - delivered +7.5pp RoA hit@6 with zero losses. The gap was in
+the data and in conversational identity-tracking, below the retrieval architecture, exactly as the
+round-3 reviews (Fable 5's log-level analysis especially) argued. `c1_anchor` is the new production
+baseline.
