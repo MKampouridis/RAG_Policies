@@ -188,11 +188,17 @@ recent academic year unless the user asks about a specific past year.
 # Round 4 (user question, 2026-07-22): does per-claim INLINE citation reduce
 # hallucination? The base prompt already asks for end-of-answer Sources; this
 # stronger variant asks the model to attribute each specific factual claim to
-# its source_url inline. Prior expectation is marginal (D2's verbatim-figures
-# prompt washed on the 7B, and citations don't self-verify - a model can cite
-# a real source for a fabricated fact), but it's a cheap A/B against the
-# hallucination baseline (78.8% grounded). Flag-gated.
-INLINE_CITATIONS = True
+# its source_url inline. RESULT (eval/results_inline_citations.json, full
+# 80-turn A/B vs c1_anchor_v2 + hallucination_eval): REGRESSED groundedness
+# 78.8% -> 67.5% (-11.3pts; every sub-metric worse - RoA 65->55, Policy
+# 92.5->80, miss-turns 50->30.8). Answer_score was a wash (3.91->3.90) as D2
+# predicted, but groundedness got WORSE: the per-claim citation becomes a new
+# hallucination surface - the 7B confidently attributes facts to the WRONG
+# filename ("pass mark is 50 [five-year-integrated-masters...]" when that doc
+# says 40). Asking a small model to cite provenance per claim makes it
+# fabricate provenance on top of facts. Reverted OFF; keep end-of-answer
+# Sources only. Flag-gated.
+INLINE_CITATIONS = False
 _INLINE_CITATION_RULE = (
     "\n- Attribute every specific factual claim (a number, mark, threshold, credit value, "
     "percentage, time limit, or condition) to the exact source_url it came from, cited inline "

@@ -38,6 +38,17 @@ TOKEN_RE = re.compile(r"[a-z0-9]+")
 SPLIT_ALPHANUM_TOKENS = True
 _ALPHA_RUN = re.compile(r"[a-z]+|[0-9]+")
 
+# Item 4a (external code review round 4, 2026-07-22, Fable 5): degree-length
+# digit<->word synonyms. Essex filenames encode degree length as "3yr"/"4yr"/
+# "5yr" (the token that DISTINGUISHES a 3-year from a 4-year from a 5-year
+# programme - all three otherwise share generic "year"/"rules" tokens), while
+# queries say "Four-Year"/"three year". Verified the gold 4yr document and a
+# "Four-Year Honours" query overlap only on generic tokens; the distinguishing
+# "4yr" matches neither "four" nor "year". Emit the spelled number (and
+# "year") for an "Nyr" token so the degree length becomes lexically matchable.
+# BM25-only, lazy rebuild, no re-embed; gated with the alpha/digit split.
+_DEGREE_SYNONYMS = {"2yr": "two", "3yr": "three", "4yr": "four", "5yr": "five", "6yr": "six"}
+
 # Tried boosting this (repeating the header several times so identity terms
 # like "CSEE"/"4yr" outweigh generic boilerplate body text) to help
 # disambiguate near-identical RoA siblings - regressed RoA hit@6 in the full
@@ -62,6 +73,9 @@ def _tokenize(text: str) -> list[str]:
         pieces = _ALPHA_RUN.findall(t)
         if len(pieces) > 1:  # mixed alpha+digit like "east15" or "mscperiodontology" stays glued (single alpha run) - only split true mixes
             out.extend(pieces)
+        if t in _DEGREE_SYNONYMS:  # "4yr" -> also "four" (+ "year") so degree length matches "Four-Year" queries
+            out.append(_DEGREE_SYNONYMS[t])
+            out.append("year")
     return out
 
 

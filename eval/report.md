@@ -1987,3 +1987,38 @@ retrieved chunk, fuller context would let the model quote it instead of inventin
 over-flagged; but even discounting that, a real ~21% hallucination rate concentrated on RoA specifics
 and misses is established as the baseline to improve against. Results per-turn in
 `eval/results_hallucination.json`.
+
+## Round 4, items 2 + 4a: inline citations REJECTED (regressed groundedness), degree-length tokenizer KEPT
+
+Two round-4 experiments run back-to-back (deterministic, full 80-turn A/B vs `c1_anchor_v2`).
+
+**Item 2 - per-claim inline citations (REJECTED).** Added a system-prompt rule asking the 7B to
+attribute every specific factual claim to its exact `source_url` inline (`INLINE_CITATIONS` flag).
+Hypothesis: forcing per-claim provenance would reduce fabrication. Result: answer_score a wash
+(3.91->3.90, as D2's verbatim-figures retry predicted), retrieval unchanged - but **groundedness
+REGRESSED 78.8% -> 67.5% (-11.3pts)**, every split worse (RoA 65->55, Policy 92.5->80, miss-turns
+50->30.8). The mechanism is visible in the judge's flagged claims: the citation itself becomes a new
+hallucination surface - the 7B confidently attributes a real figure to the WRONG filename (e.g.
+"pass mark is 50 [five-year-integrated-masters-21-v7.pdf]" when that document says 40). Asking a
+small model to cite provenance per claim makes it fabricate provenance on top of the facts.
+Citations don't self-verify. Reverted to end-of-answer Sources only. This is a concrete data point
+for the "stronger generator" future item: provenance discipline is exactly the kind of thing a
+larger model does reliably and a 7B does not.
+
+**Item 4a - degree-length yr<->word tokenizer (KEPT, new production).** Essex RoA filenames encode
+degree length as the glued BM25 token `3yr`/`4yr`/`5yr` - the ONLY token distinguishing a
+three-year from a four-year from a five-year programme, since the three siblings otherwise share
+generic `year`/`rules`/`masters` boilerplate. Queries say "Four-Year"/"three year", so the glued
+`4yr` matched neither `four` nor `year` and the home document was lexically invisible on its own
+degree length. Fix (`_DEGREE_SYNONYMS` in `src/lexical.py`): emit the spelled number (+`year`) for
+an `Nyr` token, gated with the existing alpha/digit split; offline-verified that `3yr`->`three` and
+`4yr`->`four` do not cross-match. Full 80-turn deterministic A/B: clean **+1 / -0** per-turn - the
+single flipped turn is `roa-ug-4yr-year-1-rules` follow-up (miss->hit), exactly the targeted
+sibling. **RoA hit@6 70->72.5%, evidence-sufficient@6 87.5->90.0%, overall hit@6 85->86.3%, zero
+regressions.** Answer_score dipped within the noise floor (RoA 3.65->3.55). This is the 2nd
+net-positive RETRIEVAL change since the round-3 data-hygiene work - and like those, it's a
+DATA/lexical fix below the architecture, not signal-engineering (which stayed falsified across ~20
+attempts). Item 4b (five-year rename demotion) left for user judgment: two parallel current
+lineages exist (`roa-ug-integrated-masters-5yr-year-N.pdf` vs `five-year-integrated-masters-21-v7
+.pdf`) and it's ambiguous whether the latter is a stale duplicate or a legitimately distinct
+document - needs a human to decide before demoting either.

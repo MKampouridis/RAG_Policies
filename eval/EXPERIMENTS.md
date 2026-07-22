@@ -97,8 +97,42 @@ on the same noise-free footing.
 | `hygiene_A1A2A3a` (superseded by A3b) | 100.0% / 0.87 | 65.0% / 0.44 | 82.5% / 0.66 | 3.90 |
 | `hygiene_A3b` (superseded by C1) | 100.0% / 0.87 | 67.5% / 0.45 | 83.8% / 0.66 | 3.90 |
 | `c1_anchor` (superseded by false-anchor fix) | 100.0% / 0.89 | 70.0% / 0.44 | 85.0% / 0.67 | 3.92 |
-| **`c1_anchor_v2` (= current production, C1 >=2-token false-anchor fix)** | **100.0% / 0.87** | **70.0% / 0.46** | **85.0% / 0.66** | **3.91** |
+| `c1_anchor_v2` (superseded by item4a) | 100.0% / 0.87 | 70.0% / 0.46 | 85.0% / 0.66 | 3.91 |
+| **`item4a` (= current production, degree-length yr↔word tokenizer)** | **100.0% / 0.87** | **72.5% / 0.46** | **86.3% / 0.67** | **3.86** |
 | `d2_verbatim` (rejected — J7 retry, wash under fair conditions) | 100.0% / 0.89 | 70.0% / 0.44 | 85.0% / 0.67 | 3.95 |
+| `inline_citations` (rejected — REGRESSED groundedness, see note) | 100.0% / 0.91 | 67.5% / 0.46 | 83.8% / 0.68 | 3.90 |
+
+**`inline_citations` (round 4 item 2, 2026-07-22, rejected):** per-claim inline `[source_url]`
+attribution added to the system prompt (`INLINE_CITATIONS` flag in `src/rag.py`), A/B'd against
+`c1_anchor_v2`. Answer_score was a **wash** (3.91→3.90) exactly as D2 predicted, and retrieval was
+unchanged (the −1 overall hit@6 turn is a follow-up whose contextualized query shifted because its
+*preceding* answer text changed — history dependency, not a retrieval change). But the decisive
+metric, **groundedness (hallucination_eval), REGRESSED 78.8% → 67.5% (−11.3pts)** — every
+sub-metric worse (RoA 65→55, Policy 92.5→80, miss-turns 50→30.8). Cause, visible in the judge's
+flagged claims: the citation itself becomes a **new hallucination surface** — the local 7B
+confidently attributes facts to the WRONG filename (e.g. "pass mark is 50
+[five-year-integrated-masters-21-v7.pdf]" when that doc says 40). Asking a small model to cite
+provenance per claim makes it fabricate provenance on top of the facts. Reverted OFF; kept
+end-of-answer Sources only. Lesson: citations don't self-verify — on a small generator they
+*add* an axis to hallucinate along.
+
+**`item4a` (round 4 item 4a, 2026-07-22, KEPT — new production):** degree-length digit↔word
+synonyms in the BM25 tokenizer (`_DEGREE_SYNONYMS` in `src/lexical.py`, gated with the existing
+alpha/digit split). Essex RoA filenames encode degree length as the glued token `3yr`/`4yr`/`5yr`
+— the *only* token distinguishing a three-year from a four-year from a five-year programme, since
+all three share generic `year`/`rules`/`masters` boilerplate — while user queries say "Four-Year"/
+"three year". The base tokenizer left `4yr` glued, matching neither `four` nor `year`, so the home
+document was lexically invisible on its own degree length. The fix emits the spelled number (+
+`year`) for an `Nyr` token. Full 80-turn deterministic A/B vs `c1_anchor_v2`: clean **+1 / −0**
+per-turn — the single flipped turn is `roa-ug-4yr-year-1-rules` follow-up (miss→hit), exactly the
+targeted sibling. **RoA hit@6 70→72.5%, evidence-sufficient@6 87.5→90.0%, zero regressions.**
+Answer_score dipped within the ±1-2-turn noise floor (RoA 3.65→3.55). Offline-verified before the
+run that `3yr`→`three`/`4yr`→`four` does NOT cross-match (no false 3yr↔4yr overlap). This is the
+2nd net-positive *retrieval* change since the round-3 data-hygiene work — both were DATA/lexical
+fixes below the architecture, not signal-engineering (which stayed falsified across ~20 attempts).
+Item 4b (five-year rename demotion) was left for user judgment (two parallel current lineages —
+ambiguous whether `five-year-integrated-masters-21-v7.pdf` is a stale duplicate or a distinct
+doc).
 
 J-round note: `j6_disclose_ambiguity` changes NO retrieval code (it appends a source-naming
 disclosure to answers when the top-6 is family-fragmented), so its hit@6 deltas vs
