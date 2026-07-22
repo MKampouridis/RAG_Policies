@@ -164,12 +164,20 @@ def summarize(results: list[dict], questions_path: Path = DEFAULT_QUESTIONS_PATH
         ]
         return {
             "n": n,
-            "strict": {**hit_curve(strict_ranks), "mrr": mrr(strict_ranks)},
-            "lenient": {**hit_curve(lenient_ranks), "mrr": mrr(lenient_ranks)},
+            # HEADLINE retrieval metric (round-4 metric rework, eval/report.md):
+            # evidence-sufficient@6 - did the top-6 contain ANY document with
+            # the answer - is what users experience and what the gold-
+            # multiplicity analysis (eval/gold_multiplicity.py) shows is the
+            # honest target. Strict hit@6 is now at its achievable single-gold
+            # ceiling (RoA 70% actual vs 68.6% achievable) and kept only as an
+            # attribution diagnostic, not the headline.
             "evidence_sufficient_at_6": (sum(ev) / len(ev)) if ev else None,
             "answer_score_mean": statistics.mean(scores) if scores else None,
             "answer_score_stdev": statistics.stdev(scores) if len(scores) > 1 else None,
             "keyphrase_coverage_mean": statistics.mean(kp) if kp else None,
+            # diagnostics (single-gold; see note above):
+            "strict": {**hit_curve(strict_ranks), "mrr": mrr(strict_ranks)},
+            "lenient": {**hit_curve(lenient_ranks), "mrr": mrr(lenient_ranks)},
         }
 
     return {

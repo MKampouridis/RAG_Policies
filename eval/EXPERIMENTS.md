@@ -44,6 +44,14 @@ on the same noise-free footing.
 
 ## Headline metrics (strict, 80 turns unless noted)
 
+> **Metric note (round 4, 2026-07-22):** strict hit@6 below is now a DIAGNOSTIC, not the headline.
+> The gold-multiplicity analysis (`eval/gold_multiplicity.py`, report.md "round 4 item 2") shows
+> actual RoA strict hit@6 (70%) is AT its achievable single-gold ceiling (68.6%) - the residual
+> misses are dominated by metric artifacts (a question's answer living in many current documents,
+> or keyphrase strings too literal to match), not retrieval failure. The **headline retrieval
+> metric is now evidence-sufficient@6** (RoA 87.5% / overall 93.8% at current production
+> `c1_anchor_v2`). The strict table is retained for historical comparability across experiments.
+
 | Experiment | Policy hit@6 / MRR | RoA hit@6 / MRR | Overall hit@6 / MRR | Answer score |
 |---|---|---|---|---|
 | `baseline` | 77.5% / 0.63 | 22.5% / 0.06 | 50.0% / 0.35 | 3.64 |
