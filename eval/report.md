@@ -1799,3 +1799,63 @@ confirms the retrieval ceiling for this corpus is genuinely reached at RoA hit@6
 exists) or out-of-pool cases whose gold-document content simply does not match the query text - both
 generation-side / UX territory, not retrieval. This is the reviewers' convergent conclusion
 (ChatGPT/Gemini/Grok/Fable 5) now confirmed by direct measurement rather than asserted.
+
+## Phase D1: experiment taxonomy and falsification ledger (what to STOP pursuing)
+
+ChatGPT's round-3 framing: the highest-value output now is not another experiment but a taxonomy
+that says which whole CLASSES of technique this corpus has already falsified. Grouping every
+experiment across all sessions:
+
+**Class A - Representation** (change what/how documents are embedded): better embed model (mxbai,
+bge-m3), contextual per-chunk embeddings, identity-enriched headers (J2), chunk size. Verdict:
+**exhausted**. Chunk-size + the original nomic choice were early wins; everything since regressed or
+washed. Embedding-model swaps and header enrichment perturb the whole corpus's neighbourhood and
+lose more than they gain.
+
+**Class B - Retrieval fusion** (add/combine retrieval channels): SPLADE, embedding ensemble,
+weighted score fusion, pseudo-query index, ColBERT first-stage (Idea 2), global + targeted rerank-
+pool widening (J0b/Idea 4). Verdict: **exhausted and falsified**. Every added channel or widening
+diluted already-marginal correct docs via RRF math; net negative or wash without exception. The
+one Class-B-adjacent win, ColBERT as a RERANKER (not a channel), is kept.
+
+**Class C - Metadata guidance** (route/prefer by extracted facets): year handling, degree/award
+facet preference (Stage A/A2), document-identity soft routing (J3), hard macro-routing (B1). Verdict:
+**falsified for RETRIEVAL-TIME preference**. Soft routing (J3) lost 0/3; hard routing (B1) fails
+pre-validation 28-losses/1-rescue. Facet metadata is too sparse and sibling identity cards too
+near-identical to route on. BUT the same metadata used for DATA HYGIENE (not retrieval preference)
+was the round-3 win - see Class E.
+
+**Class D - Post-retrieval reasoning**: ColBERT MaxSim reranking (KEPT - a real win), LLM listwise
+rerank (worse), CRAG verification gate (Stage H, worse), multi-hop decomposition (Stage I, worse).
+Verdict: **one durable win (ColBERT rerank), the rest falsified**. Generative/agentic post-retrieval
+steps consistently underperform a purpose-built cross-encoder/late-interaction scorer here.
+
+**Class E - Data layer** (round 3; NEW class, not in ChatGPT's original A-D): stale-edition family-
+split correction (A1), hub-page removal (A2), lexical-visibility repair (A3), and a deterministic
+identity-anchor guard on the contextualizer (C1). Verdict: **the only unexhausted class - +7.5pp
+RoA hit@6, net +3 turns, 0 losses**. This is the round-3 discovery: after Classes A-D were mined
+out, the remaining gap was not in the retrieval MODEL but in the DATA feeding it (mis-flagged
+editions, magnet hub pages, lexically-invisible identity tokens) and in conversational identity
+TRACKING (anchor loss across turns) - both below the retrieval architecture.
+
+### Falsified - stop pursuing (evidence is now strong enough):
+- Adding any retrieval channel or widening the pool (Class B, ~8 experiments, unanimous regression).
+- Retrieval-time metadata/facet/identity routing, soft or hard (Class C, J3 + B1 + Stage A/A2).
+- Generative post-retrieval gating/decomposition (Class D minus the reranker; Stage H/I).
+- Embedding-model swaps and corpus-wide header enrichment (Class A; mxbai/bge-m3/J2).
+- Boilerplate chunk deduplication (measured wrong-lever: 0.1% embedded-dup; would delete the only
+  sibling discriminator).
+- Citation-attribution tie-break and diversity cap (B2/B3, 0/12 ceiling each).
+
+### Still open (generation-side / UX, NOT retrieval):
+- The strict-vs-evidence gap (70% vs 87.5%): the system often RETRIEVES a sufficient document but
+  the 7B generator doesn't always use it. The deferred J7 keyphrase-prompt retry is now a FAIR test
+  (num_ctx pinned removes the truncation confound that may have muddied the original).
+- Underspecified questions (~half the residual misses, e.g. bare "what is a capped mark?"): no
+  retrieval fix exists; the honest lever is proactive clarification / disclosure (J6 already does a
+  soft version). ChatGPT's "measure the Bayes error" point applies - for these, 70% strict may be
+  at or near the human ceiling given query text alone.
+
+This ledger is the round-3 deliverable ChatGPT asked for: the project has moved from exploring the
+RAG design space to having MAPPED its boundary for this corpus. Future effort should assume Classes
+A-D are closed and spend only on Class E (data quality, as new documents arrive) and generation/UX.
