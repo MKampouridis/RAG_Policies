@@ -253,6 +253,104 @@ def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
 # (Stage H-style) ever returns. Off by default.
 CONTEXTUALIZE_USER_TURNS_ONLY = False
 
+# C1: alias-anchor guard (external code review round 3, 2026-07-22, Fable 5).
+# The Phase-A re-baseline's one loss (east15 follow-up) was an identity-token-
+# loss cascade: A3a reordered the primary pool -> the primary answer shifted ->
+# the follow-up contextualizer's history changed -> its rewrite DROPPED the
+# "East 15" identity anchor ("...at East 15 Acting School's Masters..." became
+# "...non-core taught modules?"), and with no programme named, retrieval fell
+# back to generic masters documents. This guard re-appends the active identity
+# anchor when a follow-up rewrite loses it. CRITICALLY switch-safe: it fires
+# ONLY when the rewrite is IDENTITY-LESS (names no distinctive programme/dept
+# token from _identity_anchor_index at all) - a topic SWITCH names its new
+# topic, so it's never identity-less and never gets the stale anchor appended
+# (the Phase 5 probe showed switches work 19/19; this must not break them).
+# Same deterministic-guard species as _is_faithful_rewrite - the only class of
+# change that has survived evals here.
+ALIAS_ANCHOR_GUARD_ENABLED = True
+
+# identity tokens that are too generic to anchor on (appear across many
+# programme families' identity records); on top of _STOPWORDS.
+_ANCHOR_STOP = {
+    "award", "awards", "certificate", "course", "courses", "degree", "degrees", "department",
+    "diploma", "essex", "full", "graduate", "health", "integrated", "master", "masters", "module",
+    "modules", "month", "months", "part", "postgraduate", "practice", "professional", "programme",
+    "programmes", "registration", "rules", "school", "science", "sciences", "social", "student",
+    "students", "taught", "time", "undergraduate", "university", "year",
+}
+_anchor_index = None
+
+
+def _identity_anchor_index():
+    """Cached (distinctive_tokens, families). A distinctive token is an
+    identity word (from J1 programme_name/department/aliases) that appears in
+    at most ANCHOR_DOCFREQ document FAMILIES - counting per family, not per
+    file, so a programme's ~30 yearly editions/variants don't make its name
+    ("periodontology", "acting") look common. families is [(label, tokenset)]
+    for mapping a set of history-anchor tokens back to a clean label."""
+    global _anchor_index
+    if _anchor_index is not None:
+        return _anchor_index
+    from collections import Counter
+    from pathlib import Path
+    fam_toks: dict[str, set] = {}
+    fam_label: dict[str, str] = {}
+    for f in Path("data/doc_identity").glob("*.json"):
+        try:
+            r = json.loads(f.read_text())
+        except Exception:
+            continue
+        url = r.get("source_url", "")
+        fam = _document_family(url)
+        toks = {w for w in _content_words(
+            " ".join([r.get("programme_name", ""), r.get("department", ""), " ".join(r.get("aliases") or [])])
+        ) if w not in _ANCHOR_STOP}
+        if not toks:
+            continue
+        fam_toks.setdefault(fam, set()).update(toks)
+        # prefer a current edition's label (cleaner, e.g. the 25-26 wording)
+        lab = r.get("programme_name") or r.get("department") or (r.get("aliases") or [""])[0]
+        if lab and (fam not in fam_label or "-25" in url or "_25" in url or "/current/" in url):
+            fam_label[fam] = lab
+    docfreq = Counter()
+    for toks in fam_toks.values():
+        for t in toks:
+            docfreq[t] += 1
+    ANCHOR_DOCFREQ = 15  # famfreq<=15 keeps acting/east15/periodontology/nursing, drops the generic 16+ cluster
+    # require len>=4: 3-char fragments that leak from identity phrases
+    # ("non" from "non-standard", "pre" from "pre-registration") are common
+    # English substrings that cause false "names a topic" positives - e.g.
+    # "non-core taught modules" wrongly reads as naming a programme.
+    distinctive = {t for t, c in docfreq.items() if c <= ANCHOR_DOCFREQ and len(t) >= 4}
+    families = [(fam_label.get(fam, ""), toks & distinctive) for fam, toks in fam_toks.items()]
+    families = [(lab, tk) for lab, tk in families if lab and tk]
+    _anchor_index = (distinctive, families)
+    return _anchor_index
+
+
+def _anchor_from_history(history: list[dict]) -> tuple[str, set]:
+    """The active identity anchor for a follow-up: the distinctive identity
+    tokens present in the recent user turns, plus a clean label for the
+    best-matching programme family. ('', set()) if the conversation names no
+    distinctive identity yet."""
+    distinctive, families = _identity_anchor_index()
+    htoks: set = set()
+    for m in [m for m in history if m.get("role") == "user"][-2:]:
+        htoks |= _content_words(m.get("content", ""))
+    hist_anchors = htoks & distinctive
+    if not hist_anchors:
+        return "", set()
+    # score by (family-token overlap, then label-text-contains-anchor overlap):
+    # the secondary term breaks ties toward the family whose own LABEL names
+    # the anchor (e.g. prefer "East 15 Acting School" over a co-department
+    # "Professional Code of Conduct" that shares the tokens but not the name).
+    best_label, best_score = "", (0, 0)
+    for label, toks in families:
+        score = (len(toks & hist_anchors), len(_content_words(label) & hist_anchors))
+        if score > best_score:
+            best_score, best_label = score, label
+    return best_label, hist_anchors
+
 
 def _contextualize_query(question: str, history: list[dict], summary: str = "") -> str:
     """Retrieval only sees the current turn's text, so a follow-up like "what
@@ -280,9 +378,20 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
         {"role": "user", "content": f"{transcript}\n\nFollow-up question: {question}\n\nStandalone question:"},
     ], model=CONTEXTUALIZE_MODEL).strip()
 
-    if not rewritten or not _is_faithful_rewrite(question, rewritten):
-        return question
-    return rewritten
+    result = rewritten if (rewritten and _is_faithful_rewrite(question, rewritten)) else question
+
+    if ALIAS_ANCHOR_GUARD_ENABLED:
+        label, hist_anchors = _anchor_from_history(history)
+        if label and hist_anchors:
+            result_tokens = _content_words(result)
+            distinctive, _ = _identity_anchor_index()
+            already_anchored = bool(result_tokens & hist_anchors)
+            names_a_topic = bool(result_tokens & distinctive)  # a switch names its OWN new topic
+            if not already_anchored and not names_a_topic:
+                # identity-less continuation that dropped the anchor - re-append
+                result = f"{result} ({label})"
+
+    return result
 
 
 def _mentioned_year(text: str) -> str:
