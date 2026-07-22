@@ -1631,3 +1631,41 @@ this corpus is at its retrieval ceiling; the remaining gains are generation-side
 Prepared a follow-up prompt (results of acting on round 2 + the two open failure modes + the
 revisited ceiling question + the specific dedup tradeoff) to send back to the genuine reviewers -
 see the session for the text.
+
+### Phase A re-baseline: the first NET-POSITIVE retrieval result since the original hybrid/ColBERT gains
+
+Data hygiene (A1 rename-split + A2 hub removal + A3a alpha<->digit token split), full 80-turn
+deterministic eval vs `current_prod_deterministic`:
+
+| | Policy hit@6/MRR | RoA hit@6/MRR | RoA evid@6 | Overall hit@6 | Answer score |
+|---|---|---|---|---|---|
+| `current_prod_deterministic` | 100.0% / 0.87 | 62.5% / 0.40 | 82.5% | 81.2% | 3.84 |
+| `hygiene_A1A2A3a` (new prod) | 100.0% / 0.87 | **65.0% / 0.44** | **85.0%** | **82.5%** | **3.90** |
+
+Flip: 2 gained / 1 lost, **net +1 turn**. This matters out of proportion to its size: every retrieval
+experiment across three sessions AFTER the original hybrid-retrieval + ColBERT-reranker wins (Idea 2,
+identity enrichment, home-institution tie-break, SPLADE, ensembles, facets, routing, decomposition,
+pool-widening - ~20 in total) was a regression, wash, or null. The data-hygiene fixes are the first
+thing since to move RoA hit@6 UP - direct confirmation of round-3's central thesis (the remaining gap
+sat in the DATA, below the retrieval architecture, not in the retrieval signal). Gains: the two hard
+sibling-confusion follow-ups `roa-ug-integrated-masters-4yr-year-1` and `ug-grad-cert-year-1` -
+exactly the class stale-edition pollution was hurting.
+
+**The 1 loss is diagnosed and is NOT a hygiene defect** - it's a C1 test case. `east15-25` [follow-up]
+regressed rank 2 -> out-of-pool, but the retrieval query itself is the cause: the baseline follow-up
+rewrite kept the identity anchor ("...at East 15 Acting School's Masters degree programs?"), the new
+one DROPPED it ("...non-core taught modules?"). Under determinism this can only happen if the
+contextualizer's INPUT changed - and it did: A3a's token-split slightly reordered the primary turn's
+pool, shifting the primary ANSWER, which changed the follow-up's conversation history, which produced
+a rewrite that lost "East 15". This is the identity-token-loss / accretion failure mode - exactly what
+Fable 5's proposed alias-anchor guard (C1, next) targets: re-append the active J1-alias when a rewrite
+drops it. So the east15 follow-up becomes a concrete C1 acceptance test alongside the seed-sensitivity
+turns.
+
+**Confirmed A3b is needed** (deferred glued-title fix): periodontology's follow-up still misses
+identically to baseline (`mscperiodontology_25` primary-hit / follow-up-miss unchanged) - A1 removing
+the stale Alexandria-24 edition was not enough; the home doc is still lexically invisible on
+"Periodontology" (the glued-alpha token case A3a can't split). A3b (audited title-repair + targeted
+re-embed of the ~3 genuinely-glued stems: mscperiodontology, mscinursing, pgcertpwp) is the next
+retrieval step. csee's 2025 doc also still misses despite A1 demoting its 2024 sibling - same lexical
+class.
