@@ -1776,3 +1776,26 @@ identity-only routing discards exactly the content signal that chunk-level dense
 This is the cheap kill Fable 5 predicted and answers review-round-3 Q4 / Gemini's macro-routing
 test decisively: do NOT build macro-routing. J3's earlier soft-routing failure (0 rescues / 3
 losses) was the same signal at lower stakes.
+
+### B2 attribution + B3 diversity-cap ceilings - both ZERO; retrieval ceiling confirmed
+
+`eval/b2b3_attribution_diversity.py`, over the 12 current misses using their logged queries:
+
+- **B2 (citation-attribution tie-break)**: 0/12. No current miss has a reranked-top-6 chunk whose
+  normalised body is byte-identical to a gold-document chunk - so re-attributing shared boilerplate
+  to the gold doc has zero rescue ceiling. (After Phase A the remaining misses aren't "retrieved a
+  byte-identical sibling chunk"; they're genuinely-different content or out-of-pool.)
+- **B3 (diversity cap, max 2 chunks/doc)**: 0/12. Verified the mechanism directly: for misses WITH
+  duplicate-filled slots (e.g. glossary follow-up: top-6 held sres-modular x4, only 3 distinct
+  docs) the gold document is OUT-OF-POOL entirely (absent from reranked-30), so freeing slots can't
+  surface it; for misses WITHOUT duplicates (e.g. roa-ug-4yr follow-up: 6 distinct docs, gold at
+  rank 10) there is nothing to cap. Neither shape helps.
+
+**Phase B verdict**: all three remaining architectural/mechanism levers - hard macro-routing (B1),
+citation attribution (B2), diversity cap (B3) - are rejected offline before any build. Combined
+with ~20 rejected retrieval-signal experiments and the Phase A data-hygiene gains now banked, this
+confirms the retrieval ceiling for this corpus is genuinely reached at RoA hit@6 70% strict /
+87.5% evidence-sufficient. The residual 12 misses are underspecified questions (no retrieval fix
+exists) or out-of-pool cases whose gold-document content simply does not match the query text - both
+generation-side / UX territory, not retrieval. This is the reviewers' convergent conclusion
+(ChatGPT/Gemini/Grok/Fable 5) now confirmed by direct measurement rather than asserted.
