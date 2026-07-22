@@ -11,6 +11,60 @@ _FAMILY_YEAR_SUFFIX_RE = re.compile(r"[-_]?(20)?\d{2}(-\d{2,4})?\.pdf$")
 _YEAR_START_RE = re.compile(r"20(\d{2})")
 _YEAR_DIR_RE = re.compile(r"/(20\d{2}-\d{2,4})/")
 
+# Rename-split alias map (external code review round 3, 2026-07-22, Fable 5,
+# independently verified). Essex changes a document's FILENAME FORMAT between
+# academic years - separator flips ("sres-modular-25" vs "sres_modular_24"),
+# added version suffixes ("msc-ot_24-v1"), extra hyphens ("tavistock-roa---
+# pg-diploma-24"), reformatted years ("25-26" vs "24") - so document_family()'s
+# suffix-stripping regex lands two editions of the SAME document in DIFFERENT
+# families. Each then becomes its own family maximum and the superseded prior
+# edition keeps is_current=True (via the one-year grace window) alongside its
+# successor, polluting the current-only retrieval pool with stale editions
+# (verified: east15_24, the 2024-25 Tavistock/KOL/CSEE editions, etc. all sat
+# current next to their 2025-26 versions). A cleverer regex can't fix this
+# (Essex's renames aren't systematic - the mandatory-separator variant tried
+# earlier broke 45 correct bare-suffix groupings), so per Fable 5 this is an
+# EXPLICIT, AUDITED map: superseded family key -> canonical (newest-edition)
+# family key. Regenerate after any ingest with `python audit_family_aliases.py`
+# and review before pasting - the audit lists only groups that share a
+# structural-token-preserving normalized stem AND currently have >1
+# simultaneously-current edition, so genuinely-distinct siblings (4yr-year-1
+# vs 4yr-year-2) are never merged. Verified: applying this demotes exactly 22
+# superseded editions to is_current=False, 0 spurious promotions.
+_FAMILY_ALIASES = {
+    "csee_ft_masters_-accredited_variations.pdf": "csee-ft-masters-accredited-variations.pdf",
+    "csee_ft_masters_accredited_variations.pdf": "csee-ft-masters-accredited-variations.pdf",
+    "csee_pt_masters_accredited_variations.pdf": "csee-pt-masters-accredited-variations.pdf",
+    "east15.pdf": "east.pdf",
+    "eput-roa---apprenticeship-route.pdf": "eput-roa-apprenticeship-route.pdf",
+    "five_year_integrated_masters.pdf": "five-year-integrated-masters-21-v7.pdf",
+    "five_year_integrated_masters_17-v4.pdf": "five-year-integrated-masters-21-v7.pdf",
+    "five_year_integrated_masters_19-v5.pdf": "five-year-integrated-masters-21-v7.pdf",
+    "five_year_integrated_masters_20-v7.pdf": "five-year-integrated-masters-21-v7.pdf",
+    "four_year_integrated_masters.pdf": "four-year-integrated-masters-22-v4.pdf",
+    "four_year_integrated_masters_17-v4.pdf": "four-year-integrated-masters-22-v4.pdf",
+    "four_year_integrated_masters_20-v5.pdf": "four-year-integrated-masters-22-v4.pdf",
+    "kol_pg-masters-roa.pdf": "kol-pg-masters-roa.pdf",
+    "kol_pgcert-roa.pdf": "kol-pgcert-roa.pdf",
+    "kol_pgdip-roa.pdf": "kol-pgdip-roa.pdf",
+    "ma-psychodynamic-counselling_psychotherapy-2-year.pdf": "ma-psychodynamic-counselling-psychotherapy-2-year.pdf",
+    "ma-psychodynamic-counselling_psychotherapy-3year.pdf": "ma-psychodynamic-counselling-psychotherapy-3year.pdf",
+    "ma-psychodynamic-counselling_psychotherapy-4year.pdf": "ma-psychodynamic-counselling-psychotherapy-4year.pdf",
+    "modular_24-v1.pdf": "modular.pdf",
+    "msc--physiotherapy.pdf": "msc-physiotherapy.pdf",
+    "msc-ot_24-v1.pdf": "msc-ot.pdf",
+    "msc_physiotherapy.pdf": "msc-physiotherapy.pdf",
+    "pgt_credit_framework.pdf": "pgt-credit-framework.pdf",
+    "roa-ug-glossary": "roa-ug-glossary.pdf",
+    "speechtherapy_24-v1.pdf": "speechtherapy.pdf",
+    "sres_modular.pdf": "sres-modular.pdf",
+    "tavistock-roa---graduate-certificate.pdf": "tavistock-roa-graduate-certificate.pdf",
+    "tavistock-roa---graduate-diploma.pdf": "tavistock-roa-graduate-diploma.pdf",
+    "tavistock-roa---pg-certificate.pdf": "tavistock-roa-pg-certificate.pdf",
+    "tavistock-roa---pg-diploma.pdf": "tavistock-roa-pg-diploma.pdf",
+    "tavistock_taught_masters.pdf": "tavistock-taught-masters.pdf",
+}
+
 # Closed, small vocabularies (unlike the open-ended `department` field that
 # failed on query-text coverage before) - deliberately deterministic
 # regex/keyword matching, not an LLM pass, since the vocabulary is this
@@ -64,10 +118,17 @@ def document_family(source_url: str) -> str:
     identity-bearing digits" (e.g. a small denylist of known non-year
     prefixes like "east15"), which isn't worth building for a currently
     zero-impact case - revisit only if a real cross-family collision like
-    this is ever actually observed."""
+    this is ever actually observed.
+
+    Note the east15 collision the 2026-07-21 note called "zero-impact" turned
+    out NOT to be: the two east15 editions land in different families
+    ('east.pdf' vs 'east15.pdf') and BOTH stayed current - that's exactly the
+    rename-split defect _FAMILY_ALIASES now corrects (2026-07-22). The alias
+    lookup runs AFTER the regex, mapping a superseded edition's family key
+    onto its canonical successor's."""
     filename = source_url.rsplit("/", 1)[-1]
-    filename = _FAMILY_YEAR_SUFFIX_RE.sub(".pdf", filename)
-    return filename.lower()
+    key = _FAMILY_YEAR_SUFFIX_RE.sub(".pdf", filename).lower()
+    return _FAMILY_ALIASES.get(key, key)
 
 
 def normalize_year(raw: str | None) -> str:
