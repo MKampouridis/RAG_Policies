@@ -397,7 +397,20 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
 
     if ALIAS_ANCHOR_GUARD_ENABLED:
         label, hist_anchors = _anchor_from_history(history)
-        if label and hist_anchors:
+        # Require >=2 overlapping distinctive tokens (external code review
+        # round 4, 2026-07-22, Fable 5's false-anchor fix). A single
+        # distinctive-token match is unreliable: common English words that
+        # happen to appear in exactly one programme's identity card ("term"
+        # from "what does the term...", "conditions", "principles",
+        # "learning") register as distinctive because docfreq is computed over
+        # identity records only, not over query/corpus frequency - so a
+        # generic question would get a nonsensical programme anchor appended
+        # (verified: the glossary/DipHE follow-ups were getting a
+        # "musculoskeletal/public-health" anchor off the lone token "term"/
+        # "conditions"). Two overlapping tokens is a real identity signal:
+        # east15 still fires on {east, acting}, physiotherapy on {credit,
+        # physiotherapy}; the spurious single-token cases stop firing.
+        if label and len(hist_anchors) >= 2:
             result_tokens = _content_words(result)
             distinctive, _ = _identity_anchor_index()
             already_anchored = bool(result_tokens & hist_anchors)
