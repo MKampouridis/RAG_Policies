@@ -20,6 +20,24 @@ from src.ingest import _get_collection, read_corpus_version
 
 TOKEN_RE = re.compile(r"[a-z0-9]+")
 
+# A3 (external code review round 3, 2026-07-22, Fable 5, verified): split
+# alpha<->digit boundaries in BM25 tokens so glued identity tokens become
+# lexically visible. Essex filenames glue the programme name to markers with
+# no separator ("mscperiodontology_25" -> title token "mscperiodontology";
+# "east15" -> "east15"), and the base [a-z0-9]+ tokenizer keeps them glued -
+# so a BM25 query "MSc Periodontology" (tokens msc, periodontology) matches
+# NEITHER, while every competitor (pg_dip_periodontology,
+# msc-periodontology-science-alexandria) segments cleanly and matches. The
+# home document is thus lexically invisible on its own identity and gets
+# crowded out of the pool entirely (verified: mscperiodontology_25's own
+# tokens are ['mscperiodontology','25']; that's the item-2/item-3 out-of-pool
+# sibling confusion at the lexical layer). Splitting emits BOTH the glued
+# token and its alpha/digit pieces ("east15" -> east15, east, 15), so nothing
+# that matched before stops matching. BM25-only (lazy rebuild from Chroma at
+# server start, no re-embed); flag-gated and full-eval'd before turning on.
+SPLIT_ALPHANUM_TOKENS = True
+_ALPHA_RUN = re.compile(r"[a-z]+|[0-9]+")
+
 # Tried boosting this (repeating the header several times so identity terms
 # like "CSEE"/"4yr" outweigh generic boilerplate body text) to help
 # disambiguate near-identical RoA siblings - regressed RoA hit@6 in the full
@@ -35,7 +53,16 @@ _lock = threading.Lock()
 
 
 def _tokenize(text: str) -> list[str]:
-    return TOKEN_RE.findall(text.lower())
+    tokens = TOKEN_RE.findall(text.lower())
+    if not SPLIT_ALPHANUM_TOKENS:
+        return tokens
+    out = []
+    for t in tokens:
+        out.append(t)
+        pieces = _ALPHA_RUN.findall(t)
+        if len(pieces) > 1:  # mixed alpha+digit like "east15" or "mscperiodontology" stays glued (single alpha run) - only split true mixes
+            out.extend(pieces)
+    return out
 
 
 class _BM25Index:
