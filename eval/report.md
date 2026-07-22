@@ -1880,3 +1880,33 @@ Consistent with the generator bake-off (the 14B only looked better under self-ju
 that gap needs a genuinely stronger, independently-validated generator, not prompt engineering -
 i.e. generation-side is also near its ceiling with the local 7B. Reverted
 (QUOTE_FIGURES_VERBATIM=False), following the "don't keep washes" precedent (Stage G).
+
+## Round 4: reviewers converge on "ship it + rework the metric"; one real C1 bug found and fixed
+
+Sent round 3's outcome (RoA 62.5%->70.0%) to the reviewers. Unanimous: retrieval ceiling reached,
+stop retrieval-signal work, promote evidence-sufficient@6 to the headline metric, and quantify how
+much of the residual is genuine query ambiguity (a test-set artifact of scoring ambiguous queries
+against one gold doc). The genuinely-new suggestions are all generation/UX: context ASSEMBLY (full
+top-1-2 docs vs 6 chunks - untouched by D2's gating/prompting falsification, and the honest next
+lever since J7 proved a model can't quote figures its window never contained), a structured-
+parameter-extraction "Class F" (ambiguity becomes enumeration), clarification UX (which IS
+measurable via scripted 2-turn resolution conversations - correcting the earlier "can't measure"
+framing), and a hallucination eval set (a real gap - none exists).
+
+### C1 false-anchor bug (Fable 5) - verified, fixed
+
+Fable 5 found C1 could append a nonsensical programme anchor to a generic question. Verified: the
+glossary and DipHE follow-ups were getting a "musculoskeletal/public-health" anchor off a LONE
+distinctive token - "term" (from "what does the term..."), "conditions", "principles" - common
+English words that register as distinctive because docfreq is computed over identity records only,
+not query/corpus frequency. (Fable 5's specific culprit "assessment" was wrong - not distinctive -
+but the mechanism and fix are exact.) Fixed by requiring >=2 overlapping distinctive tokens before
+firing: the 6 legitimate multi-token anchors all keep firing (east15 {east,acting}, physiotherapy
+{credit,physiotherapy}, whistleblowing, etc.), the 6 spurious single-token ones stop.
+
+`c1_anchor_v2` full eval: hit@6 unchanged (0 flips vs c1_anchor), RoA MRR 0.44->0.46 (spurious
+anchors were mildly degrading ranking on some hits), all spurious anchors eliminated (0 turns still
+carrying the musculoskeletal/public-health text). All three former single-token HITS
+(professional-doctorates, foundation-year, pgt-credit) held after their append was removed. Clean
+bug fix, kept - production stays at RoA 70% strict / 87.5% evidence-sufficient, now without the
+false-anchor mode.
