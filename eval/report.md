@@ -1859,3 +1859,24 @@ TRACKING (anchor loss across turns) - both below the retrieval architecture.
 This ledger is the round-3 deliverable ChatGPT asked for: the project has moved from exploring the
 RAG design space to having MAPPED its boundary for this corpus. Future effort should assume Classes
 A-D are closed and spend only on Class E (data quality, as new documents arrive) and generation/UX.
+
+## Phase D2: J7 verbatim-figures retry - REJECTED (confirmed under fair conditions)
+
+Retried J7's "quote specific figures verbatim" rule under the now-fair regime (deterministic +
+num_ctx=8192 pinned, removing the truncation confound Fable 5 flagged as a possible explanation for
+the original null). Result almost exactly replicates the original J7:
+
+| | keyphrase coverage | answer score | hit@6 |
+|---|---|---|---|
+| Policy | 60.3% -> 58.2% (-2.1) | 4.17 -> 4.30 (+0.12) | 100% -> 100% |
+| RoA | 56.7% -> 58.2% (+1.5) | 3.67 -> 3.60 (-0.07) | 70% -> 70% |
+| Overall | 58.5% -> 58.2% (-0.3) | 3.92 -> 3.95 (+0.03) | 85% -> 85%, 0 flips |
+
+A wash: RoA keyphrase nudges up but RoA answer score nudges down, policy keyphrase drops. The
+num_ctx confound was NOT the explanation - the fair retest confirms the 7B generator genuinely
+doesn't benefit from the instruction. This definitively resolves the long-deferred J7 question:
+the strict-vs-evidence gap (70% vs 87.5%) is not closable by prompt instruction on this model.
+Consistent with the generator bake-off (the 14B only looked better under self-judging), closing
+that gap needs a genuinely stronger, independently-validated generator, not prompt engineering -
+i.e. generation-side is also near its ceiling with the local 7B. Reverted
+(QUOTE_FIGURES_VERBATIM=False), following the "don't keep washes" precedent (Stage G).

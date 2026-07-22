@@ -89,6 +89,7 @@ on the same noise-free footing.
 | `hygiene_A1A2A3a` (superseded by A3b) | 100.0% / 0.87 | 65.0% / 0.44 | 82.5% / 0.66 | 3.90 |
 | `hygiene_A3b` (superseded by C1) | 100.0% / 0.87 | 67.5% / 0.45 | 83.8% / 0.66 | 3.90 |
 | **`c1_anchor` (= current production, +alias-anchor guard)** | **100.0% / 0.89** | **70.0% / 0.44** | **85.0% / 0.67** | **3.92** |
+| `d2_verbatim` (rejected — J7 retry, wash under fair conditions) | 100.0% / 0.89 | 70.0% / 0.44 | 85.0% / 0.67 | 3.95 |
 
 J-round note: `j6_disclose_ambiguity` changes NO retrieval code (it appends a source-naming
 disclosure to answers when the top-6 is family-fragmented), so its hit@6 deltas vs

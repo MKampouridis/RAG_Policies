@@ -166,7 +166,7 @@ YEAR_MENTION_RE = re.compile(r"\b(20\d{2})\s*[-/]\s*(20)?\d{2}\b")
 # production. Targets the strict-vs-evidence gap (70% vs 87.5%: the system
 # retrieves a sufficient document but the generator doesn't always surface
 # its key figures).
-QUOTE_FIGURES_VERBATIM = True
+QUOTE_FIGURES_VERBATIM = False
 _VERBATIM_RULE = (
     "\n- When the answer involves a specific number, mark, threshold, credit value, percentage, "
     "grade, or time limit, quote it exactly as it appears in the context - do not paraphrase, "
