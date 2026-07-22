@@ -90,6 +90,23 @@ def run(seed_urls: list[str]) -> dict:
                 "department": None, "academic_year": None,
                 "reason": "no extractable text",
             }
+        elif not item.url.lower().endswith(".pdf"):
+            # Durable hub-page guard (external code review round 3, 2026-07-22,
+            # Fable 5, verified): every real document in this corpus is a PDF;
+            # the crawl's HTML pages are navigation/listing hubs (e.g.
+            # /rules-of-assessment/roa-pgt-previous-years lists every historical
+            # programme name). 19 of them had slipped past the LLM classifier
+            # and were indexed - and because they list every programme name,
+            # they're lexical magnets that surface on identity queries while
+            # containing no answerable rule, actively displacing the intended
+            # PDF (seen polluting the Phase 5 mt8 top-6). The crawler still
+            # FOLLOWS these pages to reach the PDFs; they just aren't indexed as
+            # documents themselves.
+            decision = {
+                "keep": False, "doc_type": "none",
+                "department": None, "academic_year": None,
+                "reason": "hub/navigation page (non-PDF)",
+            }
         else:
             try:
                 decision = classify(item.title, item.url, item.text)
