@@ -154,7 +154,26 @@ the rephrasing concrete). Respond with ONLY a JSON object: {"subqueries": ["..."
 # bare years don't trip it and silently degrade retrieval to the full archive.
 YEAR_MENTION_RE = re.compile(r"\b(20\d{2})\s*[-/]\s*(20)?\d{2}\b")
 
-SYSTEM_PROMPT = """You are a helpful assistant answering questions about University of Essex \
+# D2 (review round 3): J7 keyphrase/verbatim-figures retry. J7 added a
+# "quote specific numbers/thresholds verbatim" rule to raise keyphrase
+# coverage (the keyphrases are mostly figures: "40", "50", "30 credits",
+# "5 years") and reverted it - overall keyphrase +1.7pp but RoA keyphrase
+# -1.4pp, answer -0.06, "7B doesn't reliably comply". But that eval predates
+# both the determinism fix AND the num_ctx pin: with num_ctx unset the
+# generation prompt could silently truncate (Fable 5's round-2 finding),
+# which would look exactly like "doesn't follow the instruction". Retrying it
+# now as a fair test - flag-gated so it's a clean A/B against current
+# production. Targets the strict-vs-evidence gap (70% vs 87.5%: the system
+# retrieves a sufficient document but the generator doesn't always surface
+# its key figures).
+QUOTE_FIGURES_VERBATIM = True
+_VERBATIM_RULE = (
+    "\n- When the answer involves a specific number, mark, threshold, credit value, percentage, "
+    "grade, or time limit, quote it exactly as it appears in the context - do not paraphrase, "
+    "round, or omit it."
+)
+
+_SYSTEM_PROMPT_BASE = """You are a helpful assistant answering questions about University of Essex \
 policies and rules of assessment, using only the provided context excerpts. Each excerpt is \
 labeled with its source URL, title, document type, and (where known) department and academic year.
 
@@ -164,13 +183,9 @@ rather than guessing.
 - When multiple academic years of the same policy/rules document are relevant, prefer the most \
 recent academic year unless the user asks about a specific past year.
 - Always cite the source_url(s) you used, inline or in a short "Sources" list at the end.
-- Be concise and direct.
-"""
-# J7 tried adding a "quote specific numbers/thresholds verbatim" rule here to
-# raise keyphrase coverage - flat-to-negative result (overall keyphrase +1.7pp
-# but RoA keyphrase -1.4pp and answer score -0.06; eval/report.md "J7"). The
-# 7B generator doesn't reliably follow the instruction; retry this lever with
-# a stronger generator in the deferred LLM-experiments phase.
+- Be concise and direct."""
+
+SYSTEM_PROMPT = _SYSTEM_PROMPT_BASE + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "") + "\n"
 
 CONTEXTUALIZE_SYSTEM_PROMPT = """Given a conversation and a follow-up question, rewrite the \
 follow-up question into a standalone question that contains all context needed to understand it \
