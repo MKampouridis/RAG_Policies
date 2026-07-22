@@ -1669,3 +1669,33 @@ the stale Alexandria-24 edition was not enough; the home doc is still lexically 
 re-embed of the ~3 genuinely-glued stems: mscperiodontology, mscinursing, pgcertpwp) is the next
 retrieval step. csee's 2025 doc also still misses despite A1 demoting its 2024 sibling - same lexical
 class.
+
+### Phase A complete (A3b glued-title + Alexandria paren-split): RoA 62.5% -> 67.5%
+
+Full 80-turn deterministic eval, cumulative vs the pre-hygiene baseline:
+
+| | pre-hygiene `current_prod_deterministic` | full Phase A `hygiene_A3b` |
+|---|---|---|
+| RoA hit@6 / MRR | 62.5% / 0.40 | **67.5% / 0.45** |
+| RoA evidence@6 | 82.5% | **87.5%** |
+| Overall hit@6 / evid@6 | 81.2% / 91.2% | 83.8% / 93.8% |
+| Answer score | 3.84 | 3.90 |
+
+**Net +2 turns (3 gained / 1 lost).** A3b + the Alexandria paren-split addendum added the third gain
+(mscperiodontology follow-up) on top of A1+A2+A3a's two, with zero new losses. The three gains are
+precisely the hard sibling-confusion follow-ups that stale-edition pollution and lexical-
+invisibility were hurting: roa-ug-integrated-masters-4yr-year-1, ug-grad-cert-year-1,
+mscperiodontology_25. Evidence-sufficient@6 87.5% is back to the original J5a level, now under the
+honest deterministic + single-invocation eval regime.
+
+Perspective: across three sessions, ~20 retrieval-SIGNAL experiments after the original hybrid+
+ColBERT wins produced zero net RoA improvement (all regression/wash/null). The Phase A data-
+HYGIENE programme - stale-edition family-split correction, hub-page removal, and lexical-visibility
+repair, none of which touches the retrieval model or adds a channel - delivered +5pp RoA hit@6.
+This is the round-3 thesis vindicated end to end: the remaining gap lived in the DATA, below the
+architecture. `hygiene_A3b` is the new production baseline.
+
+The one outstanding loss (east15 follow-up, rank 2 -> out-of-pool) is unchanged and remains a C1
+acceptance test: A3a's reordering shifted the primary answer, cascading into a follow-up rewrite
+that dropped the "East 15" anchor - the identity-token-loss mode the alias-anchor guard (C1, next)
+is designed to catch.
