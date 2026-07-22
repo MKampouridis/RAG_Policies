@@ -1733,3 +1733,25 @@ channel or touches the embedding model - delivered +7.5pp RoA hit@6 with zero lo
 the data and in conversational identity-tracking, below the retrieval architecture, exactly as the
 round-3 reviews (Fable 5's log-level analysis especially) argued. `c1_anchor` is the new production
 baseline.
+
+### C1 switch-safety validation (multi-turn probe)
+
+Re-ran the 30-turn multi-turn probe with C1 on. **Switch-safety confirmed: 11/11 switches hit@6
+(100%), plus 8/8 new_topic and 1/1 comparison** - C1 never once appended a stale anchor to a query
+that named its own topic, exactly the design guarantee. Return 4/5 and continuation 4/5 (same
+totals as before C1).
+
+Investigated the two return-category turns that changed vs the pre-C1 (post-faithfulfix) probe,
+and NEITHER is attributable to C1:
+- conv8 turn5 (distant return) rescued (miss -> rank 5): identical rewrite both runs; the rescue is
+  A3b making mscperiodontology lexically retrievable, not C1 (the rewrite already named
+  periodontology, so C1 didn't fire).
+- conv6 turn3 (ambiguous "does a capped mark apply to that Year One reassessment") regressed
+  (rank 4 -> miss): both rewrites already name "Four-Year Honours Degree", so C1 never fired here
+  either. The contextualizer itself produced a subtly different rewrite ("what does Capped Mark
+  MEAN..." leaning to the glossary definition vs "does a capped mark APPLY to reassessment..."
+  leaning to the 4yr rules) because upstream answer changes shifted its history - the same
+  accretion/seed-sensitivity drift documented earlier, orthogonal to C1.
+
+Net: C1 is switch-safe and causes no harm on the multi-turn set; combined with the 80-turn result
+(east15 recovered, 0 losses), it's validated and kept.
