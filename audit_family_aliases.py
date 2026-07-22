@@ -34,6 +34,7 @@ MANIFEST_PATH = Path("data/manifest.json")
 def tight_stem(url: str) -> str:
     fn = url.rsplit("/", 1)[-1]
     fn = re.sub(r"\.pdf$", "", fn.lower())
+    fn = re.sub(r"[()]", "", fn)  # strip parens: Essex wrote "(alexandria)" in 2025 vs "alexandria" in 2024, a rename-split the paren-blind version missed
     fn = re.sub(r"[-_]+", "-", fn)
     fn = re.sub(r"-v\d+$", "", fn)                    # trailing version suffix
     fn = re.sub(r"-(20)?\d{2}(-\d{2,4})?$", "", fn)   # trailing edition year

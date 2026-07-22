@@ -47,6 +47,7 @@ _FAMILY_ALIASES = {
     "kol_pg-masters-roa.pdf": "kol-pg-masters-roa.pdf",
     "kol_pgcert-roa.pdf": "kol-pgcert-roa.pdf",
     "kol_pgdip-roa.pdf": "kol-pgdip-roa.pdf",
+    "msc-periodontology-science-alexandria.pdf": "msc-periodontology-science-(alexandria).pdf",
     "ma-psychodynamic-counselling_psychotherapy-2-year.pdf": "ma-psychodynamic-counselling-psychotherapy-2-year.pdf",
     "ma-psychodynamic-counselling_psychotherapy-3year.pdf": "ma-psychodynamic-counselling-psychotherapy-3year.pdf",
     "ma-psychodynamic-counselling_psychotherapy-4year.pdf": "ma-psychodynamic-counselling-psychotherapy-4year.pdf",

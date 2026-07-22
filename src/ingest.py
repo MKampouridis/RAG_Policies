@@ -63,12 +63,38 @@ def clean_text(text: str) -> str:
     return "\n".join(kept)
 
 
+# A3b (external code review round 3, 2026-07-22, Fable 5, verified): a few
+# Essex filenames glue an award prefix to the programme name with no
+# separator ("mscperiodontology_25" -> token "mscperiodontology"), so BM25 -
+# whose tokenizer is [a-z0-9]+ - can't match it against a "MSc Periodontology"
+# query while every cleanly-separated sibling can; the home document is thus
+# lexically invisible on its own identity and crowded out of the pool
+# entirely (this is the periodontology out-of-pool miss the A1/A2/A3a
+# re-baseline confirmed hygiene alone doesn't fix). Repair is an EXPLICIT,
+# audited map (a corpus audit confirmed naive award-prefix segmentation is
+# unsafe: it would corrupt "masters"->ma+sters, "marking"->ma+rking). The
+# spaced forms come from each document's J1 programme_name (e.g. "mscinursing"
+# is "MSci Nursing" - an integrated masters - NOT "MSc in Nursing"). Applied
+# here for future ingests and, for existing chunks, as a metadata-only
+# chunk_header string-replace (no re-embed, so J2's corpus-wide dense-
+# displacement failure mode structurally cannot occur - only BM25's view of
+# these few documents changes).
+_TITLE_REPAIRS = {
+    "mscperiodontology": "msc periodontology",
+    "mscinursing": "msci nursing",
+    "pgcertpwp": "pgcert pwp",
+}
+
+
 def _readable_title(title: str) -> str:
     """Filenames-as-titles ("csee-ft-masters-accredited-variations-25.pdf")
     carry the degree/department identity that the chunk body lacks - turn
     them into plain words so the embedder and BM25 can use them."""
     title = re.sub(r"\.pdf$", "", title, flags=re.I)
-    return re.sub(r"[-_]+", " ", title).strip()
+    title = re.sub(r"[-_]+", " ", title).strip()
+    for glued, spaced in _TITLE_REPAIRS.items():
+        title = re.sub(rf"\b{glued}\b", spaced, title)
+    return title
 
 
 # J2 tried enriching chunk headers with the extracted identity records at
