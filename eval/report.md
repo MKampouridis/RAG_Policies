@@ -1955,3 +1955,35 @@ group's output with `evidence_sufficient_at_6`; strict/lenient hit@6 remain as d
 Caveat carried forward: evidence-sufficient@6 shares the keyphrase-proxy brittleness (the 6 N=0
 turns), so a reference-answer-containment or judge-based sufficiency variant is the natural refinement
 if this metric is ever used for a fine-grained verdict.
+
+## Round 4, item 6: hallucination / groundedness eval (the measurement gap) - baseline established
+
+`eval/hallucination_eval.py`: for each answer already generated at current production, reconstruct
+the exact context it was generated from (deterministic re-retrieve -> _format_context) and have the
+14B judge check whether every specific factual claim is supported by that context. Measures
+FAITHFULNESS-TO-CONTEXT (intrinsic hallucination), orthogonal to hit@6.
+
+**Baseline groundedness: 78.8% (63/80 answers)**:
+
+| split | grounded |
+|---|---|
+| on hit@6 turns | 83.8% |
+| on miss turns | **50.0%** |
+| RoA | **65.0%** |
+| Policy | 92.5% |
+
+Clear pattern: hallucination concentrates where retrieval failed (miss turns 50%) and where answers
+hinge on specific figures (RoA 65% vs policy 92.5%). Even ~16% of hit turns hallucinate. The
+unsupported claims are concrete fabricated figures - "the capped mark is 50", "40 credits at Level 6
+and the remaining at Level 5", "150 credits at Masters Level... pass all except SE760", "70 or more
+across 135 PG Diploma credits" - and one sibling cross-contamination (the roa-ug-3yr[primary] HIT
+answer imported the FOUR-year degree's "120 credits at Level 4" rule into a THREE-year question).
+
+This is the measurable form of the RoA answer-quality gap: the 7B fabricates a plausible figure
+rather than abstaining when the exact one isn't in its 175-word retrieved chunk. It directly
+motivates item 5 (context assembly): if the real figure is in the full document but not the
+retrieved chunk, fuller context would let the model quote it instead of inventing it. Caveats: the
+14B judge runs somewhat strict, and a few "not grounded" verdicts are faithful abstentions
+over-flagged; but even discounting that, a real ~21% hallucination rate concentrated on RoA specifics
+and misses is established as the baseline to improve against. Results per-turn in
+`eval/results_hallucination.json`.
