@@ -1755,3 +1755,24 @@ and NEITHER is attributable to C1:
 
 Net: C1 is switch-safe and causes no harm on the multi-turn set; combined with the 80-turn result
 (east15 recovered, 0 losses), it's validated and kept.
+
+## Phase B: offline backtests to decide (before building) whether any architectural lever remains
+
+### B1 routing oracle - hard macro-routing REJECTED at pre-validation (the cheap kill)
+
+Fable 5's pre-registered two-gate oracle (`eval/b1_routing_oracle.py`), over all 80 logged
+deterministic retrieval queries from current production, BM25 over current-document identity cards:
+
+| Gate | Result |
+|---|---|
+| SAFETY (0 currently-hit turns may have gold outside routing top-5) | **FAIL - 28 of 68** hit turns have gold outside top-5 (ranks up to 60-65) |
+| RESCUE (gold in routing top-5 for >= 3 of the 12 misses) | **FAIL - only 1 of 12** |
+
+Hard macro-routing (restrict chunk retrieval to the top-K identity-routed documents) would
+GUARANTEE ~28 new losses to rescue at most 1 - a catastrophic trade, and no larger K fixes it
+(the unsafe golds sit at ranks 6-65). Mechanism: most eval questions ask about CONTENT ("what
+penalties apply?", "what happens if a student fails?"), not IDENTITY ("MSc Periodontology"), so
+identity-only routing discards exactly the content signal that chunk-level dense+BM25 provides.
+This is the cheap kill Fable 5 predicted and answers review-round-3 Q4 / Gemini's macro-routing
+test decisively: do NOT build macro-routing. J3's earlier soft-routing failure (0 rescues / 3
+losses) was the same signal at lower stakes.
