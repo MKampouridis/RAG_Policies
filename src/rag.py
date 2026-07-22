@@ -185,7 +185,28 @@ recent academic year unless the user asks about a specific past year.
 - Always cite the source_url(s) you used, inline or in a short "Sources" list at the end.
 - Be concise and direct."""
 
-SYSTEM_PROMPT = _SYSTEM_PROMPT_BASE + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "") + "\n"
+# Round 4 (user question, 2026-07-22): does per-claim INLINE citation reduce
+# hallucination? The base prompt already asks for end-of-answer Sources; this
+# stronger variant asks the model to attribute each specific factual claim to
+# its source_url inline. Prior expectation is marginal (D2's verbatim-figures
+# prompt washed on the 7B, and citations don't self-verify - a model can cite
+# a real source for a fabricated fact), but it's a cheap A/B against the
+# hallucination baseline (78.8% grounded). Flag-gated.
+INLINE_CITATIONS = True
+_INLINE_CITATION_RULE = (
+    "\n- Attribute every specific factual claim (a number, mark, threshold, credit value, "
+    "percentage, time limit, or condition) to the exact source_url it came from, cited inline "
+    "in square brackets immediately after the claim, e.g. \"the pass mark is 50 [<source_url>]\". "
+    "Only state a claim if you can cite the context excerpt that supports it; if the context "
+    "doesn't support it, say so instead of stating it."
+)
+
+SYSTEM_PROMPT = (
+    _SYSTEM_PROMPT_BASE
+    + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "")
+    + (_INLINE_CITATION_RULE if INLINE_CITATIONS else "")
+    + "\n"
+)
 
 CONTEXTUALIZE_SYSTEM_PROMPT = """Given a conversation and a follow-up question, rewrite the \
 follow-up question into a standalone question that contains all context needed to understand it \
