@@ -31,6 +31,18 @@ SEED_URLS = [
 MANIFEST_PATH = Path("data/manifest.json")
 TEXT_CACHE_DIR = Path("data/text_cache")
 
+# Durable duplicate-URL exclusion (2026-07-23). Essex sometimes publishes the
+# SAME document at two URLs across a filename-scheme change. These URLs are
+# byte-identical duplicates of a canonical file already in the corpus and must
+# not be re-indexed on a future crawl (they add zero coverage and, worse, carry
+# a directory-derived academic-year label that mislabels their true cohort -
+# e.g. five-year-integrated-masters-21-v7.pdf sits under /2025-26/ but its
+# content is the 2021-22 cohort, identical to roa-ug-integrated-masters-5yr-
+# year-5.pdf). Same spirit as the hub-page guard below, but keyed by exact URL.
+_EXCLUDED_URLS = {
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+}
+
 
 def load_manifest() -> dict:
     if MANIFEST_PATH.exists():
@@ -84,7 +96,13 @@ def run(seed_urls: list[str]) -> dict:
 
         cache_path.write_text(item.text, encoding="utf-8")
 
-        if not item.text.strip():
+        if item.url in _EXCLUDED_URLS:
+            decision = {
+                "keep": False, "doc_type": "none",
+                "department": None, "academic_year": None,
+                "reason": "excluded duplicate URL (byte-identical to a canonical file)",
+            }
+        elif not item.text.strip():
             decision = {
                 "keep": False, "doc_type": "none",
                 "department": None, "academic_year": None,

@@ -2083,3 +2083,48 @@ confidently wrong from the wrong document - so an abstention gate is needed rega
 and 16GB-RAM tightness. The cloud 120B shows the ceiling (+20.5) but isn't a standing-prod config on
 the free tier. Whether the 14B's grounding gain is worth the latency/RAM cost is a user deployment
 decision (not yet made; production remains 7B).
+
+## Round 4, item 3 follow-up: abstention gate for miss-turn hallucination - FALSIFIED (diagnostic only)
+
+Item 3 showed a stronger generator worsens groundedness on retrieval MISSES ("confidently wrong"
+from the wrong doc). Natural fix: an abstention gate that hedges/abstains when retrieval probably
+missed. Before building (the earlier CRAG hard-gate was rejected for over-firing, answer_score
+3.90->2.88), diagnosed whether ANY retrieval signal separates HIT from MISS turns
+(scratchpad/abstain_diag*.py, 80 turns of results_qwen14b_full.json):
+
+| signal | HIT | MISS | best gate |
+|---|---|---|---|
+| top ColBERT score (abs confidence) | mean 24.1 | mean 24.9 | precision 0.16 = base rate (ZERO signal) |
+| margin (top1 - top2) | median 0.05 | median 0.01 | precision <=0.21 (false-gates ~all hits) |
+| distinct families in top-6 | median 2 | median 6 | precision 0.40 / recall 0.62 @ >=6 (real but weak) |
+
+**Falsified.** Absolute confidence and margin carry NO signal because a miss retrieves the wrong
+near-duplicate SIBLING, which is just as on-topic and high-scoring as the right document - the
+reranker is confidently wrong, mirroring the generator. Only fragmentation (how scattered the top-6
+is across document families) separates them, and even at its best (all 6 slots different families)
+it's precision 0.40: a hard gate would prevent ~8 hallucinations while killing ~12 good answers (a
+losing trade, and a repeat of CRAG). A soft hedge at that precision is just the shipped J6
+disclosure and doesn't stop the wrong figure being stated.
+
+**Constructive output:** the fragmentation signal (>=6 distinct families in top-6, ~62% of true
+misses) is a concrete, data-backed TRIGGER for the D3 clarification UX - the previously-missing
+"when to ask" condition (pool maximally scattered => query too under-specified => ask which
+programme/document instead of guessing). Miss-turn hallucination thus folds into (a)
+sibling-disambiguating retrieval (hard, mostly exhausted) and (b) D3 clarification UX; there is no
+standalone confidence-based abstention gate at acceptable precision.
+
+## Round 4, item 4b: byte-identical duplicate removed from corpus
+
+`five-year-integrated-masters-21-v7.pdf` (PGT directory) was proven byte-identical (20596 chars,
+2021-22 cohort) to the canonical `roa-ug-integrated-masters-5yr-year-5.pdf` (UG /current/ per-year
+set) - a leftover from Essex's pre-2025 filename scheme, and mislabeled academic_year 2025-26 from
+its directory path though its content is the 2021 cohort (it was the wrong-attribution target in the
+item-2 hallucination test). Removed outright (adds zero coverage; the whole 2021 cohort is already
+served by year-5). Because COLBERT_FIRST_STAGE_ENABLED is off (the ColBERT index is only a rerank
+embedding cache, not a retrieval channel), removal needed no ColBERT rebuild: deleted its 21 chunks
+from Chroma (delete_document, which bumps the corpus version so BM25 rebuilds), tidied the inert
+ColBERT snapshot + manifest, and added the URL to a durable `_EXCLUDED_URLS` guard in run_ingest.py
+(same spirit as the hub-page guard) so a future crawl won't re-add it. Regression: a five-year
+integrated-masters query now returns only the canonical per-year files (year-1..5), the removed
+duplicate cannot surface, canonical year-5 intact (21 chunks). Data changes are local (data/ is
+gitignored, rebuilt from run_ingest.py); the exclusion in run_ingest.py is what makes it durable.
