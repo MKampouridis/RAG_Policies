@@ -64,6 +64,15 @@ def create_conversation() -> str:
     return resp.json()["id"]
 
 
+def delete_conversation(conv_id: str) -> None:
+    # Eval conversations are transient scaffolding for multi-turn context; delete
+    # them so a run doesn't flood the UI sidebar (1808 accumulated before this).
+    try:
+        requests.delete(f"{API_BASE}/api/conversations/{conv_id}")
+    except Exception:
+        pass
+
+
 def post_message(conv_id: str, content: str) -> dict:
     resp = requests.post(f"{API_BASE}/api/conversations/{conv_id}/messages", json={"content": content})
     resp.raise_for_status()
@@ -118,6 +127,13 @@ def judge_answer(question: str, expected_answer: str, actual_answer: str, model:
 
 def eval_one(item: dict) -> dict:
     conv_id = create_conversation()
+    try:
+        return _eval_one(conv_id, item)
+    finally:
+        delete_conversation(conv_id)  # don't leave eval scaffolding in the sidebar
+
+
+def _eval_one(conv_id: str, item: dict) -> dict:
     result = {
         "source_url": item["source_url"],
         "source_title": item["source_title"],

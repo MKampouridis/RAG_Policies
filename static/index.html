@@ -12,6 +12,8 @@
     --bubble-user-fg: #ffffff;
     --bubble-assistant: #f2f2f4;
     --sidebar-bg: #fafafa;
+    --conv-hover: rgba(0,0,0,0.045);
+    --conv-active: rgba(47,95,217,0.11);
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -24,6 +26,8 @@
       --bubble-user-fg: #ffffff;
       --bubble-assistant: #232428;
       --sidebar-bg: #1c1d21;
+      --conv-hover: rgba(255,255,255,0.055);
+      --conv-active: rgba(109,140,255,0.15);
     }
   }
   * { box-sizing: border-box; }
@@ -45,35 +49,75 @@
     overflow: hidden;
   }
   #sidebar-header {
-    padding: 14px;
-    border-bottom: 1px solid var(--border);
+    padding: 12px;
   }
   #new-chat-btn {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    border: none;
+    border-radius: 9px;
     background: var(--accent);
-    color: white;
+    color: #fff;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
+    transition: filter 0.15s;
+  }
+  #new-chat-btn:hover { filter: brightness(1.08); }
+  #conv-label {
+    padding: 4px 18px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
   }
   #conversation-list {
     overflow-y: auto;
     flex: 1;
+    padding: 0 8px 12px;
   }
   .conv-item {
-    padding: 12px 14px;
-    border-bottom: 1px solid var(--border);
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 8px 9px 12px;
+    margin-bottom: 2px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
+    line-height: 1.35;
     color: var(--fg);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    transition: background 0.12s;
   }
-  .conv-item:hover { background: var(--bubble-assistant); }
-  .conv-item.active { background: var(--bubble-assistant); font-weight: 600; }
+  .conv-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv-del {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1;
+    padding: 1px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    visibility: hidden;
+  }
+  .conv-item:hover .conv-del { visibility: visible; }
+  .conv-del:hover { background: var(--conv-hover); color: var(--fg); }
+  .conv-item:hover { background: var(--conv-hover); }
+  .conv-item.active { background: var(--conv-active); font-weight: 600; }
+  .conv-item.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    bottom: 7px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: var(--accent);
+  }
   #main {
     flex: 1;
     display: flex;
@@ -207,7 +251,8 @@
     #sidebar-header { padding: 8px; }
     #new-chat-btn { font-size: 0; padding: 10px 0; }
     #new-chat-btn::before { content: "+"; font-size: 18px; }
-    .conv-item { font-size: 11px; padding: 10px 8px; }
+    #conv-label { display: none !important; }
+    .conv-item { font-size: 11px; padding: 8px 6px; }
     .bubble { max-width: 88%; }
   }
 </style>
@@ -216,6 +261,7 @@
   <div id="sidebar-header">
     <button id="new-chat-btn">+ New conversation</button>
   </div>
+  <div id="conv-label">Conversations</div>
   <div id="conversation-list"></div>
 </div>
 
@@ -392,13 +438,32 @@
   async function loadConversations() {
     const convs = await fetchJSON('/api/conversations');
     conversationList.innerHTML = '';
+    document.getElementById('conv-label').style.display = convs.length ? 'block' : 'none';
     for (const c of convs) {
       const item = document.createElement('div');
       item.className = 'conv-item' + (c.id === activeConversationId ? ' active' : '');
-      item.textContent = c.title;
-      item.onclick = () => openConversation(c.id);
+      item.title = c.title;
+      const title = document.createElement('span');
+      title.className = 'conv-title';
+      title.textContent = c.title;
+      title.onclick = () => openConversation(c.id);
+      const del = document.createElement('button');
+      del.className = 'conv-del';
+      del.textContent = '×';
+      del.title = 'Delete conversation';
+      del.onclick = (e) => { e.stopPropagation(); deleteConversation(c.id); };
+      item.append(title, del);
       conversationList.appendChild(item);
     }
+  }
+
+  async function deleteConversation(id) {
+    await fetch(`/api/conversations/${id}`, { method: 'DELETE' }).catch(() => {});
+    if (id === activeConversationId) {
+      activeConversationId = null;
+      messagesEl.innerHTML = '<div class="empty-state">Start a new conversation or pick one from the sidebar.</div>';
+    }
+    await loadConversations();
   }
 
   async function openConversation(id) {

@@ -100,6 +100,12 @@ def add_message(conversation_id: str, role: str, content: str) -> None:
         )
 
 
+def delete_conversation(conversation_id: str) -> None:
+    with _connect() as conn:
+        conn.execute("DELETE FROM messages WHERE conversation_id = ?", (conversation_id,))
+        conn.execute("DELETE FROM conversations WHERE id = ?", (conversation_id,))
+
+
 def get_messages(conversation_id: str) -> list[dict]:
     with _connect() as conn:
         rows = conn.execute(

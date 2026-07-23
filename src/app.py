@@ -61,6 +61,14 @@ def api_get_messages(conversation_id: str):
     return memory.get_messages(conversation_id)
 
 
+@app.delete("/api/conversations/{conversation_id}")
+def api_delete_conversation(conversation_id: str):
+    if not memory.conversation_exists(conversation_id):
+        raise HTTPException(status_code=404, detail="conversation not found")
+    memory.delete_conversation(conversation_id)
+    return {"ok": True}
+
+
 @app.post("/api/conversations/{conversation_id}/messages")
 def api_post_message(conversation_id: str, payload: NewMessage):
     if not payload.content.strip():
