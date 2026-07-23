@@ -2022,3 +2022,64 @@ attempts). Item 4b (five-year rename demotion) left for user judgment: two paral
 lineages exist (`roa-ug-integrated-masters-5yr-year-N.pdf` vs `five-year-integrated-masters-21-v7
 .pdf`) and it's ambiguous whether the latter is a stale duplicate or a legitimately distinct
 document - needs a human to decide before demoting either.
+
+## Round 4, item 3: stronger generator (cloud gpt-oss-120b) — the retrieved-but-not-surfaced gap IS a generator problem
+
+The strict-vs-evidence gap (a sufficient document is retrieved but the local 7B doesn't surface its key figures) and the item-6 hallucination finding (8/17 hallucinations were figures that WERE in the retrieved chunks, fabricated anyway) both pointed at generator capability, but D2 only proved a *prompt rule* can't close it on the 7B. This item tests the actual lever: swap the GENERATOR for a genuinely stronger model, holding retrieval and the (local 14B) judge identical.
+
+**Setup.** Added a cloud generator path (`generate()` in src/llm.py, `GENERATOR_PROVIDER`/`GENERATOR_MODEL` env, OpenAI-compatible; only the answer-generation call moves to cloud - contextualizer, judge, summarizer, relevance stay local). Provider Groq free tier. First choice llama-3.3-70b-versatile was abandoned: its free daily cap is 100K tokens (TPD) - a full 80-turn eval needs ~450K, so it can't finish. gpt-oss-120b has a 200K TPD, which comfortably covers the 40 RoA turns (~112K) - so the test was run on the RoA subset (`eval/questions_roa_only.json`), which is exactly where hallucination concentrates (RoA groundedness 65% vs Policy 92.5%; Policy has almost nothing to gain). Deterministic (temp 0). 7B baseline is the same 20 RoA questions from `results_item4a.json`, re-judged for groundedness on identical retrieval (`results_item4a_roa.json`).
+
+**Result (groundedness, faithfulness-to-context; both arms identical retrieval + judge):**
+
+| RoA groundedness | 7B (baseline) | gpt-oss-120b | Δ |
+|---|---|---|---|
+| on hit@6 turns | 72.4% | **92.9%** | **+20.5** |
+| on miss turns | 54.5% | 41.7% | **−12.8** |
+| overall RoA | 67.5% | 77.5% | **+10.0** |
+| answer_score (14B judge) | 3.55 | 3.98 | +0.43 |
+
+**Two findings, split cleanly by cause:**
+
+1. **When retrieval succeeds, a stronger generator dramatically reduces hallucination: +20.5pts (72.4%->92.9%).** This is the first hard confirmation that the retrieved-but-not-surfaced gap is a GENERATOR-CAPABILITY problem, not retrieval and not promptable on the 7B. Given the same context the 7B fabricated from, gpt-oss-120b reports the figure faithfully ~93% of the time. Answer_score corroborates (+0.43).
+
+2. **When retrieval FAILS, the stronger generator is WORSE: -12.8pts (54.5%->41.7%).** The "more confidently wrong" effect: handed the wrong document, the 120B writes a fluent, confident answer the judge flags as ungrounded, whereas the weaker 7B more often hedged/waffled (which reads as faithful abstention). On miss turns, fluency hurts groundedness.
+
+**Strategic consequence — the residual hallucination splits by cause, and so does the fix:**
+- retrieved-but-not-surfaced -> generator problem -> SOLVED by a stronger generator (+20.5).
+- miss-turn hallucination -> NOT a generator problem -> needs retrieval improvement OR an ABSTENTION GATE (don't confidently answer from weak context). A stronger generator without an abstention gate trades hit-turn gains for miss-turn losses; the net (+10 overall) is positive only because hit turns outnumber miss turns.
+
+**Caveats.** RoA-only (20 questions/40 turns), not the full 80 - but RoA is where the gap lives. gpt-oss-120b runs on Groq free tier (200K TPD), so it establishes the *ceiling a stronger generator reaches*, not a standing production config (reverted to local 7B after the run; the cloud path is env-gated and off by default). The 14B judge is identical across both arms, so the comparison is fair even if the judge runs somewhat strict in absolute terms. Per-turn files: `results_gptoss120b_roa.json`, `results_hallucination_gptoss_roa.json`, `results_hallucination_item4a_roa_7b.json`.
+
+### Item 3 follow-up: local 14B generator (full 40-question run) - the monotonic ladder
+
+Repeated item 3 with the LOCAL qwen2.5:14b-instruct as generator (no cloud limits, so the full 40
+questions - 20 RoA + 20 Policy - were run, unlike the cloud subset). Same retrieval, same local 14B
+judge. Caveat: this arm is SELF-JUDGED (generator == judge model), which the bake-off showed inflates
+answer_score; groundedness is more objective but may still be slightly optimistic - yet the 14B still
+lands below the independently-judged 120B, so the ordering is safe.
+
+**Three-way RoA groundedness (identical retrieval + judge), the headline of item 3:**
+
+| RoA groundedness | 7B (baseline) | 14B (local) | gpt-oss-120B (cloud) |
+|---|---|---|---|
+| on hit@6 turns | 72.4% | 81.5% | 92.9% |
+| on miss turns | 54.5% | 46.2% | 41.7% |
+| overall RoA | 67.5% | 70.0% | 77.5% |
+| answer_score | 3.55 | 3.70 | 3.98 |
+
+**Groundedness on hit turns is MONOTONIC in generator size: 72.4 -> 81.5 -> 92.9.** When retrieval
+succeeds, faithful reporting of the figure is purely a generator-capability function. The local 14B
+captures ~half the cloud 120B's gain (+9pt vs +20.5pt) while remaining local/free/unlimited.
+Miss-turn groundedness is monotonic the OTHER way (54.5 -> 46.2 -> 41.7): bigger models are more
+confidently wrong from the wrong document - so an abstention gate is needed regardless of generator.
+
+14B full-run splits: overall 81.2% (65/80), hit-turn 88.1%, miss-turn 46.2%, RoA 70.0%, Policy 92.5%
+(Policy unchanged across all three generators - no headroom). Answer_score full: 14B RoA 3.70 vs 7B
+3.55 (+0.15, self-judged so an upper bound); Policy 4.15 vs 4.17 (flat). Files:
+`results_qwen14b_full.json`, `results_hallucination_qwen14b_full.json`.
+
+**Deployment implication.** The 14B is the realistic standing-production upgrade path: a genuine
++9pt hit-turn groundedness gain, LOCAL (no cloud daily caps), at the cost of ~2x generation latency
+and 16GB-RAM tightness. The cloud 120B shows the ceiling (+20.5) but isn't a standing-prod config on
+the free tier. Whether the 14B's grounding gain is worth the latency/RAM cost is a user deployment
+decision (not yet made; production remains 7B).

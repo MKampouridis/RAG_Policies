@@ -1,0 +1,562 @@
+[
+  {
+    "turn": "policy-whistleblowing.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "The policy applies to all employees, students, workers, contractors, subcontractors, suppliers, visitors, volunteers, and invitees at the University of Essex."
+  },
+  {
+    "turn": "policy-whistleblowing.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-offences-procedure.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-offences-procedure.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-concerns-complaints-procedure.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-concerns-complaints-procedure.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "cop-freedom-of-speech.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "cop-freedom-of-speech.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "speaker-code-of-practice.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "speaker-code-of-practice.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "code-practice-professional-doctorates.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "code-practice-professional-doctorates.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "code-practice-postgraduate-research.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "code-practice-postgraduate-research.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "postgraduate-research-integrity-and-research-misconduct-policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "postgraduate-research-integrity-and-research-misconduct-policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "procedures-fitness-to-practise.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "procedures-fitness-to-practise.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "professional-clinical-appearance-code-of-practice.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "professional-clinical-appearance-code-of-practice.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-voice-policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-voice-policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-suicide-prevention-and-response.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-suicide-prevention-and-response.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-flexibility-policy-for-taught-students-sport.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-flexibility-policy-for-taught-students-sport.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-protection-plan.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-protection-plan.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-engagement-policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "The answer incorrectly lists 'personal contact alongside the use of data', 'a focus on support for students', and 'flexibility in approach to respond to individual student needs and behavior' as separate principles (4, 5, and 6) when they are actually listed under point 5 as important recognitions rather than distinct principles."
+  },
+  {
+    "turn": "student-engagement-policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "fitness-to-study.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "fitness-to-study.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "rpl_policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "rpl_policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "tuition-fee-payment-and-liability-policy-2025-26.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "tuition-fee-payment-and-liability-policy-2025-26.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-debt-policy-2025-26.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "student-debt-policy-2025-26.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "If a self-funded International student who started in academic year 2023-24 does not pay their tuition fees according to the given terms, they are required to pay fees in three equal instalments payable each term."
+  },
+  {
+    "turn": "code-of-practice-supervision-masters-dissertations.pdf[primary]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "code-of-practice-supervision-masters-dissertations.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-glossary.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "If you fail up to 60 credits and are offered compulsory reassessment before the start of the next year, your Module Mark(s) will be capped at 40."
+  },
+  {
+    "turn": "roa-ug-glossary.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-principles-and-framework.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-principles-and-framework.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "The answer provides specific details about award classifications that are not present in the given context."
+  },
+  {
+    "turn": "roa-ug-3yr-year-1-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-3yr-year-1-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "For a student who fails a module in Year One, the following applies: Students who have failed any taught module will have one opportunity to undertake reassessment in that module. No second attempt at the assessment for a module is permitted prior to the Board of Examiners meeting where marks are confirmed."
+  },
+  {
+    "turn": "roa-ug-4yr-year-1-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "The answer incorrectly refers to reassessment opportunities at the end of Year One when the context provided is for Four-Year Honours Degree rules applicable to different years (Year 2, Year 3, and Year 4)."
+  },
+  {
+    "turn": "roa-ug-4yr-year-1-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-foundation-year-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-foundation-year-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-integrated-masters-4yr-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-integrated-masters-4yr-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-grad-cert-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-grad-cert-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "Based on the provided context, there are no explicit conditions mentioned that allow a student to receive the Graduate Certificate if they do not meet the minimum credit requirement of 45 credits at Level 6."
+  },
+  {
+    "turn": "roa-ug-diploma-higher-education-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "If a total of 15 or fewer credits have been failed across previous years, failure may be condoned in up to 15 non-core credits in the Final Year."
+  },
+  {
+    "turn": "roa-ug-diploma-higher-education-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "csee-ft-masters-accredited-variations-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "The pass mark for all modules, including core modules, is generally 50 for postgraduate certificates and diplomas according to the provided documents."
+  },
+  {
+    "turn": "csee-ft-masters-accredited-variations-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "The answer incorrectly generalizes that a module aggregate mark of exactly 40 passes any taught core module without considering specific conditions or variations for different levels or courses."
+  },
+  {
+    "turn": "east15-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "east15-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ma_social_work_25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ma_social_work_25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "To obtain a Pass with Merit, a student must have an overall weighted average mark of 60 or more for these 120 credits."
+  },
+  {
+    "turn": "msc-physiotherapy-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "Pass with Merit To obtain a Merit in addition to achieving the requirements for a pass, a student should: - Have an overall weighted average mark of 60 or more."
+  },
+  {
+    "turn": "msc-physiotherapy-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "If a student is unable to complete the full 180 credits required for the MSc Physiotherapy (Pre-registration) or does not achieve the necessary credits, they may be considered for an exit award such as a Postgraduate Diploma (PG Dip) or Postgraduate Certificate (PG Cert)."
+  },
+  {
+    "turn": "mscperiodontology_25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "mscperiodontology_25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "msc-human-resource-management-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "msc-human-resource-management-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "mba-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "mba-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "pgt-credit-framework-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "pgt-credit-framework-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "masters-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "masters-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "integrated-phd-roa-model-a-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "integrated-phd-roa-model-a-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "Module Marks for further attempts will be capped at 40 unless there are substantiated Extenuating Circumstances (for Chula)."
+  },
+  {
+    "turn": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  }
+]

@@ -15,7 +15,7 @@ from src import splade as _splade
 from src.docid import document_family as _document_family
 from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.ingest import query as vector_query
-from src.llm import CONTEXTUALIZE_MODEL, chat
+from src.llm import CONTEXTUALIZE_MODEL, chat, generate
 
 N_RESULTS = 6
 # over-fetch so recency filtering AND reranking have real depth to work with -
@@ -1088,7 +1088,7 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     messages.extend(history)
     messages.append({"role": "user", "content": f"Context:\n{context}\n\nQuestion: {question}"})
 
-    response_text = chat(messages=messages)
+    response_text = generate(messages=messages)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         response_text += _ambiguity_disclosure(metadatas)

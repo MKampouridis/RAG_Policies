@@ -2,8 +2,10 @@
 constants below — nothing else in the codebase needs to change."""
 
 import os
+import time
 
 import ollama
+import requests
 
 # Phase 1 determinism fix (external code-review round, 2026-07-21, see
 # eval/report.md): no call site anywhere in this codebase set temperature,
@@ -69,6 +71,90 @@ def chat(
         options = DETERMINISTIC_OPTIONS
     response = ollama.chat(model=model, messages=messages, format=format, options=options)
     return response["message"]["content"]
+
+
+# Item 3 (2026-07-23): optional CLOUD generator for the ANSWER-GENERATION call
+# only (src/rag.py answer()'s final chat). Everything else - the query
+# contextualizer, the 14B judge, the memory summarizer, relevance, and the
+# (off) decomposition/CRAG calls - stays LOCAL: those were validated against
+# the local 7B and don't need a stronger model. Motivation: the 78.8%
+# groundedness baseline is limited by the 7B fabricating figures/provenance it
+# can't support from context (round-4 item-2 finding); a genuinely stronger
+# generator is the last untested lever (D2 proved a prompt rule can't close it
+# on the 7B). Free tiers only, via OpenAI-compatible endpoints, gated by env so
+# production stays fully local unless GENERATOR_PROVIDER is set. Under
+# RAG_DETERMINISTIC the cloud temperature is pinned to 0 (+ seed) for a
+# reproducible A/B against the local baseline.
+GENERATOR_PROVIDER = os.environ.get("GENERATOR_PROVIDER", "").lower()  # "" -> local ollama (LOCAL_GENERATOR_MODEL)
+GENERATOR_MODEL = os.environ.get("GENERATOR_MODEL", "")  # override: cloud model name, or a specific local model
+
+# Item 3 (2026-07-23): production ANSWER generator switched from the 7B to the
+# local 14B. Groundedness on retrieval-HIT turns is monotonic in generator size
+# (RoA: 7B 72.4% -> 14B 81.5% -> cloud gpt-oss-120B 92.9%); the 14B captures
+# ~half the cloud gain while staying local/free/unlimited. ONLY answer
+# generation uses this - the contextualizer (CONTEXTUALIZE_MODEL) and the 14B
+# judge are unchanged. Cost: ~2x generation latency and tighter 16GB RAM.
+# CHAT_MODEL (7B) stays the default for the minor local calls (summary,
+# relevance). Override the generator with the GENERATOR_MODEL env var.
+LOCAL_GENERATOR_MODEL = "qwen2.5:14b-instruct"
+
+_CLOUD_GENERATORS = {
+    # provider: (OpenAI-compatible chat-completions endpoint, api-key env var, default model)
+    "groq": (
+        "https://api.groq.com/openai/v1/chat/completions",
+        "GROQ_API_KEY",
+        "llama-3.3-70b-versatile",
+    ),
+    "gemini": (
+        "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+        "GEMINI_API_KEY",
+        "gemini-2.5-flash",
+    ),
+}
+
+
+def generate(messages: list[dict]) -> str:
+    """Answer-generation call. Routes to a cloud generator when
+    GENERATOR_PROVIDER is set (else the local CHAT_MODEL via chat()). Kept
+    separate from chat() so ONLY answer generation moves to the cloud while the
+    contextualizer/judge/etc. stay local and free."""
+    if not GENERATOR_PROVIDER:
+        # local generation: the 14B production generator (LOCAL_GENERATOR_MODEL),
+        # or a GENERATOR_MODEL override. CHAT_MODEL (7B) is untouched so the
+        # misc local calls that use it (summary, relevance) stay on the 7B.
+        return chat(messages=messages, model=GENERATOR_MODEL or LOCAL_GENERATOR_MODEL)
+    if GENERATOR_PROVIDER not in _CLOUD_GENERATORS:
+        raise ValueError(
+            f"unknown GENERATOR_PROVIDER {GENERATOR_PROVIDER!r}; known: {sorted(_CLOUD_GENERATORS)}"
+        )
+    url, key_env, default_model = _CLOUD_GENERATORS[GENERATOR_PROVIDER]
+    api_key = os.environ.get(key_env)
+    if not api_key:
+        raise RuntimeError(f"GENERATOR_PROVIDER={GENERATOR_PROVIDER!r} set but {key_env} is empty")
+    payload = {
+        "model": GENERATOR_MODEL or default_model,
+        "messages": messages,
+        "temperature": 0 if DETERMINISTIC else 0.7,
+    }
+    if DETERMINISTIC:
+        payload["seed"] = 42  # honored by Groq; harmless if a provider ignores it
+    headers = {"Authorization": f"Bearer {api_key}"}
+    # Free tiers rate-limit by tokens-per-minute (Groq: 6k TPM), and a larger
+    # RoA context prompt sitting near that ceiling gets a 429. Back off INSIDE
+    # this call (honoring the Retry-After header) instead of letting the 429
+    # bubble up - otherwise the eval's turn-level retry immediately re-sends the
+    # same big prompt and spikes further over the limit, cascading. TPM windows
+    # reset each minute, so a short wait clears it.
+    for attempt in range(10):
+        resp = requests.post(url, headers=headers, json=payload, timeout=120)
+        if resp.status_code == 429:
+            wait = resp.headers.get("retry-after")
+            wait = float(wait) if wait else min(2 ** attempt, 30)
+            time.sleep(min(wait + 0.5, 30))
+            continue
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"]["content"]
+    raise RuntimeError(f"{GENERATOR_PROVIDER} generator rate-limited (429) after retries")
 
 
 def embed(text: str, model: str = EMBED_MODEL) -> list[float]:

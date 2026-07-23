@@ -1,0 +1,419 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+    "source_title": "roa-ug-glossary.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "expected_answer": "A capped mark is a maximum mark that can be awarded for an assessment, and if achieved, no further marks can be gained from re-assessments or supplementary examinations.",
+    "keyphrases": [
+      "capped mark",
+      "maximum mark",
+      "re-assessments",
+      "supplementary examinations"
+    ],
+    "follow_up_question": "Can the capped mark be exceeded by a student's performance in any circumstances?",
+    "follow_up_expected_answer": "No, the capped mark is the highest mark that can be achieved and cannot be exceeded through re-assessment or supplementary examination.",
+    "follow_up_keyphrases": [
+      "capped mark",
+      "exceeded",
+      "re-assessment",
+      "supplementary examinations"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+    "source_title": "ug-principles-and-framework.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "expected_answer": "The Rules of Assessment describe the criteria for achieving the final award, which includes whether you have passed all modules and met the requirements to receive a specific classification or exit award.",
+    "keyphrases": [
+      "Rules of Assessment",
+      "final award",
+      "criteria for achieving"
+    ],
+    "follow_up_question": "Can you explain what types of classifications are available under the Rules of Assessment?",
+    "follow_up_expected_answer": "Under the Rules of Assessment, students can receive different classifications based on their performance, which may include first-class honors, second-class upper division, second-class lower division, third-class honors, and pass or fail.",
+    "follow_up_keyphrases": [
+      "different classifications",
+      "performance-based",
+      "honors"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+    "source_title": "roa-ug-3yr-year-1-rules.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "expected_answer": "Students must pass all modules taken in year one.",
+    "keyphrases": [
+      "pass all modules",
+      "year one"
+    ],
+    "follow_up_question": "Are there any specific conditions or requirements for a student who fails a module in Year One?",
+    "follow_up_expected_answer": "Students will have the opportunity to resit failed modules at the end of the year and during the resit assessment period.",
+    "follow_up_keyphrases": [
+      "resit failed modules",
+      "end of the year",
+      "resit assessment period"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+    "source_title": "roa-ug-4yr-year-1-rules.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "expected_answer": "Students will have the opportunity to undertake a re-assessment of their work during the subsequent academic year in most cases.",
+    "keyphrases": [
+      "reassessment opportunities",
+      "end of the year",
+      "subsequent academic year"
+    ],
+    "follow_up_question": "What happens if a student fails reassessment at the end of Year One?",
+    "follow_up_expected_answer": "If a student has failed to pass the module at the re-assessment, they will be required to undertake it during the resit assessment period in their subsequent year.",
+    "follow_up_keyphrases": [
+      "failed",
+      "resit assessment period",
+      "subsequent year"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+    "source_title": "roa-ug-foundation-year-rules.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "expected_answer": "To pass the Foundation Year and proceed to the next Year, students must pass all modules and achieve 120 credits in the Year at Level 3; they also need to meet any variations to the Rules of Assessment which may apply to their course.",
+    "keyphrases": [
+      "pass all modules",
+      "achieve 120 credits",
+      "Level 3",
+      "variations to the Rules of Assessment"
+    ],
+    "follow_up_question": "What happens if a student fails up to 60 credits in the Foundation Year?",
+    "follow_up_expected_answer": "If a student fails up to 60 credits but has a Year Mark of 20 or above, they will be offered compulsory reassessment before the start of the next Year. Their Module Mark(s) will be capped at 40.",
+    "follow_up_keyphrases": [
+      "compulsory reassessment",
+      "start of the next Year",
+      "Module Mark(s) capped at 40"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-1.pdf",
+    "source_title": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "expected_answer": "To progress from Year One to Year Two, students must achieve 120 credits at Level 4; pass at least 60 credits at the first attempt; achieve a Year Mark of 50 at the first attempt; and pass core modules. Additionally, they need to meet any additional programme or module specific requirements outlined in the Variations to the Rules of Assessment.",
+    "keyphrases": [
+      "120 credits",
+      "pass at least 60 credits",
+      "Year Mark of 50",
+      "core modules",
+      "additional programme or module specific requirements"
+    ],
+    "follow_up_question": "What happens if a student fails to meet the requirements to progress from Year One to Year Two without any extenuating circumstances?",
+    "follow_up_expected_answer": "If a student does not meet the progression requirements in Year One and has no substantiated extenuating circumstances, they must withdraw from the University.",
+    "follow_up_keyphrases": [
+      "withdraw from the University"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+    "source_title": "ug-grad-cert-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "expected_answer": "To be awarded a pass in the Graduate Certificate, a student should obtain a minimum of 45 credits at Level 6 and the remaining credits at Level 5 or above.",
+    "keyphrases": [
+      "minimum of 45 credits",
+      "Level 6"
+    ],
+    "follow_up_question": "Are there any conditions under which a student can still be awarded the certificate if they do not meet the minimum credit requirement at Level 6?",
+    "follow_up_expected_answer": "No, to be awarded a pass in the Graduate Certificate, a student should obtain a minimum of 45 credits at Level 6 and the remaining credits at Level 5 or above.",
+    "follow_up_keyphrases": [
+      "minimum credit requirement",
+      "Level 6"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-diploma-higher-education-year-1.pdf",
+    "source_title": "roa-ug-diploma-higher-education-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "expected_answer": "A student may be allowed to proceed to the Final Year, following an attempt at reassessment, having passed a minimum of 105 credits, provided they have passed all the core modules for the Year.",
+    "keyphrases": [
+      "minimum of 105 credits",
+      "passed all the core modules"
+    ],
+    "follow_up_question": "What happens if a student fails more than 15 non-core credits in Year One?",
+    "follow_up_expected_answer": "A student cannot fail any more credits in their Final Year, and carrying forward failed credits to following years is called condonement.",
+    "follow_up_keyphrases": [
+      "cannot fail any more credits",
+      "condonement"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+    "source_title": "csee-ft-masters-accredited-variations-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": "CSEE",
+    "academic_year": "2025-26",
+    "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "expected_answer": "To pass a taught core module, students must achieve a mark of at least 50 and also score at least 40 in both the coursework aggregate mark and exam mark. Marks between 39.5 and 39.9 are rounded up to 40.",
+    "keyphrases": [
+      "pass mark for all modules",
+      "minimum mark of 40",
+      "coursework aggregate mark",
+      "exam mark"
+    ],
+    "follow_up_question": "What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules?",
+    "follow_up_expected_answer": "If a student fails with a module aggregate mark of exactly 40, this may be condoned provided the overall weighted average for all taught modules is 50. The student must still achieve at least 40 in both the coursework and exam elements.",
+    "follow_up_keyphrases": [
+      "module aggregate mark of 40",
+      "overall weighted average for all the taught modules",
+      "50"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+    "source_title": "east15-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": "East 15 Acting School",
+    "academic_year": "2025-26",
+    "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "expected_answer": "The pass mark for all modules of the Masters degree is 50.",
+    "keyphrases": [
+      "pass mark",
+      "50"
+    ],
+    "follow_up_question": "What happens if a student fails with a mark between 40 and 49.9 in non-core taught modules?",
+    "follow_up_expected_answer": "Failure with a mark of 40 or more for up to 40 credits in non-core taught modules, may be condoned provided the overall weighted average for all the taught modules is 50.",
+    "follow_up_keyphrases": [
+      "failure",
+      "condoned",
+      "40 credits",
+      "overall weighted average"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+    "source_title": "ma_social_work_25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": "Health and Social Care",
+    "academic_year": "2025-26",
+    "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "expected_answer": "A student should have an overall weighted average mark of 60 or more to obtain a Merit.",
+    "keyphrases": [
+      "overall weighted average",
+      "60 or more",
+      "Pass with Merit"
+    ],
+    "follow_up_question": "How is the overall weighted average calculated for the MA Social Work programme?",
+    "follow_up_expected_answer": "For the purposes of these rules, taught module averages, the overall weighted average for the taught modules and the mark for the dissertation or equivalent will be rounded to the nearest whole number – i.e. 49.5 will count as 50, 49.4 as 49.",
+    "follow_up_keyphrases": [
+      "overall weighted average",
+      "taught modules",
+      "rounded to the nearest whole number"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+    "source_title": "msc-physiotherapy-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": "School of Sport, Rehabilitation and Exercise Sciences",
+    "academic_year": "2025-26",
+    "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "expected_answer": "To pass, students must obtain 180 credits at Master's level and pass all assessment components in core modules. To gain a Merit, they should have an overall weighted average mark of 60 or more. For Distinction, they need to achieve an overall weighted average mark of 70 or more.",
+    "keyphrases": [
+      "180 credits",
+      "pass all assessment components",
+      "overall weighted average mark of 60",
+      "overall weighted average mark of 70"
+    ],
+    "follow_up_question": "What happens if a student fails to meet the minimum credit requirements for the MSc Physiotherapy (Pre-registration) program but still wants to complete their studies?",
+    "follow_up_expected_answer": "Where a student is unable to complete their studies or does not achieve the required credits to be awarded a Masters, they may be considered for an exit award of either a Postgraduate Diploma or a Postgraduate Certificate.",
+    "follow_up_keyphrases": [
+      "Postgraduate Diploma",
+      "Postgraduate Certificate"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+    "source_title": "mscperiodontology_25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": "Health and Social Care",
+    "academic_year": "2025-26",
+    "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "expected_answer": "Students are permitted to progress to Year 2 or Year 3 trailing a maximum of 30 credits.",
+    "keyphrases": [
+      "maximum",
+      "trailing",
+      "30 credits"
+    ],
+    "follow_up_question": "What happens if a student fails an assignment on the second submission in these programs?",
+    "follow_up_expected_answer": "An in-year Board of Examiners meeting may be convened, and the Board will either withdraw the student or offer additional assessment opportunities.",
+    "follow_up_keyphrases": [
+      "Board of Examiners",
+      "in-year meeting",
+      "withdrawal"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+    "source_title": "msc-human-resource-management-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "expected_answer": "The pass mark for all modules of the Masters degree is 50.",
+    "keyphrases": [
+      "pass mark",
+      "all modules",
+      "50"
+    ],
+    "follow_up_question": "What happens if a student fails a core module and how does it affect their progression to Year Two?",
+    "follow_up_expected_answer": "Students will still be permitted to progress to Year Two if they have failed a core module, but only if they can still be offered further reassessment attempts or are eligible for an exit award of a Postgraduate Diploma or a Postgraduate Certificate.",
+    "follow_up_keyphrases": [
+      "fail core module",
+      "progress to Year Two",
+      "reassessment attempts",
+      "exit award"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+    "source_title": "mba-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": "MBA",
+    "academic_year": "2025-26",
+    "question": "How long do students have to complete their MBA studies at the University of Essex?",
+    "expected_answer": "Students must complete their studies within 5 years.",
+    "keyphrases": [
+      "complete their studies",
+      "5 years"
+    ],
+    "follow_up_question": "What happens if a student does not complete their MBA within the given timeframe?",
+    "follow_up_expected_answer": "The document does not specify what happens in such cases, but it implies that failure to meet this requirement could affect awarding of the degree.",
+    "follow_up_keyphrases": [
+      "failure to meet",
+      "could affect awarding"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+    "source_title": "pgt-credit-framework-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "expected_answer": "Learning outcomes identify what a successful student is expected to know and understand, together with the skills that they should be able to demonstrate on successful completion of the award. Students usually demonstrate these by completing one or more pieces of assessed work.",
+    "keyphrases": [
+      "learning outcomes",
+      "successful student",
+      "assessed work"
+    ],
+    "follow_up_question": "What is the minimum pass mark required for Level 7 modules according to the document?",
+    "follow_up_expected_answer": "The pass mark is normally 50 at Level 7, but any variations will be set out in the Rules of Assessment for the programme.",
+    "follow_up_keyphrases": [
+      "pass mark",
+      "Level 7",
+      "50"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+    "source_title": "masters-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "expected_answer": "To obtain a Pass with Merit, in addition to achieving the requirements for a pass, a student should have an overall weighted average mark of 60 or more.",
+    "keyphrases": [
+      "overall weighted average",
+      "Pass with Merit",
+      "60 or more"
+    ],
+    "follow_up_question": "Can a dissertation be used to meet the credit requirement for a Postgraduate Diploma?",
+    "follow_up_expected_answer": "Credits obtained for the dissertation or equivalent can normally be used when considering whether a Postgraduate Diploma can be awarded, provided that the above criteria have been met.",
+    "follow_up_keyphrases": [
+      "dissertation",
+      "Postgraduate Diploma",
+      "credits requirement"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+    "source_title": "integrated-phd-roa-model-a-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "expected_answer": "The pass mark for all taught modules is 50.",
+    "keyphrases": [
+      "pass mark",
+      "taught modules",
+      "50"
+    ],
+    "follow_up_question": "How are marks rounded when determining the overall weighted average in Model A?",
+    "follow_up_expected_answer": "For the purposes of these rules, taught module averages, the overall weighted average for the taught modules and the mark for the dissertation or equivalent will be rounded to the nearest whole number – i.e. 49.5 will count as 50, 49.4 as 49.",
+    "follow_up_keyphrases": [
+      "rounded",
+      "nearest whole number",
+      "49.5",
+      "49.4"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "source_title": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "expected_answer": "The University will endeavour to complete the appeal proceedings within 40 working days from receipt of an appeal and supporting evidence, and any internal review proceedings within 20 working days from receipt of the request.",
+    "keyphrases": [
+      "40 working days",
+      "20 working days"
+    ],
+    "follow_up_question": "What happens if the University needs to extend the timeframe for processing an academic appeal?",
+    "follow_up_expected_answer": "Where this is the case, the student will be notified and kept regularly informed of progress.",
+    "follow_up_keyphrases": [
+      "notified",
+      "regularly informed"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "source_title": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "What are the general principles for reassessment according to the rules of assessment document?",
+    "expected_answer": "The general principles for reassessment apply throughout all years, including Year One, Two, Three, and the Final Year, but specific details vary by year.",
+    "keyphrases": [
+      "general principles",
+      "reassessment",
+      "apply throughout all years"
+    ],
+    "follow_up_question": "What are the compulsory reassessment opportunities at the end of Year One according to the document?",
+    "follow_up_expected_answer": "Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.",
+    "follow_up_keyphrases": [
+      "compulsory reassessment",
+      "end of Year One",
+      "resit assessment period"
+    ]
+  }
+]

@@ -1,0 +1,282 @@
+[
+  {
+    "turn": "roa-ug-glossary.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "For most undergraduate modules (Levels 6 and below) the cap is **40** – the mark cannot be higher than the pass mark even if the student’s work would otherwise merit a higher score."
+  },
+  {
+    "turn": "roa-ug-glossary.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "For most undergraduate modules the cap is 40 (the pass mark) and for Level 7 modules it is 50."
+  },
+  {
+    "turn": "ug-principles-and-framework.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-principles-and-framework.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-3yr-year-1-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-3yr-year-1-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-4yr-year-1-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "The Four‑Year Honours Degree Rules of Assessment include a section titled **“Reassessment Opportunities at the End of the Year”** for Year One"
+  },
+  {
+    "turn": "roa-ug-4yr-year-1-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-foundation-year-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-foundation-year-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-integrated-masters-4yr-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-integrated-masters-4yr-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-grad-cert-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ug-grad-cert-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-diploma-higher-education-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "the student must have passed at least 90 credits in Year Two and must have passed all core modules for that year"
+  },
+  {
+    "turn": "roa-ug-diploma-higher-education-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "If a student fails more than 15 non‑core credits in Year One (i.e., they have failed the maximum 30 non‑core credits),"
+  },
+  {
+    "turn": "csee-ft-masters-accredited-variations-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "The answer states that the pass mark for every module in a Postgraduate Diploma is 50%, but the context specifies it as 40%."
+  },
+  {
+    "turn": "csee-ft-masters-accredited-variations-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "A mark of 40% meets the pass mark for taught core modules at Level 4-6, so the student is regarded as having passed the module and no reassessment is required."
+  },
+  {
+    "turn": "east15-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "east15-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ma_social_work_25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "ma_social_work_25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "msc-physiotherapy-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "msc-physiotherapy-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": false,
+    "unsupported": "If the 150‑credit diploma requirements are met, the student can also be considered for a **Merit (overall weighted average ≥ 60 %)** or a **Distinction (overall weighted average ≥ 70 %)** on the diploma award."
+  },
+  {
+    "turn": "mscperiodontology_25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "mscperiodontology_25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "msc-human-resource-management-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "msc-human-resource-management-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "mba-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "mba-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "pgt-credit-framework-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "pgt-credit-framework-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "masters-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "masters-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "integrated-phd-roa-model-a-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "integrated-phd-roa-model-a-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": true,
+    "grounded": true,
+    "unsupported": ""
+  },
+  {
+    "turn": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": false,
+    "unsupported": "Marks for these further attempts are capped at 40 (unless you have substantiated extenuating circumstances)."
+  },
+  {
+    "turn": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit_at_6": false,
+    "grounded": true,
+    "unsupported": ""
+  }
+]

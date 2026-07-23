@@ -5,3 +5,4 @@ __pycache__/
 *.log
 .venv/
 .claude/settings.local.json
+.groq_key

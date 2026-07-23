@@ -1,0 +1,1326 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+    "source_title": "roa-ug-glossary.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+      "expected_answer": "A capped mark is a maximum mark that can be awarded for an assessment, and if achieved, no further marks can be gained from re-assessments or supplementary examinations.",
+      "actual_answer": "In the University of Essex Undergraduate Rules of Assessment a **“capped mark”** is a module mark that is limited to the pass mark when it is awarded after a reassessment opportunity.  \n\n* For most undergraduate modules (Levels 6 and below) the cap is **40** – the mark cannot be higher than the pass mark even if the student’s work would otherwise merit a higher score.  \n* For higher‑level modules (Level 7 and above) the cap is **50**, the pass mark for those levels.  \n\nThus, when a student is offered reassessment, the highest possible mark they can receive for that module is the relevant pass mark, and the mark is said to be “capped” at that level.  \n\n**Sources**  \n- Foundation Year rules: “Your Module Mark(s) will be capped at 40.”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf】  \n- Incoming Essex Abroad rules: “Your module mark(s) will be capped at the Pass Mark for the module (40 for modules at Levels 6 and below and 50 for modules at Level 7 and above).”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf】\n\n_Note: this answer is based primarily on \"roa-ug-foundation-year-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-higher-education.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-higher-education.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf"
+        ],
+        "retrieval_query": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?"
+      },
+      "keyphrase_coverage": 0.25,
+      "judge": {
+        "score": 4,
+        "justification": "The answer provides detailed information but slightly deviates from the reference by focusing on specific pass mark caps rather than a general maximum mark concept."
+      }
+    },
+    "follow_up": {
+      "question": "Can the capped mark be exceeded by a student's performance in any circumstances?",
+      "expected_answer": "No, the capped mark is the highest mark that can be achieved and cannot be exceeded through re-assessment or supplementary examination.",
+      "actual_answer": "No. In the Undergraduate Rules of Assessment a **capped mark is a hard limit** – the module mark cannot be higher than the cap, even if the student’s work would otherwise merit a higher score.  \n\n* For most undergraduate modules the cap is **40** (the pass mark) and for Level 7 modules it is **50**.  \n* The rules repeatedly state that the “Module Aggregate Mark will be capped at 40” (e.g., Certificate of Continuing Education) and that “Your Module Mark(s) will be capped at 40” (Foundation Year).  \n* The only exception mentioned is that, when a reassessment mark is lower than a previous attempt, the Board may retain the higher previous mark for progression purposes, but the cap itself is never lifted – the retained mark is still subject to the same cap.  \n\nTherefore, a student’s performance cannot exceed the capped mark under any circumstance described in the current rules.  \n\n**Sources**  \n- Certificate of Continuing Education – “The Module Aggregate Mark will be capped at 40.”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf】  \n- Foundation Year – “Your Module Mark(s) will be capped at 40.”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf】",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-higher-education.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-continuing-education.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-certificate-higher-education.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf"
+        ],
+        "retrieval_query": "Can a \"capped mark\" exceed a student's performance in any circumstances according to the University of Essex Undergraduate Rules of Assessment?"
+      },
+      "keyphrase_coverage": 0.25,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance, providing additional details and examples from University of Essex documents."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+    "source_title": "ug-principles-and-framework.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+      "expected_answer": "The Rules of Assessment describe the criteria for achieving the final award, which includes whether you have passed all modules and met the requirements to receive a specific classification or exit award.",
+      "actual_answer": "The Rules of Assessment set out the **criteria for achieving the final award** – i.e., the requirements you must meet (such as passing the necessary modules and satisfying progression rules) in order to be granted your degree or other qualification. They explain what you have to do to progress, to pass each year, what happens if you don’t pass, and the specific standards that determine the final award 【source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf】【source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf】\n\n_Note: this answer is based primarily on \"sak-principles-,-a-,-framework.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---sandwich-course-structure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---sandwich-course-structure.pdf"
+        ],
+        "retrieval_query": "What does the University of Essex Rules of Assessment cover regarding the final award?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary details and sources not directly asked for in the question."
+      }
+    },
+    "follow_up": {
+      "question": "Can you explain what types of classifications are available under the Rules of Assessment?",
+      "expected_answer": "Under the Rules of Assessment, students can receive different classifications based on their performance, which may include first-class honors, second-class upper division, second-class lower division, third-class honors, and pass or fail.",
+      "actual_answer": "The Rules of Assessment contain a dedicated section titled **“3.3 Award Classification for Honours Degrees”** (see the University of Essex Online Undergraduate Rules of Assessment, Academic Year 2025‑26) 【source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf】.  \n\nThe excerpt you provided only shows the heading of that section; it does **not** list the specific classifications (e.g., First‑class, Upper‑second, etc.). Therefore, based on the supplied context, I cannot detail the exact types of classifications available. If you can share the portion of the document that includes the classification list, I’ll be able to describe them for you.\n\n_Note: this answer is based primarily on \"roa-ug-3yr-year-1-variations.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf"
+        ],
+        "retrieval_query": "What types of classifications are available under the University of Essex Rules of Assessment?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant correctly identifies that the specific classifications are not listed in the provided context but fails to provide the general information about available classifications as requested."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+    "source_title": "roa-ug-3yr-year-1-rules.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+      "expected_answer": "Students must pass all modules taken in year one.",
+      "actual_answer": "The excerpts you provided do not contain the specific rule that defines how a student must pass Year One in a three‑year Honours degree (e.g., the required number of credits, core‑module pass requirement, or minimum Year Mark). Therefore I cannot give that detail from the available context.\n\n_Note: this answer is based primarily on \"roa-ug-integrated-masters-4yr-year-3.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-3.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf"
+        ],
+        "retrieval_query": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant acknowledges a lack of specific information but does not directly address the question or provide the known requirement to pass all modules."
+      }
+    },
+    "follow_up": {
+      "question": "Are there any specific conditions or requirements for a student who fails a module in Year One?",
+      "expected_answer": "Students will have the opportunity to resit failed modules at the end of the year and during the resit assessment period.",
+      "actual_answer": "Yes. For a three‑year Honours degree the Rules of Assessment set out several conditions for a student who fails a module in **Year One**:\n\n* The student must **attempt reassessment** of the failed module.  \n* After reassessment the student can only **proceed to Year Two** if they have **passed at least 90 credits** in Year One **and have passed all core modules** for that year.  \n* A student may fail **no more than 30 non‑core credits** in the whole degree.  \n* **Condonement** (carrying forward failed credits) is allowed, but only within the limits above:  \n  * If **30 credits are failed** in Year One, the student must **pass 120 credits in Year Two**.  \n  * If **15 credits are failed** in Year One, after reassessment the failure may be condoned for up to **15 credits**.  \n* Condoned credits still count toward the Year Mark (the original Module Mark is used).\n\nThese requirements are outlined in the three‑year Honours Year One rules (2025‑26)【roa-ug-3yr-year-1-rules.pdf】.\n\n_Note: this answer is based primarily on \"ks_ug_year-1.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ks_ug_year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ks_ug_year-3.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ks_ug_year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ks_ug_year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-rules.pdf"
+        ],
+        "retrieval_query": "What are the specific conditions or requirements for a student who fails a module in Year One of the three-year honors degree program?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer provides detailed conditions but includes minor inaccuracies and goes beyond the reference's scope."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+    "source_title": "roa-ug-4yr-year-1-rules.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+      "expected_answer": "Students will have the opportunity to undertake a re-assessment of their work during the subsequent academic year in most cases.",
+      "actual_answer": "The Four‑Year Honours Degree Rules of Assessment include a section titled **“Reassessment Opportunities at the End of the Year”** for Year One (see the contents pages for the 2023‑24, 2024‑25, 2025‑26 and 2022‑23 documents). However, the excerpts you provided only show the heading and do not contain the detailed description of what those reassessment opportunities are.  \n\n**Sources**  \n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf (contents page)  \n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf (contents page)  \n\n*The specific reassessment options at the end of Year One are not included in the provided excerpts.*\n\n_Note: this answer is based primarily on \"roa-ug-4yr-year-3-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-1.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-1.pdf"
+        ],
+        "retrieval_query": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 2,
+        "justification": "The answer provides accurate information about where to find reassessment opportunities but does not directly state what those opportunities are as per the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails reassessment at the end of Year One?",
+      "expected_answer": "If a student has failed to pass the module at the re-assessment, they will be required to undertake it during the resit assessment period in their subsequent year.",
+      "actual_answer": "If a student does **not** pass the reassessment at the end of Year One, progression to Year Two is only possible **if** the student still meets two conditions:\n\n1. **At least 90 credits** have been passed (including all core modules for the year).  \n2. All **core modules** for Year One have been passed.\n\nIf those conditions are not met, the student cannot move on to the next year and would have to repeat Year One (or be withdrawn, depending on the programme’s further provisions).  \n\nIn addition, any credits failed in Year One count toward the overall limit of **30 non‑core credits** that may be failed across the whole degree; once that limit is reached, no further failures are permitted — so a failed reassessment could also mean the student has exhausted the allowable non‑core failures for the degree.  \n\n**Sources**  \n- roa‑ug‑4yr‑year‑3‑rules.pdf (2023‑24) – “You may be allowed to proceed to the next Year, following an attempt at reassessment, having passed a minimum of 90 credits, provided you have passed all the core modules for the Year.” and “You can only fail 30 non‑core credits across your degree…”【source_url】.\n\n_Note: this answer is based primarily on \"roa-ug-4yr-year-3-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/mscinursing_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-1.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/mscinursing_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-1.pdf"
+        ],
+        "retrieval_query": "What are the consequences for students who fail reassessment at the end of Year One in the Four-Year Honours Degree program?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant's answer introduces additional conditions not mentioned in the reference and does not directly address the reassessment failure consequence as stated."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+    "source_title": "roa-ug-foundation-year-rules.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+      "expected_answer": "To pass the Foundation Year and proceed to the next Year, students must pass all modules and achieve 120 credits in the Year at Level 3; they also need to meet any variations to the Rules of Assessment which may apply to their course.",
+      "actual_answer": "To pass the Foundation Year and move on to the next year you must:\n\n* **Pass every module** in the year **and achieve 120 credits at Level 3**, and  \n* **Satisfy any course‑specific variations** to the Rules of Assessment that may apply to your programme.  \n\n**Source:** University of Essex Undergraduate Rules of Assessment – Foundation Year (2025‑26) – “Requirement to Pass the Foundation Year”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf】\n\n_Note: this answer is based primarily on \"roa-ug-foundation-year-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf"
+        ],
+        "retrieval_query": "What are the requirements to pass the Foundation Year at University of Essex?"
+      },
+      "keyphrase_coverage": 0.25,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails up to 60 credits in the Foundation Year?",
+      "expected_answer": "If a student fails up to 60 credits but has a Year Mark of 20 or above, they will be offered compulsory reassessment before the start of the next Year. Their Module Mark(s) will be capped at 40.",
+      "actual_answer": "If a student fails **up to 60 credits** in the Foundation Year they will be **offered compulsory reassessment before the start of the next Year**. For that reassessment the module mark(s) will be **capped at 40**.  \n\n**Source:** University of Essex Undergraduate Rules of Assessment – Foundation Year (2025‑26), “Reassessment Opportunities at the End of the Year” – clause 2.9【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf】\n\n_Note: this answer is based primarily on \"roa-ug-foundation-year-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf"
+        ],
+        "retrieval_query": "What happens if a student fails up to 60 credits in the Foundation Year at University of Essex?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-1.pdf",
+    "source_title": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+      "expected_answer": "To progress from Year One to Year Two, students must achieve 120 credits at Level 4; pass at least 60 credits at the first attempt; achieve a Year Mark of 50 at the first attempt; and pass core modules. Additionally, they need to meet any additional programme or module specific requirements outlined in the Variations to the Rules of Assessment.",
+      "actual_answer": "To move from **Year One to Year Two** in an Integrated Masters programme you must:\n\n* **Earn 120 credits at Level 4**  \n* **Pass at least 60 of those credits on the first attempt**  \n* **Achieve a Year Mark of 50 on the first attempt**  \n* **Pass all core modules (and any other programme‑specific requirements)**  \n\nThese are the minimum credit and mark requirements for progression【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-1.pdf】.\n\n_Note: this answer is based primarily on \"five-year-integrated-masters-21-v7.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-3.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-4.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-5.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-5.pdf"
+        ],
+        "retrieval_query": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?"
+      },
+      "keyphrase_coverage": 0.4,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails to meet the requirements to progress from Year One to Year Two without any extenuating circumstances?",
+      "expected_answer": "If a student does not meet the progression requirements in Year One and has no substantiated extenuating circumstances, they must withdraw from the University.",
+      "actual_answer": "If a student has **no substantiated extenuating circumstances** and, after any required reassessments, still does **not meet the Year‑Mark (≥ 50) and credit‑failure limits** for progression, the **Board of Examiners meets to decide the outcome**. The Board will take the appropriate action – which can include refusing progression – and may offer the student one of the limited options it is permitted to provide (the Board may not give more than two assessment attempts for any module)【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-2.pdf】【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-2.pdf】.\n\n_Note: this answer is based primarily on \"roa-ug-integrated-masters-4yr-year-2.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-3.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-3.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-3.pdf"
+        ],
+        "retrieval_query": "What are the consequences for a student who fails to meet the minimum credit and mark requirements to progress from Year One to Year Two in an Integrated Masters programme without any extenuating circumstances?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant provides additional details not in the reference answer but omits the key point that the student must withdraw from the University."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+    "source_title": "ug-grad-cert-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+      "expected_answer": "To be awarded a pass in the Graduate Certificate, a student should obtain a minimum of 45 credits at Level 6 and the remaining credits at Level 5 or above.",
+      "actual_answer": "A student must pass **at least 45 credits at Level 6** (with the remaining credits at Level 5 or above) to be eligible for an award in the Graduate Certificate programme【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf】.\n\n_Note: this answer is based primarily on \"ug-grad-cert-year-1.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-roa-graduate-diploma-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-cert-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-dip-year-2.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-cert-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-dip-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-roa-graduate-diploma-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf"
+        ],
+        "retrieval_query": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "Are there any conditions under which a student can still be awarded the certificate if they do not meet the minimum credit requirement at Level 6?",
+      "expected_answer": "No, to be awarded a pass in the Graduate Certificate, a student should obtain a minimum of 45 credits at Level 6 and the remaining credits at Level 5 or above.",
+      "actual_answer": "No. All of the Graduate Certificate rules you provided require that the student meet a minimum number of Level 6 credits before the award can be granted, and they do not include any exception that would allow the certificate to be awarded if that Level 6 credit minimum is not reached.\n\n- The 2024‑2025 and 2025‑26 Graduate Certificate rules state that a student must “Obtain a minimum of **45 credits at Level 6** and the remaining credits at Level 5 or above”【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-2.pdf】, and the same wording appears in the 2025‑26 version【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf】.  \n\n- Even the alternative Graduate Certificate specification in the Tavistock‑ROA document (which requires only 40 Level 6 credits) still mandates meeting that Level 6 credit minimum and does not provide a way to waive it【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-roa-graduate-diploma-25.pdf】.\n\nTherefore, if a student does not achieve the required Level 6 credits (45 in the standard rules, 40 in the Tavistock‑ROA variant), the certificate cannot be awarded.\n\n_Note: this answer is based primarily on \"ug_grad-dip-year-2.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-roa-graduate-diploma-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-cert-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-dip-year-2.pdf"
+      ],
+      "retrieval": {
+        "rank": 4,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.25,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-dip-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-roa-graduate-diploma-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-cert-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf"
+        ],
+        "retrieval_query": "Are there any conditions under which a student can still be awarded the Graduate Certificate if they do not meet the minimum credit requirement at Level 6?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and comprehensive, matching the reference answer's substance and providing additional context from relevant documents."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-diploma-higher-education-year-1.pdf",
+    "source_title": "roa-ug-diploma-higher-education-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+      "expected_answer": "A student may be allowed to proceed to the Final Year, following an attempt at reassessment, having passed a minimum of 105 credits, provided they have passed all the core modules for the Year.",
+      "actual_answer": "A student who did **not** achieve the full 120 credits in Year One can still move on to the Final Year, but only if the following are met after the compulsory reassessment in Year Two:\n\n1. **Minimum credit pass in Year Two** – the student must have passed **at least 90 credits** in Year Two and must have passed **all core modules** for that year. 【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf】\n\n2. **Condonement limits for non‑core failures** – the total number of non‑core credits that can be failed (and therefore condoned) across the whole degree is 30.  \n   * If the student **failed 30 non‑core credits in Year One**, they must **pass the full 120 credits in Year Two** (no further non‑core failures are allowed). 【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf】  \n   * If the student **failed 15 non‑core credits in Year One**, after reassessment they may have **up to 15 non‑core credits condoned** in Year Two (i.e., they can still fail up to 15 non‑core credits in Year Two). 【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf】\n\nIn summary, a student with fewer than 120 credits in Year One can progress to the Final Year provided they:\n\n* pass at least 90 credits in Year Two and all core modules, and  \n* stay within the overall non‑core failure limit (30 credits total), which means either passing all 120 credits in Year Two if they already failed 30 in Year One, or being allowed up to the remaining condonable non‑core credits (e.g., 15) if they failed fewer in Year One.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-foundation-degrees-year1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-foundation-degrees-year2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-foundation-degrees-year1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-foundation-degrees-year2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-rules.pdf"
+        ],
+        "retrieval_query": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant provides additional details beyond the reference answer but includes an incorrect minimum credit requirement of 90 instead of 105 for proceeding to the final year."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails more than 15 non-core credits in Year One?",
+      "expected_answer": "A student cannot fail any more credits in their Final Year, and carrying forward failed credits to following years is called condonement.",
+      "actual_answer": "If a student fails **more than 15 non‑core credits in Year One** (i.e., they have failed the maximum 30 non‑core credits), the rules require them to **pass the full 120 credits in Year Two**. No further non‑core failures can be condoned or carried forward, and they cannot trail any reassessment into the next year. 【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf】\n\n_Note: this answer is based primarily on \"roa-ug-laksamana-year-1.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-2.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-2.pdf"
+        ],
+        "retrieval_query": "What happens if a student fails more than 15 non-core credits in Year One?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes an unnecessary detail about passing full credits in Year Two and incorrectly states no further non-core failures can be condoned."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+    "source_title": "csee-ft-masters-accredited-variations-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+      "expected_answer": "To pass a taught core module, students must achieve a mark of at least 50 and also score at least 40 in both the coursework aggregate mark and exam mark. Marks between 39.5 and 39.9 are rounded up to 40.",
+      "actual_answer": "A taught **core** module must be passed – the rules give a numeric pass‑mark for each award type:\n\n* **Postgraduate Certificate** – the pass mark for every module (including core modules) is **50 %**【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-cert-25.pdf】  \n* **Postgraduate Diploma** – the pass mark for every module (including core modules) is **50 %**【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf】  \n* **Graduate Diploma (undergraduate‑level award)** – the pass mark for every module (including core modules) is **40 %**【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf】\n\nThe undergraduate rules describe core modules as “must be passed; failure cannot be condoned” but do not state a specific numeric pass mark in the excerpts provided.\n\n_Note: this answer is based primarily on \"sak-principles-,-a-,-framework.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-cert-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-dip-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-cert-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug_grad-dip-year-2.pdf"
+        ],
+        "retrieval_query": "What minimum marks are required for passing a taught core module at University of Essex under these rules?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 2,
+        "justification": "The answer provides incorrect pass marks and does not mention the requirement of at least 40 in both coursework and exam."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules?",
+      "expected_answer": "If a student fails with a module aggregate mark of exactly 40, this may be condoned provided the overall weighted average for all taught modules is 50. The student must still achieve at least 40 in both the coursework and exam elements.",
+      "actual_answer": "A mark of **40 %** meets the pass mark for taught core modules at Level 4‑6, so the student is regarded as having **passed** the module and no reassessment is required.  \n\n* The Rules of Assessment state that “The Pass Mark for modules at Levels 6 and below is 40”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-incoming-essex-abroad-rules.pdf】.  \n* Core modules must be passed in order to progress or receive an award【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf】.  \n\nTherefore, a module aggregate mark of exactly 40 is **not a failure**; the student satisfies the requirement for a passed core module. If the mark were **below 40**, the student would have to undertake reassessment (capped at 40) or repeat the module, but that does not apply when the mark is exactly 40.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf"
+        ],
+        "retrieval_query": "What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules at University of Essex?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 1,
+        "justification": "The assistant incorrectly states that a mark of 40 passes the module without needing condonation, contradicting the reference answer which specifies conditions for condoning a pass."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+    "source_title": "east15-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+      "expected_answer": "The pass mark for all modules of the Masters degree is 50.",
+      "actual_answer": "The rules state that **the pass mark for all modules of any Masters degree at East 15 Acting School is 50**【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf】.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf"
+        ],
+        "retrieval_query": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails with a mark between 40 and 49.9 in non-core taught modules?",
+      "expected_answer": "Failure with a mark of 40 or more for up to 40 credits in non-core taught modules, may be condoned provided the overall weighted average for all the taught modules is 50.",
+      "actual_answer": "If a student receives a mark of 40 or higher (but below the pass mark of 50) in non‑core taught modules, the failure can be **condoned** – provided it involves no more than 40 credits of non‑core modules **and** the student’s overall weighted average for all taught modules is at least 50 (rounded as described).【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf】",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf"
+        ],
+        "retrieval_query": "What happens if a student fails with a mark between 40 and 49.9 in non-core taught modules at East 15 Acting School's Masters degree programs?"
+      },
+      "keyphrase_coverage": 0.75,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes an unnecessary reference to rounding rules not mentioned in the question or reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+    "source_title": "ma_social_work_25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+      "expected_answer": "A student should have an overall weighted average mark of 60 or more to obtain a Merit.",
+      "actual_answer": "A student must achieve an overall weighted average mark of **60 % or higher** to be awarded a Pass with Merit. 【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf】\n\n_Note: this answer is based primarily on \"csee_model_1_accredited_january_starts_rules_jan25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pg-masters-roa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pg-masters-roa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf"
+        ],
+        "retrieval_query": "What is the minimum overall weighted average required for a student to pass with Merit?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "How is the overall weighted average calculated for the MA Social Work programme?",
+      "expected_answer": "For the purposes of these rules, taught module averages, the overall weighted average for the taught modules and the mark for the dissertation or equivalent will be rounded to the nearest whole number – i.e. 49.5 will count as 50, 49.4 as 49.",
+      "actual_answer": "The overall weighted average for the MA Social Work is calculated by **averaging the marks of all taught modules (including the dissertation or equivalent) using each module’s credit weight**.  \n- Marks from modules that are condoned (e.g., a failure of 40 or more) are still included in the calculation, even though no credits are awarded for those modules.  \n- Once the weighted average is computed, it is **rounded to the nearest whole number** (e.g., 49.5 → 50, 49.4 → 49).  \n\n**Source**: ma_social_work_25.pdf, Rules of Assessment, 2025‑26 (Health and Social Care)【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf】",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf"
+        ],
+        "retrieval_query": "How is the overall weighted average calculated for the MA Social Work programme?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but omits the detail about taught module averages being rounded before calculating the overall weighted average."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+    "source_title": "msc-physiotherapy-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+      "expected_answer": "To pass, students must obtain 180 credits at Master's level and pass all assessment components in core modules. To gain a Merit, they should have an overall weighted average mark of 60 or more. For Distinction, they need to achieve an overall weighted average mark of 70 or more.",
+      "actual_answer": "**Minimum credit requirement**\n\n* To be awarded the MSc Physiotherapy (Pre‑registration) you must obtain **180 credits at Masters level (Level 7)** and pass all assessment components in the core modules.  \n\n**Pass criteria**\n\n* 180 credits earned  \n* All core‑module assessments passed  \n\n**Merit criteria**\n\n* You must first meet the pass requirements **and**  \n* Achieve an **overall weighted average mark of 60 % or higher** across the taught modules (the dissertation mark is included in the overall average).  \n\n**Distinction criteria**\n\n* You must first meet the pass requirements **and**  \n* Achieve an **overall weighted average mark of 70 % or higher** across the taught modules (including the dissertation).  \n\n**Source**: University of Essex Rules of Assessment for MSc Physiotherapy (Pre‑registration), 2025‑2026 – sections on “Pass”, “Pass with Merit” and “Pass with Distinction” (180‑credit requirement and weighted‑average thresholds)【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf】",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf"
+        ],
+        "retrieval_query": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary formatting and a future date reference that isn't in the question or reference."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails to meet the minimum credit requirements for the MSc Physiotherapy (Pre-registration) program but still wants to complete their studies?",
+      "expected_answer": "Where a student is unable to complete their studies or does not achieve the required credits to be awarded a Masters, they may be considered for an exit award of either a Postgraduate Diploma or a Postgraduate Certificate.",
+      "actual_answer": "If a student does not reach the **180‑credit, Level 7 requirement** needed for the MSc Physiotherapy (Pre‑registration) award, the programme rules allow the student to leave with an **exit award** instead of the full master’s degree.\n\n* **Post‑graduate Diploma (PG Diploma) in Physiotherapy (Pre‑registration)** –  \n  * The student must obtain **150 credits at Masters level** and pass all assessment components in the taught modules (the dissertation credit can be used toward the 150 credits).  \n  * If the 150‑credit diploma requirements are met, the student can also be considered for a **Merit (overall weighted average ≥ 60 %)** or a **Distinction (overall weighted average ≥ 70 %)** on the diploma award.  \n\n* **Post‑graduate Certificate (PG Certificate)** –  \n  * If the student has fewer than 150 credits, a certificate may be awarded (minimum 60 taught‑module credits, with at least 40 passed).  \n  * Dissertation or equivalent credits **cannot** be used toward the certificate.  \n\nThus, a student who falls short of the 180‑credit MSc requirement can still complete their studies by exiting with a PG Diploma (or, where appropriate, a PG Certificate), rather than receiving the MSc degree.  \n\n**Sources**  \n- Rules of Assessment, MSc Physiotherapy (Pre‑registration), 2025‑26 – sections on “Eligibility for the Award of the Masters Degree” and “The Postgraduate Diploma and Certificate” (180‑credit pass requirement; 150‑credit diploma requirement; merit/distinction thresholds)【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf】",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf"
+        ],
+        "retrieval_query": "What are the consequences if a student fails to meet the minimum 180 credits at Masters level (Level 7) requirement for the MSc Physiotherapy (Pre-registration) program but still wishes to complete their studies?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but lacks specific details about the exit awards and their requirements as provided in the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+    "source_title": "mscperiodontology_25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+      "expected_answer": "Students are permitted to progress to Year 2 or Year 3 trailing a maximum of 30 credits.",
+      "actual_answer": "Students may carry forward up to **30 credits** when progressing to the next year (Year 2 or Year 3) in either the MSc Periodontology or MSc Advanced Periodontal Practice programmes【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf】.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf"
+        ],
+        "retrieval_query": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails an assignment on the second submission in these programs?",
+      "expected_answer": "An in-year Board of Examiners meeting may be convened, and the Board will either withdraw the student or offer additional assessment opportunities.",
+      "actual_answer": "If a student fails an assignment on the second submission, an **in‑year Board of Examiners meeting is convened**. The Board will **either withdraw the student** or, **if the student submits valid Extenuating Circumstances**, the Board may be able to **offer additional assessment opportunities** such as reassessment for uncapped module marks or voluntary reassessment【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf】.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 5,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.2,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf"
+        ],
+        "retrieval_query": "What happens if a student fails an assignment on the second submission in the MSc Periodontology or MSc Advanced Periodontal Practice programs?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes an unnecessary detail about Extenuating Circumstances not present in the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+    "source_title": "msc-human-resource-management-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+      "expected_answer": "The pass mark for all modules of the Masters degree is 50.",
+      "actual_answer": "The pass mark for every module in the MSc Human Resource Management programme is **50** %【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf】.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf"
+        ],
+        "retrieval_query": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student fails a core module and how does it affect their progression to Year Two?",
+      "expected_answer": "Students will still be permitted to progress to Year Two if they have failed a core module, but only if they can still be offered further reassessment attempts or are eligible for an exit award of a Postgraduate Diploma or a Postgraduate Certificate.",
+      "actual_answer": "If a student fails a core module in Year One they must first be offered a reassessment – normally taken during the summer vacation of Year One【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf】.  \n\nIf the student fails the core module again after this reassessment, the Board of Examiners may require the student to **delay progression to Year Two** and undertake another reassessment (often without attendance) before they can continue their studies【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf】.  \n\nThus, failing a core module triggers mandatory reassessment and, if the failure persists, can postpone the student’s move to Year Two.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf"
+        ],
+        "retrieval_query": "What happens if a student fails a core module in the MSc Human Resource Management program and how does it affect their progression to Year Two?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 2,
+        "justification": "The answer incorrectly states that progression to Year Two is delayed rather than permitted with further assessment attempts or exit awards."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+    "source_title": "mba-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "How long do students have to complete their MBA studies at the University of Essex?",
+      "expected_answer": "Students must complete their studies within 5 years.",
+      "actual_answer": "Students enrolled in the MBA programme must finish their studies within **5 years** of starting the programme【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf】.\n\n_Note: this answer is based primarily on \"mba-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf"
+        ],
+        "retrieval_query": "How long do students have to complete their MBA studies at the University of Essex?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is correct but includes an unnecessary note about potential relevance of other documents for different programs or years."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a student does not complete their MBA within the given timeframe?",
+      "expected_answer": "The document does not specify what happens in such cases, but it implies that failure to meet this requirement could affect awarding of the degree.",
+      "actual_answer": "The MBA Rules of Assessment state that **students must finish their studies within 5 years** of starting the programme【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf】.  \n\nThe document does **not specify** the exact consequence if a student fails to complete the MBA within that five‑year period. It only sets the time limit; any further action (e.g., withdrawal, loss of award eligibility) is not detailed in the provided excerpt.  \n\n**Sources**  \n- mba‑25.pdf (Rules of Assessment for the MBA, 2025‑26)\n\n_Note: this answer is based primarily on \"mba-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/ofs/student-protection-plan.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgcert-roa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgdip-roa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgcert-roa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/ofs/student-protection-plan.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgdip-roa-25.pdf"
+        ],
+        "retrieval_query": "What happens if a student does not complete their MBA within 5 years at the University of Essex?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but lacks the implication that failure to meet the requirement could affect awarding of the degree."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+    "source_title": "pgt-credit-framework-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+      "expected_answer": "Learning outcomes identify what a successful student is expected to know and understand, together with the skills that they should be able to demonstrate on successful completion of the award. Students usually demonstrate these by completing one or more pieces of assessed work.",
+      "actual_answer": "The Rules of Assessment state that **learning outcomes** are the statements that:\n\n* Identify what a student is expected to **know and understand** and the **skills** they must be able to demonstrate on successful completion of a module and/or award.  \n* Can be attached to both **modules and awards**.  \n* Are the **basis for awarding credit** – credit is granted when the learning outcomes are achieved, **regardless of how, where, or how long the learning took place or how it was assessed**.\n\nThese outcomes therefore define the academic achievement required for credit and are central to the assessment process.  \n\n**Sources**  \n- University of Essex, *UG Principles and Framework* (2025‑26) – sections on credit and learning outcomes【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf】  \n- University of Essex, *ROA UG Glossary* (2025‑26) – definition of learning outcomes【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf】\n\n_Note: this answer is based primarily on \"sak-principles-,-a-,-framework.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf"
+      ],
+      "retrieval": {
+        "rank": 5,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.2,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-1.pdf"
+        ],
+        "retrieval_query": "What are the learning outcomes related to assessment as per the rules of assessment document?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and comprehensive, matching the reference answer's substance and providing additional relevant details from the University of Essex documents."
+      }
+    },
+    "follow_up": {
+      "question": "What is the minimum pass mark required for Level 7 modules according to the document?",
+      "expected_answer": "The pass mark is normally 50 at Level 7, but any variations will be set out in the Rules of Assessment for the programme.",
+      "actual_answer": "The minimum pass mark for Level 7 (Masters‑level) modules is **50 %**. The credit framework notes that “the pass mark is normally 50 at Level 7” and the postgraduate rules of assessment state that “the pass mark for all taught modules is 50”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf】.\n\n_Note: this answer is based primarily on \"pgt-credit-framework-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf"
+        ],
+        "retrieval_query": "What is the minimum pass mark required for Level 7 modules according to the document?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary caveats and references not aligned with the reference answer's simplicity."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+    "source_title": "masters-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+      "expected_answer": "To obtain a Pass with Merit, in addition to achieving the requirements for a pass, a student should have an overall weighted average mark of 60 or more.",
+      "actual_answer": "The minimum overall weighted average required to achieve a **Pass with Merit** for a Master’s degree is **60 %** (or a weighted average mark of 60 or more)【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf】.\n\n_Note: this answer is based primarily on \"tavistock-taught-masters-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mres-gov-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mres-gov-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf"
+        ],
+        "retrieval_query": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "Can a dissertation be used to meet the credit requirement for a Postgraduate Diploma?",
+      "expected_answer": "Credits obtained for the dissertation or equivalent can normally be used when considering whether a Postgraduate Diploma can be awarded, provided that the above criteria have been met.",
+      "actual_answer": "Yes. Across the 2025‑26 Rules of Assessment documents the dissertation (or equivalent) **can normally be counted toward the 120 credits needed for a Postgraduate Diploma**, provided the other criteria for the diploma are met【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf】, 【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf】, 【https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf】.\n\n_Note: this answer is based primarily on \"pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 6,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.16666666666666666,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-part-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf"
+        ],
+        "retrieval_query": "Can a dissertation be used to meet the credit requirement for a Postgraduate Diploma?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but specifies a particular credit requirement of 120 credits, which may not be universal across all programs."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+    "source_title": "integrated-phd-roa-model-a-25.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+      "expected_answer": "The pass mark for all taught modules is 50.",
+      "actual_answer": "The minimum pass mark for taught modules under Model A’s rules of assessment is **50** % (credits are only awarded when a module reaches this mark).【source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf】",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-b-2025-26.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-b-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf"
+        ],
+        "retrieval_query": "What is the minimum pass mark for taught modules under Model A's rules of assessment?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "How are marks rounded when determining the overall weighted average in Model A?",
+      "expected_answer": "For the purposes of these rules, taught module averages, the overall weighted average for the taught modules and the mark for the dissertation or equivalent will be rounded to the nearest whole number – i.e. 49.5 will count as 50, 49.4 as 49.",
+      "actual_answer": "In Model A the overall weighted average (and taught‑module averages) is **rounded to the nearest whole number** – e.g., a calculated average of 49.5 is treated as 50, while 49.4 is treated as 49【source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf】\n\n_Note: this answer is based primarily on \"csee_model_1_accredited_january_starts_rules_jan25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-2025-26.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf"
+        ],
+        "retrieval_query": "How are marks rounded when determining the overall weighted average under Model A's rules of assessment?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but lacks precision in mentioning specific rounding examples and references an incorrect source document."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "source_title": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+      "expected_answer": "The University will endeavour to complete the appeal proceedings within 40 working days from receipt of an appeal and supporting evidence, and any internal review proceedings within 20 working days from receipt of the request.",
+      "actual_answer": "The University aims to:\n\n* **Academic appeal proceedings:** be completed within **40 working days** of receiving the appeal and supporting evidence.  \n* **Internal review procedures:** be completed within **20 working days** of receiving the internal‑review request.\n\n**Sources**  \n- Academic Appeals Procedure (undergraduate & postgraduate taught, 2025‑26) – Timescales 1.5 & 1.5 [link](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)  \n- Progress Appeals Procedures (research degree students, 2025‑26) – Timescales 2.5 & 2.6 [link](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n\n_Note: this answer is based primarily on \"academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf"
+        ],
+        "retrieval_query": "What is the timeframe for completing academic appeal proceedings and internal review procedures?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance, including providing specific timescales and sources."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if the University needs to extend the timeframe for processing an academic appeal?",
+      "expected_answer": "Where this is the case, the student will be notified and kept regularly informed of progress.",
+      "actual_answer": "If, for good reason, the University must extend the normal time‑limits for an academic appeal, it must **inform the student of the extension and keep the student regularly updated on the progress of the appeal**. The extension does not invalidate the outcome of the appeal proceedings.  \n\n**Sources**  \n- Progress Appeals Procedures (research degree students, 2025‑26) – “Occasionally there will be circumstances when, for good reason, the University will need to extend the timeframe. … the student will be notified and kept regularly informed of progress.”【source_url】  \n- Academic Appeals Procedure (undergraduate & postgraduate taught, 2025‑26) – Same wording on extensions and notification【source_url】\n\n_Note: this answer is based primarily on \"progress-appeals-procedures-research-degree-students.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf"
+        ],
+        "retrieval_query": "What happens if the University needs to extend the timeframe for processing an academic appeal?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance and providing additional context from relevant sources."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "source_title": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "doc_type": "rules_of_assessment",
+    "primary": {
+      "question": "What are the general principles for reassessment according to the rules of assessment document?",
+      "expected_answer": "The general principles for reassessment apply throughout all years, including Year One, Two, Three, and the Final Year, but specific details vary by year.",
+      "actual_answer": "**General principles for reassessment**\n\n1. **When reassessment is required** – If you have failed any module(s) after completing all assessments **and you have a mark of 20 or above** in the relevant year/term/stage, you must take a reassessment before you can progress to the next year or stage of study. You cannot progress and sit the reassessment later unless you have been offered “trailed reassessment.”【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf】【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf】\n\n2. **Number of attempts** – The Board of Examiners may allow **up to two further attempts** at any module. Marks for these further attempts are **capped at 40** (unless you have substantiated extenuating circumstances).【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf】【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf】\n\n3. **Offer of opportunities** – The Board of Examiners will **offer all reassessment opportunities that are available** to you. Visa status (e.g., Tier 4/Student Route) may limit some options because of Home Office rules.【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf】【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf】\n\n4. **Use of the higher mark** – If you sit a reassessment and obtain a lower mark than a previous attempt, the **higher (previous) mark is used** to decide whether you can progress.【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf】\n\nThese points constitute the core “General Principles” for reassessment across the current University of Essex rules‑of‑assessment documents.\n\n_Note: this answer is based primarily on \"chula---original-course-structure.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---original-course-structure.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-1.pdf"
+        ],
+        "retrieval_query": "What are the general principles for reassessment according to the rules of assessment document?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The answer provides detailed principles but omits mentioning that specific details vary by year as stated in the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "What are the compulsory reassessment opportunities at the end of Year One according to the document?",
+      "expected_answer": "Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.",
+      "actual_answer": "**Compulsory reassessment opportunities at the end of Year One**\n\nWhen you finish Year One, have a Year Mark ≥ 20 and still do not meet the progression requirements, the Board of Examiners will offer you the following options:\n\n| Situation | Opportunities offered |\n|-----------|------------------------|\n| **Failed > 30 credits** | You will be offered **one or more of the options** set out for this case (the specific options are listed elsewhere in the rules). |\n| **Failed ≤ 30 credits** | <ul><li>(a) If you have not yet used three attempts for the failed credits, you may **remain in Year One and take a reassessment** (see the “failed > 30 credits” options for the details of the attempt).</li><li>(b) If you have not yet used three attempts, you may **progress to Year Two while trailing the failed Year One credits** and take a further reassessment attempt on those credits **before the end of the Autumn Term of Year Two**.</li></ul> |\n\nIf the **final (third) reassessment attempt** is not passed, you will be required to **withdraw from the College**【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-1.pdf】.\n\n_Note: this answer is based primarily on \"roa-ug-aegean-omiros-3yr-standard-year-2.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ecce-portobello-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-2.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-standard-year-1.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-2.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-3yr-non-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ecce-portobello-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-2.pdf"
+        ],
+        "retrieval_query": "What are the compulsory reassessment opportunities at the end of Year One according to the document?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 4,
+        "justification": "The answer provides detailed information but slightly deviates from the reference by focusing on progression and reassessment options rather than just compulsory reassessment opportunities at the end of Year One."
+      }
+    }
+  }
+]
