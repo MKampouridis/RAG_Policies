@@ -40,8 +40,12 @@ def record_feedback(record: dict) -> None:
 def load_feedback() -> list[dict]:
     if not FEEDBACK_PATH.exists():
         return []
-    return [
-        json.loads(line)
-        for line in FEEDBACK_PATH.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    out = []
+    for line in FEEDBACK_PATH.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue  # skip a single corrupt line rather than kill the whole report
+    return out

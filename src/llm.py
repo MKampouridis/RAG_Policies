@@ -43,6 +43,13 @@ CHAT_MODEL = "qwen2.5:7b-instruct"
 # was tuned against) lets CHAT_MODEL vary for a clean generation-only test.
 CONTEXTUALIZE_MODEL = "qwen2.5:7b-instruct"
 
+# Eval-only answer/groundedness judge. Centralized here (was triplicated across
+# eval/run_eval.py, hallucination_eval.py, rejudge.py). NOTE: this now equals
+# LOCAL_GENERATOR_MODEL - generator == judge is self-judging (proven +0.3 RoA
+# bias, see comment above); for headline claims judge cross-family instead
+# (eval/rejudge.py takes a model arg).
+JUDGE_MODEL = "qwen2.5:14b-instruct"
+
 # Embedding model + its required task prefixes (asymmetric embedding models
 # need different prefix text for indexed documents vs search queries, and get
 # it wrong silently - always set all three together when swapping EMBED_MODEL).
@@ -67,8 +74,14 @@ EMBED_QUERY_PREFIX = "search_query: "
 def chat(
     messages: list[dict], format: str | None = None, model: str = CHAT_MODEL, options: dict | None = None
 ) -> str:
-    if options is None and DETERMINISTIC:
-        options = DETERMINISTIC_OPTIONS
+    if options is None:
+        # num_ctx is a CAPACITY setting, not a determinism one - it MUST apply in
+        # production too, or long real conversations (system + history + ~2k
+        # tokens of retrieved context + question) silently truncate at Ollama's
+        # default window, dropping the system prompt first (external review round
+        # 5, Fable 5, verified: the old `and DETERMINISTIC` guard left production
+        # at the default context). Only temperature/seed stay behind the flag.
+        options = DETERMINISTIC_OPTIONS if DETERMINISTIC else {"num_ctx": 8192}
     response = ollama.chat(model=model, messages=messages, format=format, options=options)
     return response["message"]["content"]
 
@@ -148,11 +161,17 @@ def generate(messages: list[dict]) -> str:
     for attempt in range(10):
         resp = requests.post(url, headers=headers, json=payload, timeout=120)
         if resp.status_code == 429:
-            wait = resp.headers.get("retry-after")
-            wait = float(wait) if wait else min(2 ** attempt, 30)
+            raw = resp.headers.get("retry-after")
+            try:
+                wait = float(raw) if raw else min(2 ** attempt, 30)
+            except ValueError:
+                wait = min(2 ** attempt, 30)  # Retry-After can be an HTTP-date, not seconds
             time.sleep(min(wait + 0.5, 30))
             continue
-        resp.raise_for_status()
+        if not resp.ok:
+            # surface the provider's error body (rate/quota/model messages) instead
+            # of a bare status - the daily-token-limit diagnosis came from this body
+            raise RuntimeError(f"{GENERATOR_PROVIDER} generator HTTP {resp.status_code}: {resp.text[:500]}")
         return resp.json()["choices"][0]["message"]["content"]
     raise RuntimeError(f"{GENERATOR_PROVIDER} generator rate-limited (429) after retries")
 

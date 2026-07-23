@@ -17,10 +17,10 @@ import json, re, sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.rag import retrieve, _format_context
-from src.llm import chat
+from src.llm import JUDGE_MODEL, chat
 
 RESULTS = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("eval/results_c1_anchor_v2.json")
-JUDGE_MODEL = "qwen2.5:14b-instruct"
+# JUDGE_MODEL imported from src.llm (centralized)
 
 JUDGE_PROMPT = """You are auditing whether an AI assistant's answer is FAITHFUL to the retrieved \
 document excerpts it was given (its "context"). Judge ONLY faithfulness-to-context, not whether the \

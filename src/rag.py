@@ -1017,11 +1017,16 @@ CLARIFY_FAMILY_THRESHOLD = 6
 
 
 def _clarify_underspecified_response() -> str:
+    # Offer BOTH branches: a specific programme (rescues the sibling-miss case,
+    # validated) OR "in general" (Fable 5, round 5: the definitional questions
+    # that also trigger this gate have no programme - the user saying "general"
+    # lets the follow-up contextualizer retrieve the university-wide framework/
+    # glossary instead of the gate asking again in a loop).
     return (
         "This depends on which programme or degree you're asking about - the rules of assessment "
-        "differ across programmes, and your question doesn't name one. Could you tell me the "
-        "specific programme or degree (and the academic year, if it matters), and I'll give you "
-        "its exact rule?"
+        "differ across programmes, and your question doesn't name one. Tell me the specific "
+        "programme or degree (and the academic year, if it matters) and I'll give you its exact "
+        'rule - or say "in general" and I\'ll answer from the university-wide framework and glossary.'
     )
 
 
