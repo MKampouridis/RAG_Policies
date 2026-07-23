@@ -687,6 +687,16 @@ def _top_family_count(metadatas: list[dict]) -> int:
     return sum(1 for m in metadatas if _document_family(m.get("source_url", "")) == top_family)
 
 
+def _distinct_family_count(metadatas: list[dict], top_n: int = 6) -> int:
+    """How many DISTINCT document families appear in the reranked top-N. High
+    count = the pool is scattered across many unrelated documents with no single
+    one dominating. The abstention-gate diagnostic (2026-07-23, eval/report.md)
+    found this is the only retrieval signal carrying any hit/miss information,
+    though a weak one (>=6 families -> 0.40 precision on misses; +an
+    under-specified query -> 0.45). Used by the D3 clarify gate."""
+    return len({_document_family(m.get("source_url", "")) for m in metadatas[:top_n]})
+
+
 def _distinct_family_titles(metadatas: list[dict], limit: int = 4) -> list[str]:
     """Distinct document families in a candidate pool, most-relevant-first,
     named by title (falling back to the family key). Shared by the
@@ -990,6 +1000,31 @@ def _ambiguity_disclosure(metadatas: list[dict]) -> str:
     )
 
 
+# D3 (2026-07-23): generic clarify-on-underspecified gate. Fires when a query
+# names no degree-length/award-type AND the reranked pool is fragmented across
+# >= CLARIFY_FAMILY_THRESHOLD distinct families (no single document dominates,
+# so the answer is programme-dependent and we don't know which). Then it STOPS
+# and asks the user to name their programme instead of guessing. GENERIC ask
+# only - it deliberately lists NO candidate options: on a retrieval miss the
+# correct document is by definition absent from the pool, so any options sourced
+# from it would all be wrong (proven by J8/NAMEABLE_CLARIFICATION below and by a
+# logical certainty - a miss means hit@6=False). Trigger precision is only ~0.45
+# (it interrupts some answerable general questions), and a clarifying question is
+# scored as a MISS by the hit@6 eval by design, so this is OFF by default and
+# meant to be judged on real conversations. See eval/report.md "Round 4, D3".
+CLARIFY_UNDERSPECIFIED_ENABLED = False
+CLARIFY_FAMILY_THRESHOLD = 6
+
+
+def _clarify_underspecified_response() -> str:
+    return (
+        "This depends on which programme or degree you're asking about - the rules of assessment "
+        "differ across programmes, and your question doesn't name one. Could you tell me the "
+        "specific programme or degree (and the academic year, if it matters), and I'll give you "
+        "its exact rule?"
+    )
+
+
 # J8: nameable-identity clarification - KILLED BY MANUAL PRE-VALIDATION,
 # never run through a full eval (eval/report.md "J8"). Motivating idea: ask a
 # clarifying question only when the candidate pool's J1 identity records
@@ -1081,6 +1116,15 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     if CRAG_VERIFICATION_ENABLED and not _context_supports_answer(question, context):
         sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
         return _uncertainty_response(sources), sources, retrieval_query, ranked_top_urls
+
+    # D3: under-specified programme-rules question with a fragmented pool - ask
+    # which programme instead of guessing (generic ask, no options; see flag).
+    if (CLARIFY_UNDERSPECIFIED_ENABLED
+            and _distinct_family_count(metadatas) >= CLARIFY_FAMILY_THRESHOLD
+            and not extract_degree_length(retrieval_query)
+            and not extract_award_type(retrieval_query)):
+        sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
+        return _clarify_underspecified_response(), sources, retrieval_query, ranked_top_urls
 
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     if summary:

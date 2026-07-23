@@ -2128,3 +2128,35 @@ ColBERT snapshot + manifest, and added the URL to a durable `_EXCLUDED_URLS` gua
 integrated-masters query now returns only the canonical per-year files (year-1..5), the removed
 duplicate cannot surface, canonical year-5 intact (21 chunks). Data changes are local (data/ is
 gitignored, rebuilt from run_ingest.py); the exclusion in run_ingest.py is what makes it durable.
+
+## Round 4, D3: clarify-on-underspecified gate (generic hard-ask) - BUILT, off by default
+
+The abstention-gate diagnostic reframed miss-turn hallucination as partly an UNDER-SPECIFICATION
+problem: ~half the fragmented-pool misses are queries about programme-specific rules that name no
+programme ("minimum average to pass with Merit?" - which programme?). D3 asks instead of guessing.
+
+**Trigger (measured on results_qwen14b_full.json, 80 turns):** fragmented pool (>= 6 distinct
+document families in top-6) AND under-specified query (extract_degree_length + extract_award_type
+both empty). Precision: fragmentation-only 0.40 -> +under-spec filter 0.45 (fires 11/80, catches 5
+of the miss turns; the under-spec filter correctly drops named-programme hits like "Four-Year
+Honours"/"Foundation Year" that fragment but are answerable). Confirmed the gate fires on
+under-specified misses and NOT on 3yr/4yr/masters-named queries.
+
+**Design forced to GENERIC ask (no listed options).** The intuitive version - list the candidate
+programmes and let the user pick - is provably broken and was already killed (J8/NAMEABLE_
+CLARIFICATION): on a retrieval MISS (hit@6=False) the correct document is BY DEFINITION absent from
+the pool, so options sourced from the pool are all wrong (verified: all 5 caught misses have the
+correct doc absent from the offered families; J8 empirically offered 4 confidently-wrong names).
+The only honest form is a generic "which programme did you mean?" with no guesses, letting the USER
+supply the missing fact.
+
+**Payoff validated (2-turn simulation).** Turn 1 "pass with Merit?" fires the clarification; turn 2
+user replies "MA Social Work"; the contextualizer rewrites to "...pass with Merit in the MA Social
+Work programme" and retrieval goes from a total MISS to all 6 top-6 slots = ma_social_work. The
+clarification converts an unanswerable query into a perfect hit - it is not a dead-end.
+
+**Shipping status: OFF by default** (`CLARIFY_UNDERSPECIFIED_ENABLED=False`). A clarifying question
+is scored as a MISS by the hit@6 eval by design, so this can only be judged on real conversations,
+and at 0.45 precision it interrupts some answerable general questions (framework/procedure queries
+that name no programme). Flip the flag to evaluate the ask-vs-guess tradeoff live. Production
+unaffected until then.
