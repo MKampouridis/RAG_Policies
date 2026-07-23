@@ -145,6 +145,71 @@
     text-align: center;
     font-size: 14px;
   }
+  /* markdown-lite rendering inside assistant bubbles */
+  .msg-row.assistant .bubble { white-space: normal; }
+  .bubble p { margin: 0 0 8px; }
+  .bubble p:last-child { margin-bottom: 0; }
+  .bubble ul, .bubble ol { margin: 6px 0; padding-left: 20px; }
+  .bubble li { margin: 2px 0; }
+  .bubble strong { font-weight: 600; }
+  .bubble a { color: var(--accent); }
+  .sources a.src-link { display: inline-block; margin-top: 2px; }
+  /* answer actions: copy + feedback */
+  .actions {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .act-btn {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    border-radius: 7px;
+    padding: 3px 9px;
+    font-size: 13px;
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .act-btn:hover { background: var(--bg); color: var(--fg); }
+  .act-btn.selected { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .act-sep { width: 1px; align-self: stretch; background: var(--border); margin: 0 2px; }
+  .fb-panel { margin-top: 8px; display: none; flex-direction: column; gap: 8px; }
+  .fb-panel.open { display: flex; }
+  .fb-prompt { font-size: 12px; color: var(--muted); }
+  .fb-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fb-comment {
+    width: 100%;
+    resize: vertical;
+    min-height: 44px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 13px;
+    font-family: inherit;
+  }
+  .fb-submit {
+    align-self: flex-start;
+    border: none;
+    border-radius: 7px;
+    background: var(--accent);
+    color: white;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+  }
+  .fb-thanks { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  @media (max-width: 640px) {
+    #sidebar { width: 76px; }
+    #sidebar-header { padding: 8px; }
+    #new-chat-btn { font-size: 0; padding: 10px 0; }
+    #new-chat-btn::before { content: "+"; font-size: 18px; }
+    .conv-item { font-size: 11px; padding: 10px 8px; }
+    .bubble { max-width: 88%; }
+  }
 </style>
 
 <div id="sidebar">
@@ -178,25 +243,148 @@
     return res.json();
   }
 
+  const FEEDBACK_TAGS = [
+    ['wrong_programme', 'Wrong programme / document'],
+    ['wrong_figure', 'Wrong or made-up figure'],
+    ['outdated', 'Out of date / wrong year'],
+    ['no_answer', "Didn't answer / too vague"],
+    ['other', 'Other'],
+  ];
+
   function escapeHtml(s) {
     return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
-  function renderMessage(role, content, sources) {
+  // minimal, safe markdown: escape first, then bold / links / lists / paragraphs
+  function inlineMd(s) {
+    return s
+      .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/(https?:\/\/[^\s<)]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+  }
+  function markdownToHtml(text) {
+    const lines = escapeHtml(text).split('\n');
+    let html = '', list = null, para = [];
+    const flushPara = () => { if (para.length) { html += '<p>' + para.map(inlineMd).join('<br>') + '</p>'; para = []; } };
+    const closeList = () => { if (list) { html += '</' + list + '>'; list = null; } };
+    for (const raw of lines) {
+      const line = raw.replace(/\s+$/, '');
+      const bullet = line.match(/^\s*[-*•]\s+(.*)/);
+      const numbered = line.match(/^\s*\d+[.)]\s+(.*)/);
+      if (bullet) {
+        flushPara();
+        if (list !== 'ul') { closeList(); html += '<ul>'; list = 'ul'; }
+        html += '<li>' + inlineMd(bullet[1]) + '</li>';
+      } else if (numbered) {
+        flushPara();
+        if (list !== 'ol') { closeList(); html += '<ol>'; list = 'ol'; }
+        html += '<li>' + inlineMd(numbered[1]) + '</li>';
+      } else if (line.trim() === '') {
+        flushPara(); closeList();
+      } else {
+        closeList(); para.push(line);
+      }
+    }
+    flushPara(); closeList();
+    return html;
+  }
+
+  function readableTitle(url) {
+    const name = (url.split('/').pop() || url).replace(/\.pdf$/i, '').replace(/[-_]+/g, ' ').trim();
+    return name || url;
+  }
+
+  function submitFeedback(rating, tags, comment, context, answer) {
+    fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        rating,
+        question: context.question || '',
+        answer,
+        conversation_id: activeConversationId,
+        retrieval_query: context.retrieval_query || null,
+        sources: context.sources || [],
+        ranked_top_urls: context.ranked_top_urls || [],
+        tags,
+        comment: comment || null,
+      }),
+    }).catch(() => {});
+  }
+
+  function buildAssistantActions(content, context) {
+    const wrap = document.createElement('div');
+    const bar = document.createElement('div');
+    bar.className = 'actions';
+
+    const copy = document.createElement('button');
+    copy.className = 'act-btn';
+    copy.textContent = 'Copy';
+    copy.onclick = () => navigator.clipboard.writeText(content).then(() => {
+      copy.textContent = 'Copied'; setTimeout(() => copy.textContent = 'Copy', 1200);
+    }).catch(() => {});
+
+    const up = document.createElement('button');
+    up.className = 'act-btn'; up.textContent = '👍'; up.title = 'Helpful';
+    const down = document.createElement('button');
+    down.className = 'act-btn'; down.textContent = '👎'; down.title = 'Not helpful';
+    const sep = document.createElement('div'); sep.className = 'act-sep';
+    bar.append(copy, sep, up, down);
+
+    const panel = document.createElement('div');
+    panel.className = 'fb-panel';
+    const prompt = document.createElement('div');
+    prompt.className = 'fb-prompt';
+    prompt.textContent = 'What went wrong? (optional — pick any that apply)';
+    const tagsEl = document.createElement('div');
+    tagsEl.className = 'fb-tags';
+    const selected = new Set();
+    for (const [key, label] of FEEDBACK_TAGS) {
+      const t = document.createElement('button');
+      t.className = 'act-btn'; t.textContent = label;
+      t.onclick = () => {
+        if (selected.has(key)) { selected.delete(key); t.classList.remove('selected'); }
+        else { selected.add(key); t.classList.add('selected'); }
+      };
+      tagsEl.appendChild(t);
+    }
+    const comment = document.createElement('textarea');
+    comment.className = 'fb-comment';
+    comment.placeholder = 'Anything else? (optional)';
+    const submit = document.createElement('button');
+    submit.className = 'fb-submit'; submit.textContent = 'Submit feedback';
+    panel.append(prompt, tagsEl, comment, submit);
+
+    wrap.append(bar, panel);
+    const done = (msg) => {
+      bar.remove(); panel.remove();
+      const thanks = document.createElement('div');
+      thanks.className = 'fb-thanks'; thanks.textContent = msg;
+      wrap.appendChild(thanks);
+    };
+    up.onclick = () => { submitFeedback('up', [], '', context, content); done('Thanks for the feedback! 👍'); };
+    down.onclick = () => panel.classList.add('open');
+    submit.onclick = () => { submitFeedback('down', [...selected], comment.value.trim(), context, content); done('Thanks — logged for improvement. 🙏'); };
+    return wrap;
+  }
+
+  function renderMessage(role, content, sources, context) {
     const row = document.createElement('div');
     row.className = 'msg-row ' + role;
     const bubble = document.createElement('div');
     bubble.className = 'bubble';
-    bubble.textContent = content;
+    if (role === 'assistant') bubble.innerHTML = markdownToHtml(content);
+    else bubble.textContent = content;
     row.appendChild(bubble);
     if (sources && sources.length) {
       const src = document.createElement('div');
       src.className = 'sources';
       src.innerHTML = 'Sources:<br>' + sources.map(
-        u => `<a href="${u}" target="_blank" rel="noopener">${escapeHtml(u)}</a>`
+        u => `<a class="src-link" href="${u}" target="_blank" rel="noopener">${escapeHtml(readableTitle(u))}</a>`
       ).join('<br>');
       bubble.appendChild(src);
     }
+    // feedback + copy: only on real assistant answers (context provided), not errors
+    if (role === 'assistant' && context) bubble.appendChild(buildAssistantActions(content, context));
     messagesEl.appendChild(row);
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
@@ -220,8 +408,10 @@
     if (!msgs.length) {
       messagesEl.innerHTML = '<div class="empty-state">No messages yet — ask a question below.</div>';
     }
+    let lastUserQ = '';
     for (const m of msgs) {
-      renderMessage(m.role, m.content);
+      if (m.role === 'user') { lastUserQ = m.content; renderMessage('user', m.content); }
+      else renderMessage('assistant', m.content, null, { question: lastUserQ });
     }
     await loadConversations();
   }
@@ -267,7 +457,12 @@
         body: JSON.stringify({ content: text }),
       });
       thinkingRow.remove();
-      renderMessage('assistant', result.answer, result.sources);
+      renderMessage('assistant', result.answer, result.sources, {
+        question: text,
+        retrieval_query: result.retrieval_query,
+        sources: result.sources,
+        ranked_top_urls: result.ranked_top_urls,
+      });
       await loadConversations();
     } catch (err) {
       thinkingRow.remove();

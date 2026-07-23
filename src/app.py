@@ -7,6 +7,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+from src import feedback as feedback_store
 from src import memory
 from src.rag import answer as rag_answer
 
@@ -22,6 +23,18 @@ class NewConversation(BaseModel):
 
 class NewMessage(BaseModel):
     content: str
+
+
+class Feedback(BaseModel):
+    rating: str  # "up" | "down"
+    question: str
+    answer: str
+    conversation_id: str | None = None
+    retrieval_query: str | None = None
+    sources: list[str] = []
+    ranked_top_urls: list[str] = []
+    tags: list[str] = []
+    comment: str | None = None
 
 
 @app.get("/")
@@ -73,7 +86,16 @@ def api_post_message(conversation_id: str, payload: NewMessage):
         # exposed so callers (the eval harness) can score the exact retrieval
         # this answer was generated from, instead of re-deriving it via a
         # second, independently-sampled retrieve() call - see rag.answer()'s
-        # docstring.
+        # docstring. The UI also echoes these back with any feedback, so a
+        # rating carries the retrieval context needed to auto-diagnose it.
         "retrieval_query": retrieval_query,
         "ranked_top_urls": ranked_top_urls,
     }
+
+
+@app.post("/api/feedback")
+def api_feedback(fb: Feedback):
+    if fb.rating not in ("up", "down"):
+        raise HTTPException(status_code=400, detail="rating must be 'up' or 'down'")
+    feedback_store.record_feedback(fb.model_dump())
+    return {"ok": True}
