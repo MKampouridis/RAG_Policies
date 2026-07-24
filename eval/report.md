@@ -2423,3 +2423,45 @@ even an LLM judge, given a glossary question and a sibling document, rubber-stam
 the same failure mode as the 14% disambiguation-probe ceiling. The script stays in `eval/` as the
 honest sufficiency instrument; `score_summary.py`'s fast keyphrase-string view is kept as the cheap
 default with this ~7–8pp pessimism bias now quantified.
+
+---
+
+# Round 5: contextualizer test + unified-model idea — production choice validated, unification rejected (2026-07-24)
+
+The follow-up query contextualizer (rewrites "what happens after that?" into a standalone question
+before retrieval) is the one place the contextualizer model touches retrieval, so it was bake-off'd
+the same way as the generator: fix everything else, vary `CONTEXTUALIZE_MODEL`, measure FOLLOW-UP
+retrieval only (primary turns have empty history and are returned verbatim — contextualizer-independent).
+`eval/contextualizer_sweep.py`, retrieval-only (no generation/judge), family-hit@6 over both the tuned
+set and the holdout, mirroring the reranker sweep.
+
+| Contextualizer | follow-up hit@6 (main / set2 / overall) | RoA |
+|---|---|---|
+| **qwen2.5:7b-instruct (production)** | 82% / 78% / **80.0%** | **62.5%** |
+| qwen2.5:14b-instruct | 82% / 82% / 82.5% (+2.5) | 65.0% (+2.5) |
+| qwen3:8b | — DISQUALIFIED — | — |
+| gemma3:12b (unified-model candidate) | 75% / 72% / 73.8% (**−6.2**) | 47.5% (**−15**) |
+
+Two conclusions:
+
+1. **Production qwen2.5:7b-instruct is the right contextualizer.** The 14B buys only +2.5pp
+   (2 turns) — inside the run-to-run noise band established all project — and costs 2× RAM and
+   latency on a call that sits on every follow-up's critical path. Not worth switching.
+
+2. **Unified-model idea (one model for contextualize + generate) — REJECTED.** Using the production
+   generator gemma3:12b *also* as the contextualizer regresses follow-up retrieval sharply (−6.2pp
+   overall, **−15pp RoA**). Faithful query-rewriting is a narrow instruction-following task where the
+   small, instruct-tuned qwen2.5:7b genuinely beats the larger, more generative gemma3:12b — the same
+   direction as the earlier finding (report: "contextualizer topic drift") that reasonable-looking
+   contextualizer changes regress RoA by changing how disambiguating programme names get injected into
+   the rewrite. The roles cannot be collapsed; production keeps three models — gemma3:12b (generate) +
+   qwen2.5:7b (contextualize) + nomic-embed (embed). Since generate and contextualize are now different
+   models, production must run `OLLAMA_MAX_LOADED_MODELS ≥ 2` (or unset) so gemma3 (8GB) and nomic
+   (0.4GB) coexist in the 16GB budget without the load-thrash observed during this sweep.
+
+**qwen3:8b disqualified — latency, not accuracy.** qwen3:8b ignores Ollama's `/no_think` soft switch
+and emits reasoning tokens (~140s/turn, the same bloat seen in the generator bake-off). A
+contextualizer runs synchronously before every follow-up retrieval, so ~140s of think latency is
+disqualifying regardless of hit@6 — the run was killed rather than completed. (This also settles the
+end-of-experiments model cleanup: the contextualizer test does NOT adopt qwen3:8b, so it can be
+removed.)
