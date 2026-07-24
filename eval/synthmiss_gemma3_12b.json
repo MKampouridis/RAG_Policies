@@ -1,0 +1,1802 @@
+[
+  {
+    "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "gold_url": "roa-ug-glossary.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided context.",
+    "abstained": false,
+    "latency": 20.93683886528015,
+    "grounded": true
+  },
+  {
+    "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "gold_url": "roa-ug-glossary.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided context.",
+    "abstained": false,
+    "latency": 16.335312128067017,
+    "grounded": true
+  },
+  {
+    "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "gold_url": "roa-ug-glossary.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "I am sorry, but the provided documents do not contain information about \"Capped Mark\" or anything related to undergraduate rules of assessment. Therefore, I cannot answer your question using only this context.",
+    "abstained": true,
+    "latency": 16.949805974960327,
+    "grounded": true
+  },
+  {
+    "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "gold_url": "roa-ug-glossary.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents focus on Progress and Appeals Procedures for Research Degree Students, not undergraduate rules of assessment or \"Capped Marks.\"\n",
+    "abstained": true,
+    "latency": 17.495820999145508,
+    "grounded": true
+  },
+  {
+    "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "gold_url": "roa-ug-glossary.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document doesn't mention \"Capped Mark.\"\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)\n",
+    "abstained": false,
+    "latency": 21.860356092453003,
+    "grounded": true
+  },
+  {
+    "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "gold_url": "ug-principles-and-framework.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "According to the rules, a thesis submitted for the degree of Doctor of Philosophy must embody the results of research carried out during the approved period of study. The candidate is required to conduct and present original investigations that make a significant contribution to knowledge, test ideas, understand the relationship of the theme of the investigations to a wider field of knowledge, and express themselves clearly and concisely. ([https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf))\n\n",
+    "abstained": false,
+    "latency": 14.337786197662354,
+    "grounded": true
+  },
+  {
+    "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "gold_url": "ug-principles-and-framework.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "The provided documents focus on progress and appeals procedures for research degree students and do not detail rules or policies concerning the final award itself.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": false,
+    "latency": 9.932000160217285,
+    "grounded": false
+  },
+  {
+    "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "gold_url": "ug-principles-and-framework.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "The provided documents do not mention anything about the final award. They focus on progress procedures for taught students, monitoring attendance and completion of assessments, and referral processes.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 23.36818504333496,
+    "grounded": true
+  },
+  {
+    "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "gold_url": "ug-principles-and-framework.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "Following the completion of the examination process, candidates will be notified via email that in order to gain their award they must submit one electronic version of their thesis to the Research Repository within two weeks of the outcome email being sent by the Postgraduate Research Education Team. After this time their registration as a student will cease. ([https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf))\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": false,
+    "latency": 25.750199794769287,
+    "grounded": true
+  },
+  {
+    "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "gold_url": "ug-principles-and-framework.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "The University of Essex Feedback Policy states that postgraduate taught dissertations are not considered coursework. Feedback on these is released once the Final Board of Examiners has released the marks and overall result for the student.\n\nSource: [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf)",
+    "abstained": false,
+    "latency": 21.78171396255493,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "gold_url": "roa-ug-3yr-year-1-rules.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not contain information about requirements for passing Year One in a three-year honors degree program. It outlines the Academic Appeals Procedure.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)\n",
+    "abstained": true,
+    "latency": 16.125754833221436,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "gold_url": "roa-ug-3yr-year-1-rules.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not contain information about requirements for passing Year One in a three-year honors degree program. It outlines the Academic Appeals Procedure.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 16.27619695663452,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "gold_url": "roa-ug-3yr-year-1-rules.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about requirements for passing Year One in a three-year honors degree program.\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 21.350884914398193,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "gold_url": "roa-ug-3yr-year-1-rules.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not address requirements for passing Year One in a three-year honors degree program. It focuses on guidelines for submitting a thesis as a series of papers.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 15.253582239151001,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "gold_url": "roa-ug-3yr-year-1-rules.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document outlines procedures for research degree students, not undergraduate programs like a three-year honors degree. Therefore, it does not contain information about requirements for passing Year One.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n",
+    "abstained": true,
+    "latency": 16.48444128036499,
+    "grounded": false
+  },
+  {
+    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "gold_url": "roa-ug-4yr-year-1-rules.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not contain information about reassessment opportunities for students in a Four-Year Honours Degree program.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 14.677711963653564,
+    "grounded": false
+  },
+  {
+    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "gold_url": "roa-ug-4yr-year-1-rules.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not contain information about reassessment opportunities for students in a Four-Year Honours Degree program. It focuses on the Academic Appeals Procedure.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 17.14836287498474,
+    "grounded": true
+  },
+  {
+    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "gold_url": "roa-ug-4yr-year-1-rules.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about reassessment opportunities for students in a Four-Year Honours Degree program.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.082957029342651,
+    "grounded": false
+  },
+  {
+    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "gold_url": "roa-ug-4yr-year-1-rules.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not address reassessment opportunities for students in the Four-Year Honours Degree program. It focuses on guidance notes for submitting a thesis as a series of papers.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 15.644178867340088,
+    "grounded": true
+  },
+  {
+    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "gold_url": "roa-ug-4yr-year-1-rules.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on progress and appeals procedures for *research* degree students, not undergraduate programs like a Four-Year Honours Degree. Therefore, it does not contain information about reassessment opportunities at the end of Year One for that type of student.\n\nSources:\n[https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n",
+    "abstained": true,
+    "latency": 16.63856601715088,
+    "grounded": false
+  },
+  {
+    "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-rules.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "The provided documents do not specify the requirements to pass the Foundation Year at the University of Essex. They outline the Academic Appeals Procedure for undergraduate and postgraduate taught students.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": false,
+    "latency": 17.055903911590576,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-rules.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "The provided documents do not specify the requirements to pass the Foundation Year at the University of Essex. They outline the Academic Appeals Procedure for undergraduate and postgraduate taught students.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "abstained": false,
+    "latency": 13.226692914962769,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-rules.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about the requirements to pass the Foundation Year at the University of Essex.\n\n\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.99444317817688,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-rules.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about the requirements to pass the Foundation Year at University of Essex.\n\n\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.68146800994873,
+    "grounded": false
+  },
+  {
+    "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-rules.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on Progress and Appeals Procedures for Research Degree Students, not Foundation Year requirements. Therefore, I am unable to answer your question using this context.\n\n\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 14.363565921783447,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "gold_url": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure; it does not specify the minimum credits or marks needed to progress between academic years.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 16.261740922927856,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "gold_url": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure; it does not specify the minimum credits or marks needed to progress between academic years.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 17.010398864746094,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "gold_url": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about progression requirements for any specific program like an Integrated Masters. It outlines academic offense procedures.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.555667400360107,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "gold_url": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about credit or mark requirements for progression between years in any program. It focuses on thesis submission guidelines.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 15.241298913955688,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "gold_url": "roa-ug-integrated-masters-4yr-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document outlines Progress and Appeals Procedures for Research Degree Students, not Integrated Masters programmes. Therefore, it does not contain information about credit or mark requirements for progression between years in an Integrated Masters program.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n",
+    "abstained": true,
+    "latency": 16.477681159973145,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "gold_url": "ug-grad-cert-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss academic appeals procedures and related timelines, support, and considerations like immigration status, but do not mention credit requirements or eligibility criteria for specific programs like the Graduate Certificate.",
+    "abstained": true,
+    "latency": 11.6269371509552,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "gold_url": "ug-grad-cert-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents detail the academic appeals procedure, not requirements for graduation or specific program details like the Graduate Certificate program's credit requirements.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 18.37639307975769,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "gold_url": "ug-grad-cert-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents detail academic offense procedures and do not mention eligibility requirements for specific programs like the Graduate Certificate.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 16.081198930740356,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "gold_url": "ug-grad-cert-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not credit requirements for a Graduate Certificate program.\n\n\n\nSources:\n\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 13.233191013336182,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "gold_url": "ug-grad-cert-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents focus on progress and appeals procedures for research degree students, not details about the Graduate Certificate program or credit requirements.\n\n\n\n**Sources:**\n\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 13.630800247192383,
+    "grounded": true
+  },
+  {
+    "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "gold_url": "roa-ug-diploma-higher-education-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not address the conditions for proceeding to the final year based on credit attainment in Year One. It focuses on the academic appeals procedure itself.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": false,
+    "latency": 16.823649883270264,
+    "grounded": true
+  },
+  {
+    "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "gold_url": "roa-ug-diploma-higher-education-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not address the conditions for proceeding to the final year based on credit attainment in Year One. It focuses on the Academic Appeals Procedure.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "abstained": false,
+    "latency": 13.801084041595459,
+    "grounded": true
+  },
+  {
+    "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "gold_url": "roa-ug-diploma-higher-education-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not address the conditions for proceeding to the final year based on credit accumulation in Year One. It focuses on academic offences and their procedures.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": false,
+    "latency": 15.976215839385986,
+    "grounded": true
+  },
+  {
+    "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "gold_url": "roa-ug-diploma-higher-education-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not address conditions for proceeding to the final year or credit requirements. It focuses on thesis submission guidelines.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 15.104256868362427,
+    "grounded": true
+  },
+  {
+    "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "gold_url": "roa-ug-diploma-higher-education-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not specify conditions for proceeding to the final year based on credit attainment in Year One. It focuses on progress procedures and appeals for research degree students.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 13.590621948242188,
+    "grounded": true
+  },
+  {
+    "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "gold_url": "csee-ft-masters-accredited-variations-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure; it does not specify the minimum marks required for passing a taught core module.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 15.710946083068848,
+    "grounded": true
+  },
+  {
+    "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "gold_url": "csee-ft-masters-accredited-variations-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure and does not specify minimum marks required for passing a taught core module. Therefore, I cannot answer your question using this context.",
+    "abstained": true,
+    "latency": 10.961420059204102,
+    "grounded": true
+  },
+  {
+    "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "gold_url": "csee-ft-masters-accredited-variations-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about minimum marks required for passing a taught core module. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.865734100341797,
+    "grounded": true
+  },
+  {
+    "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "gold_url": "csee-ft-masters-accredited-variations-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about minimum marks required for taught core modules. It focuses on thesis requirements and guidelines.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 17.498143196105957,
+    "grounded": true
+  },
+  {
+    "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "gold_url": "csee-ft-masters-accredited-variations-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on Progress and Appeals Procedures for Research Degree Students, not taught modules. Therefore, it does not contain information about the minimum marks required to pass a taught core module.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 16.31629490852356,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "gold_url": "east15-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not mention a minimum pass mark for any specific school or program, including the East 15 Acting School’s Masters degree programs.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 12.546998023986816,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "gold_url": "east15-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about module pass marks or specific details regarding the East 15 Acting School's Masters degree programs.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 9.82247018814087,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "gold_url": "east15-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about module pass marks or specific details regarding programs within the East 15 Acting School. It focuses on progress and appeals procedures for research degree students.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 9.628612756729126,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "gold_url": "east15-25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not specify a minimum pass mark for any specific school or program, including the East 15 Acting School’s Masters degree programs.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "abstained": true,
+    "latency": 13.795798063278198,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "gold_url": "east15-25.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not mention minimum pass marks or specific details about the East 15 Acting School’s Masters degree programs. It outlines progress procedures for taught students, focusing on attendance and completion of assessments.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 17.922186136245728,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "gold_url": "ma_social_work_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure; it does not specify academic requirements for passing with a particular grade like Merit. Therefore, I cannot answer your question using this context.",
+    "abstained": true,
+    "latency": 11.118494033813477,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "gold_url": "ma_social_work_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure and does not specify academic requirements for passing or grades. Therefore, I cannot answer your question using this context.",
+    "abstained": true,
+    "latency": 10.68096375465393,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "gold_url": "ma_social_work_25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about the minimum overall weighted average required for a student to pass with Merit.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.19502592086792,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "gold_url": "ma_social_work_25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not specify the minimum overall weighted average required for a student to pass with Merit.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf",
+    "abstained": true,
+    "latency": 12.542240142822266,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "gold_url": "ma_social_work_25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on progress and appeals procedures for research degree students and does not contain information about assessment requirements or grading criteria, such as the minimum overall weighted average needed to pass with Merit.\n\n\n\n**Sources:**\n\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 13.920428037643433,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "gold_url": "msc-physiotherapy-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not contain information about the minimum credit requirements or criteria for passing, gaining a Merit, or achieving a Distinction in the MSc Physiotherapy (Pre-registration) program. It outlines the Academic Appeals Procedure.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)\n",
+    "abstained": true,
+    "latency": 17.325286865234375,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "gold_url": "msc-physiotherapy-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not contain information about the minimum credit requirements or criteria for passing, gaining a Merit, or achieving a Distinction in the MSc Physiotherapy (Pre-registration) program. It outlines the Academic Appeals Procedure.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "abstained": true,
+    "latency": 15.106704950332642,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "gold_url": "msc-physiotherapy-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided documents. The excerpts focus on academic offences procedures, not details about specific programs like the MSc Physiotherapy (Pre-registration).\n\n\n\n**Sources:**\n\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf",
+    "abstained": false,
+    "latency": 14.14195203781128,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "gold_url": "msc-physiotherapy-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided documents. The excerpts discuss thesis submission guidelines, not the assessment criteria for the MSc Physiotherapy (Pre-registration) program.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": false,
+    "latency": 13.338258981704712,
+    "grounded": true
+  },
+  {
+    "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "gold_url": "msc-physiotherapy-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about the minimum credit requirements or criteria for passing, gaining a Merit, or achieving a Distinction in the MSc Physiotherapy (Pre-registration) program.\n\n**Sources:**\n\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 14.210440874099731,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "gold_url": "mscperiodontology_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss academic appeals procedures, not program credit limits.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 15.637042999267578,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "gold_url": "mscperiodontology_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not contain information about credit limits for specific programs like the MSc Periodontology or MSc Advanced Periodontal Practice. It outlines the Academic Appeals Procedure.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 16.762145042419434,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "gold_url": "mscperiodontology_25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about credit limits for specific programs like the MSc Periodontology or MSc Advanced Periodontal Practice. It focuses on progress and appeals procedures for research degree students.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n",
+    "abstained": true,
+    "latency": 12.872874021530151,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "gold_url": "mscperiodontology_25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not contain information about credit limits for specific programs like MSc Periodontology or MSc Advanced Periodontal Practice.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)",
+    "abstained": true,
+    "latency": 16.12323307991028,
+    "grounded": false
+  },
+  {
+    "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "gold_url": "mscperiodontology_25.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not contain information about credit limits for specific programs like MSc Periodontology or MSc Advanced Periodontal Practice. It outlines general progress procedures for taught students.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 17.74042797088623,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "gold_url": "msc-human-resource-management-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not mention a pass mark for any specific programs like the MSc Human Resource Management. They outline procedures related to academic offences and assessment, but don't detail module or program-specific grading policies.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 16.32167100906372,
+    "grounded": false
+  },
+  {
+    "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "gold_url": "msc-human-resource-management-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about the pass mark for modules in the MSc Human Resource Management program. It focuses on thesis requirements and guidelines.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 12.018241882324219,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "gold_url": "msc-human-resource-management-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about module pass marks for the MSc Human Resource Management program. It focuses on progress and appeals procedures for research degree students.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 14.231861114501953,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "gold_url": "msc-human-resource-management-25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not specify a pass mark for any particular program, including the MSc Human Resource Management program. It outlines procedures related to student progress and appeals.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)\n",
+    "abstained": true,
+    "latency": 15.607702016830444,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "gold_url": "msc-human-resource-management-25.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "The provided documents outline progress procedures and do not specify module pass marks for any particular program like the MSc Human Resource Management.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": false,
+    "latency": 15.622201919555664,
+    "grounded": false
+  },
+  {
+    "question": "How long do students have to complete their MBA studies at the University of Essex?",
+    "gold_url": "mba-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document details the Academic Appeals Procedure, not information about study durations. Therefore, I cannot answer your question using this context.",
+    "abstained": true,
+    "latency": 9.199989080429077,
+    "grounded": true
+  },
+  {
+    "question": "How long do students have to complete their MBA studies at the University of Essex?",
+    "gold_url": "mba-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not specify how long students have to complete their MBA studies. It outlines the Academic Appeals Procedure for undergraduate and postgraduate taught students.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 16.184877157211304,
+    "grounded": false
+  },
+  {
+    "question": "How long do students have to complete their MBA studies at the University of Essex?",
+    "gold_url": "mba-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about how long students have to complete their MBA studies. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.447407007217407,
+    "grounded": true
+  },
+  {
+    "question": "How long do students have to complete their MBA studies at the University of Essex?",
+    "gold_url": "mba-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about the length of time students have to complete their MBA studies. It focuses on thesis requirements and guidelines.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 12.007063150405884,
+    "grounded": false
+  },
+  {
+    "question": "How long do students have to complete their MBA studies at the University of Essex?",
+    "gold_url": "mba-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document outlines procedures for research degree students, not MBA students. Therefore, it does not contain information about the duration of MBA studies at the University of Essex.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 16.47844409942627,
+    "grounded": false
+  },
+  {
+    "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "gold_url": "pgt-credit-framework-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document outlines an Academic Appeals Procedure, not rules of assessment themselves. It details how students can appeal decisions made by a Board of Examiners regarding their progress or qualification award, including consideration of extenuating circumstances. There is no information about learning outcomes related to assessment within this provided context.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 17.30183696746826,
+    "grounded": true
+  },
+  {
+    "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "gold_url": "pgt-credit-framework-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "The provided documents outline an Academic Appeals Procedure, not specific assessment rules or learning outcomes. The procedure details how students can appeal decisions made by a Board of Examiners regarding their progress or qualification award, including consideration of extenuating circumstances. It does *not* describe what constitutes successful assessment or the expected learning outcomes.\n\nSources:\n[https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)\n",
+    "abstained": false,
+    "latency": 18.417789936065674,
+    "grounded": false
+  },
+  {
+    "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "gold_url": "pgt-credit-framework-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "According to the guidance notes, a thesis submitted for the degree of Doctor of Philosophy requires candidates to:\n\n*   Conduct and present original investigations that make a significant contribution to knowledge.\n*   Test ideas, whether their own or those of others.\n*   Understand the relationship of the theme of the investigations to a wider field of knowledge.\n*   Express themselves clearly and concisely. \n\n[https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 15.29980206489563,
+    "grounded": true
+  },
+  {
+    "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "gold_url": "pgt-credit-framework-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "The provided documents outline procedures for research degree student progress and appeals, but do not specify learning outcomes related to assessment. They focus on monitoring student progress and addressing concerns about engagement.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": false,
+    "latency": 12.12184190750122,
+    "grounded": true
+  },
+  {
+    "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "gold_url": "pgt-credit-framework-25.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "The provided text does not describe any learning outcomes related to assessment. It outlines procedures for thesis submission, deposit, and retention.\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": false,
+    "latency": 13.404708862304688,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "gold_url": "masters-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not contain information about the minimum overall weighted average required to pass a Master’s degree with Merit. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 14.69926118850708,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "gold_url": "masters-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not specify the minimum overall weighted average required to pass a Master’s degree with Merit. It outlines the Academic Appeals Procedure for undergraduate and postgraduate taught students.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 14.784889698028564,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "gold_url": "masters-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about the minimum overall weighted average required to pass a Master’s degree with Merit.\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.685058116912842,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "gold_url": "masters-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document details rules regarding thesis submissions and does not contain information about the requirements for passing a Master's degree, nor does it specify any weighting or grading criteria.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.972472190856934,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "gold_url": "masters-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on progress and appeals procedures for research degree students, not general assessment requirements like those for a Master's degree. Therefore, it does not contain information about the minimum overall weighted average required to pass a Master’s degree with Merit.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 13.067936182022095,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "gold_url": "integrated-phd-roa-model-a-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about module pass marks.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 11.584614038467407,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "gold_url": "integrated-phd-roa-model-a-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not module assessment marks.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 11.243346929550171,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "gold_url": "integrated-phd-roa-model-a-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents focus on progress and appeals procedures for research degree students, not rules of assessment for taught modules. \n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 10.449551105499268,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "gold_url": "integrated-phd-roa-model-a-25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not specify a minimum pass mark for taught modules. It focuses on progress and appeals procedures, attendance monitoring, and related processes.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)",
+    "abstained": true,
+    "latency": 16.86758589744568,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "gold_url": "integrated-phd-roa-model-a-25.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not specify a minimum pass mark for taught modules. It outlines progress procedures for students on taught programmes but doesn't detail module marking schemes.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 16.171361923217773,
+    "grounded": true
+  },
+  {
+    "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "gold_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not specify a timeframe for completing academic appeal proceedings or internal review procedures.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": false,
+    "latency": 14.45793604850769,
+    "grounded": true
+  },
+  {
+    "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "gold_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about the timeframe for completing academic appeal proceedings and internal review procedures.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.10037612915039,
+    "grounded": false
+  },
+  {
+    "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "gold_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "The provided documents do not specify a timeframe for completing academic appeal proceedings or internal review procedures.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "abstained": false,
+    "latency": 11.625362873077393,
+    "grounded": true
+  },
+  {
+    "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "gold_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "This document does not contain information about the timeframe for completing academic appeal proceedings or internal review procedures. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": true,
+    "latency": 13.471832990646362,
+    "grounded": false
+  },
+  {
+    "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "gold_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "sibling_url": "marking-policy-2023-24.pdf",
+    "answer": "The provided documents do not contain information about the timeframe for completing academic appeal proceedings and internal review procedures.\n\n\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf]",
+    "abstained": true,
+    "latency": 21.05960202217102,
+    "grounded": true
+  },
+  {
+    "question": "What are the general principles for reassessment according to the rules of assessment document?",
+    "gold_url": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not discuss reassessment. It outlines requirements and guidelines for submitting a thesis, particularly regarding the \"thesis as a series of papers\" format.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 14.325095891952515,
+    "grounded": true
+  },
+  {
+    "question": "What are the general principles for reassessment according to the rules of assessment document?",
+    "gold_url": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "The provided documents focus on progress and appeals procedures for research degree students, not general reassessment principles. They do not contain information about how or when a student might be reassessed.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 13.123350858688354,
+    "grounded": true
+  },
+  {
+    "question": "What are the general principles for reassessment according to the rules of assessment document?",
+    "gold_url": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "The provided documents do not outline any general principles for reassessment. They focus on progress procedures for taught students, monitoring attendance and completion of assessments, and outlining stages of intervention when progress is unsatisfactory.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": false,
+    "latency": 16.53290104866028,
+    "grounded": true
+  },
+  {
+    "question": "What are the general principles for reassessment according to the rules of assessment document?",
+    "gold_url": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "According to the policy, if an examination requires corrections to the thesis, candidates must submit their revised thesis, showing tracked changes, along with a letter/statement explaining how the corrections have been addressed, to pgrsubmission@essex.ac.uk (section 2.8). Following an outcome of the examination which requires a referral period, the candidate should submit their revised thesis in accordance with 2.1 alongside their resubmission (RD1) form by the date stipulated in their examination outcome email from the Postgraduate Research Education Team (section 2.9).\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": false,
+    "latency": 19.60075807571411,
+    "grounded": true
+  },
+  {
+    "question": "What are the general principles for reassessment according to the rules of assessment document?",
+    "gold_url": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "The provided documents do not contain information about reassessment. They focus on assessment feedback policies.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf",
+    "abstained": true,
+    "latency": 11.433172941207886,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad course?",
+    "gold_url": "roa-ug-3yr-year-1-variations.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not eligibility for study abroad programs.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.81053113937378,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad course?",
+    "gold_url": "roa-ug-3yr-year-1-variations.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on Progress and Appeals Procedures for Research Degree Students, not undergraduate courses like Essex Abroad. Therefore, it does not contain information about eligibility requirements or year marks for participating in Essex Abroad programs.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 12.693326950073242,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad course?",
+    "gold_url": "roa-ug-3yr-year-1-variations.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not mention eligibility requirements for a \"Term Abroad\" or \"Essex Abroad\" courses. It focuses on progress procedures for taught students.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 15.826910972595215,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad course?",
+    "gold_url": "roa-ug-3yr-year-1-variations.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents focus on thesis submission and deposit policies, not eligibility requirements for programs like Essex Abroad.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": true,
+    "latency": 13.967273950576782,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad course?",
+    "gold_url": "roa-ug-3yr-year-1-variations.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss assessment feedback policies, not eligibility requirements for programs like \"Essex Abroad.\"\n\n\n\n**Sources:**\n\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf)",
+    "abstained": true,
+    "latency": 14.7569899559021,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "gold_url": "roa-ug-4yr-year-1-variations.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not eligibility for a Term Abroad program.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 10.550674200057983,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "gold_url": "roa-ug-4yr-year-1-variations.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about \"Essex Abroad\" or requirements for a term abroad. It focuses on Progress and Appeals Procedures for Research Degree Students.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n",
+    "abstained": true,
+    "latency": 14.841617107391357,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "gold_url": "roa-ug-4yr-year-1-variations.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents only cover progress procedures for undergraduate and taught postgraduate students for the academic year 2019-20 and do not mention Essex Abroad rules or minimum Year Mark requirements.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 17.49120807647705,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "gold_url": "roa-ug-4yr-year-1-variations.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss feedback policies and do not mention eligibility requirements for programs like \"Essex Abroad.\"\n\n\n\n**Sources:**\n\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf)",
+    "abstained": true,
+    "latency": 13.411370038986206,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "gold_url": "roa-ug-4yr-year-1-variations.pdf",
+    "sibling_url": "mba-25.pdf",
+    "answer": "This document does not mention eligibility requirements for a Term Abroad or Essex Abroad rules. [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf]",
+    "abstained": true,
+    "latency": 7.572984933853149,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involving Modern Language/Language Studies at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-variations.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about eligibility requirements for a Term Abroad or joint courses.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.506587266921997,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involving Modern Language/Language Studies at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-variations.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not eligibility for term abroad programs.\n\n\n\nSources:\n\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 12.00464391708374,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involving Modern Language/Language Studies at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-variations.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about eligibility requirements for a Term Abroad or any specific academic standards related to joint courses involving Modern Languages/Language Studies.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)\n",
+    "abstained": true,
+    "latency": 14.580441951751709,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involving Modern Language/Language Studies at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-variations.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not specify a minimum year mark required for students on joint courses involving Modern Language/Language Studies to participate in a term abroad.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)\n",
+    "abstained": true,
+    "latency": 15.617249965667725,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involving Modern Language/Language Studies at University of Essex?",
+    "gold_url": "roa-ug-foundation-year-variations.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not mention eligibility requirements for a Term Abroad or any specific details about joint courses involving Modern Language/Language Studies.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 15.619249105453491,
+    "grounded": false
+  },
+  {
+    "question": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+    "gold_url": "ug-grad-dip-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not mention a pass mark for any modules or programs, including the Graduate Diploma.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.60043716430664,
+    "grounded": false
+  },
+  {
+    "question": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+    "gold_url": "ug-grad-dip-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about the pass mark for modules of the Graduate Diploma. It focuses on thesis requirements and guidelines.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 13.510411024093628,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+    "gold_url": "ug-grad-dip-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not specify a pass mark for any modules, including those on a Graduate Diploma. It focuses on progress monitoring and appeals procedures.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)",
+    "abstained": true,
+    "latency": 14.432100057601929,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+    "gold_url": "ug-grad-dip-year-1.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not mention a pass mark for any modules, including those on the Graduate Diploma. It focuses on progress procedures and attendance monitoring.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 14.928308010101318,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+    "gold_url": "ug-grad-dip-year-1.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "The provided documents do not mention a pass mark for any program, including the Graduate Diploma.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf)",
+    "abstained": true,
+    "latency": 13.892677783966064,
+    "grounded": true
+  },
+  {
+    "question": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated in this document?",
+    "gold_url": "roa-ug-integrated-masters-5yr-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure, not the rules for achieving a specific grade like a Distinction. It does not contain information about academic standards or grading criteria for any year of study.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 16.925482034683228,
+    "grounded": false
+  },
+  {
+    "question": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated in this document?",
+    "gold_url": "roa-ug-integrated-masters-5yr-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure and does not detail the requirements for achieving a specific grade like a Distinction in Year One. It focuses on how students can appeal decisions made by Boards of Examiners.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": false,
+    "latency": 16.984920024871826,
+    "grounded": false
+  },
+  {
+    "question": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated in this document?",
+    "gold_url": "roa-ug-integrated-masters-5yr-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document outlines academic offense procedures, not assessment criteria or grading standards. It does not specify requirements for achieving a particular grade like a Distinction in Year One.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 16.1095449924469,
+    "grounded": true
+  },
+  {
+    "question": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated in this document?",
+    "gold_url": "roa-ug-integrated-masters-5yr-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not specify requirements for achieving a Distinction, nor does it mention \"Year One.\" It outlines general thesis requirements and guidelines.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.521069049835205,
+    "grounded": true
+  },
+  {
+    "question": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated in this document?",
+    "gold_url": "roa-ug-integrated-masters-5yr-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document outlines progress and appeals procedures for research degree students, not rules for achieving a specific grade like a Distinction. It does not specify requirements for any particular academic year or level of study.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 15.737712860107422,
+    "grounded": false
+  },
+  {
+    "question": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation)?",
+    "gold_url": "roa-ug-mlang-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This question cannot be answered using the provided context. The documents detail the Academic Appeals Procedure and do not outline academic requirements or grading criteria for specific programs like the Integrated Masters programme in Modern Languages (Translation). \n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 16.315540075302124,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation)?",
+    "gold_url": "roa-ug-mlang-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents detail the academic appeals procedure, not assessment requirements for specific programs.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 15.814680099487305,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation)?",
+    "gold_url": "roa-ug-mlang-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about academic requirements or grading criteria for specific programs like the Integrated Masters program in Modern Languages (Translation). It outlines procedures related to academic offenses.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.521769046783447,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation)?",
+    "gold_url": "roa-ug-mlang-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not specify requirements for achieving a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation). It outlines general rules and guidance notes regarding thesis submission.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.948391914367676,
+    "grounded": true
+  },
+  {
+    "question": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation)?",
+    "gold_url": "roa-ug-mlang-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on Progress and Appeals Procedures for Research Degree Students, not undergraduate programs like the Integrated Masters in Modern Languages (Translation). Therefore, it does not contain information about the requirements to achieve a Distinction in Year One.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 15.800743341445923,
+    "grounded": false
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year under the University of Essex Foundation Degree rules?",
+    "gold_url": "roa-ug-foundation-degrees-year1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This question cannot be answered using the provided context. The documents discuss academic appeals procedures, not specific degree requirements or credit limits.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 15.814827919006348,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year under the University of Essex Foundation Degree rules?",
+    "gold_url": "roa-ug-foundation-degrees-year1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss academic appeals procedures, timescales, support & guidance, immigration status, submitting an appeal, grounds for appeal, and internal review processes. They do not contain information about credit limits or progression requirements for a Foundation Degree program.\n\n\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "abstained": true,
+    "latency": 15.039287090301514,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year under the University of Essex Foundation Degree rules?",
+    "gold_url": "roa-ug-foundation-degrees-year1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided documents. The excerpts focus on academic offences procedures, not degree progression or credit requirements. Therefore, I cannot answer your question.",
+    "abstained": true,
+    "latency": 10.932889938354492,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year under the University of Essex Foundation Degree rules?",
+    "gold_url": "roa-ug-foundation-degrees-year1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not foundation degree rules or credit failures.\n\n\n\nSources:\n\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 12.745967864990234,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year under the University of Essex Foundation Degree rules?",
+    "gold_url": "roa-ug-foundation-degrees-year1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents focus on progress and appeals procedures for research degree students, not foundation degrees or credit limits.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 12.383431911468506,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One according to the rules of assessment?",
+    "gold_url": "roa-ug-laksamana-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "The provided documents do not mention any requirements for passing Year One. They outline the Academic Appeals Procedure for undergraduate and postgraduate taught students.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 15.066100358963013,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One according to the rules of assessment?",
+    "gold_url": "roa-ug-laksamana-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "The provided documents do not mention a specific requirement for passing Year One. They outline the Academic Appeals Procedure for undergraduate and postgraduate taught students, focusing on appealing decisions made by Boards of Examiners regarding progress or awarding of qualifications.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "abstained": true,
+    "latency": 14.422315835952759,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One according to the rules of assessment?",
+    "gold_url": "roa-ug-laksamana-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not mention any requirements for passing Year One. They focus on academic offences and their procedures.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.27703595161438,
+    "grounded": true
+  },
+  {
+    "question": "What is the requirement for passing Year One according to the rules of assessment?",
+    "gold_url": "roa-ug-laksamana-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "The provided documents do not specify requirements for passing Year One. They focus on thesis submission guidelines and requirements for a Doctor of Philosophy (PhD) degree.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf",
+    "abstained": false,
+    "latency": 12.917700052261353,
+    "grounded": false
+  },
+  {
+    "question": "What is the requirement for passing Year One according to the rules of assessment?",
+    "gold_url": "roa-ug-laksamana-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "The provided documents do not specify requirements for passing Year One. They outline procedures related to Academic Progress and Appeals for research degree students, focusing on monitoring progress and addressing concerns.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": false,
+    "latency": 13.111227035522461,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Essex University?",
+    "gold_url": "roa-ug-skku-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not contain information about the maximum number of non-core credits that can be condoned. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 15.109190225601196,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Essex University?",
+    "gold_url": "roa-ug-skku-year-1.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "I am sorry, but this information is not available in the provided context. The documents focus on the academic appeals procedure and do not detail rules regarding credit condonement.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 16.725507020950317,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Essex University?",
+    "gold_url": "roa-ug-skku-year-1.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided documents. Therefore, I cannot answer your question.",
+    "abstained": true,
+    "latency": 9.318404912948608,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Essex University?",
+    "gold_url": "roa-ug-skku-year-1.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not credit condonement policies.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 11.641671895980835,
+    "grounded": true
+  },
+  {
+    "question": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Essex University?",
+    "gold_url": "roa-ug-skku-year-1.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on progress and appeals procedures for research degree students, not undergraduate degrees. Therefore, it does not contain information about the maximum number of non-core credits that can be condoned across a three-year Honours Degree.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 14.029608964920044,
+    "grounded": true
+  },
+  {
+    "question": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or EG229 modules?",
+    "gold_url": "roa-ug-ehs-year-1-variations.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "I am sorry, but I cannot answer this question. The provided documents do not contain information about placement hours or any specific module like EG124, EG226, or EG229.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf",
+    "abstained": true,
+    "latency": 9.731428146362305,
+    "grounded": false
+  },
+  {
+    "question": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or EG229 modules?",
+    "gold_url": "roa-ug-ehs-year-1-variations.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents focus on thesis submission, deposit, and retention policies, not module requirements or consequences for failing to complete placement hours.",
+    "abstained": true,
+    "latency": 10.993959903717041,
+    "grounded": true
+  },
+  {
+    "question": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or EG229 modules?",
+    "gold_url": "roa-ug-ehs-year-1-variations.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents focus on assessment and feedback policies, not module requirements or consequences for failing to meet specific criteria within a module.\n\n\n\n**Sources:**\n\n*   https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf",
+    "abstained": true,
+    "latency": 13.71948790550232,
+    "grounded": true
+  },
+  {
+    "question": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or EG229 modules?",
+    "gold_url": "roa-ug-ehs-year-1-variations.pdf",
+    "sibling_url": "pgr-intermission-absence.pdf",
+    "answer": "This document does not address the consequences of failing to complete placement hours for specific modules like EG124, EG226, or EG229.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf)",
+    "abstained": false,
+    "latency": 21.02542996406555,
+    "grounded": false
+  },
+  {
+    "question": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or EG229 modules?",
+    "gold_url": "roa-ug-ehs-year-1-variations.pdf",
+    "sibling_url": "csee_non_accredited_january_start_2025_msc.pdf",
+    "answer": "This document does not address the consequences of failing to complete placement hours in EG124, EG226, or EG229 modules.\n\nSource: [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf)\n",
+    "abstained": false,
+    "latency": 15.752503156661987,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+    "gold_url": "mscinursing_25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about module pass marks or specific program requirements like the MSci Nursing program. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.337280988693237,
+    "grounded": false
+  },
+  {
+    "question": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+    "gold_url": "mscinursing_25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis requirements and authorship, not module marks or program-specific details like those for the MSci Nursing program.\n\n\n\nSources:\n\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 15.312776803970337,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+    "gold_url": "mscinursing_25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss progress and appeals procedures for research degree students, not module marks or undergraduate programs like the MSci Nursing program.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 14.068032026290894,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+    "gold_url": "mscinursing_25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not contain information about module pass marks or specific programs like the MSci Nursing program.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)",
+    "abstained": true,
+    "latency": 16.45448613166809,
+    "grounded": true
+  },
+  {
+    "question": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+    "gold_url": "mscinursing_25.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not contain information about module pass marks or specific programs like the MSci Nursing program. It outlines progress procedures for taught students but doesn't detail academic requirements for particular courses.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 16.743849754333496,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect a standard pass mark of 50?",
+    "gold_url": "speechtherapy_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "I am sorry, but this information is not contained within the provided documents. The context focuses on the academic appeals procedure, not specific module assessment details like pass marks for HS831 linguistics and phonetics.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": false,
+    "latency": 16.634087085723877,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect a standard pass mark of 50?",
+    "gold_url": "speechtherapy_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not contain information about specific module pass marks or adjustments. It outlines the Academic Appeals Procedure.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 15.945697784423828,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect a standard pass mark of 50?",
+    "gold_url": "speechtherapy_25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about pass marks or adjustments for specific modules like HS831. It outlines procedures related to academic offenses.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 15.565009117126465,
+    "grounded": true
+  },
+  {
+    "question": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect a standard pass mark of 50?",
+    "gold_url": "speechtherapy_25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about pass marks or adjustments for specific exams like HS831. It focuses on thesis requirements and guidelines.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf]",
+    "abstained": true,
+    "latency": 12.247209072113037,
+    "grounded": false
+  },
+  {
+    "question": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect a standard pass mark of 50?",
+    "gold_url": "speechtherapy_25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not contain information about specific module pass marks or adjustments. It focuses on progress and appeals procedures for research degree students.\n\n**Sources:**\n\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+    "abstained": true,
+    "latency": 12.35680103302002,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to receive credit from taught modules under these rules?",
+    "gold_url": "sres-modular-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure, not the criteria for receiving credit from taught modules. It does not contain information about how students earn credit.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 14.020425081253052,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to receive credit from taught modules under these rules?",
+    "gold_url": "sres-modular-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "The provided documents outline the Academic Appeals Procedure, but do not specify criteria for receiving credit from taught modules. They address appeals against decisions made by a Board of Examiners regarding progress or awarding of qualifications.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "abstained": false,
+    "latency": 13.528918027877808,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to receive credit from taught modules under these rules?",
+    "gold_url": "sres-modular-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not outline criteria for receiving credit from taught modules. It focuses on requirements and guidelines related to thesis submission, particularly regarding the \"thesis as a series of papers\" format.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 13.391498804092407,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to receive credit from taught modules under these rules?",
+    "gold_url": "sres-modular-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on progress and appeals procedures for research degree students, not taught modules. Therefore, it does not outline any criteria for receiving credit from taught modules.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": false,
+    "latency": 13.045249938964844,
+    "grounded": false
+  },
+  {
+    "question": "What are the criteria for a student to receive credit from taught modules under these rules?",
+    "gold_url": "sres-modular-25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "The provided documents do not specify criteria for receiving credit from taught modules. They focus on monitoring student progress and attendance, referral to Progress Committees, appeals procedures, and extenuating circumstances.\n\nSources:\n*   https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "abstained": false,
+    "latency": 13.484026908874512,
+    "grounded": true
+  },
+  {
+    "question": "What are the credit limits for condonable non-core modules at each level?",
+    "gold_url": "mres-gov-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not contain information about credit limits for condonable non-core modules at each level.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 14.906545162200928,
+    "grounded": true
+  },
+  {
+    "question": "What are the credit limits for condonable non-core modules at each level?",
+    "gold_url": "mres-gov-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not contain information about credit limits for condonable non-core modules.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 15.373739004135132,
+    "grounded": true
+  },
+  {
+    "question": "What are the credit limits for condonable non-core modules at each level?",
+    "gold_url": "mres-gov-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not contain information about credit limits for condonable non-core modules. \n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.007231950759888,
+    "grounded": true
+  },
+  {
+    "question": "What are the credit limits for condonable non-core modules at each level?",
+    "gold_url": "mres-gov-25.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "This document does not contain information about credit limits for condonable non-core modules at each level.\n\nSources:\n* https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "abstained": true,
+    "latency": 12.102138996124268,
+    "grounded": true
+  },
+  {
+    "question": "What are the credit limits for condonable non-core modules at each level?",
+    "gold_url": "mres-gov-25.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document does not contain information about credit limits for condonable non-core modules.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf]",
+    "abstained": true,
+    "latency": 12.875964164733887,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+    "gold_url": "gradcertpwp_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not specify the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program. It outlines the Academic Appeals Procedure, which deals with appeals against decisions made by a Board of Examiners regarding progress or awarding of qualifications.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)\n",
+    "abstained": true,
+    "latency": 17.06567907333374,
+    "grounded": false
+  },
+  {
+    "question": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+    "gold_url": "gradcertpwp_25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not specify the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program. It outlines the Academic Appeals Procedure, which deals with appeals against decisions made by a Board of Examiners regarding progress or awarding of qualifications.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)\n",
+    "abstained": true,
+    "latency": 17.28840970993042,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+    "gold_url": "gradcertpwp_25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This document does not contain information about eligibility criteria for awards in the Graduate Certificate program. \n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.507793188095093,
+    "grounded": false
+  },
+  {
+    "question": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+    "gold_url": "gradcertpwp_25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not discuss eligibility criteria for a Graduate Certificate program. It outlines rules and guidance notes specifically related to submitting a thesis as a series of papers for a Doctor of Philosophy (PhD).\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 14.98313307762146,
+    "grounded": true
+  },
+  {
+    "question": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+    "gold_url": "gradcertpwp_25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document focuses on Progress and Appeals Procedures for Research Degree Students, not the Graduate Certificate program. Therefore, it does not contain information about the eligibility criteria for a pass in that program.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 15.70322299003601,
+    "grounded": true
+  },
+  {
+    "question": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Model A?",
+    "gold_url": "integrated-phd-variations-model-a-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss the Academic Appeals Procedure and do not contain information about specific academic programs like the Essex Business School's Integrated PhD program or its progression requirements.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 16.182124853134155,
+    "grounded": true
+  },
+  {
+    "question": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Model A?",
+    "gold_url": "integrated-phd-variations-model-a-25.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents discuss academic appeals procedures and do not contain information about specific programs like Essex Business School's Integrated PhD program or its progression requirements.",
+    "abstained": true,
+    "latency": 10.522043228149414,
+    "grounded": true
+  },
+  {
+    "question": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Model A?",
+    "gold_url": "integrated-phd-variations-model-a-25.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "I am sorry, but this question cannot be answered from the provided context. The documents discuss academic offences procedures and do not contain information about the Essex Business School's Integrated PhD program or its progression requirements.",
+    "abstained": true,
+    "latency": 10.517408847808838,
+    "grounded": true
+  },
+  {
+    "question": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Model A?",
+    "gold_url": "integrated-phd-variations-model-a-25.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents discuss thesis submission guidelines and do not mention specific programs like Essex Business School's Integrated PhD or Model A progression requirements.\n\n\n\nSources:\n\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 14.456157922744751,
+    "grounded": true
+  },
+  {
+    "question": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Model A?",
+    "gold_url": "integrated-phd-variations-model-a-25.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not specify requirements for Essex Business School’s Integrated PhD program or Model A. It outlines general progress and appeals procedures for research degree students.\n\nHere's what it *does* say about monitoring student progress:\n\n*   Supervisory meetings, ongoing interaction with one’s supervisor, and submission of work to the Supervisory Panel and/or Research Students’ Progress Board are primary means of monitoring progress (1.6).\n*   Departmental procedures should be communicated to all students (1.9).\n*   Students and supervisors must communicate at least monthly (for full-time students) or bi-monthly (for part-time students), with a record kept by the department (1.10).\n*   Supervisors must make contact if a student fails to meet/communicate as expected, potentially involving the Graduate Director and Research Students’ Progress Board (1.11 - 1.13).\n\n\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 23.83599305152893,
+    "grounded": true
+  },
+  {
+    "question": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+    "gold_url": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document outlines the Academic Appeals Procedure, not the assessment criteria for achieving different grades (pass, merit, or distinction) on Master's degrees. It does not contain that information.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 15.830379962921143,
+    "grounded": true
+  },
+  {
+    "question": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+    "gold_url": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "The provided documents outline requirements for a doctoral thesis, not Master's degrees. They do not specify criteria for achieving a pass, merit, or distinction.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": false,
+    "latency": 11.353567838668823,
+    "grounded": false
+  },
+  {
+    "question": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+    "gold_url": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+    "sibling_url": "progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
+    "answer": "This document outlines progress procedures for students, not assessment criteria for degree classifications (pass, merit, distinction). It does not specify what is needed to achieve those grades.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf)",
+    "abstained": true,
+    "latency": 16.891226053237915,
+    "grounded": true
+  },
+  {
+    "question": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+    "gold_url": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "The provided text does not specify the criteria for achieving a pass, merit, or distinction for Master's degrees. It outlines procedures related to thesis submission, deposit, and retention but doesn't detail grading standards.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": true,
+    "latency": 15.697985172271729,
+    "grounded": true
+  },
+  {
+    "question": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+    "gold_url": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+    "sibling_url": "assessment-feedback-policy.pdf",
+    "answer": "The provided documents do not specify the criteria for achieving a pass, merit, or distinction in Master's degrees. They focus on feedback policies and procedures.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf)",
+    "abstained": false,
+    "latency": 16.020719289779663,
+    "grounded": true
+  },
+  {
+    "question": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+    "gold_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "This document does not mention any responsibilities for Heads of Department regarding student progress monitoring. It focuses on the Academic Appeals Procedure.\n\nSource: [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf)",
+    "abstained": true,
+    "latency": 15.143279075622559,
+    "grounded": true
+  },
+  {
+    "question": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+    "gold_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "This document does not mention anything about what Heads of Department must ensure regarding student progress monitoring. It focuses on the Academic Appeals Procedure.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)",
+    "abstained": true,
+    "latency": 15.996996879577637,
+    "grounded": true
+  },
+  {
+    "question": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+    "gold_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not mention anything about Heads of Department ensuring student progress monitoring.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 14.181087255477905,
+    "grounded": true
+  },
+  {
+    "question": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+    "gold_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not mention anything about Heads of Department ensuring student progress monitoring. It states that the Head of Department/School, or nominee, must approve the title of the thesis (2.4).\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 15.184741973876953,
+    "grounded": true
+  },
+  {
+    "question": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+    "gold_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "This document does not mention anything about what Heads of Department must ensure regarding student progress monitoring.\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": true,
+    "latency": 12.740691423416138,
+    "grounded": false
+  },
+  {
+    "question": "What is the expected time frame for the return of assessed work according to the University's policy?",
+    "gold_url": "assessment-feedback-policy.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "The provided documents do not contain information about the timeframe for returning assessed work.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 10.975307941436768,
+    "grounded": true
+  },
+  {
+    "question": "What is the expected time frame for the return of assessed work according to the University's policy?",
+    "gold_url": "assessment-feedback-policy.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not specify a timeframe for the return of assessed work.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 10.471158027648926,
+    "grounded": false
+  },
+  {
+    "question": "What is the expected time frame for the return of assessed work according to the University's policy?",
+    "gold_url": "assessment-feedback-policy.pdf",
+    "sibling_url": "progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "answer": "The provided documents do not specify a timeframe for the return of assessed work. They focus on monitoring attendance and completion of coursework, but don't detail when work should be returned.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf)",
+    "abstained": false,
+    "latency": 16.66265892982483,
+    "grounded": true
+  },
+  {
+    "question": "What is the expected time frame for the return of assessed work according to the University's policy?",
+    "gold_url": "assessment-feedback-policy.pdf",
+    "sibling_url": "thesis-submission-deposit.pdf",
+    "answer": "This document does not specify a timeframe for the return of assessed work. It focuses on thesis submission, deposit, and retention procedures.\n\nSources:\n* [https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf)",
+    "abstained": true,
+    "latency": 10.654711961746216,
+    "grounded": true
+  },
+  {
+    "question": "What is the expected time frame for the return of assessed work according to the University's policy?",
+    "gold_url": "assessment-feedback-policy.pdf",
+    "sibling_url": "marking-policy-2023-24.pdf",
+    "answer": "The provided documents do not specify a timeframe for returning assessed work. They outline processes like submission, marking, moderation, provisional mark release, external examiner review, and final mark release, but don't mention deadlines for when students receive their marked work back.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/marking-policy-2023-24.pdf)",
+    "abstained": false,
+    "latency": 27.280664205551147,
+    "grounded": true
+  },
+  {
+    "question": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+    "gold_url": "thesis-submission-deposit.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+    "answer": "The submission deadline for an appeal is within ten working days of the publication of the decision of the Board of Examiners, or within ten working days following the early resolution of an informal appeal by the Department. ([https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf))\n\nThe provided context does not mention candidates first registered from October 2018 onwards.",
+    "abstained": true,
+    "latency": 16.871680736541748,
+    "grounded": false
+  },
+  {
+    "question": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+    "gold_url": "thesis-submission-deposit.pdf",
+    "sibling_url": "academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf",
+    "answer": "The submission deadline for appeals is within 10 working days of the publication of results following a Board of Examiners ([https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)). Appeals received after the deadline will only be accepted at the discretion of the Academic Registrar (or nominee) if circumstances beyond the student’s control prevented them from meeting the standard time limit ([https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-postgraduate-taught-2023-24.pdf)).\n\nThe provided context does not mention candidates first registered from October 2018 onwards.",
+    "abstained": true,
+    "latency": 24.678800106048584,
+    "grounded": false
+  },
+  {
+    "question": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+    "gold_url": "thesis-submission-deposit.pdf",
+    "sibling_url": "academic-offences-procedures-2017-18.pdf",
+    "answer": "This question cannot be answered from the provided context. The documents only cover the academic year 2017-18 and do not mention any deadlines related to candidate registration dates.\n\n\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedures-2017-18.pdf)",
+    "abstained": true,
+    "latency": 16.28096318244934,
+    "grounded": true
+  },
+  {
+    "question": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+    "gold_url": "thesis-submission-deposit.pdf",
+    "sibling_url": "guidance-notes-thesis-by-papers.pdf",
+    "answer": "This document does not mention a submission deadline for candidates first registered from October 2018 onwards.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/guidance-notes-thesis-by-papers.pdf)",
+    "abstained": true,
+    "latency": 13.59125304222107,
+    "grounded": false
+  },
+  {
+    "question": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+    "gold_url": "thesis-submission-deposit.pdf",
+    "sibling_url": "progress-appeals-procedures-research-degree-students.pdf",
+    "answer": "This document does not mention a submission deadline for candidates first registered from October 2018 onwards.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf)",
+    "abstained": true,
+    "latency": 14.870628833770752,
+    "grounded": false
+  }
+]

@@ -2511,3 +2511,77 @@ residual misses is now resolved: stronger generator (adopted gemma3:12b), absten
 generator choice, not a gate), Class F enumeration (falsified), and clarification (D3, built and
 vindicated by the retrieval capstone). The remaining open item is the product-side D3 live-judgment
 call, not another experiment.
+
+---
+
+# Round 6 (external council) Tier 0: validating the decisions already made (2026-07-24)
+
+Five external reviews (DeepSeek, ChatGPT, Grok, Gemini, Claude Opus 5) converged: retrieval is
+closed, gemma3:12b is the right generator, D3 is the remaining lever, ship it. Claude (the only
+code-verified reviewer, weighted heaviest) caught two things the others missed, both of which Tier 0
+was built to check: (1) the gemma3 switch was never validated *end-to-end* — the generator bake-off
+held retrieval constant by construction, so gemma3's abstention-on-miss (its selling point) was never
+tested for its known cost of poisoning follow-up contextualization; (2) the decisive miss-turn
+faithfulness finding rested on n=13.
+
+## Item 1 — end-to-end gemma3 validation: no follow-up-retrieval regression (VALIDATED)
+
+Ran the full deterministic eval with gemma3 in production position (generator's own answers feed the
+follow-up contextualizer, so any abstention-poisoning would show), on both sets, and compared
+FOLLOW-UP hit@6 to the 14B end-to-end baselines. Also re-ran the 30-turn multi-topic probe.
+
+| Follow-up hit@6 | 14B baseline | gemma3 E2E | Δ |
+|---|---|---|---|
+| Main (n=40) | 33/40 (82.5%) | 35/40 (87.5%) | +2 |
+| set2 holdout (n=40) | 26/40 (65.0%) | 25/40 (62.5%) | −1 |
+| **Pooled (n=80)** | 59/80 (73.8%) | **60/80 (75.0%)** | **+1 (net-flat)** |
+
+Pooled, gemma3 is net-flat on follow-up retrieval (+1 turn, inside the ±2–4pp noise band) — **no
+regression.** Two validity checks confirm a clean A/B: primary hit@6 is identical on both sets
+(34/34, 29/29), exactly as required since primary retrieval is generator-independent. The 30-turn
+multi-topic probe is **byte-identical to the c1/phase5 baselines** (28/30; switch turns 11/11) — the
+topic-switch regime where abstention-poisoning would surface shows zero damage. The mechanism Claude
+predicted holds: `_anchor_from_history` reads user turns only, so programme identity survives an
+abstention. **The gemma3 production switch is validated end-to-end.**
+
+## Item 2 — synthetic miss corpus (n=200): gemma3 does NOT hallucinate more (the n=13 scare retired)
+
+`eval/synthetic_miss_corpus.py` scales the miss-turn faithfulness test from n=13 to n=200 with zero
+labelling: pair each RoA question with 5 sibling documents that contain NONE of its gold keyphrases
+(a synthetic "wrong sibling retrieved"), generate, and judge faithfulness-to-context. On a wrong
+context, GROUNDED = safe (faithful abstention or context-only facts); NOT GROUNDED = fabricating a
+figure the context lacks.
+
+**First pass used qwen2.5:14b as judge and produced an alarming flip** (gemma3 76% grounded / 4.5%
+hallucinated vs 14B 96% / 0.5%) — but that was **entirely judge self-preference bias**: the 14B judge
+favours the 14B's own answers and is harsh on gemma3 (the documented confound, and why the bake-off
+finalists used neutral phi4). Re-judged with neutral **phi4** (`eval/synthmiss_rejudge.py`):
+
+| Synthetic misses (n=200) | 14B-judged (confounded) | **phi4-judged (neutral)** |
+|---|---|---|
+| gemma3 grounded / hallucinated | 76.0% / 4.5% (9) | **100.0% / 0.0% (0)** |
+| qwen2.5:14b grounded / hallucinated | 96.0% / 0.5% | **99.0% / 0.5% (1)** |
+
+Under a neutral judge, **both models are near-perfectly faithful on off-topic miss contexts — a wash**
+(gemma3 0 fabrications, 14B 1). gemma3 does NOT hallucinate more than the 14B; the scare was 100% a
+judge artifact. They differ only in style (14B abstains 98%, gemma3 79% but stays grounded). The
+abstention rate is regex-based / judge-independent and unaffected by the re-judge. **Methodology
+lesson, re-confirmed: never judge close calls with a candidate model — the self-preference swing here
+was 24 percentage points.**
+
+**Honest limitation:** this corpus tests the EASY failure mode (off-topic documents, which both models
+trivially abstain on), not the production-relevant HARD one — a near-duplicate sibling that discusses
+the topic with a *different* value. So the bake-off's slight gemma3 edge on 13 *real* near-duplicate
+misses is neither confirmed nor refuted at scale. That hard case is deferred to Tier 1's real-harm
+measurement (it only exists when a parameter varies across siblings — for uniform ones like Merit=60
+any sibling answers correctly, so a "miss" is not a harm), which is more production-relevant than a
+synthetic v2 corpus.
+
+## Tier 0 verdict
+
+The gemma3:12b production decision is **confirmed**: validated end-to-end (no follow-up/multi-turn
+regression) and, under a neutral judge, at-worst-a-wash and fabrication-free on misses. The two things
+Claude flagged as unverified are now verified and both landed favourably. Retire from the writeup: the
+"hallucination drops ~31%→~8%" phrasing (the underlying n=13 subgroup gap is one turn) — replaced by
+the n=200 neutral-judge finding that gemma3 is fabrication-free on off-topic misses and net-flat on
+conversational retrieval.
