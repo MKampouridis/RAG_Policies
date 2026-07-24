@@ -2465,3 +2465,49 @@ contextualizer runs synchronously before every follow-up retrieval, so ~140s of 
 disqualifying regardless of hit@6 — the run was killed rather than completed. (This also settles the
 end-of-experiments model cleanup: the contextualizer test does NOT adopt qwen3:8b, so it can be
 removed.)
+
+---
+
+# Round 5: Class F structured-parameter extraction pilot — falsified, branch dropped (2026-07-24)
+
+The round-4 reviewers proposed "Class F": for an underspecified query that names no programme
+("what's the minimum weighted average to pass with Merit?") and so mis-retrieves a sibling, don't
+retrieve one document — EXTRACT the parameter across ALL current programme documents and ENUMERATE
+`{programme → value}`. "Ambiguity becomes enumeration." Piloted on branch `feature/class-f-extraction`
+(`eval/class_f_pilot.py`), a bounded pre-validation before any build.
+
+Two questions decide it, both measured by extracting Merit/Distinction classification thresholds
+across 40 current PGT RoA documents with gemma3:12b:
+
+| | result |
+|---|---|
+| (1) Extraction reliability | Merit 34/40 (85%), Distinction 33/40 (82%), 0 parse-fails — **reliable** |
+| (2) Variance across programmes | Merit = **{60: 34}**, Distinction = **{70: 33}** — **perfectly uniform** |
+| Anchor check (gold 60/70) | ma_social_work, msc-physiotherapy, masters all extracted 60/70 ✓ |
+
+**Verdict: reliable but uniform → enumeration is pointless here, and Class F is falsified.** Because
+every programme's Merit threshold is the same value (60), the "underspecified Merit misses" were never
+real retrieval failures: any retrieved sibling already answers correctly — this is precisely the
+`ma_social_work[primary]` N=78 gold-multiplicity artifact round-4 item 2 identified, now confirmed
+from the document side. Enumerating would emit "60, 60, 60, … 60" — zero information.
+
+The general argument (not just this parameter) closes the idea:
+- **Uniform parameters** (Merit=60, Distinction=70, most classification boundaries in this corpus):
+  no ambiguity exists — any sibling answers — so enumeration adds nothing.
+- **Varying parameters** (programme-specific rules): either the query NAMES the programme (then it's
+  not underspecified and normal retrieval works), or it doesn't — in which case a long enumerated
+  table where the user must still recognise their own programme is strictly worse UX than **D3's
+  single clarifying question**. And the per-programme facet extraction such enumeration would need was
+  already found too sparse to trust (Stage A facet filtering, department-field coverage).
+
+So Class F cannot beat the already-built D3 clarification UX on the underspecified misses, and is
+redundant with gold-multiplicity for the uniform ones. Falsified, in the same clean-kill discipline as
+the contextual-embeddings and facet-overlap-graph pilots. The pilot script is kept on main as part of
+the falsification ledger; the `feature/class-f-extraction` branch is dropped (it held only the pilot,
+now preserved here — nothing to merge).
+
+This closes the round-5 experiment queue. Every generation/UX lever the reviewers proposed for the
+residual misses is now resolved: stronger generator (adopted gemma3:12b), abstention (solved by the
+generator choice, not a gate), Class F enumeration (falsified), and clarification (D3, built and
+vindicated by the retrieval capstone). The remaining open item is the product-side D3 live-judgment
+call, not another experiment.
