@@ -828,6 +828,9 @@ def _format_context(results: dict) -> str:
     return "\n\n---\n\n".join(blocks)
 
 
+_LAST_CANDIDATE_POOL = None  # set by retrieve() to the pre-rerank fused pool; read by the recall diagnostic
+
+
 def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dict, str]:
     """The full retrieval path used by answer() - query contextualization
     plus recency preference - exposed separately so eval/scoring code can
@@ -941,6 +944,9 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         if COLBERT_FIRST_STAGE_ENABLED:
             ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, current_only=True))
         candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*ranked_lists)))
+
+    global _LAST_CANDIDATE_POOL  # debug hook for the retrieval recall diagnostic (no behavior change)
+    _LAST_CANDIDATE_POOL = candidates
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
 

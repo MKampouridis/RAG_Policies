@@ -2242,3 +2242,184 @@ phi4 (judge-volatile) + is 13GB, so NOT the ceiling; skip it. (3) gemma3 is slig
 turns but COLLAPSES on misses (53.8% grounded) - disqualifying for a policy assistant despite 17s/5GB.
 Methodology lesson: never trust a single judge for close calls; gemma3-as-judge is too lenient (100%
 self), qwen is harsh, phi4 is the usable neutral one. Production stays gemma3:12b (validated).
+
+---
+
+# Round 5: retrieval bake-off — the RoA sibling frontier is an underspecification problem, not a retrieval one (2026-07-24)
+
+The generator was bake-off'd rigorously (10 models); retrieval never had the same treatment (only
+3 embedders + 2 rerankers across the whole project). This round gave it that treatment — decomposed
+into a staged pipeline so recall failures and ranking failures separate cleanly, rather than a blind
+embedder×reranker grid. **Conclusion up front: the residual RoA misses are not fixable by any
+reranker or embedder or even LLM reasoning — the queries are genuinely underspecified, which
+scientifically vindicates the D3 clarification UX as the correct (and only) remaining lever.**
+
+## Stage (a): pool-recall diagnostic — the misses are mostly RANKING, not recall
+
+`eval/retrieval_recall_diag.py` splits every current RoA miss by whether the gold document is present
+in the candidate pool *before* reranking (a ranking failure the reranker could rescue) or absent from
+it entirely (a recall failure only a better embedder could fix). Run on BOTH the tuned set and the
+independent holdout:
+
+| set | ranking failures (gold in pool) | recall failures (gold absent) |
+|---|---|---|
+| main | 9/13 (69%) | 4/13 (31%) |
+| set2 (holdout) | 13/14 (93%) | 1/14 (7%) |
+| **combined** | **22/27 (81%)** | **5/27 (19%)** |
+
+81% of misses have the gold document sitting in the pool, mis-ranked below a wrong sibling. That
+points the high-leverage lever at the **reranker**, not the embedder — and bounds the embedder's
+maximum possible contribution at the 19% recall tail.
+
+## Stage (b): reranker sweep on fixed pools — every cross-encoder plateaus at ~+3
+
+`eval/reranker_sweep.py` captures the candidate pools once (`eval/reranker_pools.json`, both sets) and
+re-ranks them with different models — no re-embedding, so this is cheap and isolates the ranking
+decision. Baseline is the current production ColBERT (`GTE-ModernColBERT`): main 27/40, set2 26/40
+family-hit@6. Tested cross-encoders (`bge-reranker-v2-m3`, `bge-reranker-base`, `mxbai-rerank-base`,
+a second ColBERT) plus the advanced late-interaction / LLM-logit backends
+(`eval/reranker_sweep_advanced.py`):
+
+- Every cross-encoder caps at roughly **+3 family-hit** over baseline and is **holdout-unstable** (a
+  gain on one set washes or reverses on the other). `bge-reranker-base` was the only clean net-positive
+  (main +3 / set2 +1); the rest broke even or regressed on set2.
+- The current ColBERT is already at/near the top of the pack — no swap decisively beats it.
+- `jina-reranker-v2` was dropped (transformers API incompatibility); `mxbai-rerank-large` OOM'd on the
+  16GB MPS GPU (used `mxbai-base` instead).
+
+The mechanism is the recurring project theme: near-identical sibling documents read *the same* to any
+scorer, so a better scorer can't separate them.
+
+## Stage (b'): identity-salience formatting — marginal
+
+`eval/reranker_salient.py` tests a data-side idea instead of a model swap: prepend a humanized
+programme/degree/year identity line to each passage (repeated for emphasis) so the one discriminating
+signal is prominent, then re-rank. Result: marginal (+2 family-hit at best, ±0 on the other set).
+Formatting the identity more loudly doesn't help when the *query* doesn't name the identity to match
+it against.
+
+## Stage (c): the capstone — can REASONING break the tie that SCORING can't? No.
+
+The incisive form of the "would a bigger/reasoning reranker help" question: on exactly the 22
+ranking-failure turns (gold in pool, mis-ranked), give a capable LLM the query plus the distinct
+competing document identities from the pool and ask it to pick the single best match
+(`eval/llm_disambig_probe.py`). If reasoning picks the gold family, an LLM reranker would be worth its
+cost; if not, the tie is genuinely unbreakable from the query alone.
+
+**Result: 3/22 correct (14%), 0 abstentions.** Verified genuine (not a parse bug): the picks are
+varied and it got a few right by real identity-matching (e.g. matched a "three-year" follow-up to the
+`3yr` family). Nuance worth recording: the option sets are large — **17 to 64 distinct competing
+families per turn** — so 14% is actually *above* random (~2.5% for ~40 options); reasoning has *some*
+identity signal but nowhere near enough to disambiguate reliably. The sheer crowding of the sibling
+space is itself part of the wall.
+
+## What this closes
+
+Putting the three stages together:
+
+- 81% of RoA misses are ranking failures — the right document **is** retrieved into the pool.
+- **Scoring** (5 rerankers, cross-encoder + late-interaction): modest (~+3 max), holdout-unstable.
+- **Identity-salient formatting**: marginal (+2 at best).
+- **Reasoning** (LLM disambiguation): weak signal, 14% — above random but unreliable.
+
+No lever available to a retriever — better scoring, louder formatting, or explicit reasoning —
+reliably tells the siblings apart, because the distinguishing fact is **not present in the query**.
+This is the rigorously-earned confirmation of what earlier rounds kept implying: **the RoA sibling
+frontier is an underspecification problem, not a retrieval problem.** The only thing that resolves it
+is obtaining the missing identity from the user → the **D3 clarification UX** (built, off by default)
+is the correct and only remaining lever. The embedder bake-off (phase 2) was therefore **not run**:
+it targets only the 19% recall tail, and even a perfect embedder cannot answer a question that never
+names which programme it is about.
+
+**Production retrieval is unchanged and considered closed:** hybrid dense (`nomic-embed-text`) + BM25
+with RRF fusion, `is_current` pre-filtering, family-recency dedupe, ColBERT late-interaction
+reranking. RoA hit@6 stays 70% strict / 87.5% evidence-sufficient. The retrieval investigation has
+reached its natural end; further RoA gains require the product-side D3 decision, not another
+retrieval experiment.
+
+---
+
+# Round 5 wrap-up item: routing pre-validation — resolved by existing evidence, no new build (2026-07-24)
+
+Round-5 review Q2 asked whether the corpus should "represent programme/cohort as hard facets and
+route" (a learned query→document-facet classifier before retrieval); the reviewers split (DeepSeek
+leaned toward building it, Fable 5 against). No new experiment is warranted — this exact class of
+mechanism has **three independent falsifications** on this corpus, and the retrieval-bake-off
+capstone above is the decisive nail:
+
+- **B1 hard macro-routing oracle** (Phase B): restricting chunk retrieval to a document router's
+  top-5 would GUARANTEE ~28 new losses (currently-hit turns whose gold sits at router-rank 6–65) to
+  rescue at most 1 of 12 misses. Mechanism: most questions ask about CONTENT ("what penalties
+  apply?"), not IDENTITY ("MSc Periodontology"), so identity routing discards the content signal
+  that chunk-level dense+BM25 relies on.
+- **Stage A / A2 facet filtering** (hard then soft RRF-fused): both net-regressed RoA, because this
+  corpus's facets are **not mutually-exclusive partitions** (a masters-labelled document legitimately
+  holds the correct diploma-exit answer) and extraction coverage is too sparse to tag many correct
+  documents at all.
+- **J3 soft routing prior**: 0 rescues / 3 losses — the same signal at lower stakes.
+
+The DeepSeek variant (a *learned* classifier rather than B1's BM25 router) does not change the
+verdict, because the blocker is not router accuracy — it is that **81% of the misses don't name the
+facet in the query at all** (capstone above; earlier pre-validation found 13/16). A more accurate
+router still has nothing to route on when the query contains no routable signal, and still pays B1's
+~28-loss safety cost on the content-question majority. **Verdict: do not build facet routing.** The
+disagreement resolves in Fable 5's favour on existing measured evidence. This is the same conclusion
+as the capstone from a second angle: the residual is underspecification, addressable only by asking
+the user (D3), not by any pre-retrieval routing layer.
+
+---
+
+# Round 5 wrap-up item: keyphrase-metric fix — judge-based evidence sufficiency (2026-07-24)
+
+Round-4 item 2 flagged that evidence-sufficient@6 inherits the keyphrase proxy's brittleness: it
+credits a retrieved document only when ≥ half the turn's keyphrases appear as EXACT case-insensitive
+substrings, so a document that genuinely contains the answer but phrases a keyphrase differently
+("subsequent year" vs "the following year of study") is under-credited. Fable 5's recommended
+refinement is a reference-answer-containment / judge-based sufficiency check, built here as
+`eval/evidence_sufficient_judge.py`: for every turn scored *insufficient* by the keyphrase rule, ask
+the 14B judge whether ANY of the turn's top-6 retrieved documents actually contains the information
+in the gold reference answer (early-exit on first yes). Only keyphrase-insufficient turns are judged,
+so the number can only rise, and every rescue is printed for inspection.
+
+**Result (on `results_c1_anchor_v2.json`, 80 turns):**
+
+| | keyphrase-string evid-suff@6 | judge-refined | rescued |
+|---|---|---|---|
+| RoA | 82.5% | 90.0% | +3 |
+| Policy | 85.0% | 97.5% | +5 |
+| **Overall** | **83.8%** | **93.8%** | **+8** |
+
+**But the rescues were spot-checked, and they are not all equal — the headline 93.8% is slightly
+optimistic:**
+
+- **5 policy rescues: rescuing document == the gold document.** Unambiguous — the gold was retrieved
+  and genuinely contains the answer; only the literal keyphrase string missed it. These are exactly
+  the brittleness the fix targets. Solid.
+- **1 RoA rescue (`mscperiodontology[follow_up]` ← the Alexandria partner sibling):** cross-document
+  but a near-identical same-family sibling that genuinely carries the same answer — a fair
+  evidence-sufficiency credit (the user gets the correct answer).
+- **2 RoA rescues are the judge over-crediting vocabulary overlap** — the topical-overlap trap the
+  prompt explicitly warned against: `roa-ug-glossary[primary]` ← `foundation-year-rules` (which
+  *uses* "capped at 40" but never *defines* the glossary term), and `roa-ug-glossary[follow_up]` ←
+  `msc-ot_25` (which is about *un*capped module marks — the opposite concept). These should not
+  count.
+
+So the **defensible correction is +6 clean rescues → ~91.3% overall** (Policy 97.5%, RoA ~85%); the
+two glossary rescues inflate the raw judge number. Two takeaways, both reinforcing rather than
+softening the capstone:
+
+1. The keyphrase-string metric genuinely was ~7–8pp pessimistic (the +6 clean rescues), overwhelmingly
+   on the **policy** side — a real measurement fix. **evidence-sufficient@6 should be read as ~91% overall
+   / ~97.5% policy / ~85% RoA once string brittleness is removed.**
+2. **5 turns remain genuine still-misses even under a deliberately lenient judge** — including
+   `roa-ug-4yr-year-1[follow_up]`, the exact "subsequent year" case round-4 item 2 called a keyphrase
+   artifact. The judge confirms the answer is NOT in any retrieved document there: it's a *real*
+   retrieval miss, not brittleness. The judge-based check thus does what the string metric couldn't —
+   separate true metric artifacts (rescued) from genuine retrieval failures (still-miss). The genuine
+   residual is the RoA sibling/underspecification wall from the capstone, not a scoring illusion.
+
+Process note: the RoA glossary false-positives are themselves a small piece of capstone evidence —
+even an LLM judge, given a glossary question and a sibling document, rubber-stamps shared vocabulary,
+the same failure mode as the 14% disambiguation-probe ceiling. The script stays in `eval/` as the
+honest sufficiency instrument; `score_summary.py`'s fast keyphrase-string view is kept as the cheap
+default with this ~7–8pp pessimism bias now quantified.
