@@ -2160,3 +2160,62 @@ is scored as a MISS by the hit@6 eval by design, so this can only be judged on r
 and at 0.45 precision it interrupts some answerable general questions (framework/procedure queries
 that name no programme). Flip the flag to evaluate the ask-vs-guess tradeoff live. Production
 unaffected until then.
+
+## Round 5: generator bake-off (10 local models) + the miss-turn faithfulness finding
+
+Round-5 reviews converged on "the generator is the lever." Ran a rigorous bake-off: 10 local models
+generate answers on IDENTICAL fixed contexts (eval/generator_bakeoff.py - contexts reconstructed once
+from the 14B reference run's history, so retrieval is held constant and only the generator varies;
+cleaner than end-to-end evals where follow-up retrieval drifts per model). Judged groundedness
+(faithfulness-to-context) with qwen2.5:14b; then answer_score (completeness vs gold) offline on the
+same answers (eval/bakeoff_answerscore.py). NOTE: qwen-generator rows are self-judged (inflated);
+gemma3/gpt-oss/phi4/llama/mistral rows are cross-family judged (clean).
+
+**Groundedness + latency frontier (sorted by RoA):**
+
+| model | hit-turn | RoA grounded | latency | RAM | judge |
+|---|---|---|---|---|---|
+| gpt-oss:20b | 95.5% | 95.0% | 29s | 13GB | clean |
+| gemma3:12b | 97.0% | 92.5% | 31s | 8.1GB | clean |
+| qwen3:14b | 95.5% | 90.0% | 141s(!) | 9GB | clean |
+| phi4 | 97.0% | 87.5% | 35s | 9GB | clean |
+| qwen2.5:14b (PROD) | 94.0% | 85.0%* | 26s | 9GB | self* |
+| qwen3:8b | 88.1% | 77.5% | 42s | 5GB | clean |
+| llama3.1:8b | 88.1% | 72.5% | 16s | 4.9GB | clean |
+| qwen2.5:7b | 94.0% | 70.0%* | 15s | 4.7GB | self* |
+| mistral:7b | 85.1% | 67.5% | 19s | 4.4GB | clean |
+| llama3.2:3b | 74.6% | 65.0% | 29s | 2GB | clean |
+
+Every ~12-20B model beats the current production qwen2.5:14b on RoA groundedness - and the 14B's 85%
+is self-judged, so it's genuinely near the BOTTOM of the big-model tier. Clear ~12B capability
+threshold (8B plateau ~70-77% RoA; 12-14B jump to 87-95%). qwen3:14b at 141s/answer is thinking-token
+bloat (think-off variant tested separately).
+
+**The key finding - split answer_score by hit vs miss turn:**
+
+| model | ans HIT | ans MISS | grounded HIT | grounded MISS |
+|---|---|---|---|---|
+| gpt-oss:20b | 4.24 | 3.31 | 96% | 92% |
+| qwen2.5:14b (PROD) | 4.12 | 3.38 | 94% | **69%** |
+| phi4 | 3.96 | 2.69 | 97% | 77% |
+| gemma3:12b | 3.94 | 2.69 | 97% | **92%** |
+
+gemma3's lower headline answer_score is NOT terseness - on HIT turns it matches everyone (3.94 vs
+14B's 4.12). The gap is entirely MISS turns, where gemma3 FAITHFULLY ABSTAINS (92% grounded, low
+answer_score) instead of guessing, while the current 14B GUESSES FROM PARAMETRIC MEMORY (69% grounded
+= 31% hallucinating a figure not in the rules; lucky guesses inflate its answer_score). For a
+policy/rules assistant a wrong pass-mark is worse than "not found", so answer_score was rewarding the
+14B's hallucination and penalizing gemma3's honesty.
+
+**SECONDARY FINDING - overturns item 3.** Item 3 concluded "stronger models are MORE confidently wrong
+on misses" (54.5->46.2->41.7). FALSE in general - it was specific to the qwen line. gemma3 and
+gpt-oss:20b stay faithful on misses (92% grounded), breaking the trend. So choosing the right
+generator IS the abstention solution the round-4 gate diagnostic couldn't build - a model that
+naturally says "not found" on weak context, no gate required.
+
+**RECOMMENDATION: switch production qwen2.5:14b -> gemma3:12b.** Comparable completeness on hits,
+dramatically more faithful on misses (92% vs 69% grounded -> hallucination on failed retrieval drops
+~31%->~8%), RAM-safe (8.1GB vs 9GB), and faster. gpt-oss:20b is the ceiling (best on everything) but
+13GB is impractical for production on the 16GB Mac (must coexist with the 7B contextualizer +
+retrieval stack). Pending: cross-family re-judge to strip the self-judged rows; a real production
+switch is a one-line LOCAL_GENERATOR_MODEL change in src/llm.py once confirmed.

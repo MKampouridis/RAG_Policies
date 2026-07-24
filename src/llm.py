@@ -101,15 +101,18 @@ def chat(
 GENERATOR_PROVIDER = os.environ.get("GENERATOR_PROVIDER", "").lower()  # "" -> local ollama (LOCAL_GENERATOR_MODEL)
 GENERATOR_MODEL = os.environ.get("GENERATOR_MODEL", "")  # override: cloud model name, or a specific local model
 
-# Item 3 (2026-07-23): production ANSWER generator switched from the 7B to the
-# local 14B. Groundedness on retrieval-HIT turns is monotonic in generator size
-# (RoA: 7B 72.4% -> 14B 81.5% -> cloud gpt-oss-120B 92.9%); the 14B captures
-# ~half the cloud gain while staying local/free/unlimited. ONLY answer
-# generation uses this - the contextualizer (CONTEXTUALIZE_MODEL) and the 14B
-# judge are unchanged. Cost: ~2x generation latency and tighter 16GB RAM.
-# CHAT_MODEL (7B) stays the default for the minor local calls (summary,
-# relevance). Override the generator with the GENERATOR_MODEL env var.
-LOCAL_GENERATOR_MODEL = "qwen2.5:14b-instruct"
+# Round 5 (2026-07-24): production ANSWER generator switched qwen2.5:14b ->
+# gemma3:12b, after a 10-model bake-off (eval/generator_bakeoff.py, report.md
+# "Round 5"). gemma3 grounds far better AND is RAM-safer: RoA groundedness 92.5%
+# vs the 14B's 85%; and critically, on retrieval-MISS turns gemma3 faithfully
+# ABSTAINS (92% grounded) while the 14B guessed from parametric memory (69%
+# grounded = ~31% hallucination on failed retrieval) - so hallucination-on-miss
+# drops ~31%->~8%. On HIT turns completeness is comparable (answer_score 3.94 vs
+# 4.12). gemma3 is 8.1GB (vs 9GB) and faster. gpt-oss:20b scored higher still but
+# 13GB is impractical alongside the contextualizer+retrieval stack on 16GB. ONLY
+# answer generation uses this; CONTEXTUALIZE_MODEL (7B) and the judge unchanged.
+# History: 7B -> 14B (item 3) -> gemma3:12b (round 5). Override via GENERATOR_MODEL.
+LOCAL_GENERATOR_MODEL = "gemma3:12b"
 
 _CLOUD_GENERATORS = {
     # provider: (OpenAI-compatible chat-completions endpoint, api-key env var, default model)
