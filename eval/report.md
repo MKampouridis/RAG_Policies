@@ -2219,3 +2219,26 @@ dramatically more faithful on misses (92% vs 69% grounded -> hallucination on fa
 13GB is impractical for production on the 16GB Mac (must coexist with the 7B contextualizer +
 retrieval stack). Pending: cross-family re-judge to strip the self-judged rows; a real production
 switch is a one-line LOCAL_GENERATOR_MODEL change in src/llm.py once confirmed.
+
+### Round 5 generator - CORRECTION after cross-family + neutral re-judging (2026-07-24)
+
+The single-judge (qwen2.5:14b) numbers above OVERSTATED gemma3's advantage. Re-judged the finalists
+with a lenient same-family judge (gemma3) and a NEUTRAL cross-family judge (phi4 - cross-family to all
+candidates, not itself a candidate). Neutral phi4-judged groundedness:
+
+| model | overall | RoA | hit | miss | latency | RAM |
+|---|---|---|---|---|---|---|
+| gemma3:12b | 97.5% | 95.0% | 98.5% | 92.3% | 31s | 8.1GB |
+| qwen2.5:14b (old prod) | 92.5% | 92.5% | 94.0% | 84.6% | 26s | 9GB |
+| gpt-oss:20b | 91.2% | 90.0% | 94.0% | 76.9% | 29s | 13GB |
+| qwen3:8b::nothink | 88.8% | 80.0% | 95.5% | 53.8% | 17s | 5GB |
+
+Corrections to the headline: (1) gemma3 IS the robustly best model (top under BOTH neutral judges) and
+the switch is validated - but the margin over the old 14B is MODERATE (+2.5 RoA / +7.7 miss under
+phi4), NOT the "hallucinates 4x less" claimed. Neutral-judged 14B miss-hallucination is ~15% (not
+31%); gemma3 ~8%. (2) gpt-oss:20b's apparent lead was a qwen-JUDGE ARTIFACT - it drops to bottom under
+phi4 (judge-volatile) + is 13GB, so NOT the ceiling; skip it. (3) gemma3 is slightly SLOWER than the
+14B (31 vs 26s), not faster (earlier error). (4) Small-model check: qwen3:8b::nothink matches on HIT
+turns but COLLAPSES on misses (53.8% grounded) - disqualifying for a policy assistant despite 17s/5GB.
+Methodology lesson: never trust a single judge for close calls; gemma3-as-judge is too lenient (100%
+self), qwen is harsh, phi4 is the usable neutral one. Production stays gemma3:12b (validated).
