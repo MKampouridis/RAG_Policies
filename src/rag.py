@@ -252,6 +252,23 @@ def _content_words(text: str) -> set[str]:
     return {w for w in _WORD_RE.findall(text.lower()) if len(w) >= 3 and w not in _STOPWORDS}
 
 
+def _log_rewrite_reject(original: str, rewritten: str) -> None:
+    """Best-effort append of a guard-discarded (topic-drifted) rewrite to a
+    gitignored log, so these low-confidence rewrites can be reviewed alongside
+    user feedback. Swallows every error - logging must never break retrieval."""
+    try:
+        import json as _json
+        from datetime import datetime, timezone
+        from pathlib import Path as _Path
+        p = _Path("data/contextualizer_rejects.jsonl")
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open("a", encoding="utf-8") as f:
+            f.write(_json.dumps({"ts": datetime.now(timezone.utc).isoformat(),
+                                 "original": original, "rewritten": rewritten}, ensure_ascii=False) + "\n")
+    except Exception:
+        pass
+
+
 def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
     """Guards against a real failure mode of small local models on long/dense
     multi-topic conversation transcripts: instead of rewriting the new
@@ -420,7 +437,13 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
         {"role": "user", "content": f"{transcript}\n\nFollow-up question: {question}\n\nStandalone question:"},
     ], model=CONTEXTUALIZE_MODEL).strip()
 
-    result = rewritten if (rewritten and _is_faithful_rewrite(question, rewritten)) else question
+    faithful = bool(rewritten and _is_faithful_rewrite(question, rewritten))
+    if rewritten and not faithful:
+        # The guard discarded a topic-drifted rewrite (the postfix3->postfix4 bug
+        # class). Log it best-effort so these low-confidence rewrites can be
+        # reviewed alongside user feedback (round-6 review, Grok). Never fatal.
+        _log_rewrite_reject(question, rewritten)
+    result = rewritten if faithful else question
 
     if ALIAS_ANCHOR_GUARD_ENABLED:
         label, hist_anchors = _anchor_from_history(history)

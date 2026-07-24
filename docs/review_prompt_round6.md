@@ -7,7 +7,7 @@ I'm building a **conversational RAG assistant over University of Essex policy an
 ## Stack (current production)
 - **Retrieval:** Chroma (dense, `nomic-embed-text`) + BM25 (`rank_bm25`) fused with **RRF**, then **ColBERT reranking** (`GTE-ModernColBERT` via pylate, MaxSim). Over-fetch pool → rerank top-6. `is_current` archive pre-filter + family-recency dedupe.
 - **Generation:** local Ollama. Query **contextualizer** = `qwen2.5:7b-instruct`; **answer generator** = `gemma3:12b` (changed from the 14B I reported in round 5 — see §1); **judge** (eval only) = `qwen2.5:14b-instruct`, with `phi4` as a neutral cross-family judge.
-- **Corpus:** ~12.6k chunks over hundreds of Essex PDFs. The hard problem is unchanged: many documents are **near-duplicate "siblings"** (same RoA boilerplate, differing only by programme / degree-length / cohort-year / partner-institution). Retrieval failures are almost always "retrieved the WRONG sibling," not "off-topic."
+- **Corpus:** ~20.4k chunks over ~1,170 Essex PDFs (244 current after archive-filtering; the 12.6k figure in older notes predates the 300→175-word chunk-size reduction). The hard problem is unchanged: many documents are **near-duplicate "siblings"** (same RoA boilerplate, differing only by programme / degree-length / cohort-year / partner-institution). Retrieval failures are almost always "retrieved the WRONG sibling," not "off-topic."
 - **Eval:** 40 questions × 2 turns = 80 turns, plus an independent 40-question holdout set, deterministic (`RAG_DETERMINISTIC=1`). Metrics: strict hit@6, **evidence-sufficient@6** (headline), answer_score (1–5 judge), keyphrase_coverage, and **groundedness / faithfulness-to-context** (the hallucination metric).
 
 ## What I did since round 5, and what I found

@@ -17,6 +17,12 @@ from pathlib import Path
 FEEDBACK_PATH = Path("data/feedback.jsonl")
 _lock = threading.Lock()
 
+# Size cap so an unattended deployment can't let the append-only log fill the
+# disk (round-6 review, DeepSeek). At the threshold the current file is rotated
+# to a timestamped sibling and a fresh log started; feedback_report.py already
+# tolerates multiple files if you glob them, and rotations are rare in practice.
+_MAX_BYTES = 50 * 1024 * 1024  # 50 MB (~100k+ records) before rotating
+
 # Failure-tag vocabulary shown on a thumbs-down, aligned with the project's
 # failure taxonomy (eval/report.md) so each tag routes to a specific lever.
 TAGS = {
@@ -33,6 +39,9 @@ def record_feedback(record: dict) -> None:
     FEEDBACK_PATH.parent.mkdir(parents=True, exist_ok=True)
     line = json.dumps(entry, ensure_ascii=False)
     with _lock:  # POST handlers can race; keep one clean line per record
+        if FEEDBACK_PATH.exists() and FEEDBACK_PATH.stat().st_size >= _MAX_BYTES:
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            FEEDBACK_PATH.rename(FEEDBACK_PATH.with_name(f"feedback.{stamp}.jsonl"))
         with FEEDBACK_PATH.open("a", encoding="utf-8") as f:
             f.write(line + "\n")
 
