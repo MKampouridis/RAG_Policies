@@ -1,0 +1,482 @@
+[
+  {
+    "label": "policy-whistleblowing.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "policy-whistleblowing.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "academic-offences-procedure.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "academic-offences-procedure.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-concerns-complaints-procedure.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-concerns-complaints-procedure.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "cop-freedom-of-speech.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "cop-freedom-of-speech.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "speaker-code-of-practice.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "speaker-code-of-practice.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "code-practice-professional-doctorates.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "code-practice-professional-doctorates.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "code-practice-postgraduate-research.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "code-practice-postgraduate-research.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "postgraduate-research-integrity-and-research-misconduct-policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "postgraduate-research-integrity-and-research-misconduct-policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "procedures-fitness-to-practise.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "procedures-fitness-to-practise.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "professional-clinical-appearance-code-of-practice.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "professional-clinical-appearance-code-of-practice.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-voice-policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-voice-policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-suicide-prevention-and-response.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-suicide-prevention-and-response.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "academic-flexibility-policy-for-taught-students-sport.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "academic-flexibility-policy-for-taught-students-sport.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-protection-plan.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-protection-plan.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-engagement-policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-engagement-policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "fitness-to-study.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "fitness-to-study.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "rpl_policy.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "rpl_policy.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "tuition-fee-payment-and-liability-policy-2025-26.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "tuition-fee-payment-and-liability-policy-2025-26.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": false
+  },
+  {
+    "label": "student-debt-policy-2025-26.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "student-debt-policy-2025-26.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "code-of-practice-supervision-masters-dissertations.pdf[primary]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "code-of-practice-supervision-masters-dissertations.pdf[follow_up]",
+    "doc_type": "policy",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-glossary.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-glossary.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "ug-principles-and-framework.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "ug-principles-and-framework.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": false
+  },
+  {
+    "label": "roa-ug-3yr-year-1-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-3yr-year-1-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-4yr-year-1-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-4yr-year-1-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-foundation-year-rules.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-foundation-year-rules.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-integrated-masters-4yr-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-integrated-masters-4yr-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "ug-grad-cert-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "ug-grad-cert-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-diploma-higher-education-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-diploma-higher-education-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "csee-ft-masters-accredited-variations-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "csee-ft-masters-accredited-variations-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "east15-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "east15-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "ma_social_work_25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  },
+  {
+    "label": "ma_social_work_25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "msc-physiotherapy-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "msc-physiotherapy-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "mscperiodontology_25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "mscperiodontology_25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "msc-human-resource-management-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "msc-human-resource-management-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "mba-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "mba-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "pgt-credit-framework-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "pgt-credit-framework-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "masters-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "masters-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "integrated-phd-roa-model-a-25.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "integrated-phd-roa-model-a-25.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": true,
+    "value_sufficient": true
+  },
+  {
+    "label": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[primary]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": false
+  },
+  {
+    "label": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[follow_up]",
+    "doc_type": "rules_of_assessment",
+    "hit": false,
+    "value_sufficient": true
+  }
+]
