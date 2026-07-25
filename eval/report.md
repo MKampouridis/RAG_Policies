@@ -2585,3 +2585,52 @@ Claude flagged as unverified are now verified and both landed favourably. Retire
 "hallucination drops ~31%→~8%" phrasing (the underlying n=13 subgroup gap is one turn) — replaced by
 the n=200 neutral-judge finding that gemma3 is fabrication-free on off-topic misses and net-flat on
 conversational retrieval.
+
+---
+
+# Round 6 Tier 1: the variance oracle - real-harm quantified + a stakes classifier (2026-07-25)
+
+Claude's one genuinely-new, non-falsified mechanism: reuse the Class F extraction as an ORACLE (input
+to a decision) rather than an output format. `eval/variance_oracle.py`: for each RoA question, take the
+sibling documents competing in its retrieval pool, extract what EACH one says the answer is, and
+classify whether they AGREE (uniform - any sibling answers correctly, a miss is harmless) or DIFFER
+(varying - the specific document matters, a wrong sibling gives a wrong answer). Run over all 80 RoA
+turns (both sets), gemma3 extraction, gemma3 SAME/DIFFER classification.
+
+## Item 4 - real-harm on the 27 current misses: "a miss is not a harm", quantified
+
+| of 27 retrieval misses | count | meaning |
+|---|---|---|
+| HARMFUL (siblings DIFFER) | **9 (33%)** | wrong sibling => genuinely wrong value (60 vs 30, 40 vs 50, 30 vs 15) |
+| HARMLESS (siblings agree) | **13 (48%)** | uniform answer (e.g. Merit=60 everywhere) - any sibling answers right |
+| UNDETERMINED (0-1 sibling stated a value) | 5 (19%) | too few sibling values to judge |
+
+**The real user-harm rate is ~11% (9/80), not the 34% (27/80) the raw strict-miss rate implies.**
+Nearly half the misses are harmless because the answer doesn't vary across the siblings - the strict
+metric was penalising retrieval for picking a different-but-equally-correct document. This is the
+data-backed form of the point the Class F pilot first hinted at (Merit=60 uniform), now measured
+across the whole miss set: the sibling problem is roughly a third as harmful as the miss count says.
+
+## Item 3 - the variance signal is a STAKES classifier, not a miss predictor
+
+Measured naively as a miss predictor, the variance-gated trigger does NOT beat the old fragmentation
+trigger (precision 0.31 vs 0.34 ~ base rate) - expected, because answers vary on retrieval HITS too,
+so "siblings differ" doesn't predict a miss. Its real, deployable value is different: it partitions
+questions by stakes.
+
+| stakes (all 80 RoA turns) | count | |
+|---|---|---|
+| HIGH - answer varies across siblings (DIFFER) | 29 (36%) | getting the right document matters |
+| LOW - uniform answer (SAME) | 37 (46%) | any sibling answers; a miss is harmless |
+| undetermined | 14 (18%) | |
+
+This enables **variance-gated disclosure**: surface "based on <document X>; these rules differ by
+programme, so confirm this is yours" ONLY on the 36% high-stakes turns, versus today's always-on J6
+disclosure (100%). It fires exactly where a wrong sibling would cause harm, and stays quiet on the
+~46% where it wouldn't - a principled, targeted improvement over blanket disclosure, and it covers
+both the 9 harmful misses and the 20 high-stakes HITS (where retrieval succeeded but the user still
+benefits from knowing which document was used). Full detail: `eval/variance_oracle_result.json`.
+
+**Takeaway:** the novel mechanism works, but as a targeted-disclosure gate, not an ask-trigger. The
+headline is Item 4's ~11% real-harm rate - the honest, much lower measure of how often the sibling
+problem actually hurts a user.

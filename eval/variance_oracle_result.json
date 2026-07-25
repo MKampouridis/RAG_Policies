@@ -1,0 +1,1000 @@
+[
+  {
+    "set": "main",
+    "label": "roa-ug-glossary.pdf[primary]",
+    "query": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "40"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-glossary.pdf[follow_up]",
+    "query": "Can a 'Capped Mark' be exceeded by a student's performance under any circumstances?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "Extenuating Circumstances",
+      "40"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "ug-principles-and-framework.pdf[primary]",
+    "query": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "criteria for achieving the final award",
+      "60%"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "ug-principles-and-framework.pdf[follow_up]",
+    "query": "What types of classifications are available under the University of Essex Rules of Assessment?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "Core, Compulsory, Optional"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-3yr-year-1-rules.pdf[primary]",
+    "query": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "120",
+      "90"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-3yr-year-1-rules.pdf[follow_up]",
+    "query": "Are there any specific conditions or requirements for a student who fails a module in Year One of a Three-Year Honours Degree programme?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "60",
+      "30"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-4yr-year-1-rules.pdf[primary]",
+    "query": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "40"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-4yr-year-1-rules.pdf[follow_up]",
+    "query": "What are the consequences for students who fail reassessment opportunities at the end of Year One in the Four-Year Honours Degree program?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "40",
+      "50",
+      "60"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-foundation-year-rules.pdf[primary]",
+    "query": "What are the requirements to pass the Foundation Year at University of Essex?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "120"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-foundation-year-rules.pdf[follow_up]",
+    "query": "What happens if a student fails up to 60 credits in the Foundation Year at the University of Essex?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "compulsory reassessment"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-integrated-masters-4yr-year-1.pdf[primary]",
+    "query": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters programme according to this document?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "120"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-integrated-masters-4yr-year-1.pdf[follow_up]",
+    "query": "What are the consequences for a student who fails to meet the minimum credits, marks, or other requirements to progress from Year One to Year Two in an Integrated Masters programme without any extenuating circumstances?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "NOT PERMITTED TO PROCEED"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "ug-grad-cert-year-1.pdf[primary]",
+    "query": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Graduate Certificate program?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "45"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "ug-grad-cert-year-1.pdf[follow_up]",
+    "query": "Are there any conditions under which a student can still be awarded the Graduate Certificate if they do not meet the minimum credit requirement at Level 6?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "45",
+      "20",
+      "30"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-diploma-higher-education-year-1.pdf[primary]",
+    "query": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits in Year One?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "120"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-diploma-higher-education-year-1.pdf[follow_up]",
+    "query": "What are the consequences if a student fails more than 15 non-core credits in Year One?",
+    "verdict": "NONE",
+    "n_stated": 0,
+    "values": [],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "csee-ft-masters-accredited-variations-25.pdf[primary]",
+    "query": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "50"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "csee-ft-masters-accredited-variations-25.pdf[follow_up]",
+    "query": "What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules at the University of Essex under these rules?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "40",
+      "50"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "east15-25.pdf[primary]",
+    "query": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according to these rules of assessment?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "east15-25.pdf[follow_up]",
+    "query": "What happens if a student fails with a mark between 40 and 49.9 in non-core taught modules? (EAST 15 Acting School)",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "May be condoned",
+      "condoned",
+      "40"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "ma_social_work_25.pdf[primary]",
+    "query": "What is the minimum overall weighted average required for a student to pass with Merit?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "60"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "ma_social_work_25.pdf[follow_up]",
+    "query": "How is the overall weighted average calculated for the MA Social Work programme?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "msc-physiotherapy-25.pdf[primary]",
+    "query": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction in the MSc Physiotherapy (Pre-registration) program at the University of Essex?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "50",
+      "70"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "msc-physiotherapy-25.pdf[follow_up]",
+    "query": "What happens if a student fails to meet the minimum credit requirements for the MSc Physiotherapy (Pre-registration) program but still wants to complete their studies?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "Postgraduate Diploma",
+      "Honours Degree programme"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "mscperiodontology_25.pdf[primary]",
+    "query": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "30"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "mscperiodontology_25.pdf[follow_up]",
+    "query": "What happens if a student fails an assignment on the second submission in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "withdraw"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "msc-human-resource-management-25.pdf[primary]",
+    "query": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "msc-human-resource-management-25.pdf[follow_up]",
+    "query": "What happens if a student fails a core module in the MSc Human Resource Management program and how does it affect their progression to Year Two?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "at the first available opportunity"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "mba-25.pdf[primary]",
+    "query": "How long do students have to complete their MBA studies at the University of Essex?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "5 years",
+      "3 years"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "mba-25.pdf[follow_up]",
+    "query": "What happens if a student does not complete their MBA studies within 5 years at the University of Essex?",
+    "verdict": "NONE",
+    "n_stated": 0,
+    "values": [],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "pgt-credit-framework-25.pdf[primary]",
+    "query": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "Learning outcomes identify what you are expected to know and understand.",
+      "10%"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "pgt-credit-framework-25.pdf[follow_up]",
+    "query": "What is the minimum pass mark required for Level 7 modules according to the document?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "masters-25.pdf[primary]",
+    "query": "What is the minimum overall weighted average required to pass a Master’s degree with Merit?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "60"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "masters-25.pdf[follow_up]",
+    "query": "Can a dissertation be used to meet the credit requirement for a Postgraduate Diploma?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "Yes",
+      "can normally be used"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "integrated-phd-roa-model-a-25.pdf[primary]",
+    "query": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "integrated-phd-roa-model-a-25.pdf[follow_up]",
+    "query": "How are marks rounded when determining the overall weighted average under Model A's rules of assessment?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "nearest whole number",
+      "nearest whole number with half marks (i.e., .5) or more being rounded up"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[primary]",
+    "query": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "20",
+      "40"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf[follow_up]",
+    "query": "What happens if the University needs to extend the timeframe for processing an academic appeal?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "40",
+      "twenty working days",
+      "notified and kept regularly informed of progress"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[primary]",
+    "query": "What are the general principles for reassessment according to the rules of assessment document?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "50",
+      "at the next available opportunity"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "main",
+    "label": "roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf[follow_up]",
+    "query": "What are the compulsory reassessment opportunities at the end of Year One according to the Chula---original-course-structure.pdf document?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "60"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-3yr-year-1-variations.pdf[primary]",
+    "query": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad course?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-3yr-year-1-variations.pdf[follow_up]",
+    "query": "What happens if a student does not meet the minimum Year Mark of 50 in Year One for eligibility for a Term Abroad in an Essex Abroad course?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-4yr-year-1-variations.pdf[primary]",
+    "query": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-4yr-year-1-variations.pdf[follow_up]",
+    "query": "What happens if a student fails to meet the minimum Year Mark requirement of 50 for a Term Abroad under the Essex Abroad rules in the academic year 2025-26?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "reassessment"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-foundation-year-variations.pdf[primary]",
+    "query": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involving Modern Language/Language Studies at University of Essex?",
+    "verdict": "NONE",
+    "n_stated": 0,
+    "values": [],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-foundation-year-variations.pdf[follow_up]",
+    "query": "What happens if during Year One, a student undertakes reassessment for Joint courses involving Modern Language/Language Studies?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "40"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "ug-grad-dip-year-1.pdf[primary]",
+    "query": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      40,
+      50
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "ug-grad-dip-year-1.pdf[follow_up]",
+    "query": "How are credits rounded in cases where a student scores exactly halfway between two whole numbers?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "rounded up",
+      "50",
+      "0.5"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-integrated-masters-5yr-year-1.pdf[primary]",
+    "query": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated in this document?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "70"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-integrated-masters-5yr-year-1.pdf[follow_up]",
+    "query": "What are the consequences for a student who fails to meet the Distinction requirements in Year One according to these rules?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "40",
+      "reassessment"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-mlang-year-1.pdf[primary]",
+    "query": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters programme in Modern Languages (Translation)?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "70"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-mlang-year-1.pdf[follow_up]",
+    "query": "What happens if a student fails to meet the requirements for progression but has passed more than 30 credits in Year One? (Integrated Masters Award in Modern Languages (Translation))",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "120"
+    ],
+    "is_miss": false,
+    "frag_trigger": false
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-foundation-degrees-year1.pdf[primary]",
+    "query": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year under the University of Essex Foundation Degree rules?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "15"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-foundation-degrees-year1.pdf[follow_up]",
+    "query": "What happens if a student fails more than 15 non-core credits in Year One under the University of Essex Foundation Degree rules?",
+    "verdict": "NONE",
+    "n_stated": 0,
+    "values": [],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-laksamana-year-1.pdf[primary]",
+    "query": "What is the requirement for passing Year One according to the rules of assessment?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "120 credits"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-laksamana-year-1.pdf[follow_up]",
+    "query": "What happens if a student does not pass all modules but still meets the 120 credits requirement for Year One?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "30"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-skku-year-1.pdf[primary]",
+    "query": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Essex University?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "30",
+      "15"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-skku-year-1.pdf[follow_up]",
+    "query": "How are the failed non-core credits recorded if they are not condoned or trailed at Essex University for a Three-Year Honours Degree?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "30",
+      "30",
+      "15"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-ehs-year-1-variations.pdf[primary]",
+    "query": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or EG229 modules?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "FAIL",
+      "repeat the whole module"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "roa-ug-ehs-year-1-variations.pdf[follow_up]",
+    "query": "What is the process for obtaining in-person reassessment for a student who has not completed their relevant placement hours in EG124, EG226, or EG229 modules?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "next Term",
+      "next Academic Year",
+      "the next Term, or if applicable over the Summer Break",
+      "Next Academic Year"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "mscinursing_25.pdf[primary]",
+    "query": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "mscinursing_25.pdf[follow_up]",
+    "query": "What are the consequences for a student who fails an assessment on their final attempt without valid extenuating circumstances in Year Four of the MSci Nursing programme?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "withdraw from the programme"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "speechtherapy_25.pdf[primary]",
+    "query": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect a standard pass mark of 50?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "74",
+      "60",
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "speechtherapy_25.pdf[follow_up]",
+    "query": "How is the transformed grade calculated for students who achieve a raw grade below the adjusted pass mark of 74 in the HS831 linguistics and phonetics exam?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      "92 x [raw grade – 74] + 50",
+      "3 x ([Raw Grade] -80) +40"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "sres-modular-25.pdf[primary]",
+    "query": "What are the criteria for a student to receive credit from taught modules under these rules?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "50"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "sres-modular-25.pdf[follow_up]",
+    "query": "Which modules require students to achieve specific pass marks beyond the standard 50%?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "Core modules",
+      "60"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "mres-gov-25.pdf[primary]",
+    "query": "What are the credit limits for condonable non-core modules at each level?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      30,
+      60
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "mres-gov-25.pdf[follow_up]",
+    "query": "How many credits must be passed to achieve a pass in the Masters degree according to the MRes Rules of Assessment?",
+    "verdict": "DIFFER",
+    "n_stated": 3,
+    "values": [
+      300,
+      60
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "gradcertpwp_25.pdf[primary]",
+    "query": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "60",
+      "45"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "gradcertpwp_25.pdf[follow_up]",
+    "query": "What are the criteria for a student to be awarded a pass in the Graduate Certificate program if they fail a taught module?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "40"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "integrated-phd-variations-model-a-25.pdf[primary]",
+    "query": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Model A?",
+    "verdict": "SAME",
+    "n_stated": 3,
+    "values": [
+      "140",
+      "120"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "integrated-phd-variations-model-a-25.pdf[follow_up]",
+    "query": "What happens if a student fails a core module with a mark of 40 to 49 but still meets the overall weighted average requirement for Year One at Essex Business School's Integrated PhD program under Model A?",
+    "verdict": "NONE",
+    "n_stated": 0,
+    "values": [],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf[primary]",
+    "query": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+    "verdict": "SAME",
+    "n_stated": 4,
+    "values": [
+      "60"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf[follow_up]",
+    "query": "How are credits and marks handled when a student fails with a mark between 40-49.5?",
+    "verdict": "DIFFER",
+    "n_stated": 2,
+    "values": [
+      "40",
+      "50"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "progress-appeals-procedures-research-degree-students.pdf[primary]",
+    "query": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "monitoring students’ progress and attendance",
+      "monitoring",
+      "monitoring students' attendance and completion of assessments",
+      "once a month (bi-monthly for part-time students)"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "progress-appeals-procedures-research-degree-students.pdf[follow_up]",
+    "query": "What should be communicated to all students by Heads of Department regarding their progress monitoring procedures?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "Departmental procedures",
+      "Preliminary Stage",
+      "what level of non-submission/non-completion of coursework and other assessed",
+      "Once a month"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "assessment-feedback-policy.pdf[primary]",
+    "query": "What is the expected time frame for the return of assessed work according to the University's policy?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "20 working days."
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "assessment-feedback-policy.pdf[follow_up]",
+    "query": "What should departments do if they are unable to meet the 20 working day deadline for providing feedback according to the University's policy?",
+    "verdict": "SAME",
+    "n_stated": 2,
+    "values": [
+      "notify the student and keep the student regularly informed"
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "thesis-submission-deposit.pdf[primary]",
+    "query": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+    "verdict": "UNIQUE",
+    "n_stated": 1,
+    "values": [
+      "at the end of the standard period of study."
+    ],
+    "is_miss": false,
+    "frag_trigger": true
+  },
+  {
+    "set": "set2",
+    "label": "thesis-submission-deposit.pdf[follow_up]",
+    "query": "What happens if a candidate requires an extended completion period beyond the standard period of study?",
+    "verdict": "DIFFER",
+    "n_stated": 4,
+    "values": [
+      "one term",
+      "end of the approved completion period"
+    ],
+    "is_miss": true,
+    "frag_trigger": true
+  }
+]
