@@ -107,8 +107,27 @@ Kaplan went from rank 1–2 to rank 5–6, all four CSEE documents now rank abov
 
 - **Multi-entity questions** (~5 of 17 thumbs-down). Ask about six schools, get one. "I've asked
   information on 6 schools, which I've explicitly listed, but I'm still only getting info on one."
-  Needs either per-entity retrieval or, cheaper, having the generator say explicitly which of the
-  requested items it has nothing on.
+
+  I dug into this at the code level (read-only — didn't want to run anything heavy while the eval
+  had the RAM). Two things worth knowing before you pick an approach:
+
+  **(a) There's a structural ceiling: `N_RESULTS = 6`.** A question naming six schools can retrieve
+  at most six chunks total — roughly one per school if perfectly distributed, and in practice they
+  all come from whichever school ranks best. Even flawless ranking cannot answer that question under
+  the current budget. Any fix has to widen k for this question shape.
+
+  **(b) There is already a decomposition mechanism, and it was falsified — but for a different
+  case.** `MULTIHOP_DECOMPOSITION_ENABLED` (Stage I) exists and is off: it regressed RoA hit@6
+  70%→62.5%. **I don't think that result transfers here**, and the distinction matters. Stage I
+  decomposed on a *guess* — the trigger was "the pool looks fragmented, so maybe the user meant one
+  of these documents" — and it lost because a wrong hypothesis diluted the pool. A multi-entity
+  question needs no guessing: the user *literally listed* the six schools. Decomposing on what was
+  explicitly written is a different mechanism from decomposing on a hypothesis about what was meant.
+
+  So the options, cheapest first: (1) have the generator explicitly state which of the N requested
+  items it found nothing for — turns a silent wrong answer into an honest partial one, no retrieval
+  change; (2) detect explicitly-enumerated entities and retrieve per-entity with a widened k. I'd
+  do (1) first regardless — it's cheap and it fixes the *trust* problem even if coverage stays hard.
 - The hit@6 blind spot above.
 
 ---
