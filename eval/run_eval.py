@@ -133,7 +133,14 @@ def _strip_json_fence(raw: str) -> str:
     return s[start:end + 1] if start != -1 and end > start else s
 
 
-def judge_answer(question: str, expected_answer: str, actual_answer: str, model: str = JUDGE_MODEL) -> dict:
+def judge_answer(
+    question: str, expected_answer: str, actual_answer: str, model: str | None = None
+) -> dict:
+    """model=None means "no preference" - judge_chat resolves it to the local
+    JUDGE_MODEL, or to the cloud judge under JUDGE_PROVIDER=anthropic. Passing
+    a model explicitly means "I want THIS judge", which is why the router warns
+    when it can't honour one; defaulting to JUDGE_MODEL here would make that
+    warning fire on every ordinary call."""
     user_prompt = (
         f"Question: {question}\n\nReference answer: {expected_answer}\n\n"
         f"Assistant's answer: {actual_answer}"
