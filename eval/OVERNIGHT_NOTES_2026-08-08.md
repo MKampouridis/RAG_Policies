@@ -112,3 +112,55 @@ the alias map needs no re-audit.
   Spend so far is a few cents.
 - **Full 80-turn A/B of the multi-entity rule** — ~90 minutes of contended RAM; the 6-question
   collateral check is the honest interim.
+
+---
+
+# Final results (written ~01:30)
+
+## #2 multi-entity — now ENABLED ✅
+
+The collateral check finished clean: **6 ordinary single-entity questions, mean judge score 5.00 with
+the rule and 5.00 without.** Combined with the clear win on your real failing question, I enabled
+`MULTI_ENTITY_COVERAGE`. The server has been restarted so it is live.
+
+Honest limit: those 6 questions all scored 5/5, so the sample is saturated at the judge's ceiling — it
+shows *no obvious harm*, not proven safety. The 80-turn A/B is still the proper validation.
+
+## A bigger finding, and a correction I have to make
+
+Chasing the two "WEAK_TEST" turns from #4 turned up something more serious than a bad test item.
+
+**`independent-chairs-policy.pdf` [primary] has a factually wrong gold answer.** It asks how many
+staff a department with *more than 149* PGR students must nominate. The policy table says
+`1-99 → 2`, `100-149 → 3`, `150+ → 4`, so the answer is **4**; the expected answer says **3**. That
+item has been penalising correct behaviour.
+
+**`roa-ug-integrated-masters-4yr-year-1.pdf` — text is missing from the index.** The source says
+*"…they must withdraw from the University in any of the following situations: — Where the Year Mark
+is below 20…"*. The indexed chunk reads *"…they — Where a student was absent fr…"*. Text is dropped
+**mid-sentence inside the chunk body**, not at a boundary. The words `withdraw` and `maximum period`
+appear in **none** of that document's 18 chunks. That progression rule is unretrievable — no
+reranker or generator can recover text that was never indexed.
+
+**The correction:** I ran a sentence-level scan suggesting **37% of sampled documents** had missing
+text. **That number is wrong and I've retracted it in `report.md`.** Verifying six flagged documents
+with bare keywords showed **five were false positives** — my scan had spliced page furniture into
+"sentences" that legitimately never appear in the cleaned chunks. Only one case survives
+verification: **1 confirmed out of 38 sampled.**
+
+So the honest position: **one verified content-loss defect, and an open question about how common it
+is.** I did not establish a rate. Please don't quote 37% anywhere.
+
+**Why it matters enough to chase:** if it turns out to be common, it is a better explanation for
+residual retrieval misses than anything in the Round 5 retrieval bake-off — reranking cannot retrieve
+what was never indexed. The proper next step is an audit comparing cached source to indexed chunks
+using the *ingest's own* cleaning rather than ad-hoc normalisation, which is what tripped me up.
+
+## Where things stand
+
+Live: local gemma3, launchd-managed with auto-restart, both tonight's retrieval fixes plus the two
+new prompt/disclosure rules active. Eval runs local and deterministic; the cloud judge is one env var
+away. Clean tree, everything pushed.
+
+**Top of the list now:** the content-loss audit. It is cheap to run, and it either clears the corpus
+or reframes a chunk of the retrieval work.
