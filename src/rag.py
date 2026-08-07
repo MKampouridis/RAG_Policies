@@ -207,10 +207,42 @@ _INLINE_CITATION_RULE = (
     "doesn't support it, say so instead of stating it."
 )
 
+# Multi-entity coverage (real user feedback, 2026-08-07). ~5 of 17 thumbs-down
+# were questions naming SEVERAL entities that got answered for one: "what are
+# the accredited programmes offered by CSEE, MSAS, Psychology, HSC, SRES and
+# Life Sciences" came back about CSEE only, and the follow-up complaint ("I've
+# asked information on 6 schools, which I've explicitly listed, but I'm still
+# only getting info on one") got CSEE again.
+#
+# There are two separable failures and this rule only targets the second:
+#   (a) COVERAGE - N_RESULTS=6 is a hard ceiling, so a six-school question
+#       cannot retrieve enough chunks to answer six schools. Not fixable by
+#       prompting; needs per-entity retrieval or a widened k for this shape.
+#   (b) HONESTY - the answer silently presents one entity's information as
+#       though it were the whole answer, giving no signal that five are
+#       missing. That is a prompt-addressable failure and it is what the
+#       user actually complained about.
+#
+# OFF by default and deliberately so: this project has one clear precedent for
+# base-prompt rules (INLINE_CITATIONS, above) and it REGRESSED groundedness by
+# 11 points, so a rule that has not been A/B'd does not ship on. It also cannot
+# be validated by the current eval - the 40-question set contains no
+# multi-entity questions at all, which is exactly why this failure only ever
+# showed up in real use. Validate by A/B on the standard 80 turns (checking for
+# collateral damage on ordinary single-entity answers) before enabling.
+MULTI_ENTITY_COVERAGE = False
+_MULTI_ENTITY_RULE = (
+    "\n- If the question names several specific things (multiple programmes, departments, "
+    "schools, or years), address each one by name. For any of them the context does not cover, "
+    "say so explicitly - e.g. \"the context has nothing on X or Y\" - rather than answering only "
+    "for the ones you found and leaving the rest unmentioned."
+)
+
 SYSTEM_PROMPT = (
     _SYSTEM_PROMPT_BASE
     + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "")
     + (_INLINE_CITATION_RULE if INLINE_CITATIONS else "")
+    + (_MULTI_ENTITY_RULE if MULTI_ENTITY_COVERAGE else "")
     + "\n"
 )
 
@@ -1106,6 +1138,64 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
 DISCLOSE_AMBIGUITY_ENABLED = True
 
 
+# Variance-gated disclosure (round-6 Tier 1 mechanism, wired 2026-08-07).
+# The J6 disclosure currently fires on every fragmented-pool turn, so a user
+# is told "rules often differ by programme, tell me which one you mean" even
+# when the answer is IDENTICAL across every programme - Merit is 60 corpus-
+# wide, so for that question the caveat is pure noise that trains people to
+# ignore it. eval/variance_map.py measured which parameters actually vary:
+# Merit, Distinction and the top classification are UNIFORM; pass mark,
+# condonement, reassessment cap, credits and further attempts VARY.
+#
+# So: suppress the disclosure when the question is clearly about a parameter
+# known to be uniform, and keep it everywhere else. Deliberately conservative
+# in the safe direction - an unrecognised question keeps the disclosure, and
+# only an explicit uniform-parameter match with no varying-parameter match can
+# suppress it. Worst case of a false suppression is a missing caveat on an
+# answer that is the same across programmes anyway.
+VARIANCE_GATED_DISCLOSURE = True
+_VARIANCE_MAP_PATH = "eval/variance_map_result.json"
+_variance_terms = None
+
+
+def _uniform_parameter_terms() -> tuple[set, set]:
+    """(uniform_terms, varying_terms) loaded from the measured variance map.
+    Falls back to empty sets - i.e. disclosure behaves exactly as before - if
+    the map is missing, so this can never harden into a hidden dependency."""
+    global _variance_terms
+    if _variance_terms is not None:
+        return _variance_terms
+    keywords = {
+        "Merit threshold": ["merit"],
+        "Distinction threshold": ["distinction"],
+        "First-class / top classification": ["first class", "first-class"],
+        "Module pass mark": ["pass mark", "pass a module", "passing mark"],
+        "Condonement threshold": ["condone", "condonement", "compensat"],
+        "Reassessment mark cap": ["capped", "cap on", "reassessment mark"],
+        "Credits for the award": ["how many credits", "credits required", "credits must"],
+        "Permitted further attempts": ["further attempt", "resit", "reassessment attempt"],
+    }
+    from pathlib import Path as _Path
+
+    uniform, varying = set(), set()
+    try:
+        for row in json.loads(_Path(_VARIANCE_MAP_PATH).read_text()):
+            bucket = uniform if row.get("verdict") == "UNIFORM" else varying
+            bucket.update(keywords.get(row.get("parameter"), []))
+    except Exception:
+        pass  # no map -> no gating
+    _variance_terms = (uniform, varying)
+    return _variance_terms
+
+
+def _answer_is_programme_invariant(question: str) -> bool:
+    """True only when the question names a parameter measured as UNIFORM and
+    names no varying one - so the retrieved sibling cannot change the answer."""
+    uniform, varying = _uniform_parameter_terms()
+    q = question.lower()
+    return any(t in q for t in uniform) and not any(t in q for t in varying)
+
+
 def _ambiguity_disclosure(metadatas: list[dict]) -> str:
     titles = _distinct_family_titles(metadatas, limit=3)
     primary = titles[0] if titles else "the retrieved document"
@@ -1267,7 +1357,10 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     response_text = generate(messages=messages)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
-        response_text += _ambiguity_disclosure(metadatas)
+        # variance gate: skip the "rules differ by programme" caveat when the
+        # measured answer does NOT differ by programme (see the variance map).
+        if not (VARIANCE_GATED_DISCLOSURE and _answer_is_programme_invariant(question)):
+            response_text += _ambiguity_disclosure(metadatas)
 
     sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
     return response_text, sources, retrieval_query, ranked_top_urls
