@@ -13,7 +13,7 @@ that change topic, ask about several things in one question, and probe partner-i
 
 ## Four real failure patterns, ranked by frequency
 
-### 1. Contextualizer wrongly treats a topic-*switch* as a follow-up (~6 of 17 downs — the biggest cluster)
+### 1. Contextualizer wrongly treats a topic-*switch* as a follow-up (~6 of 17 downs — the biggest cluster) — FIXED 2026-08-07
 
 The clearest, most fixable bug in the log. Two smoking-gun examples where `retrieval_query` (what the
 contextualizer rewrote the question into) is visible in the log:
@@ -39,6 +39,12 @@ rewrite injects the wrong entity when the topic actually changed."
 **Lever:** tighten the contextualizer prompt/logic to detect topic discontinuity (e.g. a new query
 naming a different award type, or sharing little lexical overlap with the prior turn) and rewrite it
 standalone instead of appending prior context.
+
+**Fixed 2026-08-07** (`src/rag.py`, `eval/report.md` "Real-user feedback fix"): added
+`_has_extraneous_family` (rejects a rewrite that bolts on identity tokens for a programme family beyond
+the one legitimate history anchor) and broadened self-sufficiency detection to a small award-type
+vocabulary (phd/mphil/professional doctorate) so a question naming one isn't treated as identity-less.
+Both reproduced cases now come back clean; 30-turn regression probe: 0 hit@6 regressions, 1 improved.
 
 ### 2. Multi-entity questions get answered for only one entity (~5 of 17 downs, overlaps with #1)
 

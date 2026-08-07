@@ -2746,3 +2746,40 @@ should not be trusted as a literal value without a manual check of the source do
 **Use:** this table is a fast, static reference for scoping the variance-gated disclosure (Tier 1, item
 3) - parameters here can be hardcoded as UNIFORM/VARYING rather than re-derived per query, cutting the
 oracle's per-turn extraction cost for these 8 common cases.
+
+---
+
+# Real-user feedback fix: contextualizer topic-switch injection (2026-08-07)
+
+First look at `data/feedback.jsonl` (32 real thumbs up/down ratings collected since the UI shipped)
+turned up a live bug distinct from anything the offline eval harness probes: full analysis in
+`eval/FEEDBACK_FINDINGS.md`. The largest cluster (~6 of 17 thumbs-down) was the contextualizer treating
+a genuine topic SWITCH as a follow-up needing prior-turn context, injecting unrelated programme names
+into the rewritten retrieval query. Two cases reproduced directly against live code:
+
+- "what is the minimum and maximum duration for a phd?" (after an MSc Artificial Intelligence question)
+  came back rewritten with five unrelated MSc programme names bolted on from the prior turn.
+- "duration of phd" (after a Professional Doctorate question) got anchored back to Professional
+  Doctorate - a different award entirely.
+
+**Root cause:** two gaps in the existing rewrite guards (`_is_faithful_rewrite`,
+`ALIAS_ANCHOR_GUARD_ENABLED`). (1) The faithfulness check only verified the rewrite RETAINED the
+original's words - a rewrite that keeps every original word but ADDS unrelated content passes
+unchecked. (2) "phd" is deliberately excluded from the distinctive-identity-token vocabulary (its
+docfreq across department records is too high to anchor ON), but that same genericness meant a
+question naming it wasn't recognized as already self-sufficient, so the anchor guard wrongly
+re-attached the stale prior-topic anchor.
+
+**Fix (`src/rag.py`):** `_has_extraneous_family` rejects a rewrite that introduces identity tokens for
+a programme family beyond the single legitimate history anchor (same one-anchor model
+`ALIAS_ANCHOR_GUARD` already uses) - the multi-programme-injection case. `_names_award_type` broadens
+"this question already names its own topic" to a small award-type vocabulary (phd, mphil, professional
+doctorate, doctor of philosophy) so these no longer trigger a wrongful anchor re-append even though
+they're too generic to be identity anchors themselves.
+
+**Validation:** both reproduced bug cases now come back clean (verified directly, and case 2 stable
+across 4 repeated runs despite LLM sampling). Three legitimate-follow-up shapes checked for regression
+- pronoun resolution, explicit topic switch, elliptical continuation - all still behave correctly. Full
+30-turn multi-turn regression (`eval/run_multiturn_eval.py`, `results_set4_multiturn_contextfix.json`)
+vs the established gemma3 baseline: **zero hit@6 regressions, one turn improved (28/30 -> 29/30)** - all
+rewrite-text diffs are harmless LLM paraphrase noise, not topic drift.

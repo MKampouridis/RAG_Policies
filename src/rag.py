@@ -269,6 +269,57 @@ def _log_rewrite_reject(original: str, rewritten: str) -> None:
         pass
 
 
+# Award-type category words (real feedback bug, 2026-07-27: "duration of
+# phd" after a Professional Doctorate question got answered from
+# Professional Doctorate documents). These name a genuinely different set of
+# regulations from each other, but the identity-anchor index can't tell them
+# apart: "phd" and "doctorate" appear across so many different department
+# records that their docfreq exceeds ANCHOR_DOCFREQ and they're filtered out
+# as too generic to anchor ON - but that same genericness means a question
+# that names one is already self-sufficient and must NOT be treated as
+# identity-less (which is what let the stale Professional Doctorate anchor
+# get re-appended). Only used to broaden the "does this already name its own
+# topic" check below, never as something to anchor OTHER questions to.
+_AWARD_TYPE_TERMS = {"phd", "mphil"}
+_AWARD_TYPE_PHRASES = ("professional doctorate", "doctor of philosophy")
+
+
+def _names_award_type(text: str) -> bool:
+    low = text.lower()
+    if _content_words(text) & _AWARD_TYPE_TERMS:
+        return True
+    return any(p in low for p in _AWARD_TYPE_PHRASES)
+
+
+def _family_labels_named(text: str) -> set[str]:
+    """Distinct programme-family labels whose distinctive identity tokens
+    appear in text (possibly several, if multiple programmes are named)."""
+    distinctive, families = _identity_anchor_index()
+    hit = _content_words(text) & distinctive
+    if not hit:
+        return set()
+    return {lab for lab, toks in families if lab and (toks & hit)}
+
+
+def _has_extraneous_family(original: str, rewritten: str, history: list[dict]) -> bool:
+    """True if the rewrite introduced identity tokens for a programme family
+    the original question never named and that isn't the single active
+    history anchor - the failure mode where the small rewriter model
+    free-associates from a dense transcript and bolts several prior-turn
+    programme names onto an unrelated new question (real example: "what is
+    the minimum and maximum duration for a phd?" came back rewritten with
+    five unrelated MSc programme names appended from two turns earlier).
+    Only ONE anchor family is ever a legitimate carry-forward - that's
+    already ALIAS_ANCHOR_GUARD's model - so anything beyond it is noise, not
+    a resolved reference."""
+    new_families = _family_labels_named(rewritten) - _family_labels_named(original)
+    if not new_families:
+        return False
+    anchor_label, _ = _anchor_from_history(history)
+    new_families.discard(anchor_label)
+    return bool(new_families)
+
+
 def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
     """Guards against a real failure mode of small local models on long/dense
     multi-topic conversation transcripts: instead of rewriting the new
@@ -437,7 +488,11 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
         {"role": "user", "content": f"{transcript}\n\nFollow-up question: {question}\n\nStandalone question:"},
     ], model=CONTEXTUALIZE_MODEL).strip()
 
-    faithful = bool(rewritten and _is_faithful_rewrite(question, rewritten))
+    faithful = bool(
+        rewritten
+        and _is_faithful_rewrite(question, rewritten)
+        and not _has_extraneous_family(question, rewritten, history)
+    )
     if rewritten and not faithful:
         # The guard discarded a topic-drifted rewrite (the postfix3->postfix4 bug
         # class). Log it best-effort so these low-confidence rewrites can be
@@ -464,7 +519,10 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
             result_tokens = _content_words(result)
             distinctive, _ = _identity_anchor_index()
             already_anchored = bool(result_tokens & hist_anchors)
-            names_a_topic = bool(result_tokens & distinctive)  # a switch names its OWN new topic
+            # a switch names its OWN new topic - either a specific programme
+            # (distinctive) or an award-type category too generic to be
+            # "distinctive" itself but still self-sufficient (_names_award_type)
+            names_a_topic = bool(result_tokens & distinctive) or _names_award_type(result)
             if not already_anchored and not names_a_topic:
                 # identity-less continuation that dropped the anchor - re-append
                 result = f"{result} ({label})"
