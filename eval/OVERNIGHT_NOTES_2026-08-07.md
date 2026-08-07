@@ -89,8 +89,16 @@ plus possibly a generator prompt change ("enumerate every item in the list you f
 
 ## Running while you slept
 
-A full 80-turn eval is regression-testing the **partner-institution fix** (see below). It was ~14/40
-at the time of writing. Results and a verdict will be at the top of my next message.
+A full 80-turn eval is regression-testing the **partner-institution fix** (see below). Results and a
+verdict will be at the top of my next message.
+
+**Read that eval's hit@6 numbers with care.** The partner fix runs *after* the reranker has already
+cut the pool to six (`_rerank.rerank(..., N_RESULTS)`), so it reorders those six but never changes
+*which* six. hit@6 tests membership, not order — so **the fix cannot move hit@6 in either direction**,
+and any miss in that run is pre-existing rather than a regression. The metric that can move is the
+**answer score**, because the generator reads contexts in rank order and the "based primarily on X"
+note names the top-ranked document. That ordering effect is the entire bug: your MSc AI answer was
+written from Kaplan's document because Kaplan sat at rank 1 with four CSEE documents beneath it.
 
 **The partner-institution fix itself** (not yet committed, pending that eval): three thumbs-down were
 partner documents (Kaplan, Tavistock) outranking Essex's own for questions that never mentioned a
