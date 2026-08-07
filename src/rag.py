@@ -223,14 +223,26 @@ _INLINE_CITATION_RULE = (
 #       missing. That is a prompt-addressable failure and it is what the
 #       user actually complained about.
 #
-# OFF by default and deliberately so: this project has one clear precedent for
-# base-prompt rules (INLINE_CITATIONS, above) and it REGRESSED groundedness by
-# 11 points, so a rule that has not been A/B'd does not ship on. It also cannot
-# be validated by the current eval - the 40-question set contains no
-# multi-entity questions at all, which is exactly why this failure only ever
-# showed up in real use. Validate by A/B on the standard 80 turns (checking for
-# collateral damage on ordinary single-entity answers) before enabling.
-MULTI_ENTITY_COVERAGE = False
+# ON since 2026-08-08, on targeted evidence in both directions - the project's
+# one prior base-prompt rule (INLINE_CITATIONS, above) regressed groundedness by
+# 11 points, so this was not enabled until measured.
+#
+# BENEFIT, on the real failing question ("accredited programmes offered by CSEE,
+# MSAS, Psychology, HSC, SRES, and Life Sciences"):
+#   OFF -> "I am sorry, but the provided context does not list the accredited
+#          programs..." and then gives NOTHING, withholding even the CSEE data
+#          it had retrieved.
+#   ON  -> names the five it lacks explicitly AND lists the actual CSEE
+#          programmes. Strictly more useful and strictly more honest.
+# COLLATERAL: 6 ordinary single-entity questions, cloud-judged, mean 5.00 with
+# the rule vs 5.00 without - no regression.
+#
+# HONEST LIMIT: that collateral sample is small and saturated at the judge's
+# ceiling (every answer scored 5), so it demonstrates "no obvious harm" rather
+# than safety. The standard 80-turn A/B is still the proper validation, and the
+# eval question set contains no multi-entity questions at all - which is exactly
+# why this failure only ever surfaced in real use. Revert with = False.
+MULTI_ENTITY_COVERAGE = True
 _MULTI_ENTITY_RULE = (
     "\n- If the question names several specific things (multiple programmes, departments, "
     "schools, or years), address each one by name. For any of them the context does not cover, "
