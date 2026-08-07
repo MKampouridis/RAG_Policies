@@ -129,11 +129,83 @@ _CLOUD_GENERATORS = {
 }
 
 
+# Anthropic (2026-08-07): NOT in _CLOUD_GENERATORS because the Messages API is
+# not OpenAI-shaped - different auth header (x-api-key + anthropic-version),
+# `system` hoisted out of messages, a REQUIRED max_tokens, and content[0].text
+# instead of choices[0].message.content. Three things that will 400 if copied
+# from the OpenAI path: (1) `temperature` - Sonnet 5 rejects any non-default
+# sampling parameter, so it is omitted entirely (steer via prompt, not
+# temperature); (2) `seed` - no such parameter; (3) a `system` role inside
+# messages[]. Unlike the Groq/Gemini free tiers this is PAID, so there is no
+# daily token cap - the spend ceiling is the account balance, which is what
+# made the round-4 "cloud caps unfit for standing prod" objection moot.
+#
+# Thinking is DISABLED by default here: adaptive thinking is on by default on
+# Sonnet 5 and costs latency + output tokens, and answering from retrieved
+# context is an extraction task that gains little from it. Set
+# ANTHROPIC_THINKING=adaptive to turn it back on.
+ANTHROPIC_DEFAULT_MODEL = "claude-sonnet-5"
+ANTHROPIC_MAX_TOKENS = int(os.environ.get("ANTHROPIC_MAX_TOKENS", "2048"))
+ANTHROPIC_THINKING = os.environ.get("ANTHROPIC_THINKING", "disabled").lower()
+
+
+def _anthropic_generate(messages: list[dict]) -> str:
+    api_key = os.environ.get("ANTHROPIC_API_KEY")
+    if not api_key:
+        raise RuntimeError("GENERATOR_PROVIDER='anthropic' set but ANTHROPIC_API_KEY is empty")
+
+    # the Messages API takes system prompts as a top-level field, not a role
+    system = "\n\n".join(m["content"] for m in messages if m.get("role") == "system")
+    convo = [m for m in messages if m.get("role") != "system"]
+
+    payload = {
+        "model": GENERATOR_MODEL or ANTHROPIC_DEFAULT_MODEL,
+        "max_tokens": ANTHROPIC_MAX_TOKENS,
+        "messages": convo,
+    }
+    if system:
+        payload["system"] = system
+    if ANTHROPIC_THINKING != "disabled":
+        payload["thinking"] = {"type": ANTHROPIC_THINKING}
+    else:
+        payload["thinking"] = {"type": "disabled"}
+
+    headers = {
+        "x-api-key": api_key,
+        "anthropic-version": "2023-06-01",
+        "content-type": "application/json",
+    }
+    for attempt in range(6):
+        resp = requests.post(
+            "https://api.anthropic.com/v1/messages", headers=headers, json=payload, timeout=120
+        )
+        # 429 = rate limited, 529 = overloaded; both are retryable per Anthropic's docs
+        if resp.status_code in (429, 529):
+            raw = resp.headers.get("retry-after")
+            try:
+                wait = float(raw) if raw else min(2 ** attempt, 30)
+            except ValueError:
+                wait = min(2 ** attempt, 30)  # Retry-After may be an HTTP-date
+            time.sleep(min(wait + 0.5, 30))
+            continue
+        if not resp.ok:
+            raise RuntimeError(f"anthropic generator HTTP {resp.status_code}: {resp.text[:500]}")
+        data = resp.json()
+        # A safety refusal returns HTTP 200 with stop_reason 'refusal' and no text
+        # block, so indexing content[0] blindly would IndexError on a live refusal.
+        if data.get("stop_reason") == "refusal":
+            return "I can't answer that from the provided documents."
+        return "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
+    raise RuntimeError("anthropic generator rate-limited/overloaded after retries")
+
+
 def generate(messages: list[dict]) -> str:
     """Answer-generation call. Routes to a cloud generator when
     GENERATOR_PROVIDER is set (else the local CHAT_MODEL via chat()). Kept
     separate from chat() so ONLY answer generation moves to the cloud while the
     contextualizer/judge/etc. stay local and free."""
+    if GENERATOR_PROVIDER == "anthropic":
+        return _anthropic_generate(messages)
     if not GENERATOR_PROVIDER:
         # local generation: the 14B production generator (LOCAL_GENERATOR_MODEL),
         # or a GENERATOR_MODEL override. CHAT_MODEL (7B) is untouched so the
@@ -141,7 +213,8 @@ def generate(messages: list[dict]) -> str:
         return chat(messages=messages, model=GENERATOR_MODEL or LOCAL_GENERATOR_MODEL)
     if GENERATOR_PROVIDER not in _CLOUD_GENERATORS:
         raise ValueError(
-            f"unknown GENERATOR_PROVIDER {GENERATOR_PROVIDER!r}; known: {sorted(_CLOUD_GENERATORS)}"
+            f"unknown GENERATOR_PROVIDER {GENERATOR_PROVIDER!r}; "
+            f"known: {sorted(list(_CLOUD_GENERATORS) + ['anthropic'])}"
         )
     url, key_env, default_model = _CLOUD_GENERATORS[GENERATOR_PROVIDER]
     api_key = os.environ.get(key_env)
