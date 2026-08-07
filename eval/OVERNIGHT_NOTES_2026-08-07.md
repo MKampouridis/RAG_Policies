@@ -89,8 +89,33 @@ plus possibly a generator prompt change ("enumerate every item in the list you f
 
 ## Running while you slept
 
-A full 80-turn eval is regression-testing the **partner-institution fix** (see below). Results and a
-verdict will be at the top of my next message.
+**The 80-turn eval was a bust — it proves nothing, and that's my error.** It ran to 28/40 before
+being killed, and analysing the partial output showed two independent reasons the whole run is void:
+
+1. **The mechanism never fired.** Across all 28 questions there were **zero** partner-institution
+   documents anywhere in any final top-6 — so the demotion rule had nothing to demote, and the
+   retrieved ordering is byte-identical to baseline in every single question. This is an exact
+   repeat of the Phase 4 `_prefer_home_institution` null result ("the mechanism never actually
+   fired"), and for the same reason: **the 40-question eval set contains no partner-institution
+   ambiguity at all.** I should have checked that *before* spending an hour of compute — it's a
+   two-minute grep.
+2. **The server wasn't deterministic.** It was already running, started without
+   `RAG_DETERMINISTIC=1`, so the contextualizer resampled freely. The single hit@6 difference I
+   saw is a contextualizer resample, not a code effect — the follow-up query was rewritten as
+   completely different text between runs. The 18 judge-score differences are the same noise, and
+   they're balanced in both directions, which is what noise looks like.
+
+**So: the partner fix is NOT validated by eval, and this question set cannot validate it.** What it
+*is* validated by is the direct reproduction of your actual bug — Kaplan's document dropped from
+rank 1–2 to rank 5–6 on your exact "exit awards for MSc AI" question, with all four CSEE documents
+now ranking above it. That's evidence about the reported failure, which is what matters; it just
+isn't eval evidence.
+
+**Deliberately not committing the partial results file** — a non-deterministic partial run of a
+mechanism that never fired would sit in the ledger looking like evidence when it isn't.
+
+To ever test this properly you'd need question-set work: cases where a home and a partner edition of
+the same programme genuinely compete. That's the same gap Phase 4 identified and left open.
 
 **Read that eval's hit@6 numbers with care.** The partner fix runs *after* the reranker has already
 cut the pool to six (`_rerank.rerank(..., N_RESULTS)`), so it reorders those six but never changes
