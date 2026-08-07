@@ -2839,3 +2839,44 @@ shape. Both need rewriting before they are counted again.
   across 160), consistent with the closed retrieval frontier.
 - It plausibly contributes to the gap between ~90% eval scores and 47% real-user satisfaction,
   though the feedback failures (multi-entity, topic-switch) are a separate and larger cause.
+
+## Correction and follow-up: what the WEAK_TEST turns actually were (2026-08-08)
+
+Investigating the two turns `chunk_blindspot.py` labelled WEAK_TEST showed the label conflated two
+different things, and one of them is a real defect in the index rather than in the question set.
+
+**1. `independent-chairs-policy.pdf` [primary] - the GOLD ANSWER IS WRONG.** The question asks how
+many staff a department with *more than 149* PGR students must nominate. The policy's table reads
+`1-99 -> 2`, `100-149 -> 3`, `150+ -> 4`, so the answer is **4**. The expected answer says **3**.
+The keyphrase `"3 members of staff"` was never going to be found because the document does not say
+it. This item has been penalising correct behaviour and should be corrected to 4 before it is
+counted again.
+
+**2. `roa-ug-integrated-masters-4yr-year-1.pdf` [follow_up] - CONTENT MISSING FROM THE INDEX.** Not a
+test defect at all. The source text says *"...they must withdraw from the University in any of the
+following situations: - Where the Year Mark is below 20; ..."*, and the indexed chunk reads
+*"...they - Where a student was absent fr..."* - **text dropped mid-sentence inside the chunk body**,
+not at a boundary. The words `withdraw` and `maximum period` appear nowhere in any of the document's
+18 chunks despite being in the cached source. The progression/withdrawal rule is therefore
+unretrievable, and no generator or reranker can recover it.
+
+This also means `gold_document_text()` in `chunk_blindspot.py` reads the INDEX, so its WEAK_TEST
+verdict means "keyphrase absent from the indexed document" - which covers both a bad question and a
+document whose content never made it in. Those need separating in any future run.
+
+### How widespread is the content loss? Not established - and a first estimate was wrong
+
+A sentence-level scan over 40 sampled current documents suggested 14/38 (37%) had source text missing
+from the index. **That figure is not trustworthy and is retracted.** Verifying six of the flagged
+documents with bare distinctive keywords (immune to normalisation artefacts) showed **five were false
+positives**: the scan had split the cached text into "sentences" that interleaved navigation and page
+furniture with prose, producing strings that legitimately never appear in the cleaned chunks.
+
+Only `roa-ug-integrated-masters-4yr-year-1.pdf` survives verification - **1 confirmed case out of 38
+sampled documents**. The true rate is somewhere at or above that and is not yet known.
+
+**Recommended next step (not attempted):** a proper audit comparing cached source against indexed
+chunks with the *same* cleaning the ingest applies, rather than ad-hoc normalisation. Until that runs,
+treat this as one verified defect and an open question, not a corpus-wide claim. If it does turn out
+to be widespread it would be a more likely explanation for residual retrieval misses than anything in
+the Round 5 retrieval bake-off, since no amount of reranking can retrieve text that was never indexed.
