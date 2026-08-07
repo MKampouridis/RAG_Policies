@@ -2700,3 +2700,49 @@ The one new mechanism (variance oracle) is best deployed as a targeted-disclosur
 ~36% high-stakes turns). The generator decision (gemma3:12b) is validated end-to-end and fabrication-
 free under a neutral judge. Everything points to the same next step: D3 clarification/disclosure is the
 lever, and it is a product judgment on live traffic, not another experiment.
+
+---
+
+# Round 6 Tier 1 follow-up: the variance MAP - a parameter-level lookup table (2026-08-07)
+
+The variance oracle (Tier 1, above) answers "for THIS query's retrieval pool, do the sibling documents
+agree?" - a per-turn, per-pool judgment. `eval/variance_map.py` builds the complementary STATIC table:
+for 8 common rules-of-assessment parameters, independent of any specific query, is the value UNIFORM
+across current RoA documents (so any sibling answers correctly - no disclosure needed) or does it VARY
+(so the specific document matters)? Method: probe each parameter's fixed question against every current
+RoA document that mentions it (gemma3:12b extraction, up to 30 docs/parameter), then classify the
+collected values as UNIFORM/VARYING (gemma3:12b), flagging splits that just track UG-vs-PGT level.
+
+| parameter | verdict | values (count) |
+|---|---|---|
+| Merit threshold | **UNIFORM** | 60 (21) |
+| Distinction threshold | **UNIFORM** | 70 (14) |
+| First-class / top classification | **UNIFORM** | 70 (3) |
+| Module pass mark | VARYING | 50 (22), 40 (1), Pass/Fail (1) |
+| Condonement threshold | VARYING | 40 (23), 50 (1) |
+| Reassessment mark cap | VARYING | 50 (17), 40 (3) |
+| Credits for the award | VARYING | 140 (5), 260 (4), 160 (4), 60 (2), 90 (1), 180 (1) |
+| Permitted further attempts | VARYING | 2 (6), 1 (4), 60 (2) |
+
+Full detail: `eval/variance_map_result.json`.
+
+**3 of 8 parameters are UNIFORM** (Merit=60, Distinction=70, First-class=70) - confirms, at the
+parameter level, Tier 1's finding that a wrong sibling is often harmless: for these three, ANY RoA
+document answers correctly regardless of which programme's sibling retrieval surfaces. These are safe
+to answer confidently with no disclosure.
+
+**5 are VARYING, but not uniformly interesting.** Credits-for-the-award and permitted-further-attempts
+vary *by design* (credits scale with programme length/type; resit attempts are a genuine policy
+difference) - these are exactly where the sibling problem bites and targeted disclosure earns its
+keep. Module pass mark, condonement threshold, and reassessment cap each show a dominant value with a
+small number of outliers (1-3 documents) - worth a manual spot-check to confirm those aren't stale
+editions or genuine programme exceptions before trusting the dominant value as a fallback.
+
+**Data-quality flag, not a real finding:** "Permitted further attempts" includes a value of "60" (2
+documents) - implausible as an attempt count and almost certainly a misextraction (the probe likely
+pulled a credit or page figure instead). Doesn't change the VARYING verdict (1 vs 2 already differ) but
+should not be trusted as a literal value without a manual check of the source documents.
+
+**Use:** this table is a fast, static reference for scoping the variance-gated disclosure (Tier 1, item
+3) - parameters here can be hardcoded as UNIFORM/VARYING rather than re-derived per query, cutting the
+oracle's per-turn extraction cost for these 8 common cases.

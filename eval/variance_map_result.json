@@ -1,0 +1,158 @@
+[
+  {
+    "parameter": "Merit threshold",
+    "probe": "What is the minimum overall weighted average mark required to be awarded a Merit?",
+    "n_docs": 30,
+    "n_stated": 24,
+    "verdict": "UNIFORM",
+    "level_split": false,
+    "values": [
+      {
+        "value": "60",
+        "count": 21
+      }
+    ]
+  },
+  {
+    "parameter": "Distinction threshold",
+    "probe": "What is the minimum overall weighted average mark required to be awarded a Distinction?",
+    "n_docs": 30,
+    "n_stated": 26,
+    "verdict": "UNIFORM",
+    "level_split": false,
+    "values": [
+      {
+        "value": "70",
+        "count": 14
+      }
+    ]
+  },
+  {
+    "parameter": "Module pass mark",
+    "probe": "What is the minimum mark required to pass an individual module?",
+    "n_docs": 30,
+    "n_stated": 26,
+    "verdict": "VARYING",
+    "level_split": false,
+    "values": [
+      {
+        "value": "Pass/Fail",
+        "count": 1
+      },
+      {
+        "value": "40",
+        "count": 1
+      },
+      {
+        "value": "50",
+        "count": 22
+      }
+    ]
+  },
+  {
+    "parameter": "Condonement threshold",
+    "probe": "What is the lowest module mark that can be condoned (compensated) rather than requiring reassessment?",
+    "n_docs": 30,
+    "n_stated": 27,
+    "verdict": "VARYING",
+    "level_split": false,
+    "values": [
+      {
+        "value": "40",
+        "count": 23
+      },
+      {
+        "value": "50",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "parameter": "Reassessment mark cap",
+    "probe": "When a failed module is reassessed, what is the maximum (capped) mark that can be awarded for it?",
+    "n_docs": 30,
+    "n_stated": 21,
+    "verdict": "VARYING",
+    "level_split": false,
+    "values": [
+      {
+        "value": "40",
+        "count": 3
+      },
+      {
+        "value": "50",
+        "count": 17
+      }
+    ]
+  },
+  {
+    "parameter": "Credits for the award",
+    "probe": "How many credits must be passed to be awarded this degree?",
+    "n_docs": 30,
+    "n_stated": 17,
+    "verdict": "VARYING",
+    "level_split": false,
+    "values": [
+      {
+        "value": "60",
+        "count": 2
+      },
+      {
+        "value": "90",
+        "count": 1
+      },
+      {
+        "value": "140",
+        "count": 5
+      },
+      {
+        "value": "160",
+        "count": 4
+      },
+      {
+        "value": "180",
+        "count": 1
+      },
+      {
+        "value": "260",
+        "count": 4
+      }
+    ]
+  },
+  {
+    "parameter": "Permitted further attempts",
+    "probe": "How many further attempts (reassessments) is a student normally permitted at a failed module?",
+    "n_docs": 30,
+    "n_stated": 13,
+    "verdict": "VARYING",
+    "level_split": false,
+    "values": [
+      {
+        "value": "1",
+        "count": 4
+      },
+      {
+        "value": "2",
+        "count": 6
+      },
+      {
+        "value": "60",
+        "count": 2
+      }
+    ]
+  },
+  {
+    "parameter": "First-class / top classification",
+    "probe": "What overall mark is required for the highest classification (First Class or Distinction)?",
+    "n_docs": 30,
+    "n_stated": 3,
+    "verdict": "UNIFORM",
+    "level_split": false,
+    "values": [
+      {
+        "value": "70",
+        "count": 3
+      }
+    ]
+  }
+]
