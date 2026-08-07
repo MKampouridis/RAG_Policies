@@ -642,6 +642,43 @@ def _prefer_home_institution(results: dict) -> dict:
     }
 
 
+# Real production feedback (2026-08-07, eval/FEEDBACK_FINDINGS.md) surfaced
+# three cases where a partner-institution document (Kaplan, Tavistock)
+# outranked Essex's own document for a query that never named the partner -
+# e.g. "exit awards for MSc Artificial Intelligence" put Kaplan's
+# kol-pg-masters-roa-25.pdf at rank 1-2, ahead of all four CSEE (home)
+# documents already present in the same top-6 pool. _prefer_home_institution
+# above didn't fire: it requires J1 alias overlap to detect "same programme",
+# but the Kaplan document's own identity extraction is entirely empty (no
+# programme_name/aliases at all) - too fragile to rely on here. This is a
+# simpler, unconditional post-rerank demotion: when the final top-k mixes
+# partner and non-partner documents, partner documents sink below all
+# non-partner ones (stable order otherwise). It never REMOVES a partner
+# document, so a query where nothing non-partner is relevant still surfaces
+# it unchanged - same simplifying assumption as _prefer_home_institution
+# (doesn't try to detect the query explicitly naming the partner; if that
+# matters in practice, a future eval/feedback pass will show it as a loss).
+PARTNER_INSTITUTION_DEMOTE_ENABLED = True
+
+
+def _demote_partner_institutions(results: dict) -> dict:
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    distances = results.get("distances", [[None] * len(documents)])[0]
+    if len(documents) < 2:
+        return results
+
+    order = sorted(range(len(documents)), key=lambda i: _is_partner_institution(metadatas[i]))
+    if order == list(range(len(documents))):
+        return results
+
+    return {
+        "documents": [[documents[k] for k in order]],
+        "metadatas": [[metadatas[k] for k in order]],
+        "distances": [[distances[k] for k in order]],
+    }
+
+
 def _dense_as_hits(dense: dict) -> list[tuple[str, str, dict]]:
     return list(zip(
         dense.get("ids", [[]])[0],
@@ -1050,6 +1087,9 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
 
     if HOME_INSTITUTION_TIEBREAK_ENABLED:
         results = _prefer_home_institution(results)
+
+    if PARTNER_INSTITUTION_DEMOTE_ENABLED:
+        results = _demote_partner_institutions(results)
 
     return results, retrieval_query
 
