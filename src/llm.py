@@ -234,6 +234,19 @@ def judge_chat(messages: list[dict], format: str | None = None, model: str | Non
         # JUDGE_MODEL; the re-judge scripts pass "phi4"), which would 404 as an
         # Anthropic model id. Only honour an override that is actually an
         # Anthropic model, otherwise fall back to the configured cloud judge.
+        # Substituting loudly, not silently: eval/synthmiss_rejudge.py,
+        # value_sufficient.py and the bake-offs pin phi4 *deliberately* as the
+        # neutral cross-family judge. Swapping that out without saying so would
+        # change what "neutral re-judge" means in already-published numbers -
+        # the same silent-mismeasurement class this project keeps getting bitten
+        # by. Run those scripts WITHOUT JUDGE_PROVIDER to keep phi4.
+        if model and not model.startswith("claude-"):
+            print(
+                f"WARNING: JUDGE_PROVIDER=anthropic overrides the explicitly requested "
+                f"judge {model!r} with {ANTHROPIC_JUDGE_MODEL!r}. If that model was pinned "
+                f"for neutrality, unset JUDGE_PROVIDER for this script.",
+                file=sys.stderr,
+            )
         cloud_model = model if (model or "").startswith("claude-") else ANTHROPIC_JUDGE_MODEL
         return _anthropic_generate(messages, model=cloud_model)
     return chat(messages=messages, format=format, model=model or JUDGE_MODEL)
