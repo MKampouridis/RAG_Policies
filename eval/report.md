@@ -2783,3 +2783,59 @@ across 4 repeated runs despite LLM sampling). Three legitimate-follow-up shapes 
 30-turn multi-turn regression (`eval/run_multiturn_eval.py`, `results_set4_multiturn_contextfix.json`)
 vs the established gemma3 baseline: **zero hit@6 regressions, one turn improved (28/30 -> 29/30)** - all
 rewrite-text diffs are harmless LLM paraphrase noise, not topic drift.
+
+---
+
+# The hit@6 blind spot: what the metric cannot see (2026-08-07)
+
+Chasing three thumbs-down on "when is an independent chair required" surfaced a structural gap in
+the harness rather than a bug in the system. `score_retrieval()` in `eval/run_eval.py` compares
+**document URLs**, so hit@6 answers "was the right DOCUMENT retrieved" - not "were the
+answer-bearing FACTS put in front of the generator". A turn can score a clean hit while the user
+gets a wrong or empty answer, and that entire failure class is invisible to every number in this
+report.
+
+## Sizing it (no new runs - computed from committed results)
+
+| turns | main set (n=80) | set 2 (n=80) |
+|---|---|---|
+| hit@6 TRUE + useful answer (judge >=3) | 62 (77.5%) | 51 (63.7%) |
+| **hit@6 TRUE + failed answer (judge <=2)** | **7 (8.8%)** | **3 (3.8%)** |
+| hit@6 FALSE (real retrieval miss) | 11 (13.8%) | 26 (32.5%) |
+| **headline hit@6 vs actually-useful** | **86.2% vs 77.5%** | **67.5% vs 63.7%** |
+
+**hit@6 overstates end-to-end usefulness by 8.7 points on the main set**, 3.8 on set 2 - about 6% of
+all 160 turns are scored as successes the user would call failures.
+
+## Splitting the blind spot by cause (`eval/chunk_blindspot.py`)
+
+For each hit-but-failed turn, re-run retrieval with that turn's own stored `retrieval_query` and ask
+where the gold keyphrases are - present in the retrieved chunks, present in the gold document but
+not retrieved, or absent from the gold document entirely.
+
+| verdict | n | meaning |
+|---|---|---|
+| **GENERATOR** | 6 (60%) | keyphrases WERE in the retrieved context; the answer failed anyway - synthesis, not retrieval |
+| **CHUNK_MISS** | 2 (20%) | keyphrases are in the gold document but in a chunk that was never retrieved - right document, wrong chunk. No generator can fix this |
+| **WEAK_TEST** | 2 (20%) | keyphrases appear nowhere in the gold document, so the item cannot be satisfied - a defect in the question set, not the system |
+
+**The largest slice is generation, not retrieval.** That matches the live evidence: given the chunk
+containing all six independent-chair criteria, gemma3:12b reported two while claude-sonnet-5 reported
+all six (2026-08-07 provider test). So ~60% of this blind spot is addressable by generator choice
+alone, and Round 5's "retrieval frontier is closed" conclusion survives - the residual here was never
+mostly retrieval.
+
+**Two eval-data defects found in passing.** `independent-chairs-policy.pdf` [primary] scores
+`keyphrase_in_gold_doc = 0.0` while `keyphrase_in_retrieved = 0.25` - its expected keyphrases do not
+appear in its own gold document but do appear in others, so the item can never be satisfied and has
+been silently depressing scores. `roa-ug-integrated-masters-4yr-year-1.pdf` [follow_up] is the same
+shape. Both need rewriting before they are counted again.
+
+## What this changes
+
+- **Report both numbers.** hit@6 alone overstates; pair it with the useful-answer rate (hit AND
+  judged >=3), which is the honest end-to-end figure.
+- The remaining retrieval work is **chunk-level**, not document-level - and it is small (2 turns
+  across 160), consistent with the closed retrieval frontier.
+- It plausibly contributes to the gap between ~90% eval scores and 47% real-user satisfaction,
+  though the feedback failures (multi-entity, topic-switch) are a separate and larger cause.
