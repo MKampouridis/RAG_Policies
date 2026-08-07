@@ -2,6 +2,7 @@
 constants below — nothing else in the codebase needs to change."""
 
 import os
+import sys
 import time
 
 import ollama
@@ -149,17 +150,17 @@ ANTHROPIC_MAX_TOKENS = int(os.environ.get("ANTHROPIC_MAX_TOKENS", "2048"))
 ANTHROPIC_THINKING = os.environ.get("ANTHROPIC_THINKING", "disabled").lower()
 
 
-def _anthropic_generate(messages: list[dict]) -> str:
+def _anthropic_generate(messages: list[dict], model: str | None = None) -> str:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
-        raise RuntimeError("GENERATOR_PROVIDER='anthropic' set but ANTHROPIC_API_KEY is empty")
+        raise RuntimeError("anthropic provider selected but ANTHROPIC_API_KEY is empty")
 
     # the Messages API takes system prompts as a top-level field, not a role
     system = "\n\n".join(m["content"] for m in messages if m.get("role") == "system")
     convo = [m for m in messages if m.get("role") != "system"]
 
     payload = {
-        "model": GENERATOR_MODEL or ANTHROPIC_DEFAULT_MODEL,
+        "model": model or GENERATOR_MODEL or ANTHROPIC_DEFAULT_MODEL,
         "max_tokens": ANTHROPIC_MAX_TOKENS,
         "messages": convo,
     }
@@ -197,6 +198,45 @@ def _anthropic_generate(messages: list[dict]) -> str:
             return "I can't answer that from the provided documents."
         return "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
     raise RuntimeError("anthropic generator rate-limited/overloaded after retries")
+
+
+# Judge routing (2026-08-07). The judge is the project's weakest measurement
+# link: a candidate model grading its own family swung synthetic-miss
+# groundedness by 24 POINTS (round-6 Tier 0), which is why phi4 became the
+# "neutral cross-family" judge - but phi4 is still a small local model making
+# subtle groundedness calls, and the value-level metric flagged residual
+# leniency on definitional claims. A frontier judge is the highest-value use
+# of paid credits here (~$0.40 per 80-turn run on Sonnet via batching).
+#
+# Deliberately SEPARATE from GENERATOR_PROVIDER: the agreed configuration is
+# local generation (comparable to the whole Round 4-6 ledger, and pinnable by
+# RAG_DETERMINISTIC) judged by a cloud model. Setting both to anthropic would
+# reintroduce exactly the self-preference bias phi4 exists to avoid.
+#   JUDGE_PROVIDER=anthropic RAG_API_BASE=... python eval/run_eval.py <name>
+JUDGE_PROVIDER = os.environ.get("JUDGE_PROVIDER", "").lower()  # "" -> local JUDGE_MODEL
+ANTHROPIC_JUDGE_MODEL = os.environ.get("ANTHROPIC_JUDGE_MODEL", "claude-sonnet-5")
+
+
+def judge_chat(messages: list[dict], format: str | None = None, model: str | None = None) -> str:
+    """Judging call. Routes to Anthropic when JUDGE_PROVIDER=anthropic, else
+    the local JUDGE_MODEL. Kept separate from chat()/generate() so the judge
+    can be swapped without touching what is being judged."""
+    if JUDGE_PROVIDER == "anthropic":
+        if GENERATOR_PROVIDER == "anthropic":
+            # not fatal - a same-family judge is still usable - but it is the
+            # exact confound that produced the 24-point round-6 swing.
+            print(
+                "WARNING: JUDGE_PROVIDER and GENERATOR_PROVIDER are both 'anthropic' - "
+                "the judge shares a family with the generator it is grading (self-preference bias).",
+                file=sys.stderr,
+            )
+        # Callers pass a LOCAL judge name explicitly (judge_answer defaults to
+        # JUDGE_MODEL; the re-judge scripts pass "phi4"), which would 404 as an
+        # Anthropic model id. Only honour an override that is actually an
+        # Anthropic model, otherwise fall back to the configured cloud judge.
+        cloud_model = model if (model or "").startswith("claude-") else ANTHROPIC_JUDGE_MODEL
+        return _anthropic_generate(messages, model=cloud_model)
+    return chat(messages=messages, format=format, model=model or JUDGE_MODEL)
 
 
 def generate(messages: list[dict]) -> str:

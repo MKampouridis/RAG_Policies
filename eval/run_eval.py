@@ -21,15 +21,28 @@ Writes eval/results_<output_name>.json
 """
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
 
 import requests
 
-from src.llm import JUDGE_MODEL, chat
+from src.llm import JUDGE_MODEL, judge_chat
 
-API_BASE = "http://127.0.0.1:8000"
+# Env-overridable so the eval can be pointed at a DEDICATED server instance
+# rather than whatever is serving production. This matters since production
+# moved to the cloud generator (GENERATOR_PROVIDER=anthropic, 2026-08-07):
+# pointing the eval at :8000 would silently measure the cloud generator, and
+# every committed Round 4-6 result was measured on the LOCAL one. Cloud
+# generation also can't be pinned by RAG_DETERMINISTIC (Sonnet 5 rejects a
+# non-default temperature), so an eval run against it isn't reproducible.
+#
+# Run the eval against its own local-generator server:
+#   PORT=8001 RAG_DETERMINISTIC=1 .venv/bin/python3 run_server.py     # no GENERATOR_PROVIDER
+#   RAG_API_BASE=http://127.0.0.1:8001 RAG_DETERMINISTIC=1 PYTHONPATH=. \
+#       .venv/bin/python3 eval/run_eval.py <name>
+API_BASE = os.environ.get("RAG_API_BASE", "http://127.0.0.1:8000")
 QUESTIONS_PATH = Path("eval/questions.json")
 N_RESULTS = 6
 MAX_ATTEMPTS = 2
@@ -105,12 +118,27 @@ def keyphrase_coverage(answer: str, keyphrases: list[str]) -> float:
     return hits / len(keyphrases)
 
 
+def _strip_json_fence(raw: str) -> str:
+    """Ollama's format='json' guarantees bare JSON, but a cloud judge has no
+    such constraint and commonly wraps its object in a ```json fence. Strip
+    it so the same parse path serves both, rather than scoring every cloud-
+    judged turn as a parse error (score=None)."""
+    s = (raw or "").strip()
+    if s.startswith("```"):
+        s = s.split("\n", 1)[-1] if "\n" in s else s
+        if s.rstrip().endswith("```"):
+            s = s.rstrip()[:-3]
+    # tolerate leading prose before the object
+    start, end = s.find("{"), s.rfind("}")
+    return s[start:end + 1] if start != -1 and end > start else s
+
+
 def judge_answer(question: str, expected_answer: str, actual_answer: str, model: str = JUDGE_MODEL) -> dict:
     user_prompt = (
         f"Question: {question}\n\nReference answer: {expected_answer}\n\n"
         f"Assistant's answer: {actual_answer}"
     )
-    raw = chat(
+    raw = judge_chat(
         messages=[
             {"role": "system", "content": JUDGE_SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt},
@@ -119,7 +147,7 @@ def judge_answer(question: str, expected_answer: str, actual_answer: str, model:
         model=model,
     )
     try:
-        parsed = json.loads(raw)
+        parsed = json.loads(_strip_json_fence(raw))
         return {"score": int(parsed["score"]), "justification": parsed.get("justification", "")}
     except Exception as exc:
         return {"score": None, "justification": f"judge parse error: {exc}"}
