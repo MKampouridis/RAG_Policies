@@ -27,6 +27,44 @@ DOT_LEADER_RE = re.compile(r"\.{4,}")
 REPEATED_LINE_MIN_COUNT = 5
 REPEATED_LINE_MAX_LEN = 120
 
+# Repetition alone does NOT mean page furniture (bug found 2026-08-08). Rules-
+# of-assessment documents are built from parallel per-year sections, so genuine
+# policy clauses recur verbatim - and the old "short line repeated >=5 times"
+# rule deleted them from EVERY occurrence. In
+# roa-ug-integrated-masters-4yr-year-1 it stripped all six of its matches and
+# not one was a header: "must withdraw from the University in any of the
+# following situations:", "- Where the Year Mark is below 20;", "- Where a
+# student cannot complete their studies within the maximum", "period.", "and",
+# "or". The operative verb of the progression rule was removed from the index,
+# so no retriever or generator could ever answer "what happens if I fail to
+# progress" - which is exactly what a user reported. Corpus-wide the rule
+# stripped 2351 distinct line-types, of which only ~10 matched any furniture
+# pattern.
+#
+# A repeated line is now only removed when it also LOOKS like furniture: a page
+# marker, a contents/nav line, or a bare number. Prose is additionally vetoed -
+# anything ending in sentence punctuation or opening with a bullet/enumerator.
+# Deliberately biased toward keeping text: a surviving running title costs a
+# little chunk dilution (the original motivation), whereas a deleted clause is
+# unanswerable and invisible.
+_FURNITURE_RE = re.compile(
+    r"(?:page\s*\d+|\d+\s*of\s*\d+|return\s+to\s+contents|back\s+to\s+contents"
+    r"|^\s*contents\s*$|^\W*\d+\W*$)",
+    re.I,
+)
+_PROSE_RE = re.compile(r"[.;:,]\s*$|^\s*[-•▪]|^\s*\(?[a-z0-9]{1,3}[).]\s")
+
+
+def _is_page_furniture(line: str) -> bool:
+    """True when a repeated line looks like a running header/footer rather than
+    document content. Conservative by design - see the note above."""
+    s = line.strip()
+    if not s:
+        return True
+    if _PROSE_RE.search(s):
+        return False
+    return bool(_FURNITURE_RE.search(s))
+
 _client = None
 
 
@@ -58,7 +96,10 @@ def clean_text(text: str) -> str:
         stripped = line.strip()
         if stripped and len(stripped) <= REPEATED_LINE_MAX_LEN:
             counts[stripped] = counts.get(stripped, 0) + 1
-    repeated = {s for s, c in counts.items() if c >= REPEATED_LINE_MIN_COUNT}
+    repeated = {
+        s for s, c in counts.items()
+        if c >= REPEATED_LINE_MIN_COUNT and _is_page_furniture(s)
+    }
     kept = [line for line in lines if line.strip() not in repeated]
     return "\n".join(kept)
 
