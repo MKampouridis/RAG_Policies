@@ -2880,3 +2880,80 @@ chunks with the *same* cleaning the ingest applies, rather than ad-hoc normalisa
 treat this as one verified defect and an open question, not a corpus-wide claim. If it does turn out
 to be widespread it would be a more likely explanation for residual retrieval misses than anything in
 the Round 5 retrieval bake-off, since no amount of reranking can retrieve text that was never indexed.
+
+---
+
+# The clean_text content-deletion bug, and what fixing it did (2026-08-08)
+
+## Root cause: not a stale index, a live bug
+
+Chasing the missing withdrawal rule, I first concluded the index was stale and re-embedded. **That
+changed nothing** - because `reembed.py` runs the same `clean_text()`. The defect is live in the
+ingest path.
+
+`clean_text()` removed any line shorter than 120 chars repeating >= 5 times, on the assumption that
+repetition means a running header/footer. **Rules-of-assessment documents are built from parallel
+per-year sections, so genuine policy clauses recur verbatim** - and the rule deleted them from EVERY
+occurrence. For `roa-ug-integrated-masters-4yr-year-1` all six of its matches were content and not
+one was a header:
+
+| times | line removed |
+|---|---|
+| x10 | `or` |
+| x9 | `and` |
+| x6 | `must withdraw from the University in any of the following situations:` |
+| x6 | `- Where the Year Mark is below 20;` |
+| x5 | `- Where a student cannot complete their studies within the maximum` |
+| x5 | `period.` |
+
+Losing the operative verb made "what happens if I fail to progress" unanswerable **from the entire
+corpus** - no retriever or generator could recover it. Corpus-wide the rule stripped **2351 distinct
+line-types, of which only ~10 matched any page-furniture pattern.**
+
+**Fix:** a repeated line is now removed only if it also *looks* like furniture (page marker,
+contents/nav line, bare number), with a prose veto for anything ending in sentence punctuation or
+opening with a bullet/enumerator. Biased toward keeping text - a surviving running title costs slight
+chunk dilution, a deleted clause is unanswerable and invisible.
+
+**Effect on the corpus:** 20,436 -> **21,283 chunks (+847)**, and the stale-index audit goes from
+72/245 documents missing content to **0/245**.
+
+## Effect on retrieval: +1 net, and that number is misleading
+
+Measured with `eval/retrieval_replay.py` - retrieval only, replaying each turn's stored
+`retrieval_query`, so the index is the only variable and there is no generation or judging noise.
+The before pass reproduced the committed baseline exactly (86.2% / 67.5%), confirming the harness is
+faithful.
+
+| | before | after |
+|---|---|---|
+| main set | 69/80 (86.2%) | 69/80 (86.2%) |
+| set 2 | 54/80 (67.5%) | 55/80 (68.8%) |
+| **total** | **123/160 (76.9%)** | **124/160 (77.5%)** |
+
+Net **+1** (3 gained, 2 lost; rank changed on 5 turns held by both, 3 improved). On its face: a wash.
+
+**But the headline turn makes the case for a better metric better than any argument could.** The turn
+that hit@6 records as LOST is `roa-ug-integrated-masters-4yr-year-1 [follow_up]` - the very document
+the fix repaired. Its gold document now falls outside the top 6, so hit@6 calls it a regression. Yet
+checking the retrieved context directly:
+
+- `withdraw` - **present**
+- `year mark is below 20` - **present**
+- `maximum period` - **present**
+
+all supplied by sibling documents (year-2, year-3, the 22-v4 edition). **The user now gets a correct
+answer to a question that, before the fix, was unanswerable from any document in the corpus** - and
+hit@6 scores that change as negative.
+
+## Conclusion
+
+Two things stand. First, the bug was real, corpus-wide, and is fixed: content that existed in no
+indexed document is now retrievable. Second, **hit@6 could not see any of it** - it recorded the
+repair as a small net wash and the flagship case as a loss, because it measures which document was
+retrieved rather than whether the answer was available. That is the same blind spot measured earlier
+today (8.7 points on the main set), now demonstrated in the opposite direction: not only can a scored
+hit be a user-facing failure, a scored miss can be a user-facing success.
+
+Adopting the useful-answer rate, or a claim-level metric, is no longer a refinement - without it,
+work like this fix is invisible or actively mis-signposted.
