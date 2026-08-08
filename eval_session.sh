@@ -67,9 +67,32 @@ if lsof -nP -iTCP:"$EVAL_PORT" -sTCP:LISTEN >/dev/null 2>&1; then
   exit 1
 fi
 
-echo ">> starting LOCAL deterministic eval server on :$EVAL_PORT"
-# deliberately no GENERATOR_PROVIDER / CONTEXTUALIZE_PROVIDER: local models only
-env PORT="$EVAL_PORT" HOST=127.0.0.1 RAG_DETERMINISTIC=1 \
+# Local by default; cloud components only when EXPLICITLY requested, e.g.
+#   EVAL_GENERATOR=anthropic EVAL_GENERATOR_MODEL=claude-haiku-4-5 ./eval_session.sh haiku_gen ...
+# The distinction that matters is deliberate-vs-accidental: an ambient
+# GENERATOR_PROVIDER in the shell must NOT silently change what is measured, so
+# only these EVAL_-prefixed variables are honoured and the effective
+# configuration is printed before anything runs.
+CFG="local generator, local contextualizer"
+GEN_ENV=(); CTX_ENV=()
+if [ -n "$EVAL_GENERATOR" ]; then
+  GEN_ENV=(GENERATOR_PROVIDER="$EVAL_GENERATOR")
+  [ -n "$EVAL_GENERATOR_MODEL" ] && GEN_ENV+=(GENERATOR_MODEL="$EVAL_GENERATOR_MODEL")
+  CFG="generator=${EVAL_GENERATOR}${EVAL_GENERATOR_MODEL:+/$EVAL_GENERATOR_MODEL}, local contextualizer"
+fi
+if [ -n "$EVAL_CONTEXTUALIZER" ]; then
+  CTX_ENV=(CONTEXTUALIZE_PROVIDER="$EVAL_CONTEXTUALIZER")
+  [ -n "$EVAL_CONTEXTUALIZER_MODEL" ] && CTX_ENV+=(ANTHROPIC_CONTEXTUALIZE_MODEL="$EVAL_CONTEXTUALIZER_MODEL")
+  CFG="${CFG%, local contextualizer}, contextualizer=${EVAL_CONTEXTUALIZER}${EVAL_CONTEXTUALIZER_MODEL:+/$EVAL_CONTEXTUALIZER_MODEL}"
+fi
+if [ -n "$EVAL_GENERATOR$EVAL_CONTEXTUALIZER" ]; then
+  echo "!! NOTE: cloud components requested - this run is NOT reproducible"
+  echo "   (cloud calls cannot be temperature-pinned) and its absolute numbers"
+  echo "   are not comparable to the local ledger. Compare like-for-like only."
+fi
+
+echo ">> starting eval server on :$EVAL_PORT  [$CFG, deterministic]"
+env PORT="$EVAL_PORT" HOST=127.0.0.1 RAG_DETERMINISTIC=1 "${GEN_ENV[@]}" "${CTX_ENV[@]}" \
     .venv/bin/python3 run_server.py > "data/server_eval${EVAL_PORT}.log" 2>&1 &
 SERVER_PID=$!
 echo $SERVER_PID > "$PIDFILE"
@@ -84,9 +107,18 @@ curl -sf -o /dev/null "http://127.0.0.1:${EVAL_PORT}/" || { echo "!! eval server
 # confirm the server answering us is OURS and is configured local+deterministic
 SERVED_BY=$(lsof -t -iTCP:"$EVAL_PORT" -sTCP:LISTEN 2>/dev/null | head -1)
 [ "$SERVED_BY" = "$SERVER_PID" ] || { echo "!! :$EVAL_PORT is served by pid $SERVED_BY, not ours ($SERVER_PID)"; exit 1; }
-if ps eww "$SERVER_PID" 2>/dev/null | tr ' ' '\n' | grep -qE "^(GENERATOR|CONTEXTUALIZE)_PROVIDER="; then
-  echo "!! eval server has a cloud provider set - it must be local"; exit 1
-fi
+# guard against LEAKED providers: the server must carry only what we asked for
+for v in GENERATOR_PROVIDER CONTEXTUALIZE_PROVIDER; do
+  set_on_server=$(ps eww "$SERVER_PID" 2>/dev/null | tr ' ' '\n' | grep "^${v}=" || true)
+  case "$v" in
+    GENERATOR_PROVIDER)      wanted="$EVAL_GENERATOR" ;;
+    CONTEXTUALIZE_PROVIDER)  wanted="$EVAL_CONTEXTUALIZER" ;;
+  esac
+  if [ -n "$set_on_server" ] && [ -z "$wanted" ]; then
+    echo "!! $v is set on the eval server but was not requested via EVAL_* - refusing"
+    echo "   (an ambient provider would silently change what is measured)"; exit 1
+  fi
+done
 echo ">> eval server ready (pid $SERVER_PID, local models, deterministic)"
 
 for QS in "${QUESTION_SETS[@]}"; do
