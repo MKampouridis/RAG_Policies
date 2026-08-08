@@ -42,6 +42,11 @@ See `INLINE_CITATIONS`, `HOME_INSTITUTION_TIEBREAK_ENABLED`, `MULTIHOP_DECOMPOSI
 
 ## Eval hygiene
 
+- **Use `./eval_session.sh <name> [questions.json ...]`** — it stops production, starts a local
+  deterministic server on :8001, runs the sets, and restores production via an EXIT trap even on
+  failure. It refuses to run if anything already holds :8001, because a stale server answers the
+  health check and silently serves the eval with *its* configuration (caught exactly that in
+  testing: a leftover cloud-generator server served a "local" run).
 - The eval drives a **server over HTTP**, so one server = one configuration. Production may use
   cloud models; **the eval server must stay local and deterministic** (`RAG_DETERMINISTIC=1` on
   *both* server and script) — cloud calls cannot be temperature-pinned, and every ledger number was
