@@ -345,6 +345,9 @@ def _family_labels_named(text: str) -> set[str]:
     return {lab for lab, toks in families if lab and (toks & hit)}
 
 
+EXTRANEOUS_FAMILY_GUARD = False  # see _has_extraneous_family: caused a -8.8pt follow-up regression
+
+
 def _has_extraneous_family(original: str, rewritten: str, history: list[dict]) -> bool:
     """True if the rewrite introduced identity tokens for a programme family
     the original question never named and that isn't the single active
@@ -353,15 +356,34 @@ def _has_extraneous_family(original: str, rewritten: str, history: list[dict]) -
     programme names onto an unrelated new question (real example: "what is
     the minimum and maximum duration for a phd?" came back rewritten with
     five unrelated MSc programme names appended from two turns earlier).
-    Only ONE anchor family is ever a legitimate carry-forward - that's
-    already ALIAS_ANCHOR_GUARD's model - so anything beyond it is noise, not
-    a resolved reference."""
+
+    DISABLED 2026-08-08 - it did more harm than the bug it fixed, and the
+    design is unsound. _family_labels_named counts document FAMILIES, but one
+    programme spans many (a "three-year Honours Degree" mention matches
+    roa-ug-3yr-year-1/-2/-3 and their variations), so naming ONE programme is
+    indistinguishable from naming several. Raising the threshold to >=2
+    recovered only 3 of 33 wrongly-rejected rewrites, confirming the counting -
+    not the threshold - is wrong.
+
+    Cost/benefit is decisive: it caught one rare hallucination (a rewrite that
+    appended five unrelated MSc names) while rejecting 33 correct rewrites in a
+    day against 1 in all prior history, each falling back to the raw
+    context-free question - follow-up hit@6 75.0% -> 66.2% (-8.8pts) with
+    primary turns unaffected (+1.2). The other reported topic-switch bug
+    ("duration of phd" answered about Professional Doctorates) is fixed
+    independently by _names_award_type, which is verified and stays on.
+
+    Re-enable only with a counting scheme that resolves families to programmes
+    first, and validate on FOLLOW-UP hit@6 - the 30-turn multi-turn probe is
+    topic-switch-heavy and did not catch this."""
+    if not EXTRANEOUS_FAMILY_GUARD:
+        return False
     new_families = _family_labels_named(rewritten) - _family_labels_named(original)
     if not new_families:
         return False
     anchor_label, _ = _anchor_from_history(history)
     new_families.discard(anchor_label)
-    return bool(new_families)
+    return len(new_families) >= 2
 
 
 def _is_faithful_rewrite(original: str, rewritten: str) -> bool:
