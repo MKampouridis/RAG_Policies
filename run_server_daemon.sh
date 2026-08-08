@@ -20,11 +20,24 @@ cd "$(dirname "$0")"
 
 [ -f "$HOME/.config/anthropic/env" ] && source "$HOME/.config/anthropic/env"
 
-if [ -n "$RAG_CLOUD_GENERATOR" ]; then
+# Production serves from the cloud models by default (2026-08-08, user's call).
+# Rationale is latency and RAM, not answer quality alone: with gemma3 (8GB) and
+# qwen2.5:7b (5GB) both resident on a 16GB machine the stack swaps constantly,
+# which is most of the 30-60s response time. Moving generation and query
+# rewriting off-device leaves ~0.9GB (nomic-embed + ColBERT) and no swapping.
+# Cost is ~$0.009/question (~$4.75/month at 20/day).
+#
+# The EVAL deliberately does NOT follow this - it runs local via its own server
+# on :8001, so numbers stay comparable to the ledger and reproducible under
+# RAG_DETERMINISTIC (cloud calls can't be temperature-pinned).
+#
+# Set RAG_LOCAL_ONLY=1 to serve fully locally (no API spend, no network need).
+if [ -z "$RAG_LOCAL_ONLY" ]; then
   if [ -n "$ANTHROPIC_API_KEY" ]; then
     export GENERATOR_PROVIDER=anthropic
+    export CONTEXTUALIZE_PROVIDER=anthropic
   else
-    echo "$(date '+%F %T') WARNING: RAG_CLOUD_GENERATOR set but ANTHROPIC_API_KEY missing - using local generator" >&2
+    echo "$(date '+%F %T') WARNING: ANTHROPIC_API_KEY missing - falling back to local models" >&2
   fi
 fi
 
