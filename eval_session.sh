@@ -119,7 +119,7 @@ for v in GENERATOR_PROVIDER CONTEXTUALIZE_PROVIDER; do
     echo "   (an ambient provider would silently change what is measured)"; exit 1
   fi
 done
-echo ">> eval server ready (pid $SERVER_PID, local models, deterministic)"
+echo ">> eval server ready (pid $SERVER_PID) [$CFG]"
 
 for QS in "${QUESTION_SETS[@]}"; do
   SUFFIX=$(basename "$QS" .json | sed 's/^questions//; s/^_//')
