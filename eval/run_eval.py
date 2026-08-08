@@ -217,10 +217,42 @@ def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
     partial-but-silently-succeeding run is exactly the failure mode that
     caused the original bug."""
     questions = json.loads(questions_path.read_text())
+    total_questions = len(questions)  # fixed denominator: `questions` shrinks on resume
     output_path = Path(f"eval/results_{output_name}.json")
 
+    # RESUME (2026-08-08). An 80-turn run is ~90 minutes, and two were killed
+    # part-way through this session at ~60 and ~80 minutes - not by this code
+    # (no traceback, clean stop mid-run) and not by memory pressure (no jetsam
+    # events; the 8GB Ollama and both servers survived while only this small
+    # client died). The cause was never established, which is the point: rather
+    # than depend on diagnosing an opaque external cause, make an interrupted
+    # run cheap to finish. Results were already written incrementally, so no
+    # data was lost - but the whole run had to be repeated to get the last
+    # question. Now it picks up where it stopped.
+    #
+    # Keyed on source_url because that is what run() iterates and what every
+    # comparison joins on. Set RAG_EVAL_NO_RESUME=1 to force a clean re-run
+    # (e.g. after changing the system, when stale rows would silently mix two
+    # configurations into one results file - the failure mode this must not
+    # cause).
     results = []
-    for i, item in enumerate(questions, 1):
+    if output_path.is_file() and not os.environ.get("RAG_EVAL_NO_RESUME"):
+        try:
+            results = json.loads(output_path.read_text())
+        except Exception:
+            results = []
+        if results:
+            done = {r.get("source_url") for r in results}
+            remaining = [q for q in questions if q["source_url"] not in done]
+            print(
+                f"RESUMING {output_path.name}: {len(results)}/{len(questions)} already done, "
+                f"{len(remaining)} to go. (RAG_EVAL_NO_RESUME=1 to start clean.)",
+                flush=True,
+            )
+            questions = remaining
+
+    done_before = len(results)
+    for i, item in enumerate(questions, done_before + 1):
         t0 = time.time()
         last_exc = None
         for attempt in range(1, MAX_ATTEMPTS + 1):
@@ -229,7 +261,7 @@ def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
                 elapsed = time.time() - t0
                 results.append(r)
                 print(
-                    f"[{i}/{len(questions)}] ({elapsed:.1f}s) "
+                    f"[{i}/{total_questions}] ({elapsed:.1f}s) "
                     f"primary hit@6={r['primary']['retrieval']['hit_at_6']} score={r['primary']['judge']['score']} | "
                     f"followup hit@6={r['follow_up']['retrieval']['hit_at_6']} score={r['follow_up']['judge']['score']} "
                     f"-- {item['source_title']}",
@@ -240,18 +272,18 @@ def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
             except Exception as exc:
                 last_exc = exc
                 if attempt < MAX_ATTEMPTS:
-                    print(f"[{i}/{len(questions)}] attempt {attempt} FAILED for {item['source_title']}: {exc} - retrying", flush=True)
+                    print(f"[{i}/{total_questions}] attempt {attempt} FAILED for {item['source_title']}: {exc} - retrying", flush=True)
                     time.sleep(5)
         if last_exc is not None:
             output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False))
             raise RuntimeError(
-                f"[{i}/{len(questions)}] FAILED for {item['source_title']} after {MAX_ATTEMPTS} attempts: {last_exc}"
-                f" - wrote {len(results)}/{len(questions)} results to {output_path} before stopping"
+                f"[{i}/{total_questions}] FAILED for {item['source_title']} after {MAX_ATTEMPTS} attempts: {last_exc}"
+                f" - wrote {len(results)}/{total_questions} results to {output_path} before stopping"
             ) from last_exc
         output_path.write_text(json.dumps(results, indent=2, ensure_ascii=False))
 
-    assert len(results) == len(questions), (
-        f"wrote {len(results)} results but expected {len(questions)} - denominator would be silently wrong"
+    assert len(results) == total_questions, (
+        f"wrote {len(results)} results but expected {total_questions} - denominator would be silently wrong"
     )
     print(f"\nDone. Wrote {len(results)} results to {output_path}")
 
