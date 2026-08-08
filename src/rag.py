@@ -15,7 +15,7 @@ from src import splade as _splade
 from src.docid import document_family as _document_family
 from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.ingest import query as vector_query
-from src.llm import CONTEXTUALIZE_MODEL, chat, generate
+from src.llm import CONTEXTUALIZE_MODEL, chat, contextualize_chat, generate
 
 N_RESULTS = 6
 # over-fetch so recency filtering AND reranking have real depth to work with -
@@ -549,7 +549,7 @@ def _contextualize_query(question: str, history: list[dict], summary: str = "") 
         parts.append("\n".join(f"{m['role']}: {m['content']}" for m in recent))
     transcript = "\n".join(parts)
 
-    rewritten = chat(messages=[
+    rewritten = contextualize_chat(messages=[
         {"role": "system", "content": CONTEXTUALIZE_SYSTEM_PROMPT},
         {"role": "user", "content": f"{transcript}\n\nFollow-up question: {question}\n\nStandalone question:"},
     ], model=CONTEXTUALIZE_MODEL).strip()

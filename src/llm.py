@@ -252,6 +252,34 @@ def judge_chat(messages: list[dict], format: str | None = None, model: str | Non
     return chat(messages=messages, format=format, model=model or JUDGE_MODEL)
 
 
+# Contextualizer routing (2026-08-08). The query rewriter is the smallest model
+# in the stack (qwen2.5:7b) doing the hardest inference in it - working out what
+# "these values" refers to from a transcript - and it sits on the critical path
+# for every follow-up. Tonight's numbers say that is where the system is weakest:
+# under a frontier judge, primary turns score 4.24 mean and follow-ups 3.32
+# (useful-answer 72.5% vs 51.9%). Round 5 already tried the local alternatives -
+# qwen2.5:14b +2.5 (not worth 2x cost), gemma3:12b -6.2, qwen3:8b disqualified -
+# so the ceiling looks like model capability, and a frontier model was never
+# tested here.
+#
+# Cheap to run: input is a short transcript (~320 tokens) and output is one
+# rewritten question (~30), so ~$0.001/call - about 6% of what a generation call
+# costs. Separate from GENERATOR_PROVIDER and JUDGE_PROVIDER so each component
+# can be swapped and measured on its own; changing two at once is what made
+# attribution impossible earlier in this session.
+CONTEXTUALIZE_PROVIDER = os.environ.get("CONTEXTUALIZE_PROVIDER", "").lower()
+ANTHROPIC_CONTEXTUALIZE_MODEL = os.environ.get("ANTHROPIC_CONTEXTUALIZE_MODEL", "claude-sonnet-5")
+
+
+def contextualize_chat(messages: list[dict], model: str | None = None) -> str:
+    """Query-rewrite call. Routes to Anthropic under
+    CONTEXTUALIZE_PROVIDER=anthropic, else the local CONTEXTUALIZE_MODEL."""
+    if CONTEXTUALIZE_PROVIDER == "anthropic":
+        cloud_model = model if (model or "").startswith("claude-") else ANTHROPIC_CONTEXTUALIZE_MODEL
+        return _anthropic_generate(messages, model=cloud_model)
+    return chat(messages=messages, model=model or CONTEXTUALIZE_MODEL)
+
+
 def generate(messages: list[dict]) -> str:
     """Answer-generation call. Routes to a cloud generator when
     GENERATOR_PROVIDER is set (else the local CHAT_MODEL via chat()). Kept
