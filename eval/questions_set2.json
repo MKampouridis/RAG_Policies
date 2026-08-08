@@ -341,12 +341,12 @@
     "department": null,
     "academic_year": "2024-25",
     "question": "How many members of staff must be nominated by a department if they have more than 149 postgraduate research students for potential Independent Chairs?",
-    "expected_answer": "If a department has more than 149 postgraduate research students, they must nominate 3 members of staff to be listed as potential Independent Chairs.",
+    "expected_answer": "If a department has more than 149 postgraduate research students (i.e. 150 or more), they must nominate 4 members of staff to be listed as potential Independent Chairs.",
     "keyphrases": [
       "must be nominated",
-      "more than 149",
+      "150+",
       "postgraduate research students",
-      "3 members of staff"
+      "4"
     ],
     "follow_up_question": "What happens if a department has fewer than the minimum number of nominations required for their PGR student community?",
     "follow_up_expected_answer": "The Faculty Education Committee approves the list of potential Independent Chairs annually, so departments will be notified by the Postgraduate Research Education Team how many nominations they must put forward.",
