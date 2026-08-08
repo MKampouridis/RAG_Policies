@@ -36,6 +36,14 @@ if [ -z "$RAG_LOCAL_ONLY" ]; then
   if [ -n "$ANTHROPIC_API_KEY" ]; then
     export GENERATOR_PROVIDER=anthropic
     export CONTEXTUALIZE_PROVIDER=anthropic
+    # Haiku for the rewriter, not Sonnet. Sonnet measured NULL against the local
+    # 7B (+1.2pts follow-up hit@6, +0.0 useful answer), so this task is not
+    # capability-bound and the right pick is the fastest adequate model. Haiku
+    # produced identical rewrites on the elliptical, pronoun and topic-switch
+    # cases at 0.85s vs 2.17s - and the contextualizer sits SERIALLY in front of
+    # retrieval, so that 1.3s comes straight off every follow-up (~11% of a ~12s
+    # turn). Cost is a rounding error either way ($0.14 vs $0.28/month).
+    export ANTHROPIC_CONTEXTUALIZE_MODEL=claude-haiku-4-5
   else
     echo "$(date '+%F %T') WARNING: ANTHROPIC_API_KEY missing - falling back to local models" >&2
   fi
