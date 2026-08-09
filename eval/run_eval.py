@@ -168,16 +168,43 @@ def eval_one(item: dict) -> dict:
         delete_conversation(conv_id)  # don't leave eval scaffolding in the sidebar
 
 
+def _no_gold_retrieval(api_result: dict) -> dict:
+    """Retrieval record for an abstention item. hit_at_6 is None, not False:
+    False would read as a retrieval failure in any aggregate that sums it,
+    whereas None forces callers to exclude these turns explicitly."""
+    return {
+        "rank": None,
+        "hit_at_6": None,
+        "reciprocal_rank": None,
+        "top_urls": api_result.get("ranked_top_urls", []),
+        "retrieval_query": api_result.get("retrieval_query"),
+        "no_gold_document": True,
+    }
+
+
 def _eval_one(conv_id: str, item: dict) -> dict:
+    # ABSTENTION items (2026-08-09) have no gold document - the correct answer is
+    # that the corpus does not cover the question, which is a real and
+    # user-reported failure mode (the system answered a full-time/part-time PhD
+    # switch question from unrelated provisions instead of saying it wasn't
+    # covered). hit@6 is meaningless for them: there is nothing to retrieve, so
+    # scoring them alongside ordinary turns would drag the retrieval headline
+    # down for behaviour that is CORRECT. They are tagged here and excluded from
+    # retrieval aggregates; the judge still scores the answer against a gold
+    # answer describing the expected abstention.
+    expects_abstention = bool(item.get("expects_abstention"))
     result = {
         "source_url": item["source_url"],
         "source_title": item["source_title"],
         "doc_type": item["doc_type"],
+        "question_style": item.get("question_style", "factual"),
+        "expects_abstention": expects_abstention,
     }
 
     # primary question - no prior history
     api_result = post_message(conv_id, item["question"])
-    retrieval = score_retrieval(item["source_url"], api_result["retrieval_query"], api_result["ranked_top_urls"])
+    retrieval = (_no_gold_retrieval(api_result) if expects_abstention
+                 else score_retrieval(item["source_url"], api_result["retrieval_query"], api_result["ranked_top_urls"]))
     judge = judge_answer(item["question"], item["expected_answer"], api_result["answer"])
     result["primary"] = {
         "question": item["question"],
@@ -191,9 +218,10 @@ def _eval_one(conv_id: str, item: dict) -> dict:
 
     # follow-up question, same conversation (tests memory-aware retrieval too)
     fu_api_result = post_message(conv_id, item["follow_up_question"])
-    fu_retrieval = score_retrieval(
-        item["source_url"], fu_api_result["retrieval_query"], fu_api_result["ranked_top_urls"]
-    )
+    fu_retrieval = (_no_gold_retrieval(fu_api_result) if expects_abstention
+                    else score_retrieval(
+                        item["source_url"], fu_api_result["retrieval_query"], fu_api_result["ranked_top_urls"]
+                    ))
     fu_judge = judge_answer(item["follow_up_question"], item["follow_up_expected_answer"], fu_api_result["answer"])
     result["follow_up"] = {
         "question": item["follow_up_question"],
@@ -242,8 +270,11 @@ def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
         except Exception:
             results = []
         if results:
-            done = {r.get("source_url") for r in results}
-            remaining = [q for q in questions if q["source_url"] not in done]
+            # Keyed on (source_url, question), not source_url alone: abstention
+            # items (2026-08-09) all have source_url None, so a url-only key
+            # collapses them into one and silently drops the rest on resume.
+            done = {(r.get("source_url"), r.get("primary", {}).get("question")) for r in results}
+            remaining = [q for q in questions if (q["source_url"], q["question"]) not in done]
             print(
                 f"RESUMING {output_path.name}: {len(results)}/{len(questions)} already done, "
                 f"{len(remaining)} to go. (RAG_EVAL_NO_RESUME=1 to start clean.)",

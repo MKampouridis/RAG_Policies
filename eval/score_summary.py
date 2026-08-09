@@ -76,6 +76,24 @@ def _load_questions_by_url(questions_path: Path) -> dict[str, list[dict]]:
     return by_url
 
 
+# Heuristic only. The generator has no fixed refusal string (SYSTEM_PROMPT just
+# says "say so plainly"), so this cannot be the headline - it is a cheap
+# tripwire for eyeballing, and the judge score against the gold abstention
+# answer is what actually decides whether the turn was right.
+_ABSTAIN_MARKERS = (
+    "do not contain", "don't contain", "does not contain", "doesn't contain",
+    "not covered", "do not cover", "does not cover", "doesn't cover",
+    "no information", "not specify", "don't specify", "does not specify",
+    "doesn't specify", "not set out", "not stated", "unable to find",
+    "could not find", "couldn't find", "not addressed", "not available in",
+)
+
+
+def _looks_like_abstention(answer: str) -> bool:
+    low = (answer or "").lower()
+    return any(m in low for m in _ABSTAIN_MARKERS)
+
+
 def _load_years() -> None:
     """Uses effective_year(), not raw normalize_year() - external code review
     (2026-07-21) found this module had drifted from production's own
@@ -116,6 +134,14 @@ def summarize(results: list[dict], questions_path: Path = DEFAULT_QUESTIONS_PATH
 
     manifest = json.loads(MANIFEST_PATH.read_text())["documents"]
     questions_by_url = _load_questions_by_url(questions_path)
+
+    # ABSTENTION turns are held out of every retrieval-bearing aggregate
+    # (2026-08-09, user's call). They have no gold document, so hit@6,
+    # lenient hit and evidence-sufficiency are all undefined for them -
+    # folding them in would score correct behaviour as a retrieval miss and
+    # drag the headline down. They get their own block below.
+    abstention = [r for r in results if r.get("expects_abstention")]
+    results = [r for r in results if not r.get("expects_abstention")]
 
     # annotate each turn in-place with its evidence-sufficiency verdict,
     # matched via the same per-URL queue as score_evidence_sufficiency.py
@@ -180,7 +206,23 @@ def summarize(results: list[dict], questions_path: Path = DEFAULT_QUESTIONS_PATH
             "lenient": {**hit_curve(lenient_ranks), "mrr": mrr(lenient_ranks)},
         }
 
+    def abstention_stats(rows):
+        turn_list = [t for r in rows for t in (r["primary"], r["follow_up"])]
+        if not turn_list:
+            return {"n": 0}
+        scores = [t["judge"]["score"] for t in turn_list if t["judge"]["score"] is not None]
+        return {
+            "n": len(turn_list),
+            "answer_score_mean": statistics.mean(scores) if scores else None,
+            "abstained_lexical_rate": sum(
+                1 for t in turn_list if _looks_like_abstention(t["actual_answer"])
+            ) / len(turn_list),
+            "note": "no gold document; excluded from all retrieval metrics. "
+                    "abstained_lexical_rate is a heuristic - judge score decides.",
+        }
+
     return {
+        "abstention": abstention_stats(abstention),
         "overall": stats_for(turns()),
         "primary_only": stats_for([(r, r["primary"]) for r in results]),
         "follow_up_only": stats_for([(r, r["follow_up"]) for r in results]),
