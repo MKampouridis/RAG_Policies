@@ -92,7 +92,11 @@ if [ -n "$EVAL_GENERATOR$EVAL_CONTEXTUALIZER" ]; then
 fi
 
 echo ">> starting eval server on :$EVAL_PORT  [$CFG, deterministic]"
-env PORT="$EVAL_PORT" HOST=127.0.0.1 RAG_DETERMINISTIC=1 "${GEN_ENV[@]}" "${CTX_ENV[@]}" \
+# stage timing to a SEPARATE file: 160 turns of controlled latency data per run,
+# which is the sample that ad-hoc single-query timings kept getting wrong
+env PORT="$EVAL_PORT" HOST=127.0.0.1 RAG_DETERMINISTIC=1 \
+    RAG_TIMING=1 RAG_TIMING_PATH="data/latency_eval_${NAME}.jsonl" \
+    "${GEN_ENV[@]}" "${CTX_ENV[@]}" \
     .venv/bin/python3 run_server.py > "data/server_eval${EVAL_PORT}.log" 2>&1 &
 SERVER_PID=$!
 echo $SERVER_PID > "$PIDFILE"

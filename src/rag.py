@@ -3,7 +3,9 @@ assemble a prompt with retrieved context + conversation history, and
 generate an answer via the local chat model."""
 
 import json
+import os
 import re
+import time as _perf
 
 from src import colbert_index as _colbert_index
 from src import doc_index as _doc_index
@@ -1015,12 +1017,47 @@ def _format_context(results: dict) -> str:
 _LAST_CANDIDATE_POOL = None  # set by retrieve() to the pre-rerank fused pool; read by the recall diagnostic
 
 
+# Stage timing (2026-08-09). Out-of-process timing of this pipeline gave three
+# mutually inconsistent answers in one session (dense retrieval measured at
+# 0.15s, 2.73s and 0.57s) because single-query timings on this machine are
+# dominated by cache state and memory pressure. Real end-to-end latency is
+# ~9s median with a long tail (one 23s outlier in 8 requests), and the stages
+# did not sum to the total - so the tail is worth attributing from real traffic
+# rather than estimated again.
+#
+# Writes one JSON line per stage to data/latency.jsonl, gitignored, best-effort:
+# instrumentation must never break a user's request. Off unless RAG_TIMING=1.
+RAG_TIMING = os.environ.get("RAG_TIMING", "") == "1"
+# Separate paths so production traffic and eval runs never mix in one file -
+# they answer different questions (what users experience vs did change X help).
+_TIMING_PATH = os.environ.get("RAG_TIMING_PATH", "data/latency.jsonl")
+
+
+def _stage_timer(stage: str, started: float) -> None:
+    if not RAG_TIMING:
+        return
+    try:
+        from datetime import datetime, timezone
+        from pathlib import Path as _P
+        rec = {"ts": datetime.now(timezone.utc).isoformat(), "stage": stage,
+               "seconds": round(_perf.time() - started, 3)}
+        p = _P(_TIMING_PATH)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        with p.open("a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+    except Exception:
+        pass
+
+
 def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dict, str]:
     """The full retrieval path used by answer() - query contextualization
     plus recency preference - exposed separately so eval/scoring code can
     measure exactly what production retrieves, not a simplified stand-in.
     Returns (results, retrieval_query)."""
+    _t0 = _perf.time()
     retrieval_query = _contextualize_query(question, history, summary)
+    _stage_timer("contextualize", _t0)
+    _t0 = _perf.time()
 
     pool_size = N_RESULTS * FETCH_POOL_MULTIPLIER
 
@@ -1157,6 +1194,7 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     if PARTNER_INSTITUTION_DEMOTE_ENABLED:
         results = _demote_partner_institutions(results)
 
+    _stage_timer("retrieve", _t0)
     return results, retrieval_query
 
 
@@ -1351,6 +1389,7 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     the answer was actually generated from. Surfacing this call's own
     retrieval_query/ranked_top_urls lets callers score exactly what happened,
     with a single retrieve() invocation per turn."""
+    _ta = _perf.time()
     results, retrieval_query = retrieve(question, history, summary)
     metadatas = results.get("metadatas", [[]])[0]
     ranked_top_urls = [m.get("source_url") for m in metadatas]
@@ -1388,7 +1427,9 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     messages.extend(history)
     messages.append({"role": "user", "content": f"Context:\n{context}\n\nQuestion: {question}"})
 
+    _tg = _perf.time()
     response_text = generate(messages=messages)
+    _stage_timer("generate", _tg)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         # variance gate: skip the "rules differ by programme" caveat when the
@@ -1397,4 +1438,5 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
             response_text += _ambiguity_disclosure(metadatas)
 
     sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
+    _stage_timer("answer_total", _ta)
     return response_text, sources, retrieval_query, ranked_top_urls

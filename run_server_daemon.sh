@@ -49,5 +49,11 @@ if [ -z "$RAG_LOCAL_ONLY" ]; then
   fi
 fi
 
+# Per-stage latency to data/latency.jsonl (gitignored). Costs one appended
+# line per stage; enabled because out-of-process timing produced three
+# inconsistent answers and the ~9s median has a long tail worth attributing
+# from real traffic rather than estimating a fourth time.
+export RAG_TIMING=1
+
 export HOST=0.0.0.0
 exec .venv/bin/python3 run_server.py
