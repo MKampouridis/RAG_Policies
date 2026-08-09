@@ -1,0 +1,107 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+    "source_title": "PGT Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "A student has failed a core taught module with a mark of 45. Can that failure be condoned?",
+    "expected_answer": "No. Condonement applies only to non-core modules - failure with a mark of 40 or more may be condoned for up to 20 credits in non-core modules. All taught core modules must be passed, so a failed core module cannot be condoned regardless of the mark.",
+    "keyphrases": [
+      "non-core",
+      "Pass all taught core modules",
+      "may be condoned"
+    ],
+    "follow_up_question": "How many credits can be condoned in total?",
+    "follow_up_expected_answer": "Failure with a mark of 40 or more may be condoned for up to 20 credits in non-core modules, provided the other progression requirements are met.",
+    "follow_up_keyphrases": [
+      "20 credits",
+      "non-core"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question_style": "interpretive",
+    "question": "Both examiners have read the thesis and think the candidate is likely to be referred. They would rather not hold a viva. Can it be waived?",
+    "expected_answer": "No. Vivas will not be waived where one or more examiners has deemed from reading the thesis that the candidate seems likely to fail, to only be eligible for a lower award, or to be referred.",
+    "keyphrases": [
+      "will not be waived",
+      "likely to fail",
+      "lower award",
+      "referred"
+    ],
+    "follow_up_question": "What happens to a candidate who will not engage with viva arrangements at all?",
+    "follow_up_expected_answer": "A candidate who does not engage with the arrangements to the extent that it has not been possible to arrange a viva shall be deemed to have withdrawn permanently from the University and from their research degree, unless it has been agreed that the viva can be waived.",
+    "follow_up_keyphrases": [
+      "deemed to have withdrawn permanently",
+      "unless it has been agreed"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question_style": "interpretive",
+    "question": "We would like a visiting academic to supervise one of our PGR students. Is that permitted?",
+    "expected_answer": "Not as a supervisor in the normal sense - visiting staff cannot be appointed as a supervisor of a PGR student unless they are formally appointed via the associate supervisor route.",
+    "keyphrases": [
+      "Visiting staff cannot",
+      "associate supervisor route"
+    ],
+    "follow_up_question": "Does the same restriction apply on professional doctorates?",
+    "follow_up_expected_answer": "Yes. The Code of Practice for Professional Doctorates carries the same restriction: visiting staff cannot be appointed as a supervisor of a PGR student unless formally appointed via the associate supervisor route.",
+    "follow_up_keyphrases": [
+      "Visiting staff cannot",
+      "associate supervisor route"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+    "source_title": "Code of Practice: Professional Doctorates 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "Can a professional doctorate student's standard period of study be shortened, and whose approval is needed?",
+    "expected_answer": "Yes, but only in exceptional circumstances and with the Deans' approval. The standard period of study may be reduced in exceptional circumstances with the Deans' approval.",
+    "keyphrases": [
+      "standard period of study may be reduced",
+      "exceptional circumstances",
+      "approval"
+    ],
+    "follow_up_question": "What is expected of a student entering a completion period?",
+    "follow_up_expected_answer": "A student entering a completion period does so on the understanding that their full thesis will be ready for submission by the end of that completion period.",
+    "follow_up_keyphrases": [
+      "completion period",
+      "ready for submission"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "A referred thesis has come back and the examiners recommend a pass. Do we still need to hold a second viva?",
+    "expected_answer": "Not necessarily. Where the recommendation on the referred thesis is a pass, a request by the examiners to waive the viva will normally be granted. Where the recommendation is not a pass, a waiver will only be granted in exceptional circumstances.",
+    "keyphrases": [
+      "referred thesis is a pass",
+      "normally be granted",
+      "exceptional circumstances"
+    ],
+    "follow_up_question": "And on first submission?",
+    "follow_up_expected_answer": "On first submission, permission to waive a viva will only be granted by the Dean in exceptional circumstances. The Postgraduate Research Education Team would notify the student of the examiners' wish not to hold a viva and the reasons, and the student would be told they have the right to have a viva if they wish.",
+    "follow_up_keyphrases": [
+      "exceptional circumstances",
+      "right to have a viva"
+    ]
+  }
+]

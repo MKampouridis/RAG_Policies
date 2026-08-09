@@ -1,0 +1,106 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question": "How long does a research degree viva last, and what happens if it runs long?",
+    "expected_answer": "The length of a viva varies, but if it lasts longer than two hours the internal examiner or Independent Chair will recommend an adjournment for a break.",
+    "keyphrases": [
+      "two hours",
+      "adjournment",
+      "internal examiner or Independent Chair"
+    ],
+    "follow_up_question": "Who normally attends the viva?",
+    "follow_up_expected_answer": "The viva normally involves only the external examiner, the internal examiner (or second external examiner) and the candidate. The Faculty Dean (Postgraduate) may appoint an Independent Chair to oversee the conduct of the oral examination. The candidate's supervisor is not normally present and may attend only in exceptional circumstances, approved individually.",
+    "follow_up_keyphrases": [
+      "external examiner",
+      "internal examiner",
+      "supervisor will not normally be present",
+      "exceptional circumstances"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+    "source_title": "Policy for the Appointment of Independent Chairs for Research Degree Vivas",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question": "In which circumstances will the Faculty Dean Postgraduate appoint an Independent Chair for a viva?",
+    "expected_answer": "An Independent Chair is appointed when: the Internal Examiner has no experience in research degree examining; the Internal Examiner is new to research degree examining at Essex and has not undertaken Internal Examiner training; the viva follows a referral and resubmission of a thesis; the viva follows an appeal; there are circumstances affecting the candidate that make it desirable; the candidate is a member of staff of the University or a Partner Institution being examined as a staff candidate; or where agreed in individual cases to be necessary.",
+    "keyphrases": [
+      "referral and resubmission",
+      "following an appeal",
+      "staff candidate",
+      "no experience in research degree examining"
+    ],
+    "follow_up_question": "Who is eligible to be nominated, and can they come from the candidate's own department?",
+    "follow_up_expected_answer": "A nominee must be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex, or has examined two theses externally and undertaken University of Essex Independent Chair training, and must have a good understanding of the University's procedures and regulations for the award being examined. The Independent Chair chosen will be from outside the candidate's department and will have no conflict of interest with the candidate, the supervisor or the External Examiner.",
+    "follow_up_keyphrases": [
+      "permanent member of staff",
+      "at least two postgraduate research examinations",
+      "outside the candidate’s department",
+      "no conflict of interest"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+    "source_title": "Code of Practice: Professional Doctorates 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "Who must a department designate to lead each professional doctorate at Essex, and who are they responsible to?",
+    "expected_answer": "Each department must designate a Professional Doctorate Director for each professional doctorate, a group of professional doctorates or equivalent, who is an experienced doctoral student supervisor. The Director is responsible to the Head of Department for the departmental arrangements for the relevant PD students, and liaises with and reports as necessary to the Dean.",
+    "keyphrases": [
+      "Professional Doctorate Director",
+      "experienced doctoral student supervisor",
+      "Head of Department"
+    ],
+    "follow_up_question": "Which Dean do professional doctorate decisions normally get referred to?",
+    "follow_up_expected_answer": "In practice most decisions are referred to the Faculty Dean Postgraduate through the Postgraduate Research Education Team. 'Dean' refers to the Executive Dean (or their deputy) or the Dean of Partnerships (or their deputy).",
+    "follow_up_keyphrases": [
+      "Faculty Dean Postgraduate",
+      "Postgraduate Research Education Team"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "For Tavistock and Portman professional doctorates, who is designated to lead each programme and who are they responsible to?",
+    "expected_answer": "The Trust designates a Course Lead for each Professional Doctorate, a group of professional doctorates or equivalent, who is an experienced doctoral student supervisor. The Course Lead is responsible to the Portfolio Manager for the Trust arrangements for the relevant PD students.",
+    "keyphrases": [
+      "Course Lead",
+      "Portfolio Manager",
+      "experienced doctoral student supervisor"
+    ],
+    "follow_up_question": "Which Dean do decisions get referred to for these programmes?",
+    "follow_up_expected_answer": "For Tavistock and Portman professional doctorates, 'Dean' refers to the Dean of Partnerships (or their deputy), and most decisions are referred to the Dean of Partnerships through the Postgraduate Research Education Team.",
+    "follow_up_keyphrases": [
+      "Dean of Partnerships",
+      "Postgraduate Research Education Team"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question": "Can a viva be waived for a professional doctorate, and who decides?",
+    "expected_answer": "Permission to waive a viva on first submission will only be granted by the Dean in exceptional circumstances. The Postgraduate Research Education Team would then notify the student of the examiners' wish not to hold a viva and the reasons for it, and the student would be told they have the right to have a viva if they wish.",
+    "keyphrases": [
+      "waive",
+      "exceptional circumstances",
+      "right to have a viva"
+    ],
+    "follow_up_question": "What if the thesis has been referred?",
+    "follow_up_expected_answer": "Where a thesis has been referred, the rules for waiving the viva on a referred thesis apply as set out in the Code of Practice, separately from the first-submission case.",
+    "follow_up_keyphrases": [
+      "referred"
+    ]
+  }
+]

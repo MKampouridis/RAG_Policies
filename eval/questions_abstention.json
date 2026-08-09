@@ -1,0 +1,47 @@
+[
+  {
+    "source_url": null,
+    "source_title": "(no gold document - correct answer is that the corpus does not cover this)",
+    "doc_type": "abstention",
+    "department": null,
+    "academic_year": null,
+    "question_style": "abstention",
+    "expects_abstention": true,
+    "question": "What is the process for switching from a full-time PhD to a part-time PhD, and vice versa?",
+    "expected_answer": "The policies do not set out a process for switching between full-time and part-time PhD registration. The correct response is to say that this is not covered by the available documents, rather than describing supervisory panel or completion-period arrangements, which address different matters.",
+    "keyphrases": [],
+    "follow_up_question": "Is there anything on the paperwork or approvals involved?",
+    "follow_up_expected_answer": "No. The documents do not describe the paperwork or approvals for a change of study mode, and the assistant should say so rather than substituting related but different provisions.",
+    "follow_up_keyphrases": []
+  },
+  {
+    "source_url": null,
+    "source_title": "(no gold document - correct answer is that the corpus does not cover this)",
+    "doc_type": "abstention",
+    "department": null,
+    "academic_year": null,
+    "question_style": "abstention",
+    "expects_abstention": true,
+    "question": "How much is the PGR tuition fee for a part-time professional doctorate this year?",
+    "expected_answer": "The policy and rules-of-assessment documents do not contain fee amounts. The correct response is to say that fee levels are not covered by these documents rather than quoting a figure.",
+    "keyphrases": [],
+    "follow_up_question": "What about the fee for a writing-up year?",
+    "follow_up_expected_answer": "Also not covered. The documents do not state fee amounts for any year of study, and the assistant should say so.",
+    "follow_up_keyphrases": []
+  },
+  {
+    "source_url": null,
+    "source_title": "(no gold document - correct answer is that the corpus does not cover this)",
+    "doc_type": "abstention",
+    "department": null,
+    "academic_year": null,
+    "question_style": "abstention",
+    "expects_abstention": true,
+    "question": "Which members of staff are currently on the approved pool of Independent Chairs?",
+    "expected_answer": "The policy describes how Independent Chairs are nominated and approved but does not list the individuals on the pool. The correct response is to say the names are not available in these documents, while optionally noting that Faculty Education Committees approve the list annually.",
+    "keyphrases": [],
+    "follow_up_question": "Can you tell me how many there are in each department?",
+    "follow_up_expected_answer": "No. The policy states how many nominations each department must put forward based on PGR student numbers, but does not record actual current numbers or names per department.",
+    "follow_up_keyphrases": []
+  }
+]
