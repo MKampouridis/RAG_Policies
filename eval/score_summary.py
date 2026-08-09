@@ -66,6 +66,41 @@ def _evidence_sufficient(top_urls: list[str], keyphrases: list[str], manifest: d
     return False
 
 
+def span_coverage(results: list[dict], questions_path: Path) -> dict:
+    """Corpus-spanning metric (2026-08-09). hit@6 asks whether ONE gold document
+    was retrieved, so on a question whose answer needs three documents it scores
+    a full hit while two thirds of the evidence is missing. This reports, per
+    turn, what fraction of `required_source_urls` appear in the top 6.
+
+    Reported alongside hit@6, never instead of it: a low span score with a high
+    hit rate is the signature this set exists to detect - retrieval looking
+    healthy while the answer cannot be assembled."""
+    req_by_q = {}
+    for q in json.loads(questions_path.read_text()):
+        req = q.get("required_source_urls") or [q["source_url"]]
+        req_by_q[(q["source_url"], q["question"])] = req
+        req_by_q[(q["source_url"], q["follow_up_question"])] = req
+
+    per_turn, full = [], 0
+    for r in results:
+        for tk in ("primary", "follow_up"):
+            t = r[tk]
+            req = req_by_q.get((r["source_url"], t["question"]))
+            if not req:
+                continue
+            top = set(t["retrieval"].get("top_urls") or [])
+            cov = sum(1 for u in req if u in top) / len(req)
+            per_turn.append(cov)
+            full += (cov == 1.0)
+    if not per_turn:
+        return {"n": 0}
+    return {
+        "n": len(per_turn),
+        "mean_span_coverage_at_6": statistics.mean(per_turn),
+        "all_required_docs_retrieved": full / len(per_turn),
+    }
+
+
 def _load_questions_by_url(questions_path: Path) -> dict[str, list[dict]]:
     # per-URL queue, not a flat {source_url: question} dict - a future
     # question set with 2+ questions on one document would otherwise
