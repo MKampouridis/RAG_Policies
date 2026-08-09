@@ -1,0 +1,1710 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "factual",
+    "expects_abstention": false,
+    "primary": {
+      "question": "How long does a research degree viva last, and what happens if it runs long?",
+      "expected_answer": "The length of a viva varies, but if it lasts longer than two hours the internal examiner or Independent Chair will recommend an adjournment for a break.",
+      "actual_answer": "Based on the Code of Practice for Research Degree Vivas: the length of a viva will vary, but if it runs longer than two hours, the internal examiner or Independent Chair will recommend an adjournment for a break.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "How long does a research degree viva last, and what happens if it runs long?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects both the content and substance of the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer matches the reference exactly in substance, including the two-hour threshold and recommendation of an adjournment."
+      }
+    },
+    "follow_up": {
+      "question": "Who normally attends the viva?",
+      "expected_answer": "The viva normally involves only the external examiner, the internal examiner (or second external examiner) and the candidate. The Faculty Dean (Postgraduate) may appoint an Independent Chair to oversee the conduct of the oral examination. The candidate's supervisor is not normally present and may attend only in exceptional circumstances, approved individually.",
+      "actual_answer": "According to the Code of Practice for Research Degree Vivas, the viva will normally only involve the external examiner, the internal examiner (or second external examiner), and the candidate. A Faculty Dean (Postgraduate) may also appoint an Independent Chair to oversee the conduct of the viva. The candidate's supervisor will not normally be present, except in exceptional circumstances approved individually by the Faculty Dean (Postgraduate) and with the examiners' agreement — though it is good practice to invite the supervisor to attend at the end, when the examiners communicate their recommendation, with the permission of the examiners and the candidate.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf"
+        ],
+        "retrieval_query": "Who normally attends a research degree viva?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but slightly expands on the reference by mentioning 'good practice' regarding inviting the supervisor at the end of the viva, which isn't explicitly stated in the reference."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer correctly identifies all attendees (external examiner, internal examiner, candidate), mentions the optional Independent Chair, and correctly notes the supervisor's exceptional attendance, matching and even elaborating on the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+    "source_title": "Policy for the Appointment of Independent Chairs for Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "factual",
+    "expects_abstention": false,
+    "primary": {
+      "question": "In which circumstances will the Faculty Dean Postgraduate appoint an Independent Chair for a viva?",
+      "expected_answer": "An Independent Chair is appointed when: the Internal Examiner has no experience in research degree examining; the Internal Examiner is new to research degree examining at Essex and has not undertaken Internal Examiner training; the viva follows a referral and resubmission of a thesis; the viva follows an appeal; there are circumstances affecting the candidate that make it desirable; the candidate is a member of staff of the University or a Partner Institution being examined as a staff candidate; or where agreed in individual cases to be necessary.",
+      "actual_answer": "Based on the Policy for the Appointment of Independent Chairs for Research Degree Vivas (independent-chairs-policy.pdf, 2024-25), the Faculty Dean Postgraduate will appoint an Independent Chair when:\n\n- The Internal Examiner has no experience in research degree examining\n- The Internal Examiner is new to research degree examining at Essex, and has not undertaken University of Essex Internal Examiner training (when available)\n- The viva is following a referral and resubmission of a thesis\n- The viva is following an appeal\n- There are circumstances affecting the candidate that make it desirable to have an Independent Chair at the viva\n- The candidate is a member of staff of the University or a Partner Institution (the excerpt is cut off here, but this is listed as a triggering circumstance)\n\nAdditionally, the code-practice-professional-doctorates.pdf (2025-26) notes a further circumstance specific to professional doctorates: where the candidate is examined only by external examiners (i.e., there is no internal examiner), in which case the Independent Chair performs the co-ordinating function for the examination process, though they are not an examiner of the thesis themselves.\n\nThe other excerpts (code-practice-vivas.pdf, code-of-practice-postgraduate-research-2020-21.pdf, code-practice-postgraduate-research-2018-19.pdf, code-practice-postgraduate-research.pdf) confirm that the Dean *may* appoint an Independent Chair \"in certain circumstances,\" but refer to the dedicated policy document for the specifics rather than listing them directly.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n\n_Note: this answer is based primarily on \"code-practice-vivas.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+        ],
+        "retrieval_query": "In which circumstances will the Faculty Dean Postgraduate appoint an Independent Chair for a viva?"
+      },
+      "keyphrase_coverage": 0.75,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits one specific circumstance mentioned in the reference: 'where agreed in individual cases to be necessary.'"
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "Covers all core circumstances accurately (missing only the explicit 'where agreed in individual cases to be necessary' catch-all) and adds plausible extra context, resulting in a mostly correct and complete answer with a minor omission."
+      }
+    },
+    "follow_up": {
+      "question": "Who is eligible to be nominated, and can they come from the candidate's own department?",
+      "expected_answer": "A nominee must be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex, or has examined two theses externally and undertaken University of Essex Independent Chair training, and must have a good understanding of the University's procedures and regulations for the award being examined. The Independent Chair chosen will be from outside the candidate's department and will have no conflict of interest with the candidate, the supervisor or the External Examiner.",
+      "actual_answer": "Based on the Policy for the Appointment of Independent Chairs for Research Degree Vivas (independent-chairs-policy.pdf, 2024-25):\n\n**Eligibility criteria** — to be nominated as an Independent Chair, a person must:\n- Be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex; **or**, have examined two theses externally and undertaken University of Essex Independent Chair training (when available); **and**\n- Have a good understanding of the University's procedures and regulations for the award being examined\n\n**Can they come from the candidate's own department?**\n\nNo. The policy explicitly states that \"the Independent Chair chosen will be from outside the candidate's department and will have no conflict of interest with the candidate, the supervisor or the External Examiner.\"\n\nAdditionally, each department is asked to nominate at least two members of staff to be listed as potential Independent Chairs on an annual pool/list.\n\n**Source:** https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+        ],
+        "retrieval_query": "Who is eligible to be nominated as an Independent Chair for a research degree viva, and can they come from the candidate's own department?"
+      },
+      "keyphrase_coverage": 0.75,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully matches the reference in terms of eligibility criteria and clarifies that nominees cannot be from the candidate's own department, consistent with the source."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer accurately and completely covers the eligibility criteria and correctly states the Independent Chair must come from outside the candidate's department, matching the reference substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+    "source_title": "Code of Practice: Professional Doctorates 2025-26",
+    "doc_type": "policy",
+    "question_style": "factual",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Who must a department designate to lead each professional doctorate at Essex, and who are they responsible to?",
+      "expected_answer": "Each department must designate a Professional Doctorate Director for each professional doctorate, a group of professional doctorates or equivalent, who is an experienced doctoral student supervisor. The Director is responsible to the Head of Department for the departmental arrangements for the relevant PD students, and liaises with and reports as necessary to the Dean.",
+      "actual_answer": "At Essex, each Department, School, Centre or Partner Institution with professional doctorate students must designate a **Professional Doctorate Director** for each Professional Doctorate (or group of professional doctorates, or equivalent), who must be an experienced doctoral student supervisor. This Director is responsible to the **Head of Department (HoD)** for the departmental arrangements for PD students, and must liaise with and report as necessary to the **Dean** (source: code-practice-professional-doctorates.pdf).\n\nFor the Tavistock arrangement specifically, the equivalent role is the **Course Lead**, designated by the Trust, who is responsible to the **Portfolio Manager** for the Trust's arrangements for PD students, and who must liaise with and report as necessary to the Dean of Partnerships (source: code-of-practice-professional-doctorates-tavistock.pdf).\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Who must a department designate to lead each professional doctorate at Essex, and who are they responsible to?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects the substance of both the general and Tavistock-specific policies, including all necessary details."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly identifies the Professional Doctorate Director role, the requirement of experienced doctoral supervision, and the responsibility chain to the Head of Department with liaison/reporting to the Dean, matching the reference and adding accurate supplementary detail without contradicting it."
+      }
+    },
+    "follow_up": {
+      "question": "Which Dean do professional doctorate decisions normally get referred to?",
+      "expected_answer": "In practice most decisions are referred to the Faculty Dean Postgraduate through the Postgraduate Research Education Team. 'Dean' refers to the Executive Dean (or their deputy) or the Dean of Partnerships (or their deputy).",
+      "actual_answer": "Most decisions are referred to the **Faculty Dean Postgraduate**, through the Postgraduate Research Education Team.\n\nFor the Tavistock arrangement, decisions are instead normally referred to the **Dean of Partnerships** (or their deputy), through the Postgraduate Research Education Team.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-e15-code-of-conduct.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-e15-code-of-conduct.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Which Dean do professional doctorate decisions at Essex normally get referred to?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer correctly identifies the Faculty Dean Postgraduate and the Dean of Partnerships as relevant points of reference but omits the additional detail about 'Dean' referring to the Executive Dean (or their deputy)."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The core answer (Faculty Dean Postgraduate via the Postgraduate Research Education Team) matches the reference, and it adds plausible extra detail about the Tavistock arrangement, but it omits the reference's clarification that 'Dean' generally refers to the Executive Dean (or deputy) or Dean of Partnerships (or deputy)."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "question_style": "factual",
+    "expects_abstention": false,
+    "primary": {
+      "question": "For Tavistock and Portman professional doctorates, who is designated to lead each programme and who are they responsible to?",
+      "expected_answer": "The Trust designates a Course Lead for each Professional Doctorate, a group of professional doctorates or equivalent, who is an experienced doctoral student supervisor. The Course Lead is responsible to the Portfolio Manager for the Trust arrangements for the relevant PD students.",
+      "actual_answer": "For Tavistock and Portman NHS Foundation Trust professional doctorates, the Trust must designate a **Course Lead** for each Professional Doctorate, a group of professional doctorates, or equivalent — this person should be an experienced doctoral student supervisor. The Course Lead is responsible to the **Portfolio Manager** for the Trust arrangements for the relevant PD students, and is also responsible for liaising with and reporting as necessary to the **Dean** (referring to the Dean of Partnerships, or their deputy).\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "For Tavistock and Portman professional doctorates, who is designated to lead each programme and who are they responsible to?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but adds an extra detail about liaising with and reporting to the Dean, which is not mentioned in the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "Correctly identifies the Course Lead as responsible to the Portfolio Manager, matching the reference, with accurate additional detail not contradicting it."
+      }
+    },
+    "follow_up": {
+      "question": "Which Dean do decisions get referred to for these programmes?",
+      "expected_answer": "For Tavistock and Portman professional doctorates, 'Dean' refers to the Dean of Partnerships (or their deputy), and most decisions are referred to the Dean of Partnerships through the Postgraduate Research Education Team.",
+      "actual_answer": "For Tavistock and Portman professional doctorates, decisions are referred to the **Dean of Partnerships** (or their deputy), typically through the Postgraduate Research Education Team.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/tavistock-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "For Tavistock and Portman NHS Foundation Trust professional doctorates, which specific Dean do decisions get referred to for these programmes?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits the specific reference to 'most decisions are referred to,' which slightly reduces completeness."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly identifies the Dean of Partnerships (or deputy) and mentions the Postgraduate Research Education Team, matching the reference answer's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "question_style": "factual",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Can a viva be waived for a professional doctorate, and who decides?",
+      "expected_answer": "Permission to waive a viva on first submission will only be granted by the Dean in exceptional circumstances. The Postgraduate Research Education Team would then notify the student of the examiners' wish not to hold a viva and the reasons for it, and the student would be told they have the right to have a viva if they wish.",
+      "actual_answer": "Yes, a viva can be waived for a professional doctorate, but only in specific circumstances, and the decision rests with the **Dean**.\n\nAccording to both the general Code of Practice: Professional Doctorates (2025-26) and the Code of Practice: Professional Doctorates Tavistock (2025-26):\n\n- **First submission**: Permission to waive a viva will only be granted by the Dean in exceptional circumstances. The Postgraduate Research Education Team notifies the student of the examiners' wish not to hold a viva and the reasons, but the student retains the right to have a viva if they wish.\n- **Referred thesis**: If the recommended outcome is a pass, a request to waive the viva will normally be granted. If the recommendation is not a pass, waiving the viva will only be granted in exceptional circumstances. Again, the student is informed and retains the right to request a viva.\n\nFor comparison, the more general Code of Practice on Vivas (2025-26) states that the **Faculty Dean (Postgraduate)** must approve any request to waive a viva, and this is normally only permitted where the viva is for re-examination following referral and examiners agree the candidate can now pass, or where exceptional circumstances prevent the candidate from engaging in the process. Vivas will not be waived if an examiner believes the candidate is likely to fail, only eligible for a lower award, or likely to be referred.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 5,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.2,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Can a viva be waived for a professional doctorate, and who decides?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 3,
+        "justification": "The answer correctly identifies that the Dean decides on waiving a viva in exceptional circumstances but omits details about notification and student rights."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant confirms the Dean decides and accurately restates the exceptional-circumstances requirement, student notification, and right to a viva, matching the reference and adding accurate supporting detail without contradicting it."
+      }
+    },
+    "follow_up": {
+      "question": "What if the thesis has been referred?",
+      "expected_answer": "Where a thesis has been referred, the rules for waiving the viva on a referred thesis apply as set out in the Code of Practice, separately from the first-submission case.",
+      "actual_answer": "For a **referred thesis** in a professional doctorate, the rules on waiving the viva (per both the Code of Practice: Professional Doctorates and the Code of Practice: Professional Doctorates Tavistock, 2025-26) are:\n\n- **If the recommended outcome is a pass**: A request by the examiners to waive the viva will **normally be granted**.\n- **If the recommendation is not a pass**: Waiving the viva will **only be granted in exceptional circumstances**.\n\nIn either case, the **Dean** decides whether to approve the waiver. The Postgraduate Research Education Team then notifies the student of the examiners' request and the reasons for it — but the student is told they retain the **right to have a viva if they wish**, regardless of the Dean's approval.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-professional-doctorates.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 6,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.16666666666666666,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "What are the circumstances under which a viva can be waived for a professional doctorate if the thesis has been referred?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant's answer provides detailed information specific to professional doctorates but does not address the general policy for all referred theses as mentioned in the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The assistant correctly identifies that separate waiver rules apply for a referred thesis and provides plausible consistent detail, matching the reference's substance, though it adds specifics not confirmed in the reference and cannot be verified as fully accurate."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+    "source_title": "PGT Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A student has failed a core taught module with a mark of 45. Can that failure be condoned?",
+      "expected_answer": "No. Condonement applies only to non-core modules - failure with a mark of 40 or more may be condoned for up to 20 credits in non-core modules. All taught core modules must be passed, so a failed core module cannot be condoned regardless of the mark.",
+      "actual_answer": "No. Across the postgraduate rules provided, condonement only applies to **non-core** taught modules, not core modules. For example:\n\n- The Postgraduate Diploma rules state a student must \"Pass all the taught core modules\" as a requirement for the award, with condonement only permitted for \"failure with a mark of 40 or more for up to 30 credits in non-core taught modules\" ([pg-dip-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf)).\n- The CSEE accredited Masters variations similarly require passing \"all the taught core modules and the dissertation or equivalent,\" with condonement limited to \"non-core taught modules\" ([csee-ft-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf)).\n- The Health and Social Care modular rules explicitly state: \"A core module must be taken as part of the programme structure and passed, with no condonement of marks below a pass allowed\" ([modular_25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf)).\n- The Kaplan (KOL) Postgraduate Diploma and Postgraduate Certificate rules also require passing \"all the taught core modules,\" permitting condonement only for non-core modules ([kol-pgdip-roa-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgdip-roa-25.pdf), [kol-pgcert-roa-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgcert-roa-25.pdf)).\n\nSo a core module mark of 45 (a fail, since the pass mark is 50) cannot be condoned under any of these rules — the student must pass core modules outright, typically through reassessment.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgdip-roa-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgcert-roa-25.pdf\n\n_Note: this answer is based primarily on \"pg-dip-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgcert-roa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgdip-roa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---sandwich-course-structure.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pg-dip-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgdip-roa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pgcert-roa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/chula---sandwich-course-structure.pdf"
+        ],
+        "retrieval_query": "A student has failed a core taught module with a mark of 45. Can that failure be condoned?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, providing multiple references that support the conclusion that condonement does not apply to core modules."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The assistant reaches the correct conclusion (no, core module fails cannot be condoned) with accurate supporting evidence, but incorrectly asserts a 50 pass mark rather than the reference's 40-mark threshold context, introducing a minor inaccuracy/imprecision relative to the reference."
+      }
+    },
+    "follow_up": {
+      "question": "How many credits can be condoned in total?",
+      "expected_answer": "Failure with a mark of 40 or more may be condoned for up to 20 credits in non-core modules, provided the other progression requirements are met.",
+      "actual_answer": "This depends on which programme/award you mean — the context covers two different scenarios:\n\n**Postgraduate Diploma (multiple documents: masters-25.pdf, east15-mfa-25.pdf, ft-,-a-,-pt-kcb-and-lcb-mbm-roa-25-26-(1).pdf, kol-pg-masters-roa-25.pdf, vsc-full-time-taught-masters-25.pdf):**\nA student attempts 120 credits at Master's Level, of which 90 must be passed. This means up to **30 credits** can be condoned, but only in **non-core modules**, and only where the mark is 40 or above, and provided the overall weighted average for the 120 PG Diploma credits is 50 (or above). All core modules must still be passed outright — no condonement of core modules.\n\n**Undergraduate SKKU Year 1 (roa-ug-skku-year-1.pdf):**\nThis is a different rule structure. In Year One, up to 15 non-core credits can be condoned following compulsory reassessment failure. Across the whole degree, a student can only fail (i.e., have condoned) a total of **30 non-core credits** — so if 15 are condoned in Year One, no further non-core credits can be failed/condoned in subsequent years. Core modules must always be passed.\n\nIf you're asking about a specific programme not listed above, the context doesn't cover it — let me know which one.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/ft-,-a-,-pt-kcb-and-lcb-mbm-roa-25-26-(1).pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pg-masters-roa-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-full-time-taught-masters-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-skku-year-1.pdf\n\n_Note: this answer is based primarily on \"masters-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/ft-,-a-,-pt-kcb-and-lcb-mbm-roa-25-26-(1).pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pg-masters-roa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-full-time-taught-masters-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-skku-year-1.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/ft-,-a-,-pt-kcb-and-lcb-mbm-roa-25-26-(1).pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/kol-pg-masters-roa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/vsc-full-time-taught-masters-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-skku-year-1.pdf"
+        ],
+        "retrieval_query": "How many credits in total can be condoned across non-core taught modules in a postgraduate programme?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant's answer is mostly missing the point as it discusses credit condonement policies for specific programs not mentioned in the reference and does not address the general rule of up to 20 credits being condoned."
+      },
+      "judge_original_7b": {
+        "score": 3,
+        "justification": "The assistant does not clearly state the general 20-credit condonement figure from the reference and instead gives different numbers (30 credits for PG diploma, 30/15 for UG SKKU) without matching the reference's core answer, making it partially correct but missing the expected substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Both examiners have read the thesis and think the candidate is likely to be referred. They would rather not hold a viva. Can it be waived?",
+      "expected_answer": "No. Vivas will not be waived where one or more examiners has deemed from reading the thesis that the candidate seems likely to fail, to only be eligible for a lower award, or to be referred.",
+      "actual_answer": "No. According to the Code of Practice on Vivas (2025-26): \"Vivas will not be waived where one or more examiners has deemed from reading the thesis that the candidate seems likely to fail, to only be eligible for a lower award or to be referred.\"\n\nThis aligns with the Code of Practice for Postgraduate Research Degrees (2025-26 and earlier years), which states that for a **first submission**, waiving the viva is only granted by the Dean in exceptional circumstances — but the specific vivas code of practice makes clear that a likely referral outcome is grounds to *refuse* a waiver, not grant one. So in this scenario, since both examiners believe the candidate is likely to be referred, the viva cannot be waived.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n\n_Note: this answer is based primarily on \"code-practice-vivas.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Both examiners have read the thesis and think the candidate is likely to be referred. They would rather not hold a viva. Can it be waived?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and aligns with the reference, providing detailed context from the relevant policy documents."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly answers 'No' and quotes the exact relevant policy matching the reference, with accurate supporting context."
+      }
+    },
+    "follow_up": {
+      "question": "What happens to a candidate who will not engage with viva arrangements at all?",
+      "expected_answer": "A candidate who does not engage with the arrangements to the extent that it has not been possible to arrange a viva shall be deemed to have withdrawn permanently from the University and from their research degree, unless it has been agreed that the viva can be waived.",
+      "actual_answer": "According to the Code of Practice on Vivas (2025-26): \"Candidates who fail to engage in viva arrangements, to the extent where it has not been possible to arrange a viva, shall be deemed to have withdrawn permanently from the University (and from their research degree), unless it has been agreed that the viva can be waived.\"\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+        ],
+        "retrieval_query": "What happens to a candidate who will not engage with viva arrangements at all?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects the substance of the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer matches the reference answer's substance, including the key exception for waived vivas."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "We would like a visiting academic to supervise one of our PGR students. Is that permitted?",
+      "expected_answer": "Not as a supervisor in the normal sense - visiting staff cannot be appointed as a supervisor of a PGR student unless they are formally appointed via the associate supervisor route.",
+      "actual_answer": "No — visiting staff cannot be appointed as a supervisor of a PGR student, unless they are formally appointed via the associate supervisor route.\n\nThis rule is stated consistently across the postgraduate research and professional doctorate codes of practice:\n- code-practice-postgraduate-research.pdf\n- code-practice-professional-doctorates.pdf\n- code-of-practice-professional-doctorates-tavistock.pdf\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "We would like a visiting academic to supervise one of our PGR students. Is that permitted?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but lacks the initial clarification about 'not as a supervisor in the normal sense' from the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer matches the reference exactly in substance, correctly stating visiting staff cannot be a supervisor unless appointed via the associate supervisor route, with added plausible sourcing detail."
+      }
+    },
+    "follow_up": {
+      "question": "Does the same restriction apply on professional doctorates?",
+      "expected_answer": "Yes. The Code of Practice for Professional Doctorates carries the same restriction: visiting staff cannot be appointed as a supervisor of a PGR student unless formally appointed via the associate supervisor route.",
+      "actual_answer": "Yes. The same restriction applies to professional doctorates — visiting staff cannot be appointed as a supervisor of a PGR (or PD) student unless formally appointed via the associate supervisor route. This is stated explicitly in both the professional doctorates code of practice and the Tavistock professional doctorates code of practice.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Does the same restriction on visiting staff supervising PGR students apply to professional doctorates?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but includes extra details about the Tavistock professional doctorates code of practice not mentioned in the reference."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly confirms the restriction applies to professional doctorates via the associate supervisor route, matching the reference and adding accurate supporting detail."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+    "source_title": "Code of Practice: Professional Doctorates 2025-26",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Can a professional doctorate student's standard period of study be shortened, and whose approval is needed?",
+      "expected_answer": "Yes, but only in exceptional circumstances and with the Deans' approval. The standard period of study may be reduced in exceptional circumstances with the Deans' approval.",
+      "actual_answer": "Yes. According to both the general Code of Practice: Professional Doctorates and the Tavistock-specific version, the standard period of study for a professional doctorate student may be reduced in exceptional circumstances, with the **Deans' approval**.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Can a professional doctorate student's standard period of study be shortened, and whose approval is needed?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer correctly and completely matches the substance of the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer correctly states that shortening is allowed only in exceptional circumstances and requires Deans' approval, matching the reference."
+      }
+    },
+    "follow_up": {
+      "question": "What is expected of a student entering a completion period?",
+      "expected_answer": "A student entering a completion period does so on the understanding that their full thesis will be ready for submission by the end of that completion period.",
+      "actual_answer": "The context provided doesn't directly address what is expected of a student entering a completion period. It mentions that progress into the completion period (for part-time students) depends on satisfactory achievement of the necessary milestone work, and that entry into a completion period requires an RSPB recommendation following a formal review — but it does not detail the specific expectations or requirements placed on the student once they are in that period.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "What is expected of a professional doctorate student entering a completion period?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant's answer is largely missing the point as it does not address the specific expectations of a student entering a completion period, focusing instead on entry requirements."
+      },
+      "judge_original_7b": {
+        "score": 1,
+        "justification": "The assistant failed to state the key expectation—that the full thesis will be ready for submission by the end of the completion period—and instead claimed the information wasn't available, missing the substance of the reference answer."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A referred thesis has come back and the examiners recommend a pass. Do we still need to hold a second viva?",
+      "expected_answer": "Not necessarily. Where the recommendation on the referred thesis is a pass, a request by the examiners to waive the viva will normally be granted. Where the recommendation is not a pass, a waiver will only be granted in exceptional circumstances.",
+      "actual_answer": "No. Where the recommended outcome of the examination of a referred thesis is a pass, a request by the examiners to waive the viva **will normally be granted**. The student would still be notified of the examiners' request and reasons, and told they retain the right to have a viva if they wish. This applies consistently across the relevant codes of practice — postgraduate research degrees, professional doctorates, and professional doctorates (Tavistock).\n\nIf the recommendation on the referred thesis were *not* a pass, waiving the viva would only be granted in exceptional circumstances — but that is not the case here.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-postgraduate-research.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 6,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.16666666666666666,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "A referred thesis has come back and the examiners recommend a pass. Do we still need to hold a second viva?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer aligns with the reference by stating that a viva waiver is typically granted when the recommendation is a pass and details the student's rights, matching the substance of the provided information."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer correctly conveys the substance (waiver normally granted on pass, exceptional only otherwise) but overstates certainty by starting with a flat 'No' when the reference says 'not necessarily,' implying the waiver still requires a request and isn't automatic."
+      }
+    },
+    "follow_up": {
+      "question": "And on first submission?",
+      "expected_answer": "On first submission, permission to waive a viva will only be granted by the Dean in exceptional circumstances. The Postgraduate Research Education Team would notify the student of the examiners' wish not to hold a viva and the reasons, and the student would be told they have the right to have a viva if they wish.",
+      "actual_answer": "For a **first submission**, waiving the viva is treated differently and more strictly: permission to waive the viva will **only be granted by the Dean in exceptional circumstances** (regardless of what outcome the examiners recommend).\n\nIf the Dean does approve waiving it, the Postgraduate Research Education Team notifies the student of the examiners' wish not to hold a viva and the reasons for it, but the student is told they still have the right to have a viva if they wish.\n\nThis is consistent across the postgraduate research degrees code and the professional doctorates codes (including the Tavistock version).\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-postgraduate-research-degrees-2018-19.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 6,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.16666666666666666,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "On a first submission of a thesis where the examiners recommend a pass, do we still need to hold a viva?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct and aligns well with the reference, but it omits mentioning that the Postgraduate Research Education Team would notify the student of the examiners' wish not to hold a viva."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant accurately captures both key points from the reference (Dean-only exceptional permission and student's right to a viva) and adds reasonable, consistent context without contradicting the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A Supervisory Panel wants to discontinue a student. Can the Panel make that decision itself?",
+      "expected_answer": "No. A decision or recommendation for discontinuation, downgrading or upgrading, to confirm PhD status or change to MPhil, to permit entry into completion, or to extend the standard period can only be made by the RSPB. The Supervisory Panel can only recommend.",
+      "actual_answer": "No. The Supervisory Panel cannot make the decision itself — only the Research Student Progress Board (RSPB) can decide on discontinuation (or downgrading, upgrading, confirming PhD status, changing to MPhil, entry into completion, or extending the period). The Supervisory Panel's role is to submit reports/recommendations, which the RSPB then considers.\n\nThis applies consistently across the different codes of practice:\n- **PhD/Postgraduate Research Degrees**: \"A decision/recommendation for discontinuation, downgrading or upgrading... can only be made by the RSPB.\" Where the RSPB is considering a Supervisory Panel's recommendation of discontinuation or downgrading, the RSPB membership must include at least two members who were not on the student's last Supervisory Panel — a safeguard ensuring the decision isn't simply rubber-stamped by the same people.\n- **Professional Doctorates** (general and Tavistock): Same rule applies — only the RSPB can make the decision/recommendation for discontinuation or downgrading, again requiring at least two RSPB members who were not on the last Supervisory Panel when considering such a recommendation.\n\nIn all cases, before a discontinuation decision is finalized, the student must be given the opportunity to discuss it with the RSPB and present evidence of extenuating circumstances, and the final recommendation goes to the Dean, with the student having a right to request a review/appeal afterward.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-postgraduate-research-degrees-2018-19.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "A Supervisory Panel wants to discontinue a student. Can the Panel make that decision itself?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer matches the reference in substance and detail, including specific roles of RSPB and the Supervisory Panel, and aligns with information across different documents."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states the Panel cannot decide and only the RSPB can, matching the reference, and adds accurate supporting detail without contradicting it."
+      }
+    },
+    "follow_up": {
+      "question": "Are there any restrictions on who sits on the RSPB for that decision?",
+      "expected_answer": "Yes. Where the RSPB is considering a recommendation of discontinuation or downgrading, or a change of status to MPhil at confirmation, the RSPB membership must include at least two members who were not on the student's last Supervisory Panel. Smaller departments may co-opt a supervisor from another department in a cognate discipline to satisfy this.",
+      "actual_answer": "Yes. When the RSPB is considering a recommendation from a student's Supervisory Panel for discontinuation or downgrading (or, at confirmation, a change of status to MPhil), the RSPB membership must include **at least two members who were not on the student's last Supervisory Panel**. This is confirmed in the 2018-19 Code of Practice for Postgraduate Research Degrees, which also notes that smaller departments may co-opt a supervisor from another department in a cognate discipline to help meet this requirement.\n\nThere is also a general restriction on the RSPB Chair: they must not be a partner or close relative of the supervisor (main, joint or secondary), or have any professional or personal relationship with the student that could give rise to a conflict of interest (per the Professional Doctorates code).\n\nThe context does not show this \"two members not on the last Supervisory Panel\" rule explicitly restated in the most recent (2025-26) postgraduate research code excerpt provided, though the discontinuation/downgrading procedure itself is consistent across years — so it likely still applies, but I can't confirm its exact current wording from what's given here.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n\n_Note: this answer is based primarily on \"code-practice-professional-doctorates.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf"
+        ],
+        "retrieval_query": "Are there any restrictions on who can sit on the Research Student Progress Board (RSPB) when it is making a decision on whether to discontinue a student?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct and aligns well with the reference, but it introduces additional information not present in the reference about the RSPB Chair restriction."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The assistant correctly states the core restriction (at least two members not on the last Supervisory Panel, with co-opting allowance) matching the reference, but adds extra unverified/uncertain claims about the Chair conflict-of-interest rule and hedges about current applicability, which slightly dilutes precision though doesn't contradict the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+    "source_title": "Code of Practice: Professional Doctorates 2025-26",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Can the student's main supervisor chair their Supervisory Panel?",
+      "expected_answer": "No. The chair must not be a partner or close relative of the supervisor (main, joint or secondary), and must not have a professional or personal relationship with the student that might give rise to a conflict of interest.",
+      "actual_answer": "No. In all versions of the codes of practice, the Chair of the Supervisory Panel must be someone other than the supervisor — the panel comprises the student, at least one supervisor, and one other academic (not involved in supervising the student) as Chair. Additionally, the Chair cannot be a partner or close relative of the supervisor, or have a personal/professional relationship with the student that could create a conflict of interest.\n\nThis applies consistently across:\n- **Postgraduate Research** (2025-26 and 2020-21 codes)\n- **Professional Doctorates** (2025-26 code)\n- **Professional Doctorates Tavistock** (2025-26 code)\n- **Postgraduate Research Degrees** (2018-19 code)\n\nIn cases where the supervisor is less experienced and has not previously supervised a student through to completion, the chair must specifically be an experienced supervisor — but still not the student's own supervisor.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf\n\n_Note: this answer is based primarily on \"code-practice-postgraduate-research.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Can the student's main supervisor chair their Supervisory Panel?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully aligns with the reference answer and includes additional relevant details from various codes of practice without contradicting the core requirements."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly answers 'No' and includes the key conflict-of-interest criteria from the reference, with accurate additional context and sources."
+      }
+    },
+    "follow_up": {
+      "question": "What happens if a professional practice supervisor has to step down partway through?",
+      "expected_answer": "Where a professional practice supervisor cannot continue supervision for whatever reason, the department must ensure that a replacement supervisor is appointed.",
+      "actual_answer": "If a professional practice supervisor cannot continue supervision for whatever reason, a replacement supervisor must be appointed. The process differs slightly by document:\n\n- **Professional Doctorates (2025-26)**: Any changes in supervision must be approved by the **Professional Doctorate Director**. Any permanent changes, as well as arrangements for replacement supervision where a member of staff is on leave, must also be reported to the Postgraduate Research Education Team as soon as possible.\n\n- **Professional Doctorates Tavistock (2025-26)**: Any changes in supervision must be approved by the **Course Lead**. Any permanent changes, as well as arrangements for replacement supervision where a member of staff is on an extended period of leave, must also be reported to the Postgraduate Research Education Team as soon as possible.\n\nIn both cases, a record of professional practice supervisors is kept (by the Director for standard PD, or the Course Lead for PD Tavistock) and must be made available to the Postgraduate Research Education Team on request.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "What happens if a professional practice supervisor has to step down partway through a student's program?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits the general requirement that the department must ensure a replacement supervisor is appointed, focusing instead on additional document-specific procedures."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states a replacement supervisor must be appointed and adds accurate, relevant procedural detail consistent with the reference without contradicting it."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A supervisor has asked to sit in on their student's viva. Is that allowed, and who decides?",
+      "expected_answer": "Not normally. The candidate's supervisor will not normally be present at the viva and can only be present in exceptional circumstances, approved on an individual basis by the Faculty Dean (Postgraduate) and with the agreement of the examiners. It is good practice for the supervisor to be invited to attend at the end of the viva when the examiners communicate their recommendation.",
+      "actual_answer": "Generally, no — the candidate's supervisor is not normally present at the viva. However, this can be permitted only in **exceptional circumstances**, which must be approved on an individual basis by the **Faculty Dean (Postgraduate)**, and requires the agreement of the examiner(s).\n\nSeparately, it is considered good practice for the supervisor to be invited to attend at the *end* of the viva, when the examiners communicate their recommendation to the candidate — but even this is subject to the permission of both the examiners and the candidate.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf\n\n_Note: this answer is based primarily on \"code-practice-postgraduate-research-degrees-2018-19.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+        ],
+        "retrieval_query": "A supervisor has asked to sit in on their student's viva. Is that allowed, and who decides?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits the detail that the supervisor should be invited to attend at the end of the viva according to good practice."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant accurately conveys the core rule, decision-maker, and exceptional-circumstances condition, matching the reference, with only a minor added detail about candidate consent that doesn't contradict the source."
+      }
+    },
+    "follow_up": {
+      "question": "Can they be there when the outcome is given?",
+      "expected_answer": "Yes - it is good practice for the supervisor to be invited to attend at the end of the viva when the examiners communicate their recommendation to the candidate.",
+      "actual_answer": "Yes — but only with permission. The supervisor is permitted to be present when the examiners inform the candidate of the viva result, provided both the **candidate** and the **examiners** agree to it.\n\nThis applies consistently across the relevant codes of practice:\n- **Vivas generally**: it's \"good practice\" for the supervisor to be invited to attend at the end of the viva when the result is communicated, subject to permission from the examiners and candidate (code-practice-vivas.pdf, 2025-26).\n- **Postgraduate research** (2018-19, 2020-21, and current versions): the supervisor is \"encouraged to be in the department\" to support the candidate, and \"with the permission of the candidate and the examiners,\" may be present when told the result.\n- **Professional doctorates** (including the Tavistock version): same rule applies — permitted at the result stage with candidate and examiner permission.\n\nSo in all cases, presence at the result announcement is not automatic — it requires the agreement of both the candidate and the examiners.\n\nSources: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf; https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf; https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf; https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-vivas.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Can a supervisor be present at the viva when the examiners communicate the outcome/recommendation to the candidate?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant's answer is partially correct but misses significant substance by emphasizing permission more than the reference does, which focuses on it being 'good practice' for supervisors to be present."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant confirms the supervisor may attend at the outcome, matching the reference, and adds accurate supporting detail (permission required) without contradicting the source material."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Our PGR student is sponsored under a Student visa. Can their supervision meetings be held over Zoom?",
+      "expected_answer": "Only to a limited extent. For students with immigration sponsorship the majority of contact should be face-to-face; in exceptional circumstances the University may agree that contact can be via video link. Virtual meetings must not breach progress monitoring requirements for students subject to immigration control.",
+      "actual_answer": "Yes, but with a caveat. Under the 2025-26 Code of Practice for Postgraduate Research Degrees, while it's standard practice for Supervisory Panel meetings to take place in person, they can be held virtually (e.g., via Zoom or telephone conferencing) if all Supervisory Panel members agree. However, **virtual meetings must not breach progress monitoring requirements for students subject to immigration control** — so for a Student visa-sponsored PGR student, any move to Zoom meetings needs to still satisfy the University's progress monitoring obligations tied to their visa sponsorship.\n\nNote: there's no *general* requirement for face-to-face panels even for Distance Learning students (they may have all panels via Zoom), but this is a separate provision from the immigration-related caveat, which takes priority for sponsored students.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+        ],
+        "retrieval_query": "Our PGR student is sponsored under a Student visa. Can their supervision meetings be held over Zoom?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer correctly highlights the conditions under which virtual meetings can occur but slightly overemphasizes the Code of Practice provision for general students, whereas the reference focuses on immigration sponsorship specifics."
+      },
+      "judge_original_7b": {
+        "score": 3,
+        "justification": "The assistant correctly notes the immigration monitoring caveat but omits the key requirement that the majority of contact for immigration-sponsored students should be face-to-face with video link only in exceptional circumstances, instead implying Zoom is generally fine, which understates the restriction."
+      }
+    },
+    "follow_up": {
+      "question": "Is it different for Distance Learning students?",
+      "expected_answer": "Yes. There is no general requirement for Distance Learning students to attend face-to-face Supervisory Panels and they may have all Supervisory Panels held via Zoom if deemed more appropriate. If a department wishes to require face-to-face panels or other on-campus activity for a Distance Learning student, that must be specified when the details of the arrangement are set.",
+      "actual_answer": "Yes, it's different for Distance Learning (DL) students. There is **no general requirement** for DL students to attend face-to-face Supervisory Panels — they may have all their Supervisory Panels held via Zoom if that's deemed more appropriate, without needing all-panel-member agreement in the way non-DL virtual meetings do.\n\nThe only exception: if a department (or, for the Tavistock professional doctorates, the Trust) wants to require face-to-face Supervisory Panels or other \"on campus\" activities for a specific DL student, this must be specified when the arrangements are sent to the Dean for approval under Regulation 4.5.\n\nHowever, the same immigration caveat still applies: virtual meetings must not breach progress monitoring requirements for students subject to immigration control — so a DL student on a Student visa would still need their virtual meetings to satisfy those monitoring obligations.\n\nThis position is consistent across the PGR Code of Practice and the Professional Doctorates codes (including the Tavistock version).\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Are supervision meetings for Distance Learning PGR students held under different requirements than supervision meetings for on-campus PGR students, particularly regarding whether they can be held virtually?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits the specific mention that exceptions must be specified when details are set, not just sent for approval."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer captures and correctly expands on all key points from the reference (no general face-to-face requirement, Zoom option, department can require on-campus activity if specified), adding accurate supporting detail without contradicting the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "If a student is granted an extension, does that affect how much completion time they have left?",
+      "expected_answer": "Yes. In such instances the subsequent number of completion periods available to the student will be reduced by one term, unless exceptional circumstances make that reduction inappropriate. Students must be offered an opportunity to discuss this with the RSPB before the final recommendation is forwarded to the Dean for approval.",
+      "actual_answer": "Yes. Across all these related policies (the Postgraduate Research Code of Practice, the Professional Doctorates Code of Practice, and the Professional Doctorates Tavistock Code of Practice), the rule is the same: if the RSPB recommends an extension to a student's standard period (up to one term, because milestone requirements for entering a completion period haven't been met), this reduces the number of completion periods subsequently available to the student by one term — unless exceptional circumstances make that reduction inappropriate.\n\nIn other words, granting an extension normally comes at the cost of reduced completion time later, though this offset can be waived in exceptional circumstances.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-of-practice-postgraduate-research-2020-21.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "If a student is granted an extension, does that affect how much completion time they have left?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant's answer is partially correct but misses the significant substance about discussing with the RSPB before forwarding to the Dean for approval."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The assistant correctly states the one-term reduction and exceptional circumstances caveat, matching the core of the reference, but omits the requirement that students be offered a chance to discuss with the RSPB before the recommendation is forwarded to the Dean."
+      }
+    },
+    "follow_up": {
+      "question": "Can an extension of more than one term ever be granted?",
+      "expected_answer": "Yes - in exceptional circumstances an extension of more than one term may be granted.",
+      "actual_answer": "Yes. In all four policies (Postgraduate Research Code of Practice, Professional Doctorates Code of Practice, and Professional Doctorates Tavistock Code of Practice, across both the 2020-21 and 2025-26 versions), it states that in exceptional circumstances, an extension of more than one term may be granted, considered on a case-by-case basis.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Can an extension of more than one term ever be granted to a postgraduate research or professional doctorate student?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully aligns with the reference answer and includes additional relevant details from specific policies."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer correctly confirms that in exceptional circumstances an extension of more than one term may be granted, matching the reference and adding supporting detail without contradicting it."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+    "source_title": "PGT Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A student resubmits an assessment for a module they had already passed overall. Can their module mark go up?",
+      "expected_answer": "No. If the pre-resubmission module aggregate was above the pass mark, the resubmission cannot improve the module aggregate mark - the module aggregate is capped at the pre-resubmission aggregate.",
+      "actual_answer": "No. According to the resubmission capping rules across these Health and Social Care rules of assessment documents (Speech Therapy, PG Cert PWP, Grad Cert PWP, MSc OT, and Modular PG Cert/Diploma), if the pre-resubmission module aggregate was already **above the pass mark** (i.e., the module was already passed overall), **the resubmission cannot improve the module aggregate mark** — the module aggregate is capped at the pre-resubmission aggregate.\n\nSo if a student resubmits an assessment for a module they had already passed overall, their module mark cannot go up; it stays capped at the original (pre-resubmission) aggregate.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf\n\n_Note: this answer is based primarily on \"speechtherapy_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf"
+      ],
+      "retrieval": {
+        "rank": 5,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.2,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf"
+        ],
+        "retrieval_query": "A student resubmits an assessment for a module they had already passed overall. Can their module mark go up?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects and expands on the reference answer with specific examples from relevant documents."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states the module aggregate is capped at the pre-resubmission mark and cannot improve, matching the reference answer's substance, with added citations and caveats that do not detract from accuracy."
+      }
+    },
+    "follow_up": {
+      "question": "And if they had failed the module overall?",
+      "expected_answer": "If the pre-resubmission module aggregate was below the pass mark, the resubmission can improve the module aggregate mark up to the pass mark only.",
+      "actual_answer": "If the student had **failed the module overall** (pre-resubmission module aggregate was below the pass mark), the resubmission **can improve** the module aggregate mark, but **only up to the pass mark** — not higher.\n\nThis applies consistently across:\n- **PG Cert PWP**: improve up to the pass mark only\n- **MA Social Work**: improve up to the pass mark only\n- **SRES Modular** (School of Sport, Rehabilitation and Exercise Science): improve up to the pass mark only — with an added note that if the second attempt mark is actually *lower* than the first attempt mark, the final aggregate uses the most recent attempt's mark instead\n- **Grad Cert PWP**: improve up to the pass mark only\n- **Modular (Health and Social Care)**: same capping applies, though the Board of Examiners will reinstate a previous attempt's mark if it was higher than the most recent attempt\n- **AoC PGT non-standard partner institutions**: improve up to the capped pass mark of 50 only\n\nSo in all these cases, a fail-overall module resubmission can raise the mark, but it's capped at the pass mark (typically 50) — it cannot exceed that even if the resubmitted work would otherwise merit a higher mark.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf\n\n_Note: this answer is based primarily on \"pgcertpwp_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 5,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.2,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/aoc-pgt-roa-non-standard-25.pdf"
+        ],
+        "retrieval_query": "If a student resubmits an assessment for a module they had already failed overall, can their module mark go up?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer aligns with the reference answer in substance and adds relevant examples from various programmes, enhancing completeness without deviating from the core information."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states the core answer matching the reference (capped at pass mark) and adds accurate, consistent supporting detail without contradicting the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+    "source_title": "PGT Programme Credit Framework 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Does an exit award have to carry the same title as the main programme?",
+      "expected_answer": "Normally yes - the title of the exit award will be the same as for the main programme, unless a different title has been approved in order to meet Professional, Statutory or Regulatory Body requirements.",
+      "actual_answer": "Generally, yes — but with an exception for specific courses.\n\n- **PGT Credit Framework (2025-26):** For PG students unable to complete their main award, exit awards (PG Diploma or PG Certificate) will have \"the title of the exit award... the same as for the main programmes, unless a different title has been approved in order to meet Professional, Statutory or Regulatory Body requirements\" (source: pgt-credit-framework-25.pdf).\n\n- **UG Aegean Omiros partner institution courses (Years 1, 3, and 4, across 2022-23, 2023-24, and 2025-26 versions):** The rules state exit awards (e.g., Certificate of Higher Education) \"will have the same name as the course of study on which you are enrolled, except in the case of the courses outlined in Table 1, where an alternative name will be used.\" An exit award with an alternative title is described as \"an academic award only\" that \"does not grant a licence to practise in the subject area.\"\n\nSo across both the PGT framework and the UG Aegean partner rules, the default is that the exit award shares the main programme's title, but exceptions apply for specific courses (per PSRB requirements for PGT, or as listed in Table 1 for the UG partner courses).\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-3.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-4.pdf\n\n_Note: this answer is based primarily on \"pgt-credit-framework-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-3.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-4.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-3.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-3.pdf"
+        ],
+        "retrieval_query": "Does an exit award have to carry the same title as the main programme?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but lacks specific mention of Professional, Statutory, or Regulatory Body requirements as a reason for exceptions."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states the same-title default with the PSRB exception, matching the reference, and adds accurate supporting detail without contradicting the core answer."
+      }
+    },
+    "follow_up": {
+      "question": "Which awards does the credit framework actually cover?",
+      "expected_answer": "The Postgraduate Taught Programme Credit Framework covers Masters degrees, PG Diplomas, PG Certificates, and Integrated Masters degrees (Final Stage only).",
+      "actual_answer": "According to the PGT Credit Framework 2025-26, it covers:\n\n- Masters degrees\n- PG Diplomas\n- PG Certificates\n- Integrated Masters degrees (Final Stage only)\n\nIt explicitly notes that Graduate Diploma and Graduate Certificate — which follow undergraduate study but are not postgraduate in Level — are **not** covered here and instead fall under the Undergraduate Principles and Framework.\n\nSource: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf"
+        ],
+        "retrieval_query": "Which awards does the PGT Credit Framework (2025-26) actually cover?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits the specific reference to 'Postgraduate Taught Programme Credit Framework' as mentioned in the reference."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "Matches the reference exactly and adds accurate supplementary detail without contradicting it."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+    "source_title": "Policy for the Appointment of Independent Chairs for Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Our department has 160 PGR students. How many Independent Chair nominations do we have to put forward?",
+      "expected_answer": "Four. Departments with 150 or more PGR students must put forward 4 nominations (1-99 require 2, 100-149 require 3).",
+      "actual_answer": "According to the Independent Chairs Policy, a department with 150+ PGR students must put forward **4 nominations**.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+        ],
+        "retrieval_query": "Our department has 160 PGR students. How many Independent Chair nominations do we have to put forward?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer in substance."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "Correctly identifies 4 nominations for 150+ PGR students, matching the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "Do departments without any PGR students have to nominate anyone?",
+      "expected_answer": "No - but they may if they wish. All departments are able to nominate Independent Chairs to be approved by the Faculty Education Committee, including those without PGR students if they wish.",
+      "actual_answer": "No. According to the Independent Chairs Policy, the nomination requirements are based on the number of PGR students (1-99: 2 nominations; 100-149: 3; 150+: 4). Departments without any PGR students are **not required** to nominate anyone, though the policy notes that \"all departments are able to nominate Independent Chairs to be approved by the Faculty Education Committee, including those without PGR students if they wish.\"\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+        ],
+        "retrieval_query": "Do departments without any PGR students have to nominate anyone for Independent Chair positions?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects both the requirement and optional nature of nominations for departments without PGR students as outlined in the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states that departments without PGR students are not required to nominate anyone but may do so voluntarily, matching the reference's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "For a Tavistock professional doctorate, who can decide to permit a student to enter their completion period?",
+      "expected_answer": "Only the RSPB. A decision or recommendation for discontinuation or downgrading, to permit entry into completion, or to extend the standard period can only be made by the RSPB.",
+      "actual_answer": "Only the Research Students' Progress Board (RSPB) can make this decision. As stated in the policy, \"A decision/recommendation for discontinuation or downgrading, to permit entry into completion, or to extend the standard period can only be made by the RSPB.\"\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "For a Tavistock professional doctorate, who can decide to permit a student to enter their completion period?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the substance of the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly identifies the RSPB as the sole decision-maker and directly quotes the relevant policy text, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "Who does the Course Lead report to for these programmes?",
+      "expected_answer": "The Course Lead is responsible to the Portfolio Manager for the Trust arrangements for the relevant PD students, and liaises with and reports as necessary to the Dean - which for these programmes is the Dean of Partnerships (or their deputy).",
+      "actual_answer": "The Course Lead is responsible to the Portfolio Manager for the Trust arrangements for the relevant PD students, and is also responsible for liaising with and reporting as necessary to the Dean (Dean of Partnerships or their deputy).\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Who does the Course Lead report to for Tavistock professional doctorate programmes?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but omits the word 'liaises' which indicates ongoing communication."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer accurately restates the reference answer's substance, correctly identifying both the Portfolio Manager and the Dean of Partnerships (or deputy) as reporting lines."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "interpretive",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A candidate keeps failing to respond about viva arrangements and we cannot get one scheduled. What is the position?",
+      "expected_answer": "A candidate who does not engage in viva arrangements to the extent that it has not been possible to arrange a viva shall be deemed to have withdrawn permanently from the University and from their research degree, unless it has been agreed that the viva can be waived.",
+      "actual_answer": "Under the Code of Practice on Vivas: candidates who fail to engage in viva arrangements, to the extent that it has not been possible to arrange a viva, **shall be deemed to have withdrawn permanently from the University (and from their research degree)** — unless it has been agreed that the viva can be waived.\n\nNote that waiving the viva is only permitted in limited circumstances (e.g., a re-examination viva following referral where examiners agree the candidate is now likely to pass, or exceptional circumstances preventing engagement), and requires the examiners to submit grounds for the waiver, subject to approval by the Faculty Dean (Postgraduate).\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+        ],
+        "retrieval_query": "A candidate keeps failing to respond about viva arrangements and we cannot get one scheduled. What is the position?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer correctly conveys that a candidate failing to engage in viva arrangements can be deemed to have withdrawn unless the viva is waived, but it adds details about waiver circumstances not present in the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer states the exact deemed-withdrawal rule matching the reference, and adds accurate supplementary detail about waiver conditions without contradicting the source."
+      }
+    },
+    "follow_up": {
+      "question": "What if they cannot engage because of exceptional circumstances?",
+      "expected_answer": "The Code provides for waiving the viva where there are exceptional circumstances which prevent a candidate from engaging in the viva process, so the withdrawal position would not apply in that case.",
+      "actual_answer": "If a candidate cannot engage in the viva process due to **exceptional circumstances**, this is one of the specific grounds on which examiners can request that the viva be waived. In this situation:\n\n- The examiners must submit details of the grounds for excusing the candidate from the oral examination.\n- The **Faculty Dean (Postgraduate)** must approve the waiver.\n\nThis is distinct from the default consequence of non-engagement (deemed permanent withdrawal), which applies only where it has not been agreed that the viva can be waived. So if exceptional circumstances are the reason for non-engagement, the appropriate route is for the examiners to seek a waiver on those grounds rather than the candidate being treated as withdrawn — though note that a waiver won't be granted if an examiner believes, from reading the thesis, that the candidate is likely to fail, only qualify for a lower award, or be referred.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "What if a candidate cannot engage in viva arrangements because of exceptional circumstances?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer correctly explains the procedure when exceptional circumstances prevent engagement in a viva, aligning well with the reference but lacking the explicit mention that 'the withdrawal position would not apply.'"
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The answer correctly explains that exceptional circumstances allow a waiver of the viva rather than treating the candidate as withdrawn, matching the reference and adding accurate supporting detail."
+      }
+    }
+  },
+  {
+    "source_url": null,
+    "source_title": "(no gold document - correct answer is that the corpus does not cover this)",
+    "doc_type": "abstention",
+    "question_style": "abstention",
+    "expects_abstention": true,
+    "primary": {
+      "question": "What is the process for switching from a full-time PhD to a part-time PhD, and vice versa?",
+      "expected_answer": "The policies do not set out a process for switching between full-time and part-time PhD registration. The correct response is to say that this is not covered by the available documents, rather than describing supervisory panel or completion-period arrangements, which address different matters.",
+      "actual_answer": "The provided context does not contain any information on the process for switching between full-time and part-time PhD registration. It only covers the timing and process for confirmation of PhD status (via Supervisory Panel review and recommendation to the RSPB), differentiated by faculty:\n\n- Students in the Faculties of Arts and Humanities and Social Sciences: confirmation review by end of first year (full-time) or equivalent (part-time).\n- Students in the Faculty of Science and Health: confirmation review by end of first term of second year (full-time) or equivalent (part-time).\n\nNo details on transferring between full-time and part-time modes are given in these excerpts.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": null,
+        "reciprocal_rank": null,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf"
+        ],
+        "retrieval_query": "What is the process for switching from a full-time PhD to a part-time PhD, and vice versa?",
+        "no_gold_document": true
+      },
+      "keyphrase_coverage": null,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer correctly identifies that the process for switching between full-time and part-time PhD registration is not covered in the available documents."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The assistant correctly states the documents do not cover switching between full-time/part-time PhD, matching the reference's core conclusion, though it adds extra supervisory panel/confirmation details not required and slightly deviates from the reference's instruction to simply state it's not covered without extraneous information."
+      }
+    },
+    "follow_up": {
+      "question": "Is there anything on the paperwork or approvals involved?",
+      "expected_answer": "No. The documents do not describe the paperwork or approvals for a change of study mode, and the assistant should say so rather than substituting related but different provisions.",
+      "actual_answer": "The provided context does not contain any information on the paperwork or approvals involved in switching between full-time and part-time PhD registration. The excerpts only describe the confirmation of PhD status process (Supervisory Panel review, chair's report, and recommendation to the RSPB), not procedures for changing mode of study.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": null,
+        "reciprocal_rank": null,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf"
+        ],
+        "retrieval_query": "Is there any information available about the paperwork or approvals involved in switching between full-time and part-time PhD registration?",
+        "no_gold_document": true
+      },
+      "keyphrase_coverage": null,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, accurately reflecting the absence of information on paperwork or approvals in the referenced documents."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states the documents lack information on paperwork/approvals for changing study mode and avoids substituting unrelated provisions, matching the reference."
+      }
+    }
+  },
+  {
+    "source_url": null,
+    "source_title": "(no gold document - correct answer is that the corpus does not cover this)",
+    "doc_type": "abstention",
+    "question_style": "abstention",
+    "expects_abstention": true,
+    "primary": {
+      "question": "How much is the PGR tuition fee for a part-time professional doctorate this year?",
+      "expected_answer": "The policy and rules-of-assessment documents do not contain fee amounts. The correct response is to say that fee levels are not covered by these documents rather than quoting a figure.",
+      "actual_answer": "The context provided does not contain the PGR tuition fee amount for a part-time professional doctorate. The Tuition Fee Payment and Liability Policy excerpt discusses fee liability points (e.g., percentages of annual fee owed upon intermission) but does not state actual fee amounts, and it explicitly notes that Postgraduate Research students are covered elsewhere (not included in the excerpt provided). The Code of Practice for Professional Doctorates excerpts discuss supervision and progress requirements, not fees.\n\nI don't have the information needed to answer this question from the given context.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": null,
+        "reciprocal_rank": null,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-26-v1.pdf"
+        ],
+        "retrieval_query": "How much is the PGR tuition fee for a part-time professional doctorate this year?",
+        "no_gold_document": true
+      },
+      "keyphrase_coverage": null,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's response accurately reflects that fee amounts are not covered in the policy and rules-of-assessment documents provided."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states that fee amounts are not contained in the provided documents, matching the reference's substance."
+      }
+    },
+    "follow_up": {
+      "question": "What about the fee for a writing-up year?",
+      "expected_answer": "Also not covered. The documents do not state fee amounts for any year of study, and the assistant should say so.",
+      "actual_answer": "None of the provided context excerpts contain information about tuition fees, including fees for a writing-up year. The excerpts cover progress guidelines, supervision arrangements, submission deadlines, and Research Students' Progress Boards, but not fee amounts.\n\nI don't have the information needed to answer this question from the given context.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": null,
+        "reciprocal_rank": null,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf"
+        ],
+        "retrieval_query": "What is the PGR tuition fee for a part-time professional doctorate writing-up year this year?",
+        "no_gold_document": true
+      },
+      "keyphrase_coverage": null,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, acknowledging the absence of fee information as stated in the reference."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states that fee information, including for a writing-up year, is not covered in the documents, matching the reference answer."
+      }
+    }
+  },
+  {
+    "source_url": null,
+    "source_title": "(no gold document - correct answer is that the corpus does not cover this)",
+    "doc_type": "abstention",
+    "question_style": "abstention",
+    "expects_abstention": true,
+    "primary": {
+      "question": "Which members of staff are currently on the approved pool of Independent Chairs?",
+      "expected_answer": "The policy describes how Independent Chairs are nominated and approved but does not list the individuals on the pool. The correct response is to say the names are not available in these documents, while optionally noting that Faculty Education Committees approve the list annually.",
+      "actual_answer": "The context does not contain information on the specific members of staff currently on the approved pool of Independent Chairs. It only describes the *process* by which departments nominate staff (at least two members annually, more depending on PGR student numbers) and how the Faculty Education Committee approves this list annually, plus the eligibility criteria for nomination (source: https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf). No actual names or a current list of approved individuals are provided.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": null,
+        "reciprocal_rank": null,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+        ],
+        "retrieval_query": "Which members of staff are currently on the approved pool of Independent Chairs?",
+        "no_gold_document": true
+      },
+      "keyphrase_coverage": null,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects the substance of the reference answer by correctly stating that specific names are not available in the documents."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant correctly states the names are not available in the documents and appropriately notes the nomination/approval process, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "Can you tell me how many there are in each department?",
+      "expected_answer": "No. The policy states how many nominations each department must put forward based on PGR student numbers, but does not record actual current numbers or names per department.",
+      "actual_answer": "The context does not provide a specific list of names or numbers of staff currently on each department's approved pool of Independent Chairs. It only describes the *requirements* for how many nominations each department must put forward, based on the size of their postgraduate research student community:\n\n| Number of PGR students | Number of nominations required |\n|---|---|\n| 1–99 | 2 |\n| 100–149 | 3 |\n| 150+ | 4 |\n\nDepartments are notified of their specific required number by the Postgraduate Research Education Team, and the Faculty Education Committee approves the list annually. However, the actual current pool numbers or names per department are not included in the provided context.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": null,
+        "reciprocal_rank": null,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+        ],
+        "retrieval_query": "How many members of staff are currently on the approved pool of Independent Chairs in each department?",
+        "no_gold_document": true
+      },
+      "keyphrase_coverage": null,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer aligns with the reference by explaining that specific numbers or names per department are not recorded, and accurately describes how nominations are determined based on PGR student numbers."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "Correctly states the information isn't available, matches reference substance, and adds accurate supporting detail on nomination requirements without hallucinating false facts."
+      }
+    }
+  }
+]
