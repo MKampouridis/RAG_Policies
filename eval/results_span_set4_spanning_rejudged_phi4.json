@@ -1,0 +1,729 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+    "source_title": "Policy on Compassionate Leave for Postgraduate Research Degree students",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "One of our PGR students has been bereaved. What leave can they take, and what happens if they need longer than that?",
+      "expected_answer": "Compassionate leave can be sought for up to two weeks (10 working days), and the standard and maximum periods of study and the thesis submission date are automatically extended by the duration of the approved compassionate leave. If the longer-term impact requires a longer period of leave, the Policy on Leave of Absence (intermission) should be consulted instead - that is a separate policy with its own grounds and procedures.",
+      "actual_answer": "For a PGR student who has been bereaved, there are two options depending on how much time they need:\n\n**Short-term (up to 2 weeks): Compassionate Leave**\n- Compassionate leave covers bereavement (or serious illness/injury of a close relative/dependant/friend) that prevents the student from continuing their research and studies.\n- It can be sought for up to two weeks (10 working days).\n- The student should first contact their supervisor for support and advice. The student (or their supervisor, if the student is unable to make the request) can then apply by emailing the PGRE Team (pgresearch@essex.ac.uk).\n- The student's standard and maximum period of study, and their thesis submission date, will automatically be extended by the duration of the approved compassionate leave.\n\n**Longer-term impact: Leave of Absence (Intermission)**\n- If the longer-term impact of the bereavement requires more time than compassionate leave allows, the student should instead apply for a Leave of Absence (intermission) under the domestic/family problems category.\n- A term's leave because of the death of a parent, spouse, partner or child (and/or need to provide care) is usually granted initially, with the situation reassessed towards the end of that period. Requests can be made at any stage of the degree.\n- Because of the disruptive nature of leave, further extensions are carefully judged. A maximum of 3 terms of non-medical intermission can be granted in total, after which the student would be required to withdraw and could subsequently request readmission at a later date.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+        ],
+        "retrieval_query": "One of our PGR students has been bereaved. What leave can they take, and what happens if they need longer than that?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully matches the reference in substance and detail, accurately covering both short-term compassionate leave and longer-term leave of absence options."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance and providing additional useful details."
+      }
+    },
+    "follow_up": {
+      "question": "They may need longer than that, and they're part-time - does the part-time mode reduce what they can take?",
+      "expected_answer": "No. For longer leave the Policy on Leave of Absence (intermission) applies, and periods of intermission are not impacted or determined by a student's mode of study - the maximum allowance in terms remains the same for full- and part-time students.",
+      "actual_answer": "No — part-time mode does not reduce what they can take. The rules explicitly state that periods of intermission are not impacted or determined by a student's mode of study; the maximum allowance (in terms) remains the same for both full-time and part-time students.\n\nSo for a bereaved part-time PGR student who needs longer than the 2-week compassionate leave, the Leave of Absence (intermission) policy applies just as it would for a full-time student — with the same maximum allowance of leave available.\n\nSource: https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+        ],
+        "retrieval_query": "Does being a part-time PGR student reduce the amount of compassionate leave or leave of absence that a bereaved student can take compared to full-time PGR students?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer in substance and providing additional relevant details from the policy."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+    "source_title": "Policy on Leave of Absence (intermission) for Postgraduate Research Degree students",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A PGR student sponsored on a Student visa wants to intermit for two terms. What are the consequences?",
+      "expected_answer": "The University is required to withdraw sponsorship from a student who intermits, and the Home Office will curtail their immigration permission. The student will have to leave the UK while intermitting, and must stop any work immediately because the condition allowing work alongside study no longer applies. Before returning they can request further immigration sponsorship and, if eligible, apply for a new Student visa. Retrospective intermission is not possible for sponsored students.",
+      "actual_answer": "If a PGR student sponsored on a Student visa intermits for two terms, the consequences are:\n\n- **Loss of sponsorship**: The University is required to withdraw sponsorship from a student who intermits, and the Home Office will curtail (cut short) their immigration permission.\n- **Must leave the UK**: The student will have to leave the UK for the duration of the intermission period, since they cannot be, or have been, in the UK while not fully registered and actively engaged in study.\n- **Must stop working**: If they have been working, they must stop immediately, as the visa condition permitting work alongside study no longer applies.\n- **No retrospective intermission**: Retrospective leave of absence is not an option for sponsored students.\n- **Re-sponsorship needed to return**: Before returning to study in the UK, the student can request further immigration sponsorship and, if eligible, apply for a new Student visa to re-enter the UK.\n- **Notification**: When a report is made to the Home Office, the International Services Team will notify the student by email and provide immigration advice.\n\nNote also that a short absence agreed without formal intermission or an extension to course duration may allow the student to remain sponsored — but a full two-term intermission would trigger the above consequences.\n\nSource: https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+        ],
+        "retrieval_query": "A PGR student sponsored on a Student visa wants to intermit for two terms. What are the consequences?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully matches the reference in substance and includes all relevant points regarding the consequences of intermitting for a PGR student on a Student visa."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "While they are registered, are there rules about how their supervision meetings must be held because they are visa-sponsored?",
+      "expected_answer": "Yes. For students with immigration sponsorship the majority of contact should be face-to-face; in exceptional circumstances the University may agree contact via video link, and virtual meetings must not breach progress monitoring requirements for students subject to immigration control.",
+      "actual_answer": "Yes. For visa-sponsored PGR students, there are specific rules about how supervision meetings must be held while they are registered:\n\n- Students must be studying in the UK on a full-time basis and meet with their supervisor **monthly, in-person**, adhering to all their responsibilities as a Sponsored student.\n- Of the required monthly meetings, the **majority in any six-month period must be face-to-face, in person** (rather than remote/online).\n- Meetings must be **recorded centrally**.\n- It is particularly important, when supervising a student with immigration sponsorship, to ensure that all contact is **face-to-face on one of the University's campuses**, and that a record is kept to confirm the student attended on campus.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf (note: this excerpt is specifically about Masters dissertation supervision, but states the same principle for sponsored students)",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf"
+        ],
+        "retrieval_query": "While a PGR student sponsored on a Student visa is registered, are there rules about how their supervision meetings must be held because they are visa-sponsored?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant's answer correctly mentions face-to-face requirements and monthly meetings but misses the key point about video link exceptions and progress monitoring compliance."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer provides accurate details but includes some minor inaccuracies and over-specifications not present in the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+    "source_title": "Policy on Thesis Submission, Deposit and Retention",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Our student intends to submit their thesis at the end of their completion period. What do they need to do in advance, and how much notice is required?",
+      "expected_answer": "They must give the Postgraduate Research Education Team at least three months' notice of their intention to submit, via the Approval of Title form, which the PGRE Team needs to begin appointing examiners. Submitting it late is likely to delay the examination process. A student entering a completion period does so on the understanding that the full thesis will be ready for submission by the end of that period.",
+      "actual_answer": "According to the Policy on Thesis Submission, Deposit and Retention, students must give the Postgraduate Research Education Team **at least three months' notice** of their intention to submit their thesis, by submitting the **Approval of Title form**. This form is required by the PGRE Team to commence the process of appointing examiners. If it is not submitted at least three months prior to submission, there may be delays in appointing examiners, which is likely to delay the examination process.\n\nAdditionally, all registration fees and debts must be paid before the thesis can be accepted for submission.\n\nFor candidates who have been recommended a completion period (following approval by the relevant Faculty Dean), the submission deadline will be:\n- At the end of the approved completion period, if it is one or two terms.\n- Four weeks prior to the end of the third term, if a three-term completion period is approved.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf"
+        ],
+        "retrieval_query": "Our student intends to submit their thesis at the end of their completion period. What do they need to do in advance, and how much notice is required?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer covers most of the required notice and form submission but omits details about registration fees and specific deadlines for different completion periods."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes additional details not present in the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "They still owe some fees - does that matter?",
+      "expected_answer": "Yes. All registration fees and debts must be paid before the thesis can be accepted for submission.",
+      "actual_answer": "Yes, it matters. Based on the thesis submission policy context previously discussed, all registration fees and debts must be paid before a thesis can be accepted for submission. If your student still owes fees, this could prevent their thesis from being accepted.\n\nAdditionally, from the fee policies provided here, failure to pay fees may lead to withdrawal of the student's registration at the University, in line with the Student Debt Policy - which would be a further complication for someone intending to submit a thesis.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf (from earlier context)\n- https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf"
+        ],
+        "retrieval_query": "They still owe some fees - does that matter?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer aligns closely with the reference, correctly stating that all registration fees and debts must be paid for thesis submission acceptance, but adds context about potential withdrawal from the university."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes additional details not present in the reference answer."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "If the RSPB recommends a one-term extension to a student's standard period, how does that affect their completion time and their submission deadline?",
+      "expected_answer": "The RSPB can recommend an extension of up to one term where milestone requirements for entering a completion period have not been met. The subsequent number of completion periods available is reduced by one term, unless exceptional circumstances make that reduction inappropriate, and the student must be offered the chance to discuss this with the RSPB before the recommendation goes to the Dean. For candidates first registered from October 2018 onwards the submission deadline is the end of the standard period of study, so extending that period moves the deadline.",
+      "actual_answer": "Based on the context, for PhD (postgraduate research), Professional Doctorates, and Professional Doctorates (Tavistock) programmes alike, a one-term extension to the standard period recommended by the RSPB has the following effect:\n\n- **Completion time**: The subsequent number of completion periods available to the student will be **reduced by one term**, unless exceptional circumstances make that reduction inappropriate. In other words, the extension effectively comes out of the time otherwise allotted for the completion period, rather than adding extra time overall.\n- **Submission deadline**: The context does not explicitly state a change to a specific submission deadline date, but since the standard period is extended by up to one term and the completion period is correspondingly shortened by one term, the overall combined length of standard + completion period remains the same — the extension shifts time from the completion period into the standard period, not adding net additional time before submission is required.\n\nStudents must be given an opportunity to discuss this with the RSPB before the final recommendation is forwarded to the Dean for approval. In exceptional circumstances, an extension of more than one term may be granted and considered case-by-case (noted specifically in the Professional Doctorates Tavistock code).\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "If the RSPB recommends a one-term extension to a student's standard period, how does that affect their completion time and their submission deadline?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct and aligns well with the reference answer but omits the specific mention of candidate registration from October 2018 onwards affecting submission deadlines."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary details about Professional Doctorates (Tavistock) and does not explicitly state that the submission deadline moves with the extension of the standard period."
+      }
+    },
+    "follow_up": {
+      "question": "Is the deadline the same for someone who registered before 2018?",
+      "expected_answer": "No. For candidates first registered before October 2018 the submission deadline of the thesis for examination is the end of the completion period, rather than the end of the standard period of study.",
+      "actual_answer": "No. According to the thesis-submission-deposit.pdf policy, the submission deadline rules differ based on when a candidate first registered:\n\n- **Candidates first registered before October 2018**: The submission deadline for the thesis is at the **end of the completion period**.\n- **Candidates first registered from October 2018 onwards**: The submission deadline is at the **end of the standard period of study** (with any approved completion period, if granted, setting a new deadline at the end of that completion period).\n\nSo the deadline framework is not the same for pre-2018 registrants — their deadline is inherently tied to the completion period, whereas post-2018 registrants' default deadline is the end of the standard period, with a completion period only applying if separately recommended and approved.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "If a student registered before 2018 and the RSPB recommends a one-term extension to their standard period, is their submission deadline the same as it would be for a student who registered after 2018 receiving the same one-term extension?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects the details of the reference answer regarding submission deadlines for different registration periods."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+    "source_title": "Policy on Leave of Absence (intermission) for Postgraduate Research Degree students",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A first-year PGR student is asking for three terms of leave. Is that possible, and is there a shorter option?",
+      "expected_answer": "It is possible but consequential: if a student requests a leave of absence during their first year of study which extends for longer than two terms, they will be required to restart the course. For short-term needs following bereavement or the serious illness of a close relative, compassionate leave of up to two weeks is a separate and lighter-touch option that automatically extends the study periods and submission date.",
+      "actual_answer": "Based on the policy, this depends on the reason for the leave:\n\n**Length restriction for first-year students:** If a student requests a leave of absence during their first year of study that extends for **longer than two terms**, they will be required to restart the course. Since three terms exceeds this two-term limit, requesting three terms of leave in the first year would trigger this restart requirement, regardless of the reason for leave.\n\n**By category, three terms may otherwise be possible but capped:**\n- **Medical intermission**: up to a maximum of 9 terms overall can be granted (though the first-year two-term restart rule would still apply).\n- **Maternity/paternity/adoption/surrogacy leave**: normally up to a year (i.e., three terms) is permissible, though longer can be justified in special circumstances.\n- **Domestic/family problems** (serious ill-health, death, care needs): usually granted initially for a term, reassessed; maximum of 3 terms of non-medical intermission overall.\n- **Financial problems**: normally agreed only for a term (not usually three), with a maximum of 3 terms of non-medical intermission overall, and not typically granted at all once the minimum period is completed.\n\n**Is there a shorter option?** Yes — if the need relates to short-term compassionate circumstances (e.g., death or serious illness of a close relative/dependant/friend), the student could instead seek **Compassionate Leave**, available for up to two weeks (10 working days), which is a separate, quicker process (email pgresearch@essex.ac.uk) and doesn't count against intermission limits. This would avoid the risk of triggering the \"restart the course\" consequence tied to first-year leave over two terms.\n\n**Bottom line:** A first-year student requesting three terms of leave risks having to restart the course, since this exceeds the two-term threshold for first-year intermissions. A shorter option — either staying within two terms of intermission, or applying for two weeks of compassionate leave instead — would avoid this outcome.\n\nSources: \n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf"
+        ],
+        "retrieval_query": "A first-year PGR student is asking for three terms of leave. Is that possible, and is there a shorter option?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully matches the reference in terms of substance, accurately explaining both the implications of requesting three terms of leave and providing the shorter compassionate leave option."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary details about different categories of leave that are not directly relevant to the question."
+      }
+    },
+    "follow_up": {
+      "question": "If the reason is illness, how is that decided?",
+      "expected_answer": "Requests for intermission due to ill health are judged on a case-by-case basis. If the case is sound and backed by medical evidence, leave of absence is generally agreed regardless of the stage of the degree, with the length depending on the illness and its severity.",
+      "actual_answer": "Based on the policy, for illness-related leave of absence:\n\n- **Case-by-case assessment**: Approval of requests for intermission due to ill health are judged individually, based on the specific circumstances.\n- **Medical evidence required**: The case must be backed by medical evidence.\n- **Generally agreed regardless of stage**: If the case is sound and supported by medical evidence, leave is generally agreed **regardless of the stage of the degree**.\n- **Length depends on severity**: The length of leave granted depends on the illness and its severity. The policy aims to keep leave as short as possible, but extensive leave may occasionally be necessary.\n- **Harder cases**: Some illnesses are more difficult to assess in terms of severity and whether the requested length is excessive — the document specifically notes **depression and stress** as examples requiring careful judgement.\n\nNote: the excerpt is cut off after mentioning \"A Maximum of...\" for medical intermission, so I can't confirm the exact maximum term limit from this context — though a separate part of the document indicates a maximum of 9 terms overall for medical intermission (as referenced in earlier discussion), while for **first-year students specifically**, any leave (including for illness) extending beyond two terms will require the student to restart the course.\n\nSources: https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+        ],
+        "retrieval_query": "If a postgraduate research student requests a leave of absence due to illness, how is it decided whether their request for leave will be approved?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer captures most of the reference content correctly but includes additional details not present in the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes an additional detail about first-year students not directly stated in the reference."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+    "source_title": "Policy for the Appointment of Independent Chairs for Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A thesis was referred and the student has now resubmitted. Do we need an Independent Chair for the second viva, and can the viva be waived?",
+      "expected_answer": "Two separate rules apply. An Independent Chair is appointed where the viva follows a referral and resubmission of a thesis, so yes. On waiving, where the recommendation on the referred thesis is a pass, a request by the examiners to waive the viva will normally be granted; where the recommendation is not a pass, a waiver will only be granted in exceptional circumstances.",
+      "actual_answer": "**Independent Chair:** Yes. The Independent Chairs Policy specifies that the Faculty Dean Postgraduate will appoint an Independent Chair when \"the viva is following a referral and resubmission of a thesis\" (among other circumstances) (independent-chairs-policy.pdf).\n\n**Waiving the viva:** It depends on the recommended outcome for the referred thesis:\n- If the examiners recommend a **pass**, a request to waive the viva \"will normally be granted.\"\n- If the recommendation is **not a pass**, waiving the viva \"will only be granted in exceptional circumstances\" (by the Dean).\n\nIn either case, if a waiver is approved, the Postgraduate Research Education Team notifies the student of the examiners' wish/request and the reasons, but the student retains the right to insist on having a viva if they wish. This applies per both code-practice-postgraduate-research.pdf and code-of-practice-professional-doctorates-tavistock.pdf.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-vivas.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "A thesis was referred and the student has now resubmitted. Do we need an Independent Chair for the second viva, and can the viva be waived?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer fully aligns with the reference, accurately explaining both the requirement for an Independent Chair and the conditions under which a viva can be waived."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "Who can be the Independent Chair - can it be someone from the same department?",
+      "expected_answer": "No. The Independent Chair will be from outside the candidate's department and will have no conflict of interest with the candidate, the supervisor or the External Examiner. A nominee must be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex, or has examined two theses externally and undertaken University of Essex Independent Chair training.",
+      "actual_answer": "No. Per the Independent Chairs Policy: \"the Independent Chair chosen will be from outside the candidate's department and will have no conflict of interest with the candidate, the supervisor or the External Examiner.\"\n\nAdditional requirements for who can serve as Independent Chair:\n- Must be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex; **or** has examined two theses externally and undertaken University of Essex Independent Chair training (when available); and\n- Must have a good understanding of the University's procedures and regulations for the award being examined.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Who can be appointed as an Independent Chair for a second viva following a thesis referral and resubmission - can the Independent Chair be someone from the same department as the student?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant correctly states that the Independent Chair must be from outside the candidate's department with no conflict of interest, but omits detailed eligibility criteria and additional requirements mentioned in the reference."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "A Tavistock professional doctorate student needs an extension to their standard period. Who recommends it and which Dean approves it?",
+      "expected_answer": "The recommendation can only be made by the RSPB - a decision or recommendation to extend the standard period, like discontinuation, downgrading or permitting entry into completion, can only be made by the RSPB. For Tavistock and Portman programmes 'Dean' means the Dean of Partnerships (or their deputy), so approval is sought there rather than from the Executive Dean.",
+      "actual_answer": "Under the Code of Practice for Professional Doctorates (Tavistock), the **RSPB (Research Student Progress Board)** recommends the extension to a student's standard period (of up to one term, or more in exceptional circumstances), and the **Dean** approves the final recommendation.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-professional-doctorates.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "A Tavistock professional doctorate student needs an extension to their standard period. Who recommends it and which Dean approves it?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer correctly identifies that the RSPB recommends extensions and mentions the Dean's approval, but lacks specificity about 'Dean' referring to the Dean of Partnerships (or their deputy) rather than a generic Dean."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer correctly identifies RSPB's role but does not specify that it is the Dean of Partnerships who approves for Tavistock and Portman programmes."
+      }
+    },
+    "follow_up": {
+      "question": "Is that a different route from an Essex-based professional doctorate?",
+      "expected_answer": "Yes in respect of the Dean and the reporting line. On Essex professional doctorates the Professional Doctorate Director is responsible to the Head of Department and most decisions are referred to the Faculty Dean Postgraduate; for the Trust programmes the Course Lead is responsible to the Portfolio Manager and decisions go to the Dean of Partnerships. The RSPB-only rule for these decisions is the same in both.",
+      "actual_answer": "No — it's the same route/process. Both the Tavistock Code of Practice for Professional Doctorates and the general (non-Tavistock) Code of Practice for Professional Doctorates specify that the **RSPB (Research Student Progress Board)** recommends an extension to a student's standard period (up to one term, or more in exceptional circumstances), and the **Dean** approves the final recommendation. The extension provisions in section 5.8 are worded identically in both documents.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"code-practice-professional-doctorates.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Is the process for recommending and approving extensions to the standard period different for Essex-based professional doctorate students compared to Tavistock professional doctorate students?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant's answer is largely incorrect as it contradicts the reference by stating there is no difference in route/process when significant differences are described regarding responsibility and decision reporting lines."
+      },
+      "judge_original_7b": {
+        "score": 1,
+        "justification": "The assistant's answer contradicts the reference by stating it is the same route/process when in fact there are differences specified."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "We want a visiting academic to supervise a research student. Could they instead act as Independent Chair at a viva?",
+      "expected_answer": "Visiting staff cannot be appointed as a supervisor of a PGR student unless formally appointed via the associate supervisor route. Nor could they be an Independent Chair: a nominee must be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex, or has examined two theses externally and undertaken University of Essex Independent Chair training.",
+      "actual_answer": "Based on the context, an Independent Chair must:\n\n- Be a permanent member of staff who has been an Internal Examiner for at least two postgraduate research examinations at Essex; or has examined two theses externally and undertaken University of Essex Independent Chair training (when available); and\n- Have a good understanding of the University's procedures and regulations for the award being examined\n- Be from outside the candidate's department and have no conflict of interest with the candidate, the supervisor, or the External Examiner\n\nA visiting academic would not appear to meet these criteria, since the policy requires the Independent Chair to be a \"permanent member of staff\" with prior internal examining experience at Essex (or equivalent external examining experience plus Essex-specific training). A visiting academic supervising the student would also likely fail the conflict-of-interest requirement, as they would have a direct relationship with the candidate.\n\nSo, based on this context, a visiting academic supervising the student could not act as Independent Chair — both because they are unlikely to satisfy the \"permanent member of staff\" criterion, and because supervising the candidate would constitute a conflict of interest that the policy explicitly excludes.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf\n\n_Note: this answer is based primarily on \"code-practice-vivas.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 4,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.25,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+        ],
+        "retrieval_query": "We want a visiting academic to supervise a research student. Could they instead act as Independent Chair at a viva?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer accurately reflects the key points of the reference, specifically addressing both eligibility criteria and conflict-of-interest concerns for a visiting academic acting as an Independent Chair."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance."
+      }
+    },
+    "follow_up": {
+      "question": "If the supervisor is inexperienced, does that change who should chair the Supervisory Panel?",
+      "expected_answer": "Yes. Where the supervisor is a less experienced member of staff who has not supervised a student through to completion, the chair must be an experienced supervisor.",
+      "actual_answer": "Yes. Across the postgraduate research and professional doctorate codes of practice, if the supervisor is a less experienced member of staff who has not previously supervised a student (or doctoral student) through to completion, the Chair of the Supervisory Panel must be an experienced supervisor instead.\n\nThis requirement is consistent across:\n- **Postgraduate research students** (code-practice-postgraduate-research.pdf)\n- **Professional Doctorates** (code-practice-professional-doctorates.pdf)\n- **Professional Doctorates (Tavistock)** (code-of-practice-professional-doctorates-tavistock.pdf)\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "If a research student's supervisor is inexperienced, does that change who should chair the Supervisory Panel?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and comprehensive, aligning with the reference in substance and including specific document references for clarity."
+      },
+      "judge_original_7b": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and complete, matching the reference answer's substance and providing additional relevant details and sources."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Our internal examiner has never examined a research degree before. What does that mean for how the viva is run?",
+      "expected_answer": "An Independent Chair will be appointed: the Faculty Dean (Postgraduate) appoints one where the Internal Examiner has no experience in research degree examining, or is new to research degree examining at Essex and has not undertaken Internal Examiner training. The Independent Chair oversees the conduct of the oral examination. If the viva runs longer than two hours the internal examiner or Independent Chair will recommend an adjournment for a break.",
+      "actual_answer": "Because the internal examiner has no experience in research degree examining, the Faculty Dean (Postgraduate) will appoint an **Independent Chair** to oversee the viva. This is one of the specified circumstances triggering appointment of an Independent Chair, alongside cases where the internal examiner is new to research degree examining at Essex and has not undertaken University of Essex Internal Examiner training.\n\nThe Independent Chair's role includes overseeing proceedings at the viva and ensuring the University's Principal Regulations for Research Degrees are adhered to — a responsibility that would otherwise fall to the internal examiner alone. The Chair (or internal examiner) is also responsible for the introductory remarks to the candidate (introducing the examiners, confirming the purpose of the viva, explaining how the examiners will proceed, and covering video-link etiquette if relevant), and for chairing the pre-viva meeting where examiners discuss their initial assessment and agreed approach to questioning.\n\nNote also that to qualify as an Independent Chair, a person must normally be a permanent staff member who has been an internal examiner for at least two prior postgraduate research examinations at Essex (or examined two theses externally plus completed Independent Chair training), so the Chair appointed will bring that experience to the process.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+        ],
+        "retrieval_query": "Our internal examiner has never examined a research degree before. What does that mean for how the viva is run?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but lacks the detail about the procedure for adjourning a viva that runs longer than two hours."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is comprehensive but includes details about the qualifications of an Independent Chair that are not in the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "Can the supervisor sit in to support the inexperienced examiner?",
+      "expected_answer": "Not normally. The candidate's supervisor will not normally be present at the viva and can only be present in exceptional circumstances, approved on an individual basis by the Faculty Dean (Postgraduate) and with the agreement of the examiners. It is good practice for the supervisor to be invited in at the end when the examiners communicate their recommendation.",
+      "actual_answer": "The context provided doesn't directly address whether a supervisor can sit in to support an inexperienced examiner during a viva. What it does cover is eligibility criteria for internal examiners, including that the internal examiner should **not have been the student's supervisor** (main, joint, or secondary) other than acting as a temporary supervisor for up to a year, but not in the final 12 months before thesis submission — and should not have been a member of the Supervisory Panel in the final six months before submission.\n\nThis suggests supervisors are kept structurally separate from the examination process to avoid conflicts of interest, which would weigh against a supervisor sitting in to \"support\" an examiner. However, the excerpts here don't specifically discuss supervisors attending or observing vivas, nor do they address the scenario of supporting an inexperienced examiner in that way. For that specific question, the context has nothing conclusive — I'd recommend checking the Code of Practice sections on viva attendance/observers directly.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Can the supervisor sit in to support an internal examiner who has never examined a research degree before?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant partially addressed the question by discussing the separation of supervisors from the examination process but failed to specifically mention the policy on viva attendance as outlined in the reference answer."
+      },
+      "judge_original_7b": {
+        "score": 2,
+        "justification": "The assistant's answer is largely incorrect and misses the point of the question, focusing instead on eligibility criteria for internal examiners rather than supervisor presence during vivas."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+    "source_title": "Policy on Thesis Submission, Deposit and Retention",
+    "doc_type": "policy",
+    "question_style": "spanning",
+    "expects_abstention": false,
+    "primary": {
+      "question": "How should a professional doctorate candidate submit their thesis, and what happens next in the examination process?",
+      "expected_answer": "All candidates for Masters by Dissertation, MPhil, MD, PhD and Professional Doctorate must submit the thesis electronically in PDF format, contained within one document rather than separate files, emailed to the Postgraduate Research Team at pgrsubmission@essex.ac.uk, with all registration fees and debts paid first. The examination then proceeds to the viva, whose format is agreed between the participants starting from the candidate's preference.",
+      "actual_answer": "Based on the context, here's how a professional doctorate candidate should submit their thesis and what follows:\n\n**Submission process:**\n- All candidates for a Professional Doctorate must submit their thesis electronically in PDF format for examination\n- The thesis must be contained within one document, not divided into separate PDF files, and emailed for submission\n- Before submission, the supervisor and Head of Department (or Course Lead, for the Tavistock programme) must approve the proposed title, indicating the thesis is close to submission. This Approval of Title form should be submitted to the Postgraduate Research Education Team **at least three months prior to submission** to allow the examiner appointment process to begin - failing to do so may delay the appointment of examiners and the examination process\n- The maximum word length of the thesis is 40,000 words, excluding references and bibliography\n- The thesis must embody results of research carried out during the approved period of study, and the candidate must present original investigations making a significant contribution to professional practice or the application of theory\n\n**What happens next (examination process):**\n- Examiners are nominated/appointed following the Guidelines for the Appointment of Research Examiners\n- Before the viva, the internal and external examiners must each independently complete an Initial Report Form giving their preliminary assessment of the thesis\n- Examiners hold a pre-viva meeting to discuss their preliminary views and plan the viva\n- The candidate has the viva (oral examination), during which they are expected to defend the thesis\n- The candidate typically leaves the room/call temporarily while examiners confer on the outcome, then is told the result\n- The supervisor is not present at the viva\n- In certain circumstances (e.g., examination by external examiners only, or following an appeal), an Independent Chair may be appointed to attend, though they are not an examiner of the thesis\n- If concerns arise about research integrity during the process, the viva may be suspended and the matter investigated under the Research Integrity and Research Misconduct Procedures\n- Candidates who wish to appeal the outcome of their examination should consult the Appeals Procedures for Postgraduate Research Students\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf\n\n_Note: this answer is based primarily on \"thesis-submission-deposit.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "How should a professional doctorate candidate submit their thesis, and what happens next in the examination process?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant's answer covers many correct aspects of the submission and examination process but misses specific details like emailing to pgrsubmission@essex.ac.uk, ensuring all fees are paid first, and how the viva format is agreed starting from the candidate's preference."
+      },
+      "judge_original_7b": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes additional details not in the reference answer and lacks minor specifics from it."
+      }
+    },
+    "follow_up": {
+      "question": "Who decides whether the viva is in person or online?",
+      "expected_answer": "The candidate may express a preference which the department should seek to accommodate. The person or team arranging the viva should liaise with all participants and seek agreement from all parties on the viva format, starting with the candidate's preference.",
+      "actual_answer": "Based on the context, where a viva cannot be conducted face-to-face, **permission must be requested from the Dean** (Faculty Dean, Postgraduate) for the viva to be conducted via video link, in accordance with the University policy on the matter.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf"
+        ],
+        "retrieval_query": "Who decides whether a professional doctorate candidate's viva (oral examination) is conducted in person or online?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 2,
+        "justification": "The assistant's answer contradicts the reference by focusing on permission from the Dean, rather than emphasizing candidate preference and departmental agreement."
+      },
+      "judge_original_7b": {
+        "score": 2,
+        "justification": "The assistant's answer introduces a requirement to seek permission from the Dean which is not mentioned in the reference answer or question context."
+      }
+    }
+  }
+]

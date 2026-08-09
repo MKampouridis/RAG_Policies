@@ -3254,3 +3254,63 @@ slot-level reranking rule addresses it. The remaining misses need the gold to
 that hits average only 3.10 distinct documents in six slots: for questions whose
 answer genuinely spans documents, effective breadth is about half of N_RESULTS.
 That is a separate and still-untested concern, not a defect.
+
+## Round 8d — Set 4: corpus-spanning questions (2026-08-09)
+
+Built to remove set 3's stated confound (every question answerable from ONE
+document) and to test the breadth concern raised by 8c (hits average ~3
+distinct documents in six slots). 10 PGT/PGR questions, each requiring facts
+from 2 documents, verified mechanically: for every question NO single required
+document contains all its keyphrases. Cloud generator, phi4 judge.
+
+### hit@6 reports perfection on a set that is 15% short of its evidence
+
+| metric | value |
+|---|---|
+| strict hit@6 (single gold doc), primary | **10/10** |
+| mean span coverage@6 (all required docs) | **85.0%** |
+| questions with ALL required docs in top 6 | **7/10** |
+| mean distinct documents in top 6 | **2.80 / 6** |
+
+Three questions are missing a required document outright, and the document-level
+metric scores every one of them as a clean hit. This is the blind spot the
+metric was built to expose, now demonstrated rather than argued: **hit@6 cannot
+see a partially-evidenced answer.** Any future multi-document work must report
+span coverage, or it will be measuring a number that is already saturated.
+
+The 2.80 distinct documents figure also confirms 8c from the other direction:
+the system concentrates on one document. That is *why* it does well on
+single-document questions and it is the same behaviour that caps this set.
+
+### But spanning questions are only slightly harder
+
+| | set 3 (single-doc) | set 4 (spanning) |
+|---|---|---|
+| primary | 4.45 | 4.40 |
+| follow-up | 3.95 | 3.70 |
+| overall | 4.20 | 4.05 |
+
+**Set 3's finding largely survives the confound.** Removing single-document
+answerability moved the headline by 0.15 and primary turns by 0.05. The
+prediction that spanning questions would expose a large hidden weakness is NOT
+supported. As with set 3 the loss concentrates in follow-ups (3.70), which is
+where every measurement in this project has put it.
+
+Coverage does track quality in the expected direction - full-coverage questions
+mean 4.57 vs 4.00 for partial - but **n=3 partial, which is far too small to
+call an effect.** Recorded as directional only.
+
+### The most informative failure is generation, not retrieval
+
+Q7 follow-up ("is the Tavistock route different from an Essex-based
+professional doctorate?") scored 1 with hit@6=True and FULL span coverage. Both
+codes were retrieved and the system answered "No - it's the same route/process",
+when the Dean and the reporting line differ (Dean of Partnerships / Portfolio
+Manager vs Faculty Dean Postgraduate / Head of Department). Having both
+near-identical documents in context did not help it distinguish them; arguably
+it caused the error. That is a distinct failure mode from the crowding
+hypothesis falsified in 8c, and it is not addressable by retrieval work.
+
+Cost: ~$0.15. The retrieval half (span coverage) was free and generator-
+independent, and was run FIRST so the generator run could be skipped if breadth
+had turned out to be broken.
