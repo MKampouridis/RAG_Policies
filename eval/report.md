@@ -2957,3 +2957,101 @@ hit be a user-facing failure, a scored miss can be a user-facing success.
 
 Adopting the useful-answer rate, or a claim-level metric, is no longer a refinement - without it,
 work like this fix is invisible or actively mis-signposted.
+
+---
+
+# Round 7: real-user feedback, a self-inflicted regression, and the cloud-component question (2026-08-08/09)
+
+Distinct in kind from rounds 3-6, which were external-review cycles. This one started from 32 real
+thumbs-up/down ratings in `data/feedback.jsonl` and followed the data. Three of its six findings are
+negative, and one is a correction to a recommendation made earlier in the same round.
+
+## 1. A guard I added cost 8.8 points, and how it was found
+
+Fixing a real user complaint (a topic-switched question answered from the previous topic), I added
+`_has_extraneous_family` to reject contextualizer rewrites that introduce unrelated programme names.
+It shipped **enabled** on the strength of two hand-checked cases — against this project's own
+convention that new mechanisms default off.
+
+The full eval caught it, but only when split by turn type:
+
+| | baseline | with guard | after disabling |
+|---|---|---|---|
+| primary hit@6 (no contextualizer) | 78.8% | 80.0% | 80.0% |
+| **follow-up hit@6** | **75.0%** | **66.2%** | **75.0%** |
+
+`data/contextualizer_rejects.jsonl` confirmed the mechanism: **33 rejections in a day against 1 in
+all prior history**, each falling back to the raw context-free question. The rejected rewrites were
+*correct* — naming the programme carried in from history is the contextualizer's whole job.
+
+The design cannot be repaired by tuning: `_family_labels_named` counts document FAMILIES and one
+programme spans many, so naming one programme is indistinguishable from naming several. Raising the
+threshold to >=2 recovered only 3 of 33. Disabled.
+
+**Two lessons.** Validate on the metric the change can actually move — the 30-turn multi-turn probe
+used to justify it is topic-switch-heavy and structurally blind to follow-up regressions. And
+primary turns are a free control for anything touching query rewriting.
+
+## 2. Cloud components: one win, two nulls
+
+All measured on the same 80 questions, same local judge, one variable at a time.
+
+**Contextualizer (claude-sonnet-5 vs local qwen2.5:7b) — NULL.** Follow-up hit@6 75.0% -> 76.2%
+(one turn), useful answer +0.0. Primary turns identical to two decimals, confirming isolation. Query
+rewriting is not capability-bound here; Round 5's local sweep had already found the same flatness.
+
+**Generator (claude-sonnet-5 vs local gemma3:12b) — REAL, and concentrated where it was not expected.**
+
+| mean judge score | gemma3 | sonnet-5 |
+|---|---|---|
+| primary, hit turns | 4.19 | 4.31 |
+| follow-up, hit turns | 3.77 | 3.92 |
+| **primary, MISS turns** | **3.50** | **4.00** |
+| **follow-up, MISS turns** | **2.90** | **3.62** |
+
+The gain is almost entirely on turns where retrieval *failed* — extracting a usable answer from
+sibling documents. Inspection of high-scoring miss turns shows hedged extraction, not fabrication
+("the excerpts describe the concept of capping but do not include an explicit definition"), so
+Round 4's "stronger models are more confidently wrong on misses" does not reproduce here — as
+Round 5 already found for gemma3 and gpt-oss.
+
+**Generator (claude-haiku-4-5) — NULL, and below local.** Primary mean 3.94 vs gemma3's 4.05,
+follow-up mean identical at 3.55. It recovers about half the follow-up miss-turn gain (3.30 vs
+sonnet 3.62) but is worse than local on primary miss turns. Extraction-under-retrieval-failure looks
+like a Sonnet-tier capability; halving cost is not available.
+
+## 3. Correction: the useful-answer rate is the wrong headline
+
+Earlier in this round the useful-answer rate (hit@6 AND judge >= 3) was recommended as the headline
+metric, on the strength of the 8.7-point blind-spot finding. **The generator experiment falsifies
+that recommendation.** The metric *requires* a hit, so it is structurally blind to miss turns — which
+is exactly where the generator gain lives. Sonnet's +0.50/+0.72 on miss turns registers as +0.0 on
+the useful-answer rate.
+
+**Mean judge score is the better headline**: it counts partial credit on miss turns, which is where
+real user value sits given ~half of misses are harmless (Round 6 variance oracle). Report hit@6 for
+retrieval, mean score for end-to-end quality, and treat any hit-gated metric as a retrieval measure
+wearing a quality costume.
+
+## 4. The judge flatters follow-ups
+
+Re-judging the same 160 answers with claude-sonnet-5 (~$0.60): mean scores near-identical (3.80 vs
+3.78) but the useful-answer rate drops 71.2% -> 62.3%. Per-turn the judges agree on 70 turns, with
+Sonnet stricter on 41 and *more lenient* on 48 — it redistributes rather than tightening, and the
+redistribution straddles the >= 3 threshold.
+
+Split by turn type it is not symmetric: Sonnet rates primary answers **higher** (4.05 -> 4.24) and
+follow-ups **lower** (3.55 -> 3.32; useful 66.2% -> 51.9%). The local judge is most generous exactly
+where the system is weakest and the judgement is hardest. Real follow-up performance is worse than
+the ledger records.
+
+**Never mix judges within one comparison** — the judge alone moves the threshold metric by ~9 points,
+dwarfing most effects being measured.
+
+## Round 7 verdict
+
+Production runs the cloud generator (measured) and a Haiku contextualizer (latency-measured, quality
+inferred from the Sonnet null); embedding and reranking stay local as no API alternative exists.
+Retrieval is now ~40% of a ~9-12s turn and is the remaining latency lever. The follow-up gap is
+**neither** retrieval nor query rewriting — both were falsified this round — and is only partly the
+generator; on hit turns a ~0.4 mean gap survives every swap tried.
