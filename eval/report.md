@@ -3055,3 +3055,72 @@ inferred from the Sonnet null); embedding and reranking stay local as no API alt
 Retrieval is now ~40% of a ~9-12s turn and is the remaining latency lever. The follow-up gap is
 **neither** retrieval nor query rewriting — both were falsified this round — and is only partly the
 generator; on hit turns a ~0.4 mean gap survives every swap tried.
+
+---
+
+# Round 8 — PGT/PGR question set 3 (2026-08-09)
+
+**Not comparable to the ledger above.** Set 3 is a new 23-question file scoped to PGT/PGR, run on
+production's configuration (cloud Sonnet generator, Haiku contextualizer) with a frontier judge.
+Different questions, different generator, different judge — no number here should be diffed against
+a Round 1-7 number. It exists to characterise *this* question type, not to move the ledger.
+
+Composition: 5 factual, 15 interpretive, 3 abstention. The interpretive questions test rule
+COMBINATION and authority boundaries, not lookup, because that is what the feedback log shows
+failing. Abstention items are held out of all retrieval metrics (no gold document).
+
+## Results
+
+| bucket | n turns | ev-suff@6 | strict hit@6 | mean judge |
+|---|---|---|---|---|
+| overall (excl. abstention) | 40 | 100.0% | 97.5% | 4.62 |
+| primary | 20 | 100.0% | 100.0% | 4.70 |
+| follow-up | 20 | 100.0% | 95.0% | 4.55 |
+| factual | 10 | — | — | 4.70 |
+| interpretive | 30 | — | — | 4.60 |
+| abstention | 6 | n/a | n/a | 4.83 |
+
+**Interpretive questions are not harder than factual ones for this system** (4.60 vs 4.70, n=10 vs
+30 — the gap is well inside noise at this sample size). The prior assumption that rule-combination
+questions would expose a weakness the factual set hides is **not supported** on set 3. Note the
+confound: these were authored against documents, so every one is answerable from a single document.
+A genuinely corpus-spanning interpretive set is untested and is the honest version of this probe.
+
+**Abstention behaviour is correct: 6/6 turns, mean 4.83.** The system declined to answer questions
+with no corpus basis (fee amounts, named Independent Chairs, full-time/part-time PhD switching)
+rather than confabulating from adjacent provisions. This was the failure the user reported from real
+use, and it does not reproduce under the cloud generator. The lexical abstention marker fired on only
+67% of those turns, which is why the marker is a tripwire and the judge is the metric.
+
+## The remaining failure mode is chunk-level, not document-level
+
+Only 3 of 40 turns scored <= 3, and **two share one root cause: the fact was in the retrieved
+document but not in the retrieved chunk.**
+
+- *"What is expected of a student entering a completion period?"* — score 1, **hit@6 = True**. The
+  sentence is in the retrieved document verbatim ("Students permitted to enter a completion period
+  ... do so on the understanding that their full thesis will be ready for submission by the end of
+  that completion period"). The system said the context did not address it. It abstained rather than
+  confabulating, which is the right behaviour on a chunk miss, but the user still gets nothing.
+- *"Can supervision meetings be held over Zoom [for an immigration-sponsored student]?"* — score 3,
+  hit@6 = True. Both required phrases are in the document. The answer surfaced the general
+  virtual-meetings clause and the immigration caveat, but missed "the majority of contact should be
+  face-to-face" — so it led with "Yes, but" where the document leads with a restriction.
+
+With document-level retrieval at 97.5% on this set, **document-level metrics have no headroom left
+to measure and chunk selection is where the remaining loss is.** This is the blind spot documented
+in Round 4 (8.7 points on the main set), now the dominant term rather than a secondary one.
+
+The third failure is different and partly a question defect: *"How many credits can be condoned in
+total?"* (hit@6 = False, score 3) is underspecified without the primary turn's programme context,
+and the system answered across programmes — but it also conflated "credits that may be failed and
+still pass" (90 of 120) with condonement (20 credits, non-core, mark >= 40). That conflation is
+real and worth a targeted probe; the question wording is not clean enough to call it alone.
+
+## Method note
+
+`expects_abstention` items record rank/hit as `None`, not `False` — `False` reads as a retrieval
+failure in any aggregate that sums it, `None` forces exclusion. Building them surfaced a resume bug:
+`run_eval` keyed resume state on `source_url`, which is null for every abstention item, so all three
+collapsed to one key and two would be silently dropped on any resumed run. Now keyed on
+`(source_url, question)`.
