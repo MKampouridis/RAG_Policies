@@ -239,11 +239,18 @@ _INLINE_CITATION_RULE = (
 # COLLATERAL: 6 ordinary single-entity questions, cloud-judged, mean 5.00 with
 # the rule vs 5.00 without - no regression.
 #
-# HONEST LIMIT: that collateral sample is small and saturated at the judge's
-# ceiling (every answer scored 5), so it demonstrates "no obvious harm" rather
-# than safety. The standard 80-turn A/B is still the proper validation, and the
-# eval question set contains no multi-entity questions at all - which is exactly
-# why this failure only ever surfaced in real use. Revert with = False.
+# VALIDATED 2026-08-09 on the full 160 turns (both sets, ON vs OFF, local
+# generator and judge): pooled mean 3.80 ON vs 3.77 OFF; primary hit@6 and
+# useful-answer rate IDENTICAL (80.0% / 76.2%); every difference within noise.
+# So the rule causes no collateral damage - which was the actual risk, and
+# replaces the earlier 6-question sample that was saturated at the judge's
+# ceiling and could only ever show "no obvious harm".
+#
+# It still does not show the rule HELPS: neither question set contains a
+# multi-entity question, the same structural gap that makes the partner-
+# institution fix unmeasurable. It stays on for the real-user evidence
+# (the CSEE/MSAS/Psychology complaint), with that limit recorded not assumed.
+# Revert with = False.
 MULTI_ENTITY_COVERAGE = True
 _MULTI_ENTITY_RULE = (
     "\n- If the question names several specific things (multiple programmes, departments, "
