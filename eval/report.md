@@ -3168,3 +3168,53 @@ answering a governance question the policies do not address.
 Embeddings, lexical and ColBERT are identical across both runs; only the
 follow-up query rewriter changed (local qwen2.5:7b vs claude-haiku-4-5), and
 the 2.5-point gap sits entirely in follow-up turns.
+## Round 8b — stale-edition alias fix (2026-08-09)
+
+Traced from the set-3 completion-period failure (judged 1 with hit@6=True):
+slots 2 and 3 of the top 6 were the **2020-21 archived edition** of the PGR
+Code of Practice, crowding the 2025-26 edition into one slot holding the wrong
+chunk. Retrieval filters `is_current=True`, so archived editions should not have
+been reachable at all.
+
+Cause: rename-splits `document_family()` cannot see. The PGR Code was renamed
+twice over its life (`code-practice-X` -> `code-of-practice-X` ->
+`code-practice-X-degrees`), producing THREE family keys for one lineage, each
+electing its own newest member as current. Same defect on Academic Appeals
+(the "and" in `undergraduate-and-postgraduate-taught` dropped for 2022-24 and
+re-added). `audit_family_aliases.py` cannot propose these: it merges only stems
+differing by non-structural tokens, which is the conservatism that stops it
+merging `4yr-year-1` with `4yr-year-2`. Whole-word renames need the hand-audited
+map.
+
+Verified as single lineages by YEAR-CONTIGUITY, not name similarity: the PGR
+Code runs 2015-16..2025-26 unbroken across its three keys. Two parallel
+documents cannot produce that.
+
+**Effect: 3 documents demoted, 0 spurious promotions (245 -> 242 current).**
+
+| | pre-alias | post-alias |
+|---|---|---|
+| hit@6, 160 turns (main + set 2) | 124/160 (77.5%) | 124/160 (77.5%) |
+| per-turn | — | gained 0, lost 0, 3 ranks improved |
+
+Neutral on hit@6 and non-regressive, which is the expected shape: the demoted
+editions are SIBLINGS of the gold documents, so crowding them out frees chunk
+slots without changing which document is judged correct. The completion-period
+query now retrieves its gold chunk at **rank 1** (was absent from the top 6).
+The set-3 Zoom/immigration failure is **unchanged** - that one is genuine
+chunk ranking, which this fix was never going to touch.
+
+### Method error worth recording
+
+The first verification compared a post-alias replay against `hit@6` stored in
+the older `results_gemma3_e2e_*` files, and reported "3 gained, 2 lost". That
+comparison is invalid - the stored baseline was measured on a different index
+state after several intervening changes, so nothing in it is attributable to
+the alias change. Re-run properly (aliases disabled, flags recomputed, same
+replay, then restored) the true answer is **0 gained, 0 lost**.
+
+The two apparent "losses" were wrong-year-of-study siblings (`mlang-year-3`
+holding four of six slots on one query) - a real and separate defect, but not
+caused by this change. Reported as caused by it, the obvious response would
+have been to revert or complicate a fix that is in fact clean. `retrieval_replay`
+is cheap precisely so it can be run on BOTH sides; one side is not a baseline.

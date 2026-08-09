@@ -32,6 +32,24 @@ _YEAR_DIR_RE = re.compile(r"/(20\d{2}-\d{2,4})/")
 # vs 4yr-year-2) are never merged. Verified: applying this demotes exactly 22
 # superseded editions to is_current=False, 0 spurious promotions.
 _FAMILY_ALIASES = {
+    # WHOLE-WORD renames (2026-08-09, hand-verified). audit_family_aliases.py
+    # cannot propose these: it only merges stems differing by non-structural
+    # tokens, so a rename that adds or drops a WORD ("of", "and", "degrees")
+    # is excluded by design - that conservatism is what stops it merging
+    # 4yr-year-1 with 4yr-year-2. These three were found by tracing a real
+    # set-3 failure ("what is expected of a student entering a completion
+    # period", judged 1 with hit@6=True): slots 2 and 3 of the top 6 were the
+    # 2020-21 ARCHIVED edition of the PGR Code, crowding the 2025-26 edition
+    # down to one slot that held the wrong chunk.
+    #
+    # Verified as single lineages by year-contiguity, not by name similarity:
+    # PGR Code runs 2015-16..2025-26 unbroken across its three family keys,
+    # and Academic Appeals interleaves exactly (the "and" was dropped for
+    # 2022-23/2023-24 and re-added), so neither can be two parallel documents.
+    "code-of-practice-postgraduate-research.pdf": "code-practice-postgraduate-research.pdf",
+    "code-practice-postgraduate-research-degrees.pdf": "code-practice-postgraduate-research.pdf",
+    "academic-appeals-procedure-undergraduate-postgraduate-taught.pdf":
+        "academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
     "csee_ft_masters_-accredited_variations.pdf": "csee-ft-masters-accredited-variations.pdf",
     "csee_ft_masters_accredited_variations.pdf": "csee-ft-masters-accredited-variations.pdf",
     "csee_pt_masters_accredited_variations.pdf": "csee-pt-masters-accredited-variations.pdf",

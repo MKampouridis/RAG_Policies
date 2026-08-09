@@ -1,159 +1,33 @@
 [
   {
-    "results_file": "results_gemma3_e2e_main.json",
+    "results_file": "results_cloud_set3.json",
     "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
     "turn": "follow_up",
     "judge_score": 1,
     "keyphrases": [
-      "induction programme",
-      "start of period of study"
+      "completion period",
+      "ready for submission"
     ],
     "keyphrase_in_retrieved": 0.5,
-    "keyphrase_in_gold_doc": 0.5,
-    "verdict": "GENERATOR",
-    "question": "What should students do after signing the documentation regarding their understanding of the departmental arrangements and expectations?",
-    "retrieval_query": "What should students do after signing the documentation regarding their understanding of the departmental arrangements and expectations?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_main.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
-    "turn": "primary",
-    "judge_score": 2,
-    "keyphrases": [
-      "pass all modules",
-      "year one"
-    ],
-    "keyphrase_in_retrieved": 1.0,
     "keyphrase_in_gold_doc": 1.0,
-    "verdict": "GENERATOR",
-    "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
-    "retrieval_query": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?"
+    "verdict": "CHUNK_MISS",
+    "question": "What is expected of a student entering a completion period?",
+    "retrieval_query": "What is expected of a professional doctorate student entering a completion period?"
   },
   {
-    "results_file": "results_gemma3_e2e_main.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+    "results_file": "results_cloud_set3.json",
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
     "turn": "primary",
-    "judge_score": 2,
+    "judge_score": 3,
     "keyphrases": [
-      "reassessment opportunities",
-      "end of the year",
-      "subsequent academic year"
+      "immigration sponsorship",
+      "majority of contact should be face-to-face",
+      "must not breach progress monitoring"
     ],
     "keyphrase_in_retrieved": 0.6666666666666666,
-    "keyphrase_in_gold_doc": 0.6666666666666666,
-    "verdict": "GENERATOR",
-    "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
-    "retrieval_query": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_main.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
-    "turn": "follow_up",
-    "judge_score": 2,
-    "keyphrases": [
-      "failed",
-      "resit assessment period",
-      "subsequent year"
-    ],
-    "keyphrase_in_retrieved": 0.3333333333333333,
-    "keyphrase_in_gold_doc": 0.6666666666666666,
-    "verdict": "CHUNK_MISS",
-    "question": "What happens if a student fails reassessment at the end of Year One?",
-    "retrieval_query": "What are the consequences for students who fail reassessment at the end of Year One in the Four-Year Honours Degree program?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_main.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-1.pdf",
-    "turn": "follow_up",
-    "judge_score": 2,
-    "keyphrases": [
-      "withdraw from the University"
-    ],
-    "keyphrase_in_retrieved": 0.0,
-    "keyphrase_in_gold_doc": 0.0,
-    "verdict": "WEAK_TEST",
-    "question": "What happens if a student fails to meet the requirements to progress from Year One to Year Two without any extenuating circumstances?",
-    "retrieval_query": "What are the consequences for students who fail to meet the minimum credits, marks, or other requirements to progress from Year One to Year Two in an Integrated Masters programme without any extenuating circumstances?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_main.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
-    "turn": "follow_up",
-    "judge_score": 1,
-    "keyphrases": [
-      "minimum credit requirement",
-      "Level 6"
-    ],
-    "keyphrase_in_retrieved": 0.5,
-    "keyphrase_in_gold_doc": 0.5,
-    "verdict": "GENERATOR",
-    "question": "Are there any conditions under which a student can still be awarded the certificate if they do not meet the minimum credit requirement at Level 6?",
-    "retrieval_query": "Are there any conditions under which a student can still be awarded the Graduate Certificate if they do not meet the minimum credit requirement at Level 6?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_main.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
-    "turn": "follow_up",
-    "judge_score": 1,
-    "keyphrases": [
-      "overall weighted average",
-      "taught modules",
-      "rounded to the nearest whole number"
-    ],
-    "keyphrase_in_retrieved": 1.0,
-    "keyphrase_in_gold_doc": 1.0,
-    "verdict": "GENERATOR",
-    "question": "How is the overall weighted average calculated for the MA Social Work programme?",
-    "retrieval_query": "How is the overall weighted average calculated for the MA Social Work programme?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_set2.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
-    "turn": "primary",
-    "judge_score": 2,
-    "keyphrases": [
-      "must be nominated",
-      "more than 149",
-      "postgraduate research students",
-      "3 members of staff"
-    ],
-    "keyphrase_in_retrieved": 0.25,
-    "keyphrase_in_gold_doc": 0.0,
-    "verdict": "WEAK_TEST",
-    "question": "How many members of staff must be nominated by a department if they have more than 149 postgraduate research students for potential Independent Chairs?",
-    "retrieval_query": "How many members of staff must be nominated by a department if they have more than 149 postgraduate research students for potential Independent Chairs?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_set2.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
-    "turn": "follow_up",
-    "judge_score": 2,
-    "keyphrases": [
-      "minimum Year Mark",
-      "not eligible",
-      "Term Abroad",
-      "achieve required mark"
-    ],
-    "keyphrase_in_retrieved": 0.5,
-    "keyphrase_in_gold_doc": 0.5,
-    "verdict": "GENERATOR",
-    "question": "What happens if a student fails to meet the minimum Year Mark requirement for a Term Abroad?",
-    "retrieval_query": "What happens if a student fails to achieve the minimum Year Mark of 50 in Year One under the Essex Abroad rules for a Term Abroad during the academic year 2025-26?"
-  },
-  {
-    "results_file": "results_gemma3_e2e_set2.json",
-    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-1.pdf",
-    "turn": "follow_up",
-    "judge_score": 2,
-    "keyphrases": [
-      "reassessment",
-      "next Academic Year",
-      "capped at 40"
-    ],
-    "keyphrase_in_retrieved": 0.0,
     "keyphrase_in_gold_doc": 1.0,
     "verdict": "CHUNK_MISS",
-    "question": "What happens if a student fails to meet the requirements for progression but has passed more than 30 credits in Year One?",
-    "retrieval_query": "What happens if a student fails to meet the requirements for progression but has passed more than 30 credits in Year One? (Integrated Masters Award in Modern Languages (Translation))"
+    "question": "Our PGR student is sponsored under a Student visa. Can their supervision meetings be held over Zoom?",
+    "retrieval_query": "Our PGR student is sponsored under a Student visa. Can their supervision meetings be held over Zoom?"
   }
 ]

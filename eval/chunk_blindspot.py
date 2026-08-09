@@ -28,6 +28,7 @@ Usage: RAG_DETERMINISTIC=1 PYTHONPATH=. python eval/chunk_blindspot.py [results.
 Writes eval/chunk_blindspot_result.json
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -36,16 +37,29 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from src.ingest import _get_collection
 from src.rag import retrieve
 
-SCORE_THRESHOLD = 2  # judged <= this counts as a failed answer
+# RAG_BLINDSPOT_THRESHOLD lets a run include partial failures (score 3), not
+# just outright ones. Default stays 2 so existing ledger numbers reproduce.
+SCORE_THRESHOLD = int(os.environ.get("RAG_BLINDSPOT_THRESHOLD", "2"))
 RESULTS = sys.argv[1:] or ["eval/results_gemma3_e2e_main.json", "eval/results_gemma3_e2e_set2.json"]
+QUESTION_FILES = os.environ.get(
+    "RAG_BLINDSPOT_QUESTIONS", "eval/questions.json,eval/questions_set2.json"
+).split(",")
 
+# Keyed on (source_url, QUESTION TEXT, turn), not (source_url, turn)
+# (2026-08-09). Set 3 has four separate questions on
+# code-practice-postgraduate-research.pdf; a url-only key keeps whichever was
+# loaded last and would silently score every one of them against another
+# question's keyphrases - producing confident CHUNK_MISS/GENERATOR verdicts
+# from the wrong gold facts.
 QUESTIONS = {}
-for qf in ("eval/questions.json", "eval/questions_set2.json"):
-    p = Path(qf)
-    if p.is_file():
-        for q in json.loads(p.read_text()):
-            QUESTIONS[(q["source_url"], "primary")] = q.get("keyphrases") or []
-            QUESTIONS[(q["source_url"], "follow_up")] = q.get("follow_up_keyphrases") or []
+for qf in QUESTION_FILES:
+    qp = Path(qf.strip())
+    if qp.is_file():
+        for q in json.loads(qp.read_text()):
+            QUESTIONS[(q["source_url"], q["question"], "primary")] = q.get("keyphrases") or []
+            QUESTIONS[(q["source_url"], q["follow_up_question"], "follow_up")] = (
+                q.get("follow_up_keyphrases") or []
+            )
 
 
 def gold_document_text(url: str) -> str:
@@ -79,10 +93,12 @@ for rf in RESULTS:
             if not t:
                 continue
             score = t["judge"]["score"]
+            if r.get("expects_abstention") or not url:
+                continue  # no gold document: chunk-vs-document is undefined
             if not t["retrieval"]["hit_at_6"] or score is None or score > SCORE_THRESHOLD:
                 continue
 
-            keyphrases = QUESTIONS.get((url, turn)) or []
+            keyphrases = QUESTIONS.get((url, t["question"], turn)) or []
             query = t["retrieval"].get("retrieval_query") or t["question"]
             res, _ = retrieve(query, [])
             retrieved_text = " ".join(res.get("documents", [[]])[0]).lower()
