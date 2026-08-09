@@ -3218,3 +3218,39 @@ holding four of six slots on one query) - a real and separate defect, but not
 caused by this change. Reported as caused by it, the obvious response would
 have been to revert or complicate a fix that is in fact clean. `retrieval_replay`
 is cheap precisely so it can be run on BOTH sides; one side is not a baseline.
+
+## Round 8c — FALSIFIED: duplicate-chunk crowding is not a failure cause
+
+Hypothesis (from one vivid case: `roa-ug-mlang-year-3.pdf` holding four of six
+slots while the year-1 gold was missed): near-duplicate siblings and repeated
+chunks of one document waste top-6 slots and cause misses. Proposed fix was a
+per-document slot cap. **Both halves are falsified.** 160 turns, retrieval-only.
+
+| | hits (n=124) | misses (n=36) |
+|---|---|---|
+| turns with duplicate-document slots | **86.3%** | 52.8% |
+| mean DISTINCT documents in top 6 | **3.10 / 6** | **4.64 / 6** |
+| duplicated document is the gold | 92 of 107 | 2 of 19 |
+
+**Concentration predicts success; diversity predicts failure - the opposite of
+the hypothesis.** The system succeeds by locking onto one document and returning
+several of its chunks (gold repeated on 92 of 107 duplicating hits). Misses are
+*more* diverse, averaging 4.64 distinct documents: on a miss the pool is spread
+across more documents, not fewer. So the gold is not being crowded out of a
+slot it would otherwise have won - it simply never ranks.
+
+A per-document slot cap would have attacked the mechanism that hits depend on.
+Shipped on the strength of the mlang case alone - which is exactly how
+`_has_extraneous_family` was shipped, on two hand-checked cases, for -8.8 points
+- it would plausibly have cost real accuracy.
+
+The year-of-study sibling variant is also small: only **4 of 36 misses** (11.1%)
+have a year sibling of the gold anywhere in the top 6.
+
+**Consequence for where effort goes.** Chunk-level loss on set 3 is real (Round
+8, 2 of 3 sub-4 turns were CHUNK_MISS), but it is not slot contention and no
+slot-level reranking rule addresses it. The remaining misses need the gold to
+*rank higher*, which is embedding/reranking work, not diversity work. Note also
+that hits average only 3.10 distinct documents in six slots: for questions whose
+answer genuinely spans documents, effective breadth is about half of N_RESULTS.
+That is a separate and still-untested concern, not a defect.
