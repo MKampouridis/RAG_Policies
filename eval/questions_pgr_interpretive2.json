@@ -1,0 +1,209 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "A Supervisory Panel wants to discontinue a student. Can the Panel make that decision itself?",
+    "expected_answer": "No. A decision or recommendation for discontinuation, downgrading or upgrading, to confirm PhD status or change to MPhil, to permit entry into completion, or to extend the standard period can only be made by the RSPB. The Supervisory Panel can only recommend.",
+    "keyphrases": [
+      "can only be made by",
+      "RSPB",
+      "discontinuation"
+    ],
+    "follow_up_question": "Are there any restrictions on who sits on the RSPB for that decision?",
+    "follow_up_expected_answer": "Yes. Where the RSPB is considering a recommendation of discontinuation or downgrading, or a change of status to MPhil at confirmation, the RSPB membership must include at least two members who were not on the student's last Supervisory Panel. Smaller departments may co-opt a supervisor from another department in a cognate discipline to satisfy this.",
+    "follow_up_keyphrases": [
+      "at least two members who were not",
+      "cognate discipline"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+    "source_title": "Code of Practice: Professional Doctorates 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "Can the student's main supervisor chair their Supervisory Panel?",
+    "expected_answer": "No. The chair must not be a partner or close relative of the supervisor (main, joint or secondary), and must not have a professional or personal relationship with the student that might give rise to a conflict of interest.",
+    "keyphrases": [
+      "The chair must not",
+      "close relative",
+      "conflict of interest"
+    ],
+    "follow_up_question": "What happens if a professional practice supervisor has to step down partway through?",
+    "follow_up_expected_answer": "Where a professional practice supervisor cannot continue supervision for whatever reason, the department must ensure that a replacement supervisor is appointed.",
+    "follow_up_keyphrases": [
+      "replacement supervisor is appointed",
+      "cannot continue supervision"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question_style": "interpretive",
+    "question": "A supervisor has asked to sit in on their student's viva. Is that allowed, and who decides?",
+    "expected_answer": "Not normally. The candidate's supervisor will not normally be present at the viva and can only be present in exceptional circumstances, approved on an individual basis by the Faculty Dean (Postgraduate) and with the agreement of the examiners. It is good practice for the supervisor to be invited to attend at the end of the viva when the examiners communicate their recommendation.",
+    "keyphrases": [
+      "will not normally be present",
+      "exceptional circumstances",
+      "agreement of the examiner"
+    ],
+    "follow_up_question": "Can they be there when the outcome is given?",
+    "follow_up_expected_answer": "Yes - it is good practice for the supervisor to be invited to attend at the end of the viva when the examiners communicate their recommendation to the candidate.",
+    "follow_up_keyphrases": [
+      "good practice",
+      "communicate their recommendation"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "Our PGR student is sponsored under a Student visa. Can their supervision meetings be held over Zoom?",
+    "expected_answer": "Only to a limited extent. For students with immigration sponsorship the majority of contact should be face-to-face; in exceptional circumstances the University may agree that contact can be via video link. Virtual meetings must not breach progress monitoring requirements for students subject to immigration control.",
+    "keyphrases": [
+      "immigration sponsorship",
+      "majority of contact should be face-to-face",
+      "must not breach progress monitoring"
+    ],
+    "follow_up_question": "Is it different for Distance Learning students?",
+    "follow_up_expected_answer": "Yes. There is no general requirement for Distance Learning students to attend face-to-face Supervisory Panels and they may have all Supervisory Panels held via Zoom if deemed more appropriate. If a department wishes to require face-to-face panels or other on-campus activity for a Distance Learning student, that must be specified when the details of the arrangement are set.",
+    "follow_up_keyphrases": [
+      "Distance Learning students",
+      "no general requirement"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "If a student is granted an extension, does that affect how much completion time they have left?",
+    "expected_answer": "Yes. In such instances the subsequent number of completion periods available to the student will be reduced by one term, unless exceptional circumstances make that reduction inappropriate. Students must be offered an opportunity to discuss this with the RSPB before the final recommendation is forwarded to the Dean for approval.",
+    "keyphrases": [
+      "reduced by one term",
+      "unless exceptional circumstances",
+      "forwarded to the Dean"
+    ],
+    "follow_up_question": "Can an extension of more than one term ever be granted?",
+    "follow_up_expected_answer": "Yes - in exceptional circumstances an extension of more than one term may be granted.",
+    "follow_up_keyphrases": [
+      "more than one term",
+      "exceptional circumstances"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+    "source_title": "PGT Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "A student resubmits an assessment for a module they had already passed overall. Can their module mark go up?",
+    "expected_answer": "No. If the pre-resubmission module aggregate was above the pass mark, the resubmission cannot improve the module aggregate mark - the module aggregate is capped at the pre-resubmission aggregate.",
+    "keyphrases": [
+      "cannot improve the module aggregate",
+      "capped at the pre-resubmission aggregate"
+    ],
+    "follow_up_question": "And if they had failed the module overall?",
+    "follow_up_expected_answer": "If the pre-resubmission module aggregate was below the pass mark, the resubmission can improve the module aggregate mark up to the pass mark only.",
+    "follow_up_keyphrases": [
+      "up to the pass",
+      "mark only"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+    "source_title": "PGT Programme Credit Framework 2025-26",
+    "doc_type": "rules_of_assessment",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "Does an exit award have to carry the same title as the main programme?",
+    "expected_answer": "Normally yes - the title of the exit award will be the same as for the main programme, unless a different title has been approved in order to meet Professional, Statutory or Regulatory Body requirements.",
+    "keyphrases": [
+      "title of the exit award",
+      "unless a",
+      "Regulatory Body requirements"
+    ],
+    "follow_up_question": "Which awards does the credit framework actually cover?",
+    "follow_up_expected_answer": "The Postgraduate Taught Programme Credit Framework covers Masters degrees, PG Diplomas, PG Certificates, and Integrated Masters degrees (Final Stage only).",
+    "follow_up_keyphrases": [
+      "Masters degrees",
+      "PG Diplomas",
+      "Final Stage only"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+    "source_title": "Policy for the Appointment of Independent Chairs for Research Degree Vivas",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question_style": "interpretive",
+    "question": "Our department has 160 PGR students. How many Independent Chair nominations do we have to put forward?",
+    "expected_answer": "Four. Departments with 150 or more PGR students must put forward 4 nominations (1-99 require 2, 100-149 require 3).",
+    "keyphrases": [
+      "150",
+      "nominations required"
+    ],
+    "follow_up_question": "Do departments without any PGR students have to nominate anyone?",
+    "follow_up_expected_answer": "No - but they may if they wish. All departments are able to nominate Independent Chairs to be approved by the Faculty Education Committee, including those without PGR students if they wish.",
+    "follow_up_keyphrases": [
+      "including those without PGR students",
+      "Faculty Education Committee"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+    "source_title": "Code of Practice: Professional Doctorates for the Tavistock and Portman NHS Foundation Trust 2025-26",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": "2025-26",
+    "question_style": "interpretive",
+    "question": "For a Tavistock professional doctorate, who can decide to permit a student to enter their completion period?",
+    "expected_answer": "Only the RSPB. A decision or recommendation for discontinuation or downgrading, to permit entry into completion, or to extend the standard period can only be made by the RSPB.",
+    "keyphrases": [
+      "can only be made by the RSPB",
+      "entry into completion"
+    ],
+    "follow_up_question": "Who does the Course Lead report to for these programmes?",
+    "follow_up_expected_answer": "The Course Lead is responsible to the Portfolio Manager for the Trust arrangements for the relevant PD students, and liaises with and reports as necessary to the Dean - which for these programmes is the Dean of Partnerships (or their deputy).",
+    "follow_up_keyphrases": [
+      "Portfolio Manager for the Trust arrangements",
+      "Dean of Partnerships"
+    ]
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+    "source_title": "Code of Research Degree Vivas",
+    "doc_type": "policy",
+    "department": null,
+    "academic_year": null,
+    "question_style": "interpretive",
+    "question": "A candidate keeps failing to respond about viva arrangements and we cannot get one scheduled. What is the position?",
+    "expected_answer": "A candidate who does not engage in viva arrangements to the extent that it has not been possible to arrange a viva shall be deemed to have withdrawn permanently from the University and from their research degree, unless it has been agreed that the viva can be waived.",
+    "keyphrases": [
+      "deemed to have withdrawn permanently",
+      "unless it has been agreed"
+    ],
+    "follow_up_question": "What if they cannot engage because of exceptional circumstances?",
+    "follow_up_expected_answer": "The Code provides for waiving the viva where there are exceptional circumstances which prevent a candidate from engaging in the viva process, so the withdrawal position would not apply in that case.",
+    "follow_up_keyphrases": [
+      "exceptional circumstances",
+      "prevent a candidate from engaging"
+    ]
+  }
+]
