@@ -1642,6 +1642,13 @@ def _ambiguity_disclosure(metadatas: list[dict]) -> str:
 # (it interrupts some answerable general questions), and a clarifying question is
 # scored as a MISS by the hit@6 eval by design, so this is OFF by default and
 # meant to be judged on real conversations. See eval/report.md "Round 4, D3".
+#
+# DECLINED 2026-08-10 (user's call, after the trade was laid out): stays OFF.
+# The ~0.45 trigger precision means roughly one interrupted answerable question
+# for every two correct stops, and no metric here can settle it - a clarifying
+# question scores as a MISS by construction, since hit@6 asks whether the right
+# document was retrieved and asking a question retrieves nothing. Not a
+# measurement question; a product one, and it has been answered.
 CLARIFY_UNDERSPECIFIED_ENABLED = False
 CLARIFY_FAMILY_THRESHOLD = 6
 

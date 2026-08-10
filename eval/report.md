@@ -4078,3 +4078,15 @@ Both would have produced clean-looking numbers measuring nothing:
 `RAG_CHROMA_DIR`, `RAG_CHUNK_WORDS` and `RAG_COLBERT_CACHE` are now
 env-overridable (defaults unchanged) so a parallel index can be built and
 compared without touching production.
+
+## D3 (clarify-on-underspecified) — DECLINED, 2026-08-10
+
+Stays OFF by the user's decision, after the trade was set out: ~0.45 trigger
+precision means roughly one interrupted answerable question for every two
+correct stops, and no metric in this ledger can adjudicate it - a clarifying
+question is scored as a MISS by construction, because hit@6 asks whether the
+right document was retrieved and asking a question retrieves nothing.
+
+Recorded as a closed decision rather than an open item, so it is not
+re-proposed. The mechanism and its rationale remain in `src/rag.py` should the
+product judgement ever change.
