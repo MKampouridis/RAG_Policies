@@ -6,44 +6,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&family=Barlow+Condensed:wght@400;600&display=swap');
 
 :root {
-  --color-bg: #f2f2f3;
-  --color-surface: #e9e9ea;
-  --color-text: #1d1f20;
-  --color-accent: #7d59a6;
-  --color-accent-2: #8d72ab;
-  --color-divider: color-mix(in srgb, #1d1f20 16%, transparent);
+  /* PALETTE RETUNED to the production UI (2026-08-10, user's request).
+     The mockup shipped with violet #7d59a6 on a grey #f2f2f3 ground; this is
+     the Essex palette already in static/index.html - violet #622567 on white,
+     with the grey ramp taken from the live essex.ac.uk stylesheet
+     (#f6f6f6 / #eaeaea / #e6e6e6 / #adadad / #4c4c4c / #252525).
+     Only the token values changed - every component class, the blueprint
+     geometry and the corner marks are untouched, which is what a token layer
+     is for. */
+  --color-bg: #ffffff;
+  --color-surface: #f6f6f6;
+  --color-text: #181818;
+  --color-accent: #622567;
+  --color-accent-2: #792259;
+  --color-divider: #e6e6e6;
 
-  /* Tonal ramps — generated in OKLCH on one shared lightness scale, so the
-     same step of any role matches the others in visual value. */
-  --color-neutral-100: #f5f5f8;
-  --color-neutral-200: #e7e7ea;
-  --color-neutral-300: #d4d4d7;
-  --color-neutral-400: #b7b7ba;
-  --color-neutral-500: #98989b;
-  --color-neutral-600: #7a7a7d;
-  --color-neutral-700: #5d5d60;
-  --color-neutral-800: #424244;
-  --color-neutral-900: #2b2b2d;
+  --color-neutral-100: #f6f6f6;
+  --color-neutral-200: #eaeaea;
+  --color-neutral-300: #e6e6e6;
+  --color-neutral-400: #d7d7d7;
+  --color-neutral-500: #adadad;
+  --color-neutral-600: #808080;
+  --color-neutral-700: #4c4c4c;
+  --color-neutral-800: #393939;
+  --color-neutral-900: #252525;
 
-  --color-accent-100: #f6eeff;
-  --color-accent-200: #e9d6ff;
-  --color-accent-300: #d7b5fd;
-  --color-accent-400: #b994e3;
-  --color-accent-500: #9974c4;
-  --color-accent-600: #7c59a3;
-  --color-accent-700: #5e4180;
-  --color-accent-800: #432c5d;
-  --color-accent-900: #2c1d3d;
+  /* Ramp built around #622567. NOTE 600 is deliberately LIGHTER than the
+     base: .btn-primary:hover uses 600, and the production UI lightens the
+     send button on hover (#7a2f80) rather than darkening it. 700 stays
+     darker for pressed/active states. */
+  --color-accent-100: #f3ecf4;
+  --color-accent-200: #e2d2e5;
+  --color-accent-300: #c9aed0;
+  --color-accent-400: #a781b0;
+  --color-accent-500: #85578f;
+  --color-accent-600: #7a2f80;
+  --color-accent-700: #4f1d54;
+  --color-accent-800: #3a1540;
+  --color-accent-900: #260d2a;
 
-  --color-accent-2-100: #f6eeff;
-  --color-accent-2-200: #e9d6ff;
-  --color-accent-2-300: #d6bdf2;
-  --color-accent-2-400: #b99ed8;
-  --color-accent-2-500: #997eb8;
-  --color-accent-2-600: #7b6298;
-  --color-accent-2-700: #5e4877;
-  --color-accent-2-800: #433157;
-  --color-accent-2-900: #2c1f3a;
+  --color-accent-2-100: #f7ecf2;
+  --color-accent-2-200: #ecd3e1;
+  --color-accent-2-300: #dcb0c8;
+  --color-accent-2-400: #c384a6;
+  --color-accent-2-500: #a55b83;
+  --color-accent-2-600: #8c3468;
+  --color-accent-2-700: #792259;
+  --color-accent-2-800: #5c1943;
+  --color-accent-2-900: #3f102d;
 
   --font-heading: "Barlow Condensed", system-ui, sans-serif;
   --font-heading-weight: 600;
@@ -62,9 +72,9 @@
 
   /* Elevation — derived from the ground: soft ink-tinted shadows on a
      light theme, a hairline edge + ambient darkness on a dark one. */
-  --shadow-sm: 0 1px 2px color-mix(in srgb, #2b2b2d 14%, transparent);
-  --shadow-md: 0 3px 10px color-mix(in srgb, #2b2b2d 16%, transparent);
-  --shadow-lg: 0 12px 32px color-mix(in srgb, #2b2b2d 22%, transparent);
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #181818 12%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #181818 14%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #181818 20%, transparent);
 }
 
 body {
