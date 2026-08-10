@@ -3394,12 +3394,31 @@ questions name their entities explicitly and require no hypothesising.
 ### Sonnet does not fix retrieval - it changes the consequence
 
 Re-running the complaint under the current cloud generator: sources are still
-all-CSEE, 1/6 departments. But the answer now opens "I can only address CSEE.
-The context has nothing on MSAS, Psychology, HSC, SRES, or Life Sciences",
-names all five, and holds that line under the user's follow-up push instead of
-apologising and repeating CSEE. **The user still cannot get their answer; they
-are no longer misled about it.** That moves fan-out from "stop harm" to
-"recover capability" and lowers its priority accordingly.
+all-CSEE, 1/6 departments.
+
+**CORRECTION (same day).** This section first claimed the old answer left the
+user to notice the missing schools themselves, and that the gain was honesty
+about coverage. That is **wrong** - the original 2026-07-27 answer already
+ended "The documents do not list accredited programs for MSAS, Psychology, HSC,
+SRES, or Life Sciences", naming all five. The local generator was already doing
+that. The claim was written without re-reading the logged answer it described.
+
+The differences that survive checking:
+- **A factual fix.** The old answer listed "MSc Computer Systems Engineering
+  (GH64)" as a 9th ACCREDITED programme. The source files it under
+  "Non-accredited Masters Award Title", alongside MSc Computing (G456), as the
+  exit award for students who miss accreditation requirements. The new answer
+  gets this right. The user's own comment was "CSEE's answer was good" - the
+  error was in the part nobody complained about.
+- **Ordering and next step.** The coverage gap now leads instead of trailing,
+  and the answer names where the missing information would live.
+- **Follow-up behaviour.** The old follow-up replied "You are absolutely correct
+  to call me out on that. My apologies" and repeated CSEE. That capitulation is
+  gone; the current answer restates the limit.
+
+So fan-out is NOT deprioritised on the grounds first written here. The user
+still cannot get the answer they asked for, and the gap was always stated -
+what improved is accuracy within the one department retrieval could reach.
 
 ### USER_FACING_LANGUAGE - enabled after measurement
 
