@@ -146,16 +146,32 @@
     flex: 1; overflow-y: auto;
     padding: 24px 32px; display: flex; flex-direction: column; gap: 20px;
   }
+  /* Message treatment taken from production (static/index.html): the user's
+     turn is a violet pill, the assistant's is plain prose on the page with a
+     small round "UE" mark instead of a bordered card. A long policy answer
+     then reads as a document rather than a chat bubble - which is the whole
+     reason production moved away from bubbles. */
   .msg-user {
-    align-self: flex-end; max-width: 70%;
-    background: var(--color-surface);
-    padding: 10px 14px; font-size: 14px; line-height: 1.55;
+    align-self: flex-end; max-width: 82%;
+    background: var(--color-accent); color: #fff;
+    padding: 11px 16px; border-radius: 24px;
+    font-size: 15px; line-height: 1.55;
     white-space: pre-wrap; overflow-wrap: anywhere;
   }
   .msg-assistant {
-    align-self: flex-start; max-width: 78%;
-    padding: 18px; display: flex; flex-direction: column; gap: 12px;
-    background: var(--color-bg);
+    align-self: flex-start; max-width: 100%;
+    position: relative;
+    padding: 0 0 0 34px;
+    display: flex; flex-direction: column; gap: 12px;
+    background: transparent; border: none;
+  }
+  .msg-assistant::before {
+    content: 'UE';
+    position: absolute; left: 0; top: 1px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--color-accent); color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: -0.02em;
+    display: flex; align-items: center; justify-content: center;
   }
   .msg-body { font-size: 14.5px; line-height: 1.6; overflow-wrap: anywhere; }
   .msg-body p { margin: 0 0 8px; }
@@ -203,7 +219,20 @@
     /* 16px minimum: iOS Safari zooms the page on focus below this */
     font-family: var(--font-body); font-size: 16px; line-height: 1.4;
   }
-  .composer .send-btn { padding-inline: 18px; flex: none; }
+  /* Send button: the production control (static/index.html) - a round violet
+     icon button that darkens on hover. Replaces the mockup's bar-motif
+     primary button, whose invert-on-hover was disliked. */
+  .composer .send-btn {
+    flex: none; align-self: flex-end;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border: none; border-radius: 50%;
+    background: var(--color-accent); color: #fff;
+    cursor: pointer;
+    transition: background .15s, opacity .15s;
+  }
+  .composer .send-btn:hover:not(:disabled) { background: var(--color-accent-600); }
+  .composer .send-btn:disabled { opacity: .35; cursor: default; }
   .composer-note { font-size: 11px; }
   #chat-composer-bar {
     flex: none; border-top: 1px solid var(--color-divider);
@@ -591,9 +620,11 @@ function buildComposer() {
   wrap.innerHTML = `
     <div class="composer-row">
       <textarea class="input" rows="1" placeholder="Ask about a policy or rule of assessment…"></textarea>
-      <button class="btn btn-primary blueprint send-btn" data-corners>
-        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3,11 21,3 13,21 11,13"/></svg>
-        Send
+      <button class="send-btn" aria-label="Send">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M4 12h14M12 5l7 7-7 7" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </button>
     </div>
     <span class="text-muted composer-note">Assistant can make mistakes. Verify against the official document before acting.</span>`;
@@ -930,7 +961,7 @@ function renderUser(text) {
 
 function renderAssistant(content, sources, context) {
   const card = document.createElement('div');
-  card.className = 'blueprint msg-assistant';
+  card.className = 'msg-assistant';
   card.dataset.corners = '';
 
   const body = document.createElement('div');
@@ -1091,7 +1122,7 @@ async function send(text) {
   setSending(true);
 
   const pending = document.createElement('div');
-  pending.className = 'blueprint msg-assistant msg-pending';
+  pending.className = 'msg-assistant msg-pending';
   pending.textContent = 'Searching the policy documents…';
   messagesEl.appendChild(pending);
   messagesEl.scrollTop = messagesEl.scrollHeight;
