@@ -132,7 +132,7 @@
   }
   #new-chat-btn::before { top: 0; }
   #new-chat-btn::after { bottom: 0; }
-  #new-chat-btn:hover { background: #fff; color: var(--violet); }
+  @media (hover: hover) { #new-chat-btn:hover { background: #fff; color: var(--violet); } }
   @media (prefers-color-scheme: dark) {
     #new-chat-btn:hover { background: transparent; color: var(--sidebar-accent); }
   }
@@ -203,10 +203,33 @@
     opacity: 0;
     transition: opacity 0.13s, background 0.13s, color 0.13s;
   }
-  .conv-item:hover .conv-del { opacity: 1; }
-  .conv-del:hover { background: var(--panel); color: var(--sidebar-accent); }
-  .conv-item:hover { background: var(--conv-hover); }
-  .conv-item:hover .conv-icon { opacity: 0.75; }
+  /* TWO-TAP FIX (2026-08-10). iOS applies :hover on the FIRST tap and only
+     activates the click on the SECOND, for elements whose hover state changes
+     what is shown - here .conv-del going 0 -> 1 opacity. Gating every sidebar
+     hover behind `hover: hover` means touch devices never enter that state, so
+     one tap opens the conversation. Desktop behaviour is unchanged. */
+  @media (hover: hover) and (pointer: fine) {
+    .conv-item:hover .conv-del { opacity: 1; }
+    .conv-del:hover { background: var(--panel); color: var(--sidebar-accent); }
+    .conv-item:hover { background: var(--conv-hover); }
+    .conv-item:hover .conv-icon { opacity: 0.75; }
+  }
+  /* On touch there is no hover to reveal it, so the delete control is simply
+     always visible and given a real touch target. */
+  @media (hover: none) {
+    /* iOS paints its own translucent grey box on tap; replace it with the
+       app's own active state so the feedback matches the design */
+    .conv-item, #new-chat-btn, .act-btn, #composer button, .conv-del {
+      -webkit-tap-highlight-color: transparent;
+    }
+    .conv-del {
+      opacity: 0.55;
+      min-width: 34px; min-height: 34px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .conv-item { padding-top: 11px; padding-bottom: 11px; }
+    .conv-item:active { background: var(--conv-hover); }
+  }
   .conv-item.active {
     background: var(--conv-active);
     border-color: transparent;
@@ -270,7 +293,7 @@
   }
   .rewrite { margin-top: 8px; font-size: 12px; color: var(--muted); }
   .rewrite summary { cursor: pointer; user-select: none; }
-  .rewrite summary:hover { color: var(--violet); }
+  @media (hover: hover) { .rewrite summary:hover { color: var(--violet); } }
   .rewrite-q {
     margin-top: 5px; padding: 7px 9px;
     border-left: 3px solid var(--violet);
@@ -402,7 +425,7 @@
     cursor: pointer;
     line-height: 1.4;
   }
-  .act-btn:hover { background: var(--bg); color: var(--fg); }
+  @media (hover: hover) { .act-btn:hover { background: var(--bg); color: var(--fg); } }
   .act-btn.selected { border-color: var(--violet); color: var(--sidebar-accent); font-weight: 700; }
   .act-sep { width: 1px; align-self: stretch; background: var(--border); margin: 0 2px; }
   .fb-panel { margin-top: 8px; display: none; flex-direction: column; gap: 8px; }
