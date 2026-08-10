@@ -794,8 +794,19 @@ _PARTNER_NAME_TOKENS = (
 )
 
 
-def _names_partner_institution(query: str) -> bool:
-    low = query.lower()
+def _names_partner_institution(query: str, history: list[dict] | None = None) -> bool:
+    """Checks the CONVERSATION, not just this turn. Measured: the Tavistock
+    follow-up ("what actions should new Professional Doctorate students take
+    after receiving...") drops the institution name, because the
+    contextualizer rewrites for topic continuity rather than for this gate.
+    Reading the current query alone excluded partner documents on a turn whose
+    own conversation was explicitly about a partner - a lost hit@6 caused
+    entirely by the gate, not by the exclusion being wrong."""
+    haystacks = [query]
+    for m in history or []:
+        if m.get("role") == "user" and m.get("content"):
+            haystacks.append(m["content"])
+    low = " ".join(haystacks).lower()
     return any(tok in low for tok in _PARTNER_NAME_TOKENS)
 
 
@@ -1365,7 +1376,7 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     global _LAST_CANDIDATE_POOL  # debug hook for the retrieval recall diagnostic (no behavior change)
     _LAST_CANDIDATE_POOL = candidates
 
-    if PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query):
+    if PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query, history):
         # before the rerank, so the freed slots are filled by Essex documents
         # rather than left empty
         candidates = _exclude_partner_institutions(candidates)
@@ -1580,6 +1591,46 @@ def _identity_clarifying_question(labels: list[str]) -> str:
     )
 
 
+# Chunk ORDER (2026-08-10). Round 8g found that the SAME retrieved chunks in a
+# different order produced a materially wrong answer - the multi-entity path
+# reported 4 genuinely accredited CSEE programmes as non-accredited purely
+# because that document's chunks were split across the context instead of
+# contiguous. Nothing in this ledger measures ordering: hit@6, span coverage
+# and evidence-sufficiency are all set-membership tests, so an ordering that
+# halves answer quality scores identically to one that doubles it.
+#
+# RAG_CHUNK_ORDER re-orders the FINAL context without changing its membership,
+# so an A/B isolates ordering alone:
+#   "rank"     - reranker order (production default)
+#   "grouped"  - chunks of the same document made contiguous
+#   "reversed" - worst-ranked first; a deliberate spoiler. If quality is
+#                unaffected by THIS, the pipeline is order-insensitive and the
+#                Round 8g observation was something else.
+CHUNK_ORDER = os.environ.get("RAG_CHUNK_ORDER", "rank")
+
+
+def _apply_chunk_order(results: dict) -> dict:
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    if CHUNK_ORDER == "rank" or len(documents) < 2:
+        return results
+    if CHUNK_ORDER == "reversed":
+        idx = list(range(len(documents)))[::-1]
+    elif CHUNK_ORDER == "grouped":
+        groups: dict[str, list[int]] = {}
+        for i, m in enumerate(metadatas):
+            groups.setdefault(m.get("source_url") or "", []).append(i)
+        idx = [i for g in groups.values() for i in g]
+    else:
+        return results
+    out = {"documents": [[documents[i] for i in idx]],
+           "metadatas": [[metadatas[i] for i in idx]]}
+    dists = results.get("distances")
+    if dists and dists[0] and len(dists[0]) == len(documents):
+        out["distances"] = [[dists[0][i] for i in idx]]
+    return out
+
+
 def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
 
@@ -1597,6 +1648,7 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
     with a single retrieve() invocation per turn."""
     _ta = _perf.time()
     results, retrieval_query = retrieve(question, history, summary)
+    results = _apply_chunk_order(results)
     metadatas = results.get("metadatas", [[]])[0]
     ranked_top_urls = [m.get("source_url") for m in metadatas]
 
