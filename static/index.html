@@ -435,17 +435,16 @@
   }
   .fb-thanks { font-size: 13px; color: var(--muted); margin-top: 8px; }
   #footnote { padding: 6px 22px 10px; font-size: 11px; color: var(--muted); text-align: center; }
+  /* REMOVED 2026-08-10: an older narrow-screen "icon rail" block that set
+     #sidebar to 76px, blanked the New-conversation label (font-size: 0) and
+     hid the Conversations heading. It sat AFTER the drawer rules above with
+     equal specificity, so it won - the drawer opened at 76px, wide enough for
+     .conv-icon and nothing else, which is why conversations showed a square
+     and no title on narrow viewports. The drawer at 820px supersedes it
+     entirely: it gives a real panel with room for the titles. This was NOT a
+     Safari bug; it reproduces in any browser under 640px wide. */
   @media (max-width: 640px) {
-    #sidebar { width: 76px; }
-    #sidebar-brand { padding: 12px 0; justify-content: center; }
-    #brand-text { display: none; }
-    #sidebar-header { padding: 8px; }
-    #new-chat-btn { font-size: 0; padding: 11px 0; }
-    #new-chat-btn::before { content: "+"; font-size: 18px; font-weight: 700; }
-    #conv-label { display: none !important; }
-    .conv-item { font-size: 11px; padding: 8px 6px; }
-    .bubble { max-width: 88%; }
-    #header .h-app { font-size: 15px; }
+    .conv-item { font-size: 12.5px; }
   }
 </style>
 
