@@ -3362,3 +3362,71 @@ reproduce across 8 further attempts. Note the methodological limit: production
 uses the cloud generator, which cannot be temperature-pinned, so a single bad
 answer is not evidence of a stable defect and a non-reproduction is not proof
 of absence. Both directions of that claim need n>1 here.
+
+## Round 8f — Enumeration failures are retrieval; the leak is prose (2026-08-10)
+
+### The enumeration complaints are a retrieval ceiling, not a prompt failure
+
+Feedback items 5-10 ("I gave you 6 schools, you answered about one"). Measured
+rather than assumed:
+
+| | |
+|---|---|
+| slots returned for the 6-department question | 6 |
+| DISTINCT documents among them | 3 |
+| departments represented | **1 of 6** (CSEE only) |
+
+The old answer's claim - "the provided context ONLY contains information
+regarding the CSEE department" - was **true**. `MULTI_ENTITY_COVERAGE` is a
+prompt rule and cannot conjure documents; it was already on and could not help.
+
+**The documents do exist.** A first pass matched department tokens against
+FILENAMES and found 0 documents for MSAS, HSC and Life Sciences, which would
+have meant nothing to fix. Searching document TEXT instead: MSAS 4, HSC 25,
+Life Sciences 11, SRES 13, Psychology 24, CSEE 21. The filename count was the
+artifact - the same class of error as the "37% missing content" retraction.
+So retrieval is genuinely leaving ~98 candidate documents on the floor and
+returning 3 CSEE files. Per-entity fan-out is justified; note the adjacent
+`MULTIHOP_DECOMPOSITION_ENABLED` was rejected (-7.5pts RoA) but on a DIFFERENT
+trigger - it inferred candidates from fragmentation, whereas enumeration
+questions name their entities explicitly and require no hypothesising.
+
+### Sonnet does not fix retrieval - it changes the consequence
+
+Re-running the complaint under the current cloud generator: sources are still
+all-CSEE, 1/6 departments. But the answer now opens "I can only address CSEE.
+The context has nothing on MSAS, Psychology, HSC, SRES, or Life Sciences",
+names all five, and holds that line under the user's follow-up push instead of
+apologising and repeating CSEE. **The user still cannot get their answer; they
+are no longer misled about it.** That moves fan-out from "stop harm" to
+"recover capability" and lowers its priority accordingly.
+
+### USER_FACING_LANGUAGE - enabled after measurement
+
+Production answers described their own plumbing: "the context you've provided
+across both turns", "if you have excerpts, please share them". The user
+supplied nothing - the retriever did.
+
+Like-for-like A/B, same 4 turns, same detector:
+
+| | OFF | ON |
+|---|---|---|
+| answers leaking plumbing | 4/4 | **2/4** |
+| still declining correctly | 4/4 | **4/4** |
+
+Enabled. Abstention is unchanged, which was the risk - a rule about how to say
+"I don't have this" sits directly on top of measured abstention behaviour.
+
+Two honest limits. **The residual is real**: "the excerpts I can see" survives
+in secondary sentences despite an explicit instruction not to say it; only the
+opening framing is reliably fixed. And **the original defect was not in the
+A/B at all** - "please share them" appeared 0/4 in BOTH arms because it
+occurred on a follow-up and the probe used primary turns. Retested directly on
+the follow-up with the rule on: no request to supply documents, no "context
+you've provided", no "excerpt", and it now points the user to where the
+information would live.
+
+**No metric in this ledger would have caught this defect.** hit@6, span
+coverage, judge score and keyphrase coverage all score these answers
+identically before and after - the facts were right both times. It cost trust,
+not accuracy.

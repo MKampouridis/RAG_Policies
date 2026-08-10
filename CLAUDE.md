@@ -27,6 +27,25 @@ See `INLINE_CITATIONS`, `HOME_INSTITUTION_TIEBREAK_ENABLED`, `MULTIHOP_DECOMPOSI
 `_has_extraneous_family` was shipped enabled on the strength of two hand-checked cases and cost
 **-8.8 points of follow-up hit@6** before a full eval caught it. Small, flag-gated, measured.
 
+## The answer is a user-facing surface, not a debug log
+
+Answers must read as if written by someone who knows the policies — never as a program
+describing its own retrieval. Production answers said *"the context you've provided across both
+turns"* and offered *"if you have excerpts, please share them"*: the user supplied nothing, the
+retriever did, so this reads as either a mistake or a request they cannot act on. `USER_FACING_LANGUAGE`
+in `src/rag.py` now forbids that vocabulary — say "the policies I can see don't cover X", never
+"the context does not contain X", and never ask the user to paste or share documents.
+
+**The general point is about what evals cannot see.** This defect cost trust, not accuracy. Every
+metric in the ledger — hit@6, span coverage, judge score, keyphrase coverage — would score these
+answers identically before and after, because the facts were right both times. No amount of
+measurement would have surfaced it; only reading the output as a user would. When changing
+anything that shapes prose, read whole answers rather than only the scores.
+
+Expect partial compliance and measure it like anything else: the rule cut plumbing-leaking answers
+from 4/4 to 2/4, not to zero — "the excerpts I can see" survives an explicit instruction not to say
+it. Report the residual rather than the headline.
+
 ## Measuring changes
 
 - **Validate on the metric the change can actually move.** The contextualizer only runs on

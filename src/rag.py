@@ -259,11 +259,42 @@ _MULTI_ENTITY_RULE = (
     "for the ones you found and leaving the rest unmentioned."
 )
 
+# User-facing language (2026-08-10). The retrieval plumbing is an
+# implementation detail the user never sees, but the answers describe it: real
+# production answers said "the context you've provided across both turns" and
+# offered "if you have excerpts from their rules of assessment, please share
+# them and I can identify the programmes". The user supplied neither - the
+# retriever did - so this reads as either a mistake or a request they cannot
+# act on. Cost is confusion and lost trust, not a wrong fact, which is why no
+# accuracy metric would ever have caught it.
+#
+# Scoped to PHRASING only: it must not change WHETHER the model declines, just
+# how it says so. That distinction is the risk - abstention is measured (set 3,
+# 6/6 correct under cloud) and a rule about how to phrase "I don't have this"
+# sits directly on top of it. Flag-gated and measured before enabling, per the
+# convention that cost -8.8 points when ignored.
+# ENABLED 2026-08-10 after measurement (eval/report.md Round 8f). Like-for-like
+# A/B on the same 4 turns: plumbing-leaking answers 4/4 -> 2/4, abstention
+# unchanged at 4/4 correct. Residual is "the excerpts I can see" in secondary
+# sentences - the opening framing is fixed in all 4, the model does not fully
+# comply with the explicit "never say excerpts" instruction.
+USER_FACING_LANGUAGE = os.environ.get("RAG_USER_FACING_LANGUAGE", "1") == "1"
+_USER_FACING_RULE = (
+    "\n- Write for a reader who cannot see the retrieval machinery. Never mention \"the context\", "
+    "\"excerpts\", \"the provided excerpts\", \"the documents provided\", or what the user did or "
+    "did not supply - "
+    "they did not supply anything, the system retrieved it. Say \"the policies I can see don't "
+    "cover X\" or \"I don't have a document covering X\" instead of \"the context does not contain "
+    "X\". Never ask the user to paste, share or provide documents or excerpts; if something is "
+    "missing, say what is missing and, where useful, name the document or team likely to hold it."
+)
+
 SYSTEM_PROMPT = (
     _SYSTEM_PROMPT_BASE
     + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "")
     + (_INLINE_CITATION_RULE if INLINE_CITATIONS else "")
     + (_MULTI_ENTITY_RULE if MULTI_ENTITY_COVERAGE else "")
+    + (_USER_FACING_RULE if USER_FACING_LANGUAGE else "")
     + "\n"
 )
 
