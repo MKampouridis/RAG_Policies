@@ -34,6 +34,7 @@
     --sidebar-bg: #ffffff;
     --header-bg: var(--violet);
     --header-fg: #ffffff;
+    --sidebar-accent: var(--violet);
     --conv-hover: #f6f6f6;
     --conv-active: #eaeaea;
   }
@@ -52,6 +53,7 @@
       --sidebar-bg: #1f1f1f;
       --header-bg: #4a1c4e;
       --header-fg: #ffffff;
+      --sidebar-accent: #c07fc6;   /* violet lightened for contrast on dark */
       --conv-hover: #252525;
       --conv-active: #303030;
     }
@@ -94,7 +96,7 @@
   #brand-mark {
     flex-shrink: 0;
     width: 34px; height: 34px;
-    background: var(--coral);
+    background: var(--violet);
     color: #fff;
     font-weight: 800;
     font-size: 17px;
@@ -115,7 +117,7 @@
     border: none;
     border-left: 3px solid currentColor;
     border-right: 3px solid currentColor;
-    background: var(--coral);
+    background: var(--violet);
     color: #fff;
     font-family: inherit;
     font-size: 14px;
@@ -130,9 +132,9 @@
   }
   #new-chat-btn::before { top: 0; }
   #new-chat-btn::after { bottom: 0; }
-  #new-chat-btn:hover { background: #fff; color: var(--coral); }
+  #new-chat-btn:hover { background: #fff; color: var(--violet); }
   @media (prefers-color-scheme: dark) {
-    #new-chat-btn:hover { background: transparent; color: var(--accent); }
+    #new-chat-btn:hover { background: transparent; color: var(--sidebar-accent); }
   }
   #conv-label {
     padding: 12px 16px 7px;
@@ -184,18 +186,18 @@
     transition: opacity 0.13s, background 0.13s, color 0.13s;
   }
   .conv-item:hover .conv-del { opacity: 1; }
-  .conv-del:hover { background: var(--panel); color: var(--coral); }
+  .conv-del:hover { background: var(--panel); color: var(--sidebar-accent); }
   .conv-item:hover { background: var(--conv-hover); }
   .conv-item:hover .conv-icon { opacity: 0.75; }
   .conv-item.active {
     background: var(--conv-active);
     border-color: transparent;
-    border-left: 3px solid var(--coral);
+    border-left: 3px solid var(--violet);
     padding-left: 9px;   /* 11 - (3-1): keeps the title from jumping 2px */
     font-weight: 700;
   }
-  .conv-item.active .conv-icon { border-color: var(--accent); background: var(--accent); opacity: 1; }
-  .conv-item.active .conv-title { color: var(--accent); }
+  .conv-item.active .conv-icon { border-color: var(--sidebar-accent); background: var(--sidebar-accent); opacity: 1; }
+  .conv-item.active .conv-title { color: var(--sidebar-accent); }
   #main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   #header {
     display: flex;
