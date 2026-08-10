@@ -949,6 +949,14 @@
         ranked_top_urls: result.ranked_top_urls,
       });
       await loadConversations();
+      // The title for a brand-new conversation is generated AFTER the answer
+      // is sent, so the list above still shows the truncated fallback. Re-read
+      // it once the generation has had time to land. Two attempts rather than
+      // one because generation time varies with model latency.
+      if (result.title_pending) {
+        setTimeout(loadConversations, 3500);
+        setTimeout(loadConversations, 9000);
+      }
     } catch (err) {
       thinkingRow.remove();
       renderMessage('assistant', 'Error: ' + err.message);

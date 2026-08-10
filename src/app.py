@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from src import feedback as feedback_store
 from src import memory
 from src.rag import answer as rag_answer
-from src.rag import generate_title
+from src.rag import GENERATED_TITLES, generate_title
 
 app = FastAPI(title="Essex Policies & Rules of Assessment Assistant")
 
@@ -117,6 +117,10 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         # rating carries the retrieval context needed to auto-diagnose it.
         "retrieval_query": retrieval_query,
         "ranked_top_urls": ranked_top_urls,
+        # The generated title lands ~5s after this response (background task),
+        # so the client must be told to re-read the conversation list; without
+        # this it renders the truncated fallback once and never looks again.
+        "title_pending": is_first_message and GENERATED_TITLES,
     }
 
 
