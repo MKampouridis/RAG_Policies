@@ -3761,3 +3761,60 @@ them as detectable-but-not-filterable. A roster that silently omitted them
 would be wrong as a statement of fact about the University, and the resulting
 behaviour - "I have nothing for Sociology" - is the correct answer rather than
 a gap to hide.
+
+## Round 8m — The faithfulness guard discards good rewrites of elliptical follow-ups (2026-08-10)
+
+`data/contextualizer_rejects.jsonl` holds 43 discarded rewrites. (An earlier
+note in this session claimed the log was empty - that was a wrong FILENAME
+check, `rewrite_rejects.jsonl`, and the conclusion drawn from it was void.)
+
+Split by date and by which guard fired:
+
+| period | rejections | cause |
+|---|---|---|
+| <= 2026-08-08 | 33 | `_has_extraneous_family`, since DISABLED (-8.8pts) |
+| >= 2026-08-09 | **7** | `_is_faithful_rewrite`, live |
+
+**All 7 live rejections are GOOD rewrites.** Examples:
+
+| original | rewritten | overlap |
+|---|---|---|
+| "They still owe some fees - does that matter?" | "Do students need to have paid all their registration fees and debts before they can submit their thesis?" | 20% |
+| "you only answered about CSEE, but I gave you 5 other schools, too!" | "What are the accredited programmes offered by MSAS, Psychology, HSC, SRES, and Life Sciences?" | 0% |
+
+The guard requires >= 30% content-word overlap with the ORIGINAL. An elliptical
+follow-up has almost no content words, so **the better the rewrite, the lower
+the overlap** - the check is structurally biased against precisely the turns
+the contextualizer exists to serve. Its own docstring exempts questions with
+fewer than 3 topical words; these have 5-7, so they are judged and fail.
+
+### Consequence: a discarded rewrite means retrieval uses the RAW question
+
+Feedback complaint #7 is explained end to end. The rewrite naming all five
+missing schools was generated correctly, discarded by the guard, and retrieval
+then searched the corpus for the literal complaint text "you only answered
+about CSEE, but I gave you 5 other schools, too!". The answer's insistence that
+it had only CSEE material was therefore accurate about what it was given, and
+caused by the guard rather than by retrieval or the generator.
+
+This is a candidate explanation for the standing follow-up gap (3.70-3.95 vs
+4.40-4.45 primary in every round). Retrieval and query rewriting were both
+previously recorded as falsified causes - but those tests measured the
+contextualizer's OUTPUT, not whether that output was subsequently thrown away.
+
+**Not fixed in this round, deliberately.** The obvious repair - judge the
+rewrite against the original PLUS history - does not work: the failure mode
+this guard exists for (echoing a different earlier question) also overlaps
+history, so both the good and bad cases look alike under that test. The
+previous attempt to harden this area cost 8.8 points. Anything here needs a
+measured A/B on follow-up turns specifically, with the reject log as the
+instrument.
+
+### Also: topic-switch probe
+
+4 deliberate switches after an established topic. 3 handled correctly,
+including both real user complaints (CSEE -> PhD duration, professional
+doctorate -> PhD). One leaked: "what is the pass mark for an undergraduate
+module?" was rewritten to "... (Professional Doctorates)" and retrieved PG
+documents for a UG question. `_is_faithful_rewrite` cannot catch that shape -
+appending a parenthetical preserves every original word, so overlap is 100%.

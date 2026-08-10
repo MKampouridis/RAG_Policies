@@ -234,6 +234,15 @@
     background: var(--bubble-assistant); color: var(--fg);
     border-left: 3px solid var(--violet);
   }
+  .rewrite { margin-top: 8px; font-size: 12px; color: var(--muted); }
+  .rewrite summary { cursor: pointer; user-select: none; }
+  .rewrite summary:hover { color: var(--violet); }
+  .rewrite-q {
+    margin-top: 5px; padding: 7px 9px;
+    border-left: 3px solid var(--violet);
+    background: var(--panel);
+    font-style: italic;
+  }
   .sources { margin-top: 8px; font-size: 12px; color: var(--muted); }
   .sources a { color: var(--link); word-break: break-all; }
   #composer {
@@ -514,6 +523,12 @@
     return wrap;
   }
 
+  // Trivial differences (case, trailing punctuation, whitespace) are not
+  // rewrites worth surfacing - only a real change of wording is.
+  function normaliseQ(s) {
+    return (s || '').toLowerCase().replace(/[\s\u2019'".,?!]+/g, ' ').trim();
+  }
+
   function renderMessage(role, content, sources, context) {
     const row = document.createElement('div');
     row.className = 'msg-row ' + role;
@@ -529,6 +544,22 @@
         u => `<a class="src-link" href="${u}" target="_blank" rel="noopener">${escapeHtml(readableTitle(u))}</a>`
       ).join('<br>');
       bubble.appendChild(src);
+    }
+    // Show the REWRITTEN retrieval query when it differs from what was typed.
+    // On follow-ups the contextualizer rewrites the question before retrieval,
+    // and when it misreads a topic switch as a continuation it carries the old
+    // topic across - retrieval then runs correctly against the wrong question.
+    // That failure was previously invisible: the user saw only a wrong answer
+    // with no way to tell the query had been rewritten. Shown only on a real
+    // difference, since echoing an unchanged question back is pure noise.
+    if (role === 'assistant' && context && context.retrieval_query
+        && context.question
+        && normaliseQ(context.retrieval_query) !== normaliseQ(context.question)) {
+      const rw = document.createElement('details');
+      rw.className = 'rewrite';
+      rw.innerHTML = '<summary>Searched for a rephrased version of your question</summary>'
+        + '<div class="rewrite-q">' + escapeHtml(context.retrieval_query) + '</div>';
+      bubble.appendChild(rw);
     }
     // feedback + copy: only on real assistant answers (context provided), not errors
     if (role === 'assistant' && context) bubble.appendChild(buildAssistantActions(content, context));
