@@ -3509,3 +3509,60 @@ span coverage and evidence-sufficiency are all set-membership tests.
   outstanding follow-up and would be the first set in this project able to
   measure the mechanism properly.
 - Costs ~11s on triggering questions only.
+
+## Round 8h — Set 5 validates multi-entity retrieval (2026-08-10)
+
+Set 5 exists because Round 8g enabled `MULTI_ENTITY_RETRIEVAL` on one user
+question plus one control, which was thin. 10 questions naming 2-3 departments,
+including 2 deliberate TRAPS that name departments but whose answers live in
+general documents - there to catch the fan-out starving the ordinary ranking.
+
+### Retrieval (free, generator-independent)
+
+| | OFF | ON |
+|---|---|---|
+| mean department coverage | 60.4% | **100.0%** |
+| full coverage | 3/8 | **8/8** |
+| traps: gold document retrieved | 1/2 | 1/2 (unchanged) |
+| mean distinct documents | 4.3 | 6.1 |
+
+The traps are unchanged, which is the result that matters most here: the budget
+spent on departments does not come out of the general ranking. The remaining
+1/2 is a pre-existing miss present in BOTH arms.
+
+**Correcting the impression left by Round 8g.** That round reported 1/6 -> 5/6
+from the CSEE case and it read as rescuing a system that was failing outright.
+Across 8 questions the OFF baseline is **60.4%, not near-zero** - several
+two-department questions already retrieved both. The mechanism closes a
+40-point gap and makes coverage reliable; it does not rescue a broken system.
+
+### End-to-end (cloud generator, LOCAL judge both arms)
+
+| | OFF | ON |
+|---|---|---|
+| primary | 3.70 | 3.80 |
+| follow-up | 3.40 | **4.30** |
+| overall | 3.55 | **4.05** |
+| hit@6 primary / follow-up | 5/10 / 5/10 | **7/10 / 8/10** |
+
+The gain concentrates in FOLLOW-UPS (+0.90 vs +0.10 on primary), which is the
+opposite of this project's usual pattern - every prior round found follow-ups
+the weak turn and resistant to every mechanism tried. Plausible reading: the
+widened context persists into the follow-up turn, so a follow-up about the
+second department can be answered from material already retrieved. Stated as a
+hypothesis; nothing here isolates it.
+
+### Three limits
+
+- **The judge is qwen2.5:14b, not phi4.** Both arms used it, so the comparison
+  is like-for-like, but these absolute numbers are NOT comparable to the
+  phi4-judged sets 3 and 4.
+- **This set was built for this mechanism.** It validates that the mechanism
+  does what it is designed to do. It is not evidence of general benefit, and
+  the 0/160 trigger rate means it cannot be.
+- **ON-arm latency is void.** Production was restarted mid-run (my error),
+  putting a second ~5GB server up and driving free memory to 0.2GB; ON turns
+  read 116s/98s against OFF's ~40s. That measures swap contention, not the
+  mechanism. The clean figure from Round 8g (~11s added) stands; nothing in
+  this run's timings does. Scores are unaffected - retrieval is deterministic
+  and generation is cloud-side.
