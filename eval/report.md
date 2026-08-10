@@ -3968,3 +3968,62 @@ than a measurement of the exact configuration. And `hit@6` is structurally
 blind here - neighbours come from documents already retrieved, so the document
 set was unchanged on all 160 turns and the free replay could only ever report
 "no change". End-to-end was the only instrument that could detect dilution.
+
+## Round 8q — Structure-aware chunking: prototyped, NOT adopted (2026-08-10)
+
+Motivated by the independent-chairs failure: the seven qualifying circumstances
+are split across chunks, so no chunk holds the whole list. `chunk_text()` is a
+blind sliding word window (175 words, 30-word overlap) with no awareness of
+sentences, clauses or lists.
+
+### Step 0 - and a correction to its own first measurement
+
+A first pass reported **97% of chunk boundaries fall mid-sentence**. That is
+true and nearly meaningless: the 30-word overlap means the next chunk begins 30
+words BEFORE the previous ended, so a cut sentence reappears intact. Reporting
+97% would have justified a large risky project on a self-healing symptom.
+
+The measurement that matters is whether a LIST survives intact somewhere:
+
+| | |
+|---|---|
+| lists of 3+ items in current documents | 360 |
+| split so that NO chunk holds the whole list | **144 (40%)** |
+| of those, small enough to fit in 175 words | **91 (63%)** |
+| median split-list length | 129 words |
+
+So most split lists are not too big - they are **cut in the wrong place**.
+
+### Step 1 - the obvious prototype made it WORSE
+
+v1 slid the cut BACKWARDS to land before a new structural unit. Result:
+**30% -> 50% of fittable lists split**. Shortening every chunk to improve its
+boundary traded away the capacity the lists needed - a straight own-goal, and
+exactly what a free offline prototype is for.
+
+v2 keeps the full window and EXTENDS forward past the cut when a list is in
+progress, up to 60% over length:
+
+| | fittable lists split |
+|---|---|
+| current sliding window | 91/307 (30%) |
+| prototype v2 | **75/307 (24%)** |
+
+### NOT adopted - the gain does not justify the cost
+
+v2 recovers **16 lists across the whole corpus**. Against that:
+
+- **It invalidates the ledger.** Every baseline in Rounds 1-8 was measured on
+  the current chunking. Re-chunking makes them incomparable - and that record
+  is the most valuable thing this project owns.
+- **Blast radius is 100% of turns**, for a benefit measured in a sub-metric
+  affecting a minority of questions. Adjacent-chunk expansion was narrowed
+  earlier this session for a far better ratio than this.
+- **It requires re-embedding ~21,000 chunks**, through the same `clean_text`
+  that once silently deleted policy clauses corpus-wide.
+- **Adjacent-chunk expansion already recovers part of this** at zero re-ingest
+  cost, including the case that started it.
+
+Recorded rather than pursued. If chunking is ever revisited - most likely
+alongside a deliberate re-baselining - the v2 extend-forward approach is the
+one that worked, and the backwards-cut approach is the one to avoid.
