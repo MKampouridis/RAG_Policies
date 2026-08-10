@@ -59,13 +59,12 @@
       --conv-active: #303030;
     }
   }
-  /* essex.ac.uk is square-cornered throughout. One rule rather than editing
-     every radius individually, so nothing drifts back to rounded later. */
-  #new-chat-btn, .conv-item, .conv-icon, .conv-del, .bubble, #composer textarea,
-  #composer button, .act-btn, .fb-panel textarea, .fb-panel button,
-  #conversation-list::-webkit-scrollbar-thumb, #brand-mark {
-    border-radius: 0 !important;
-  }
+  /* GEOMETRY (2026-08-10). An earlier pass matched essex.ac.uk's own
+     square-cornered geometry. This pass follows an explicit request for a
+     ChatGPT-like feel, whose language is rounded - the two cannot both hold,
+     so the square override is gone and violet #622567 now carries the Essex
+     identity on its own. */
+  :root { --radius: 12px; --radius-sm: 8px; --radius-pill: 24px; }
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -214,25 +213,42 @@
   #messages {
     flex: 1;
     overflow-y: auto;
-    padding: 22px;
+    padding: 24px 16px 8px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 22px;
   }
-  .msg-row { display: flex; }
+  /* ChatGPT pattern: one centred reading column; user turns in a compact
+     bubble, assistant turns as plain prose rather than inside a container -
+     a long policy answer then reads as a document rather than a chat bubble,
+     which is the main reason this layout suits the content. */
+  .msg-row { display: flex; width: 100%; max-width: 760px; margin: 0 auto; }
   .msg-row.user { justify-content: flex-end; }
-  .bubble {
-    max-width: 72%;
-    padding: 11px 15px;
-    border-radius: 14px;
-    white-space: pre-wrap;
-    line-height: 1.5;
-    font-size: 14px;
+  .bubble { line-height: 1.62; font-size: 15px; white-space: pre-wrap; }
+  .msg-row.user .bubble {
+    max-width: 82%;
+    padding: 11px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--bubble-user);
+    color: var(--bubble-user-fg);
   }
-  .msg-row.user .bubble { background: var(--bubble-user); color: var(--bubble-user-fg); }
+  .msg-row.assistant { justify-content: flex-start; }
   .msg-row.assistant .bubble {
-    background: var(--bubble-assistant); color: var(--fg);
-    border-left: 3px solid var(--violet);
+    max-width: 100%;
+    background: transparent;
+    color: var(--fg);
+    padding: 0 0 0 34px;
+    position: relative;
+  }
+  /* small violet mark instead of an avatar - keeps the Essex identity in a
+     layout that otherwise has no branded surface */
+  .msg-row.assistant .bubble::before {
+    content: 'UE';
+    position: absolute; left: 0; top: 1px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--violet); color: #fff;
+    font-size: 10px; font-weight: 700; letter-spacing: -0.02em;
+    display: flex; align-items: center; justify-content: center;
   }
   .rewrite { margin-top: 8px; font-size: 12px; color: var(--muted); }
   .rewrite summary { cursor: pointer; user-select: none; }
@@ -245,46 +261,105 @@
   }
   .sources { margin-top: 8px; font-size: 12px; color: var(--muted); }
   .sources a { color: var(--link); word-break: break-all; }
-  #composer {
-    display: flex;
-    gap: 10px;
-    padding: 16px 22px;
-    border-top: 1px solid var(--border);
+  #composer { padding: 10px 16px 14px; background: var(--bg); }
+  #composer-inner {
+    display: flex; align-items: flex-end; gap: 8px;
+    max-width: 760px; margin: 0 auto;
+    padding: 7px 7px 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    background: var(--bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    transition: border-color .15s, box-shadow .15s;
+  }
+  #composer-inner:focus-within {
+    border-color: var(--violet);
+    box-shadow: 0 2px 14px rgba(98,37,103,0.18);
   }
   #composer textarea {
-    flex: 1;
-    resize: none;
-    padding: 11px 13px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--bg);
+    flex: 1; resize: none; border: none; outline: none;
+    background: transparent;
+    padding: 8px 0; max-height: 180px;
     color: var(--fg);
-    font-size: 14px;
-    font-family: inherit;
+    /* 16px minimum - iOS Safari zooms the page on focus below this */
+    font-size: 16px; line-height: 1.45; font-family: inherit;
   }
-  #composer textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px rgba(98,37,103,0.18); }
   #composer button {
-    position: relative;
-    padding: 0 26px;
-    border: none;
-    border-left: 3px solid currentColor;
-    border-right: 3px solid currentColor;
-    background: var(--violet);
-    color: #fff;
-    font-family: inherit;
-    font-size: 14px;
-    font-weight: 700;
+    flex-shrink: 0;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border: none; border-radius: 50%;
+    background: var(--violet); color: #fff;
     cursor: pointer;
-    transition: background 0.15s linear, color 0.15s linear;
+    transition: background .15s, opacity .15s;
   }
-  #composer button::before, #composer button::after {
-    content: ''; display: block; position: absolute;
-    width: 100%; height: 3px; left: 0; background-color: currentColor;
+  #composer button:hover:not(:disabled) { background: #7a2f80; }
+  #composer button:disabled { opacity: 0.35; cursor: default; }
+  /* ---- rounded again on the controls the square override used to flatten ---- */
+  #brand-mark { border-radius: var(--radius-sm); }
+  #new-chat-btn { border-radius: var(--radius-pill); }
+  .conv-item { border-radius: var(--radius-sm); }
+  .conv-del { border-radius: var(--radius-sm); }
+  .act-btn { border-radius: var(--radius-pill); }
+  .fb-panel textarea, .fb-submit { border-radius: var(--radius-sm); }
+
+  /* ---- mobile top bar + drawer (hidden on desktop) ---- */
+  #mobile-topbar { display: none; }
+  #backdrop { display: none; }
+
+  /* RESPONSIVE, not user-agent detection: UA sniffing misreads tablets,
+     foldables and resized desktop windows, and goes stale as devices change.
+     A width query is true whenever the layout actually needs the drawer. */
+  @media (max-width: 820px) {
+    body { flex-direction: column; }
+    #mobile-topbar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px;
+      padding-top: calc(10px + env(safe-area-inset-top));
+      background: var(--violet); color: #fff;
+      flex-shrink: 0;
+    }
+    #mobile-title { flex: 1; font-weight: 700; font-size: 15px; }
+    #menu-btn, #mobile-new {
+      background: transparent; border: none; color: #fff;
+      cursor: pointer; padding: 6px;
+      /* 44px is the minimum comfortable touch target */
+      min-width: 44px; min-height: 44px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #mobile-new { font-size: 26px; line-height: 1; font-weight: 300; }
+    #menu-btn { flex-direction: column; gap: 4px; }
+    #menu-btn span { display: block; width: 20px; height: 2px; background: #fff; border-radius: 2px; }
+
+    #sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 82%; max-width: 320px;
+      z-index: 40;
+      transform: translateX(-100%);
+      transition: transform .22s ease;
+      box-shadow: 2px 0 18px rgba(0,0,0,0.22);
+      padding-top: env(safe-area-inset-top);
+    }
+    body.drawer-open #sidebar { transform: translateX(0); }
+    #backdrop {
+      display: block; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.42); z-index: 30;
+      opacity: 0; pointer-events: none; transition: opacity .22s;
+    }
+    body.drawer-open #backdrop { opacity: 1; pointer-events: auto; }
+    #backdrop[hidden] { display: none; }
+
+    #header { display: none; }          /* the top bar replaces it */
+    #main { flex: 1; min-height: 0; }
+    #messages { padding: 16px 12px 4px; gap: 18px; }
+    .msg-row.user .bubble { max-width: 88%; }
+    .msg-row.assistant .bubble { padding-left: 0; }
+    .msg-row.assistant .bubble::before { display: none; }
+    #composer { padding: 8px 10px calc(10px + env(safe-area-inset-bottom)); }
+    #footnote { font-size: 10px; padding: 0 12px calc(8px + env(safe-area-inset-bottom)); }
+    .sources a { word-break: break-word; }
   }
-  #composer button::before { top: 0; }
-  #composer button::after { bottom: 0; }
-  #composer button:hover:not(:disabled) { background: var(--bg); color: var(--violet); }
-  #composer button:disabled { opacity: 0.5; cursor: default; }
+
   .empty-state { margin: auto; color: var(--muted); text-align: center; font-size: 14px; max-width: 320px; line-height: 1.5; }
   .empty-state strong { color: var(--fg); font-weight: 700; }
   /* markdown-lite rendering inside assistant bubbles */
@@ -356,6 +431,15 @@
   }
 </style>
 
+<div id="mobile-topbar">
+  <button id="menu-btn" aria-label="Conversations" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="mobile-title">Essex Policy Assistant</div>
+  <button id="mobile-new" aria-label="New conversation">+</button>
+</div>
+<div id="backdrop" hidden></div>
+
 <div id="sidebar">
   <div id="sidebar-brand">
     <div id="brand-mark">UE</div>
@@ -378,8 +462,15 @@
   </div>
   <div id="messages"><div class="empty-state"><strong>Ask about a University of Essex policy or rule of assessment.</strong><br>Start a new conversation or pick one from the sidebar.</div></div>
   <div id="composer">
-    <textarea id="input" rows="1" placeholder="Ask about a policy or rule of assessment..."></textarea>
-    <button id="send-btn">Send</button>
+    <div id="composer-inner">
+      <textarea id="input" rows="1" placeholder="Ask about a policy or rule of assessment..."></textarea>
+      <button id="send-btn" aria-label="Send">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M4 12h14M12 5l7 7-7 7" fill="none" stroke="currentColor"
+                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
   </div>
   <div id="footnote">Unofficial assistant · answers are drawn from published University of Essex documents and may be incomplete — always check the linked source.</div>
 </div>
@@ -567,6 +658,25 @@
     messagesEl.scrollTop = messagesEl.scrollHeight;
   }
 
+  // Mobile drawer. Closed on selection and on backdrop tap, because a drawer
+  // left open over the conversation is the usual complaint with this pattern.
+  const bodyEl = document.body;
+  const backdrop = document.getElementById('backdrop');
+  const menuBtn = document.getElementById('menu-btn');
+  function setDrawer(open) {
+    bodyEl.classList.toggle('drawer-open', open);
+    if (backdrop) backdrop.hidden = false;
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  if (menuBtn) menuBtn.addEventListener('click', () => setDrawer(!bodyEl.classList.contains('drawer-open')));
+  if (backdrop) backdrop.addEventListener('click', () => setDrawer(false));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setDrawer(false); });
+  const mobileNew = document.getElementById('mobile-new');
+  if (mobileNew) mobileNew.addEventListener('click', () => {
+    setDrawer(false);
+    document.getElementById('new-chat-btn').click();
+  });
+
   async function loadConversations() {
     const convs = await fetchJSON('/api/conversations');
     conversationList.innerHTML = '';
@@ -575,7 +685,7 @@
       const item = document.createElement('div');
       item.className = 'conv-item' + (c.id === activeConversationId ? ' active' : '');
       item.title = c.title;
-      item.onclick = () => openConversation(c.id);
+      item.onclick = () => { setDrawer(false); openConversation(c.id); };
       const icon = document.createElement('span');
       icon.className = 'conv-icon';
       icon.setAttribute('aria-hidden', 'true');
@@ -681,7 +791,7 @@
   });
   input.addEventListener('input', () => {
     input.style.height = 'auto';
-    input.style.height = Math.min(input.scrollHeight, 160) + 'px';
+    input.style.height = Math.min(input.scrollHeight, 180) + 'px';  // matches CSS max-height
   });
 
   loadConversations();
