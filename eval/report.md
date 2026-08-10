@@ -4090,3 +4090,45 @@ right document was retrieved and asking a question retrieves nothing.
 Recorded as a closed decision rather than an open item, so it is not
 re-proposed. The mechanism and its rationale remain in `src/rag.py` should the
 product judgement ever change.
+
+## Round 8r — Set 6: the partner test set finds an over-correction (2026-08-10)
+
+Closes to-do item 6, open since 2026-08-08: **33% of current documents are
+partner editions yet none was the gold answer in any eval question**, so the
+partner mechanisms could never be validated in the direction that matters -
+questions where a partner document IS the right answer.
+
+8 questions in three deliberately different groups, 34 keyphrases verified
+against source text, 0 failing:
+
+| group | exclusion OFF | exclusion ON |
+|---|---|---|
+| partner NAMED ("at Colchester Institute...") | 4/4 | **4/4** |
+| partner UNNAMED ("BA (Hons) 3D Design & Craft...") | 2/2 | **0/2** |
+| home control (Essex questions) | 2/2 | **2/2** |
+
+**`PARTNER_EXCLUDE_WHEN_UNNAMED` over-corrects on questions that name a partner
+PROGRAMME but not the institution.** "Which rules of assessment apply to the BA
+(Hons) 3D Design & Craft course?" and "under the BSc Economics link agreement,
+how many credits are needed to pass Year One?" both lose their partner gold.
+
+This was invisible before: the 9 incidental partner-gold questions in the older
+sets gave net +1 with 0 losses, which read as safe. It was not safe - it was
+unmeasured in this direction, exactly as item 6 predicted.
+
+**Not changed, because it is a product call rather than a defect.** The gate
+does what it was asked to do: the user's complaint, raised twice, was Essex
+questions returning partner documents ("Answers need to focus on Essex
+programmes, not partners"), and that is fixed - 4/17 real complaints to 0/17,
+with the home controls here unaffected. The cost is the inverse case, which
+that user may never hit but a partner-college administrator would hit
+immediately.
+
+Options if it should be softened:
+1. Extend the gate's token list with partner PROGRAMME names (3D Design &
+   Craft, BSc Economics link agreement...), curated like `DEPARTMENT_ALIASES`.
+2. Demote rather than exclude when no Essex alternative covers the topic.
+3. Leave as is - the intended audience is Essex staff.
+
+Recorded with the measurement so the choice is made on evidence rather than
+rediscovered later.
