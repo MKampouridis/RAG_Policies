@@ -5,10 +5,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   /* Palette and geometry taken from the LIVE essex.ac.uk stylesheet
-     (/assets/dist/app.css), not from the brand-guidelines page: the site's
-     working accent is coral #db4433 (85 uses) rather than scarlet #cd202c
-     (15), violet #622567 is the structural colour, and the greys are a
-     specific ramp (#f6f6f6 / #eaeaea / #e6e6e6 / #adadad).
+     (/assets/dist/app.css), not from the brand-guidelines page: violet
+     #622567 and the grey ramp (#f6f6f6 / #eaeaea / #e6e6e6 / #adadad) are
+     the site's own values. The live site also uses coral #db4433 heavily as
+     its CTA colour, but this app is single-accent violet by preference
+     (2026-08-10) - red accents alongside a violet header read as two
+     competing brands rather than one.
 
      The defining trait is GEOMETRY, not colour: essex.ac.uk uses square
      corners throughout (border-radius:0) and marks primary buttons with 3px
@@ -17,7 +19,6 @@
      Essex even though it already used Archivo and Essex reds. */
   :root {
     color-scheme: light dark;
-    --coral: #db4433;
     --violet: #622567;
     --plum: #792259;
     --lime: #bed600;
@@ -26,7 +27,7 @@
     --muted: #4c4c4c;
     --border: #e6e6e6;
     --panel: #f6f6f6;
-    --accent: var(--coral);
+    --accent: var(--violet);
     --link: #792259;
     --bubble-user: var(--violet);
     --bubble-user-fg: #ffffff;
@@ -252,14 +253,14 @@
     font-size: 14px;
     font-family: inherit;
   }
-  #composer textarea:focus { outline: none; border-color: var(--coral); box-shadow: 0 0 0 3px rgba(219,68,51,0.16); }
+  #composer textarea:focus { outline: none; border-color: var(--violet); box-shadow: 0 0 0 3px rgba(98,37,103,0.18); }
   #composer button {
     position: relative;
     padding: 0 26px;
     border: none;
     border-left: 3px solid currentColor;
     border-right: 3px solid currentColor;
-    background: var(--coral);
+    background: var(--violet);
     color: #fff;
     font-family: inherit;
     font-size: 14px;
@@ -273,7 +274,7 @@
   }
   #composer button::before { top: 0; }
   #composer button::after { bottom: 0; }
-  #composer button:hover:not(:disabled) { background: var(--bg); color: var(--coral); }
+  #composer button:hover:not(:disabled) { background: var(--bg); color: var(--violet); }
   #composer button:disabled { opacity: 0.5; cursor: default; }
   .empty-state { margin: auto; color: var(--muted); text-align: center; font-size: 14px; max-width: 320px; line-height: 1.5; }
   .empty-state strong { color: var(--fg); font-weight: 700; }
@@ -300,7 +301,7 @@
     line-height: 1.4;
   }
   .act-btn:hover { background: var(--bg); color: var(--fg); }
-  .act-btn.selected { border-color: var(--coral); color: var(--coral); font-weight: 700; }
+  .act-btn.selected { border-color: var(--violet); color: var(--sidebar-accent); font-weight: 700; }
   .act-sep { width: 1px; align-self: stretch; background: var(--border); margin: 0 2px; }
   .fb-panel { margin-top: 8px; display: none; flex-direction: column; gap: 8px; }
   .fb-panel.open { display: flex; }
@@ -322,7 +323,7 @@
     align-self: flex-start;
     border: none;
     border-radius: 0;
-    background: var(--coral);
+    background: var(--violet);
     color: white;
     font-family: inherit;
     padding: 6px 14px;
