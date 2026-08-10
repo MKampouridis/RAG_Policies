@@ -12,6 +12,7 @@ the other) so the working cross-encoder is one constant-flip away if the
 ColBERT experiment (see eval/EXPERIMENTS.md) doesn't pan out.
 """
 
+import os
 from src.docid import document_family as _document_family
 
 BACKEND = "colbert"  # "cross_encoder" (production) | "colbert" (experiment)
@@ -71,7 +72,13 @@ IDENTITY_ENRICHED_RERANK_ENABLED = False
 # fresh encoding per-candidate when the index isn't built or a candidate
 # isn't in it yet, so this is safe to leave on unconditionally - production
 # behavior is byte-identical to before until the index actually exists.
-USE_CACHED_COLBERT_EMBEDDINGS = True
+# Env-overridable (2026-08-10). The cache is keyed by (source_url,
+# chunk_index) with NO text validation, so against an index built with a
+# DIFFERENT chunk size it would silently return the embedding of different
+# text - reranking the experimental index on the production index's vectors
+# and quietly invalidating any comparison. Set RAG_COLBERT_CACHE=0 on BOTH
+# arms of a chunking comparison so each encodes its own text.
+USE_CACHED_COLBERT_EMBEDDINGS = os.environ.get("RAG_COLBERT_CACHE", "1") == "1"
 
 _cross_encoder = None
 

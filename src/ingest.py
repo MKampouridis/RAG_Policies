@@ -3,6 +3,7 @@ vector store."""
 
 import hashlib
 import json
+import os
 import re
 import uuid
 from pathlib import Path
@@ -12,7 +13,9 @@ import chromadb
 from src.docid import effective_year, extract_award_type, extract_degree_length
 from src.llm import EMBED_DOCUMENT_PREFIX, EMBED_MODEL, EMBED_QUERY_PREFIX, embed_batch
 
-CHROMA_DIR = "data/chroma"
+# Env-overridable so an EXPERIMENTAL index can be built alongside production's
+# without touching it (2026-08-10, chunk-size comparison). Defaults unchanged.
+CHROMA_DIR = os.environ.get("RAG_CHROMA_DIR", "data/chroma")
 CORPUS_VERSION_PATH = Path("data/corpus_version")
 # Different embedding models produce different-dimension vectors that can't
 # share a collection, and results aren't comparable across models anyway -
@@ -20,7 +23,7 @@ CORPUS_VERSION_PATH = Path("data/corpus_version")
 # means switching models back and forth never requires re-embedding twice.
 COLLECTION_NAME = "policies_" + re.sub(r"[^a-zA-Z0-9_-]", "_", EMBED_MODEL)
 
-CHUNK_WORDS = 175
+CHUNK_WORDS = int(os.environ.get("RAG_CHUNK_WORDS", "175"))
 CHUNK_OVERLAP_WORDS = 30
 
 DOT_LEADER_RE = re.compile(r"\.{4,}")

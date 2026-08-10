@@ -4027,3 +4027,54 @@ v2 recovers **16 lists across the whole corpus**. Against that:
 Recorded rather than pursued. If chunking is ever revisited - most likely
 alongside a deliberate re-baselining - the v2 extend-forward approach is the
 one that worked, and the backwards-cut approach is the one to avoid.
+
+### Step 2 - bigger chunks: measured, and NOT adopted
+
+Built a parallel index at 350 words (`data/chroma_350`, ~10k chunks vs 21k)
+and replayed the same 160 stored queries. Free - local embedding, retrieval
+only, no API.
+
+| | hit@6 | evidence-sufficient@6 |
+|---|---|---|
+| 175-word (production) | **78.1%** | 92.5% |
+| 350-word | 76.2% (-1.9) | 93.8% (+1.3) |
+
+**Fixing list-splitting from 30% to 8% produced no retrieval gain.** Bigger
+chunks dilute the embedding (document precision -3 turns) while carrying more
+content (evidence coverage +2 turns). It nets to nothing, and both moves are
+within a handful of turns out of 160.
+
+So the whole chunking thread ends without a change:
+
+| approach | lists split | retrieval effect |
+|---|---|---|
+| current sliding window | 30% | baseline |
+| structure-aware v1 (cut back) | 50% - WORSE | not measured |
+| structure-aware v2 (extend forward) | 24% | not measured |
+| section-based (keep<=350) | 20% | not measured |
+| uniform 350 | **8%** | **-1.9 hit@6, +1.3 evidence** |
+
+Against a null retrieval result, re-chunking would still cost: every Round 1-8
+baseline invalidated, ~2x context per turn (~1,985 words vs ~1,027), and a
+re-embed through the same `clean_text` that once deleted policy clauses
+corpus-wide. Adjacent-chunk expansion already recovers the motivating case at
+zero re-ingest cost.
+
+### Two validity traps found while setting this up
+
+Both would have produced clean-looking numbers measuring nothing:
+
+1. **`reembed.py` rewrites `data/manifest.json`**, so the experimental run
+   overwrote production's `chunk_count` values. Backed up beforehand and
+   restored. (`chunk_count` turns out to be cosmetic - no retrieval or scoring
+   code reads it - but the write is silent.)
+2. **The ColBERT embedding cache is keyed by `(source_url, chunk_index)` with
+   NO text validation.** Against a differently-chunked index, chunk 2 of a
+   document would have been reranked using the embedding of the OLD chunk 2 -
+   entirely different text. The comparison would have looked fine and measured
+   nothing. `RAG_COLBERT_CACHE=0` now disables it; it was set on BOTH arms so
+   neither borrowed the other's vectors.
+
+`RAG_CHROMA_DIR`, `RAG_CHUNK_WORDS` and `RAG_COLBERT_CACHE` are now
+env-overridable (defaults unchanged) so a parallel index can be built and
+compared without touching production.
