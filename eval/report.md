@@ -3314,3 +3314,51 @@ hypothesis falsified in 8c, and it is not addressable by retrieval work.
 Cost: ~$0.15. The retrieval half (span coverage) was free and generator-
 independent, and was run FIRST so the generator run could be skipped if breadth
 had turned out to be broken.
+
+## Round 8e — Real feedback replay + near-duplicate probe (2026-08-10)
+
+### Feedback replay: the "outdated sources" complaint is fixed
+
+All 17 thumbs-down questions from `data/feedback.jsonl` replayed through
+current retrieval (free, retrieval-only).
+
+| complaint class | then | now |
+|---|---|---|
+| archived editions among sources | reported by user (item 16) | **0/17 questions** |
+| partner documents among sources | reported by user (items 1, 15) | **4/17 questions** |
+
+Item 16 ("Sources were older versions of the right document and also
+Tavistock") is **half fixed by the Round 8b alias work**: no archived edition
+appears for any of the 17 questions, but the Tavistock code still does. The
+partner half is unresolved - `PARTNER_INSTITUTION_DEMOTE_ENABLED` demotes but
+does not exclude, and 4 of 17 real complaints still show a partner document
+(kol-pg-masters-roa-25, sak-principles, tavistock x2).
+
+The remaining down-votes are dominated by ENUMERATION failures (items 5-10:
+"I gave you 6 schools, you answered about one"), which are generation-side and
+untouched by any retrieval work this round.
+
+### Near-duplicate confusion does NOT reproduce - Q7 was not systematic
+
+Set 4's Q7 (scored 1: "No - it's the same route/process" when Tavistock and
+Essex professional doctorate routes differ) motivated a discrimination probe:
+6 standalone questions naming ONE institution where the answer differs between
+the near-identical codes.
+
+**6/6 correct.** Two initially scored CONFLATED, and both were my scoring
+error, not the system's: the Essex code genuinely defines "Dean" as "the
+Executive Dean (or their deputy) or the Dean of Partnerships", so quoting that
+is accurate, and the second answer's Tavistock mention was a correctly-labelled
+contrast. The check penalised a term APPEARING rather than being misattributed.
+
+Re-testing the actual Q7 shape (contrast asked as a conversational follow-up):
+- Essex -> Tavistock contrast: **correct** ("Not quite - the terminology and
+  reporting line differ"), naming both distinct roles.
+- Tavistock -> Essex contrast: **incomplete but honest** - "I can only confirm
+  details for the Tavistock route" rather than Q7's confident "it's the same".
+
+**No mechanism should be built for this.** One judged-1 answer did not
+reproduce across 8 further attempts. Note the methodological limit: production
+uses the cloud generator, which cannot be temperature-pinned, so a single bad
+answer is not evidence of a stable defect and a non-reproduction is not proof
+of absence. Both directions of that claim need n>1 here.
