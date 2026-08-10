@@ -4132,3 +4132,48 @@ Options if it should be softened:
 
 Recorded with the measurement so the choice is made on evidence rather than
 rediscovered later.
+
+## Round 9 — Corpus re-ingest, and a deliberate ledger re-baseline (2026-08-10)
+
+The weekly watcher (`check_new_documents.py`, first run) found 5 new documents
+and ~20 changed since the last ingest - meaning the system was answering from
+superseded text on documents including `roa-ug-3yr-final-year-rules.pdf`.
+Ingested deliberately, with the checks run in order.
+
+| step | result |
+|---|---|
+| `retrieval_replay` before | 123/160 (76.9%) |
+| `run_ingest.py` | 10 indexed, 1151 unchanged, 23 rejected, **0 errors** |
+| `audit_family_aliases.py` | **0** new rename-split groups |
+| `eval/stale_index_audit.py` | 246 docs, **0** missing content |
+| `retrieval_replay` after | 122/160 (76.2%) — **net -1** (0 gained, 1 lost) |
+
+### The one regression, and why it was accepted
+
+Lost: "What does the University of Essex Rules of Assessment cover regarding
+the final award?" - a GENERAL framework question whose gold is
+`ug-principles-and-framework.pdf`. The new `/ug/current/variations/` files
+(year-1..4, ~107 chunks each) now occupy 5 of the 8 slots and push it out. So
+a general question is now answered from department-specific variations.
+
+Accepted, because the alternative is worse: serving superseded rules from ~20
+documents is a failure at the tool's actual purpose, while this is one turn out
+of 160 on a metric already known to over- and under-state in different
+directions. Recorded rather than buried, because if more general-framework
+questions degrade later, this is the cause.
+
+**Watch item:** the new variations files are large and generically worded, so
+they are broadly "attractive" to UG queries. Only 1 of 160 turns moved, so the
+effect is not widespread today - but a future set with more general UG
+questions should be checked against them specifically.
+
+### THE LEDGER IS NOW RE-BASELINED
+
+Every number in Rounds 1-8 was measured on the pre-ingest corpus. They remain
+valid as a record of what was true then, and remain comparable to each other,
+but **they are no longer comparable to anything measured from here on**. The
+new baseline is `eval/retrieval_replay_post_ingest.json` at 122/160 (76.2%).
+
+This was a deliberate decision taken with the cost stated in advance, not a
+side effect discovered afterwards - which is the whole reason the ingest was
+sequenced this way rather than just run.
