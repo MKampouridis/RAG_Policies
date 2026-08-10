@@ -152,6 +152,10 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    /* min-width/overflow required for the ellipsis on .conv-title below.
+       Without them the row cannot shrink and overflows the clipped sidebar. */
+    min-width: 0;
+    overflow: hidden;
     padding: 9px 8px 9px 11px;
     margin-bottom: 3px;
     border-radius: 9px;
@@ -171,7 +175,21 @@
     opacity: 0.5;
     transition: all 0.13s;
   }
-  .conv-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* SAFARI BUG FIX (2026-08-10). `flex: 1` alone leaves min-width at its
+     default of `auto`, so a flex item will not shrink below its own content
+     width. With `white-space: nowrap` the title is one unbreakable line, so
+     the row grew wider than the sidebar and the text was pushed outside the
+     clipped area - leaving only .conv-icon visible, because that has
+     flex-shrink: 0 and a fixed width. Safari enforces the auto min-size more
+     strictly than Chrome, which is why it showed there first.
+     `min-width: 0` is what actually allows the ellipsis to engage. */
+  .conv-title {
+    flex: 1 1 auto;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .conv-del {
     flex-shrink: 0;
     border: none;
@@ -691,7 +709,7 @@
       icon.setAttribute('aria-hidden', 'true');
       const title = document.createElement('span');
       title.className = 'conv-title';
-      title.textContent = c.title;
+      title.textContent = (c.title || '').trim() || 'Untitled conversation';
       const del = document.createElement('button');
       del.className = 'conv-del';
       del.innerHTML = '&times;';

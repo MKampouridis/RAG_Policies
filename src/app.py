@@ -2,7 +2,7 @@
 
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -10,6 +10,7 @@ from pydantic import BaseModel
 from src import feedback as feedback_store
 from src import memory
 from src.rag import answer as rag_answer
+from src.rag import generate_title
 
 app = FastAPI(title="Essex Policies & Rules of Assessment Assistant")
 
@@ -69,8 +70,20 @@ def api_delete_conversation(conversation_id: str):
     return {"ok": True}
 
 
+def _retitle(conversation_id: str, question: str) -> None:
+    """Best-effort replacement of the truncated fallback title. Swallows every
+    error - a background task that raises would log noise for a cosmetic
+    feature, and the conversation already has a usable title either way."""
+    try:
+        title = generate_title(question)
+        if title:
+            memory.update_title(conversation_id, title)
+    except Exception:
+        pass
+
+
 @app.post("/api/conversations/{conversation_id}/messages")
-def api_post_message(conversation_id: str, payload: NewMessage):
+def api_post_message(conversation_id: str, payload: NewMessage, background: BackgroundTasks):
     if not payload.content.strip():
         raise HTTPException(status_code=400, detail="content must not be empty")
     if not memory.conversation_exists(conversation_id):
@@ -87,6 +100,12 @@ def api_post_message(conversation_id: str, payload: NewMessage):
     answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(payload.content, history_for_prompt, summary)
 
     memory.add_message(conversation_id, "assistant", answer_text)
+
+    if is_first_message:
+        # after the response, never before: a title is cosmetic and must not
+        # add latency to the turn the user is waiting on. _retitle keeps the
+        # truncated fallback already stored if generation fails.
+        background.add_task(_retitle, conversation_id, payload.content)
 
     return {
         "answer": answer_text,

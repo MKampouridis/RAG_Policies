@@ -1665,6 +1665,44 @@ def _apply_chunk_order(results: dict) -> dict:
     return out
 
 
+# Conversation titles (2026-08-10). The sidebar previously showed the first 60
+# characters of the opening question, which truncates mid-word and reads badly
+# ("In which cases is an independent chair required for the exam"). A short
+# generated label is what makes a conversation list scannable.
+#
+# Generated AFTER the answer is returned (FastAPI BackgroundTasks) so it adds
+# no latency to the turn the user is waiting on, and falls back to the old
+# truncation on any error - a failed title must never cost an answer.
+GENERATED_TITLES = os.environ.get("RAG_GENERATED_TITLES", "1") == "1"
+
+_TITLE_PROMPT = (
+    "Write a short title, 3 to 6 words, naming the TOPIC of this question about "
+    "University of Essex policies. No quotation marks, no trailing full stop, "
+    "no prefix like 'Title:'. Use the reader's own vocabulary. Reply with the "
+    "title only."
+)
+
+
+def generate_title(question: str) -> str:
+    """Short topical label for a conversation. Returns '' on any failure, so
+    callers keep whatever title they already had."""
+    if not GENERATED_TITLES:
+        return ""
+    try:
+        out = contextualize_chat(messages=[
+            {"role": "system", "content": _TITLE_PROMPT},
+            {"role": "user", "content": question[:600]},
+        ], model=CONTEXTUALIZE_MODEL).strip()
+    except Exception:
+        return ""
+    out = out.strip().strip('"').strip("'").rstrip(".").strip()
+    # a model that ignores the instruction and answers the question instead
+    # would produce something long; fall back rather than show a paragraph
+    if not out or len(out) > 70 or "\n" in out:
+        return ""
+    return out
+
+
 def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
 
