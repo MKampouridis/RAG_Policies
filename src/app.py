@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from src import feedback as feedback_store
+from src import ingest
 from src import memory
 from src.rag import answer as rag_answer
 from src.rag import GENERATED_TITLES, generate_title
@@ -38,9 +39,32 @@ class Feedback(BaseModel):
     comment: str | None = None
 
 
+class SourceLookup(BaseModel):
+    urls: list[str]
+    question: str | None = None
+
+
 @app.get("/")
 def index():
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.get("/preview")
+def preview():
+    """Redesigned UI, served alongside the existing one at / so the daily-use
+    page is never in the way of design work."""
+    return FileResponse(STATIC_DIR / "preview.html")
+
+
+@app.post("/api/sources")
+def api_sources(payload: SourceLookup):
+    """Document metadata + a matching passage for the cited URLs, for the source
+    modal. Read-only; see ingest.passages_for_documents for what the passage is
+    and, importantly, what it is not (it is not the generator's exact context)."""
+    urls = [u for u in payload.urls if u][:8]  # bounded: one embed + one query per url
+    if not urls:
+        return []
+    return ingest.passages_for_documents(urls, payload.question or "")
 
 
 @app.get("/api/conversations")

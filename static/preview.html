@@ -1,0 +1,1277 @@
+<title>Essex Policy Assistant</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Design system: a verbatim copy of design_reference/styles.css. Tokens,
+     .blueprint / .corner, .btn, .card, .tag, .seg, .dialog all come from there;
+     nothing below redefines a token, it only lays the app out. -->
+<link rel="stylesheet" href="/static/blueprint.css">
+<style>
+  /* ── shell ────────────────────────────────────────────────────────────── */
+  html, body { height: 100%; }
+  body { margin: 0; -webkit-font-smoothing: antialiased; }
+  #app {
+    height: 100%;
+    display: flex; flex-direction: column;
+    background: var(--color-bg); color: var(--color-text);
+  }
+  #topnav {
+    flex: none;
+    border-bottom: 1px solid var(--color-divider);
+    padding-top: calc(var(--space-3) + env(safe-area-inset-top));
+  }
+  .brand-btn {
+    display: flex; align-items: center; gap: 10px;
+    background: none; border: none; padding: 0; cursor: pointer;
+    color: inherit; font: inherit; text-align: left;
+  }
+  .brand-mark {
+    width: 30px; height: 30px; flex: none;
+    border: 1px solid var(--color-accent);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading); font-weight: 600;
+    color: var(--color-accent); font-size: 15px;
+  }
+  .nav-spacer { margin-left: auto; }
+  #menu-btn { display: none; }
+
+  .screen { display: none; flex: 1; min-height: 0; }
+  .screen.active { display: flex; }
+
+  /* ── onboarding ───────────────────────────────────────────────────────── */
+  #screen-onboarding { overflow-y: auto; }
+  .ob-wrap {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    padding: 56px 24px calc(40px + env(safe-area-inset-bottom));
+    gap: 36px; max-width: 900px; margin: 0 auto; width: 100%;
+  }
+  .ob-mark {
+    width: 64px; height: 64px; flex: none;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ob-mark span {
+    font-family: var(--font-heading); font-weight: 600;
+    font-size: 26px; color: var(--color-accent);
+  }
+  .ob-head { display: flex; flex-direction: column; gap: 14px; align-items: center; text-align: center; }
+  .ob-head h1 { max-width: 640px; font-size: 38px; margin: 0; }
+  .ob-sub { max-width: 560px; font-size: 15px; margin: 0; }
+  .ob-section { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+  .ob-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .example-card {
+    cursor: pointer; padding: 16px; justify-content: space-between;
+    text-align: left; font: inherit; color: inherit;
+  }
+  .example-card:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+  .example-card .eq {
+    font-size: 14px; line-height: 1.45;
+    font-family: var(--font-body);
+  }
+  .example-card .ask {
+    display: flex; align-items: center; gap: 6px;
+    color: var(--color-accent-700); font-size: 12px; margin-top: 10px;
+  }
+  .how-strip {
+    width: 100%; display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; padding-top: 32px; border-top: 1px solid var(--color-divider);
+  }
+  .how-step { display: flex; flex-direction: column; gap: 6px; }
+  .how-step h6 { color: var(--color-accent-700); margin: 0; }
+  .how-step h4 { margin: 0; }
+  .how-step p { font-size: 13px; margin: 0; }
+
+  /* ── chat ─────────────────────────────────────────────────────────────── */
+  #sidebar {
+    width: 270px; flex: none;
+    border-right: 1px solid var(--color-divider);
+    display: flex; flex-direction: column;
+    padding: 16px; gap: 10px; overflow-y: auto;
+    background: var(--color-bg);
+  }
+  .side-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; margin-top: 6px; }
+  #conversation-list { display: flex; flex-direction: column; gap: 6px; }
+  /* swipe-to-delete track, carried over from the existing UI: .conv-content is
+     the layer that slides left to uncover .conv-actions underneath. Deletion
+     stays a two-step gesture because it is irreversible. */
+  .conv-item { position: relative; overflow: hidden; min-width: 0; }
+  .conv-content {
+    position: relative; z-index: 1;
+    display: flex; align-items: center; gap: 8px;
+    width: 100%; text-align: left; cursor: pointer;
+    font: inherit; color: inherit;
+    background: var(--color-bg);
+    border: 1px solid transparent;
+    padding: 10px 12px;
+    transition: background .13s, transform .18s ease;
+  }
+  .conv-item.swiping .conv-content { transition: none; }
+  .conv-text { flex: 1 1 auto; min-width: 0; }
+  .conv-title {
+    font-size: 13px; font-weight: 500; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .conv-date { font-size: 11px; }
+  .conv-item.active .conv-content {
+    background: var(--color-accent-100);
+    border-color: var(--color-accent-300);
+  }
+  .conv-del {
+    flex: none; border: none; background: none; cursor: pointer;
+    color: color-mix(in srgb, var(--color-text) 55%, transparent);
+    font-size: 17px; line-height: 1; padding: 2px 4px; opacity: 0;
+  }
+  .conv-actions {
+    position: absolute; top: 0; right: 0; bottom: 0; width: 84px;
+    display: flex; opacity: 0; pointer-events: none; transition: opacity .12s;
+  }
+  .conv-item.swiping .conv-actions, .conv-item.swipe-open .conv-actions { opacity: 1; pointer-events: auto; }
+  .conv-swipe-del {
+    flex: 1; border: none; cursor: pointer;
+    background: var(--color-accent-700); color: var(--color-bg);
+    font-family: var(--font-heading); font-weight: 600; font-size: 13px;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .conv-item:hover .conv-content { background: color-mix(in srgb, var(--color-text) 5%, transparent); }
+    .conv-item.active:hover .conv-content { background: var(--color-accent-100); }
+    .conv-item:hover .conv-del { opacity: 1; }
+    .conv-del:hover { color: var(--color-accent); }
+  }
+  @media (hover: none) {
+    .conv-del { display: none; }   /* swipe replaces it on touch */
+    .conv-item, .btn, .composer textarea { -webkit-tap-highlight-color: transparent; }
+  }
+
+  .chat-col { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #messages {
+    flex: 1; overflow-y: auto;
+    padding: 24px 32px; display: flex; flex-direction: column; gap: 20px;
+  }
+  .msg-user {
+    align-self: flex-end; max-width: 70%;
+    background: var(--color-surface);
+    padding: 10px 14px; font-size: 14px; line-height: 1.55;
+    white-space: pre-wrap; overflow-wrap: anywhere;
+  }
+  .msg-assistant {
+    align-self: flex-start; max-width: 78%;
+    padding: 18px; display: flex; flex-direction: column; gap: 12px;
+    background: var(--color-bg);
+  }
+  .msg-body { font-size: 14.5px; line-height: 1.6; overflow-wrap: anywhere; }
+  .msg-body p { margin: 0 0 8px; }
+  .msg-body p:last-child { margin-bottom: 0; }
+  .msg-body ul, .msg-body ol { margin: 6px 0; padding-left: 20px; }
+  .msg-body li { margin: 2px 0; }
+  .msg-body a { color: var(--color-accent-700); overflow-wrap: anywhere; }
+  .msg-pending { opacity: .65; font-style: italic; }
+  .chat-hint { margin: auto; max-width: 340px; text-align: center; font-size: 13px; }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .src-chip {
+    cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-body); font-size: 11px; text-align: left;
+    background: none; max-width: 100%;
+  }
+  .src-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 320px; }
+  .src-chip:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+  .followups { display: flex; flex-direction: column; gap: 6px; padding-top: 8px; border-top: 1px solid var(--color-divider); }
+  .followups .fu-label { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
+  .fu-btn { font-size: 12.5px; padding: 4px 10px; font-family: var(--font-body); text-align: left; }
+  .msg-actions { display: flex; justify-content: flex-end; gap: 6px; align-items: center; }
+  .msg-actions .btn-icon { width: 28px; height: 28px; }
+  .rate-on { border-color: var(--color-accent); color: var(--color-accent-700); }
+  .rate-note { font-size: 11px; margin-right: auto; }
+  .fb-panel { display: none; flex-direction: column; gap: 8px; border-top: 1px solid var(--color-divider); padding-top: 10px; }
+  .fb-panel.open { display: flex; }
+  .fb-prompt { font-size: 12px; }
+  .fb-tag { font-size: 12px; padding: 3px 9px; font-family: var(--font-body); }
+  .fb-tag.on { border-color: var(--color-accent); color: var(--color-accent-700); }
+  .rewrite { font-size: 12px; }
+  .rewrite summary { cursor: pointer; }
+  .rewrite-q {
+    margin-top: 6px; padding: 7px 9px;
+    border-left: 2px solid var(--color-accent);
+    background: var(--color-surface); font-style: italic;
+  }
+
+  /* ── composer (used on both onboarding and chat) ──────────────────────── */
+  .composer { width: 100%; display: flex; flex-direction: column; gap: 6px; }
+  .composer-row { display: flex; gap: 10px; align-items: stretch; }
+  .composer textarea {
+    flex: 1; resize: none; overflow-y: auto;
+    min-height: 38px; max-height: 180px; padding: 8px 10px;
+    /* 16px minimum: iOS Safari zooms the page on focus below this */
+    font-family: var(--font-body); font-size: 16px; line-height: 1.4;
+  }
+  .composer .send-btn { padding-inline: 18px; flex: none; }
+  .composer-note { font-size: 11px; }
+  #chat-composer-bar {
+    flex: none; border-top: 1px solid var(--color-divider);
+    padding: 16px 32px calc(16px + env(safe-area-inset-bottom));
+  }
+  .ob-composer-wrap { width: 100%; max-width: 640px; }
+
+  /* ── settings ─────────────────────────────────────────────────────────── */
+  #screen-settings { overflow-y: auto; }
+  .set-wrap {
+    flex: 1; max-width: 720px; margin: 0 auto; width: 100%;
+    padding: 40px 24px calc(64px + env(safe-area-inset-bottom));
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .set-head { display: flex; align-items: center; gap: 12px; }
+  .set-head h2 { margin: 0; }
+  .set-card { padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .set-card h4 { margin: 0; }
+  .set-card p { font-size: 13px; margin: 0; }
+  .set-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .set-row .t { font-size: 14px; }
+  .set-row .d { font-size: 12px; }
+  .toggle {
+    width: 40px; height: 22px; flex: none; padding: 0; cursor: pointer;
+    border: 1px solid var(--color-divider); position: relative;
+    background: var(--color-surface);
+  }
+  .toggle[aria-pressed="true"] { background: var(--color-accent); }
+  .toggle .knob { position: absolute; top: 1px; left: 1px; width: 18px; height: 18px; background: var(--color-bg); transition: left .14s ease; }
+  .toggle[aria-pressed="true"] .knob { left: 19px; }
+  .set-note { font-size: 12px; font-style: italic; }
+  .set-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  .danger { border-color: color-mix(in srgb, var(--color-accent-700) 60%, transparent); }
+
+  /* ── source modal ─────────────────────────────────────────────────────── */
+  #source-modal { z-index: 60; }
+  #source-modal[hidden] { display: none; }
+  #source-modal .dialog {
+    max-width: 520px; background: var(--color-bg);
+    max-height: 88vh; overflow-y: auto;   /* long passages must not push the actions off-screen */
+  }
+  .dlg-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .dlg-title { word-break: break-word; }
+  .dlg-excerpt {
+    border-left: 2px solid var(--color-accent); padding-left: 12px;
+    font-style: italic; max-height: 40vh; overflow-y: auto;
+  }
+  .dlg-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); flex-wrap: wrap; }
+
+  /* ── responsive: drawer at 820px, matching the existing UI ────────────── */
+  #drawer-backdrop { display: none; }
+  @media (max-width: 820px) {
+    #menu-btn { display: inline-flex; }
+    .ob-wrap { padding: 32px 16px calc(32px + env(safe-area-inset-bottom)); gap: 28px; }
+    .ob-head h1 { font-size: 30px; }
+    .ob-grid { grid-template-columns: 1fr; gap: 12px; }
+    .how-strip { grid-template-columns: 1fr; gap: 18px; padding-top: 24px; }
+    #sidebar {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 82%; max-width: 320px; z-index: 50;
+      transform: translateX(-100%); transition: transform .22s ease;
+      box-shadow: var(--shadow-lg);
+      padding-top: calc(16px + env(safe-area-inset-top));
+    }
+    body.drawer-open #sidebar { transform: translateX(0); }
+    #drawer-backdrop {
+      display: block; position: fixed; inset: 0; z-index: 40;
+      background: color-mix(in srgb, var(--color-neutral-900) 45%, transparent);
+      opacity: 0; pointer-events: none; transition: opacity .22s;
+    }
+    body.drawer-open #drawer-backdrop { opacity: 1; pointer-events: auto; }
+    #messages { padding: 16px 14px; gap: 16px; }
+    .msg-user { max-width: 86%; }
+    .msg-assistant { max-width: 100%; }
+    #chat-composer-bar { padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); }
+    .src-chip span { max-width: 200px; }
+    .set-wrap { padding: 24px 16px calc(48px + env(safe-area-inset-bottom)); gap: 18px; }
+    #menu-btn, .nav-actions .btn { min-height: 40px; }
+  }
+</style>
+
+<div id="app">
+  <nav class="nav" id="topnav">
+    <button class="btn btn-secondary btn-icon" id="menu-btn" aria-label="Conversations" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+    </button>
+    <button class="brand-btn" id="brand-home">
+      <span class="brand-mark">E</span>
+      <span class="nav-brand" style="margin-right:0">Essex Policy Assistant</span>
+    </button>
+    <div class="nav-spacer nav-actions" style="display:flex;align-items:center;gap:14px">
+      <button class="btn btn-secondary" id="nav-chat" hidden>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-3.2-6.4"/><polyline points="4,18 4,14 8,14"/></svg>
+        Conversations
+      </button>
+      <button class="btn btn-secondary" id="nav-settings">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/></svg>
+        Settings
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── onboarding ── -->
+  <section class="screen" id="screen-onboarding">
+    <div class="ob-wrap">
+      <div class="blueprint ob-mark" data-corners><span>E</span></div>
+      <div class="ob-head">
+        <h1>Ask about Essex policies and rules of assessment</h1>
+        <p class="text-muted ob-sub">
+          Answers are retrieved from published University of Essex policy and rules-of-assessment
+          documents, and every answer lists the documents it drew on. Unofficial and for guidance
+          only &mdash; always check the linked document before acting on an answer.
+        </p>
+      </div>
+
+      <div class="ob-composer-wrap" id="ob-composer-slot"></div>
+
+      <div class="ob-section">
+        <h6 class="text-muted" style="margin:0">Try asking</h6>
+        <div class="ob-grid" id="example-grid"></div>
+      </div>
+
+      <div class="how-strip">
+        <div class="how-step">
+          <h6>01</h6>
+          <h4>Indexed from published documents</h4>
+          <p class="text-muted">University of Essex policy and rules-of-assessment PDFs are split into
+            passages and indexed, so a question is matched against the text itself.</p>
+        </div>
+        <div class="how-step">
+          <h6>02</h6>
+          <h4>Every answer lists its documents</h4>
+          <p class="text-muted">Each answer comes with the documents it was generated from. Open one to
+            read the passage that matched, or the full PDF.</p>
+        </div>
+        <div class="how-step">
+          <h6>03</h6>
+          <h4>Not a substitute for the policy</h4>
+          <p class="text-muted">Answers can be incomplete or out of date. Verify against the full
+            document before relying on one for a decision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── chat ── -->
+  <section class="screen" id="screen-chat">
+    <aside id="sidebar">
+      <button class="btn btn-secondary btn-block" id="new-conv-btn" style="margin-top:0">+ New conversation</button>
+      <div class="side-label text-muted">Conversations</div>
+      <div id="conversation-list"></div>
+      <div class="text-muted" id="conv-empty" style="font-size:12px" hidden>No conversations yet.</div>
+    </aside>
+    <div class="chat-col">
+      <div id="messages"></div>
+      <div id="chat-composer-bar"></div>
+    </div>
+  </section>
+
+  <!-- ── settings ── -->
+  <section class="screen" id="screen-settings">
+    <div class="set-wrap">
+      <div class="set-head">
+        <button class="btn btn-icon btn-secondary" id="settings-back" aria-label="Back">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg>
+        </button>
+        <h2>Settings</h2>
+      </div>
+
+      <div class="card blueprint set-card" data-corners>
+        <h4>Conversation history</h4>
+        <p class="text-muted">Conversations are stored by the assistant so you can return to them.</p>
+        <div class="set-actions">
+          <button class="btn btn-secondary" id="export-history">Export history</button>
+          <button class="btn btn-secondary danger" id="clear-history">Clear all history</button>
+        </div>
+        <div class="text-muted set-note" id="history-status" hidden></div>
+      </div>
+
+      <div class="card blueprint set-card" data-corners>
+        <h4>Answer detail level</h4>
+        <p class="text-muted">Concise gives a short answer; detailed adds context and edge cases.</p>
+        <div class="seg" style="width:fit-content" id="detail-seg">
+          <label class="seg-opt"><input type="radio" name="detail" value="concise">Concise</label>
+          <label class="seg-opt"><input type="radio" name="detail" value="detailed">Detailed</label>
+        </div>
+        <div class="text-muted set-note">
+          Saved on this device only. The assistant has no detail-level setting yet, so this does not
+          change the answers it gives.
+        </div>
+      </div>
+
+      <div class="card blueprint set-card" data-corners>
+        <h4>Notifications</h4>
+        <div class="set-row">
+          <div>
+            <div class="t">Weekly digest of policy updates</div>
+            <div class="d text-muted">A summary of documents that changed this week.</div>
+          </div>
+          <button class="toggle" id="tg-digest" aria-pressed="false" aria-label="Weekly digest of policy updates"><span class="knob"></span></button>
+        </div>
+        <div class="set-row">
+          <div>
+            <div class="t">Notify when a cited policy changes</div>
+            <div class="d text-muted">Alerts you if a document you were given as a source is later updated.</div>
+          </div>
+          <button class="toggle" id="tg-changes" aria-pressed="false" aria-label="Notify when a cited policy changes"><span class="knob"></span></button>
+        </div>
+        <div class="text-muted set-note">
+          Saved on this device only. There is no notification service behind these yet, so nothing is
+          sent either way.
+        </div>
+      </div>
+
+      <div class="card blueprint set-card" data-corners>
+        <h4>Data &amp; privacy</h4>
+        <p class="text-muted">
+          Conversations are stored by the assistant so you can return to them, and can be exported or
+          deleted above. When you rate an answer, the rating is logged together with the question, the
+          answer, and the documents that were retrieved &mdash; that log is what failures are diagnosed
+          from. Source PDFs are not stored; only extracted passages and their URLs are indexed.
+        </p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="drawer-backdrop"></div>
+
+<!-- ── source modal ── -->
+<div class="dialog-backdrop" id="source-modal" hidden>
+  <div class="dialog blueprint" data-corners role="dialog" aria-modal="true" aria-labelledby="dlg-title" tabindex="-1">
+    <div class="dlg-head">
+      <div>
+        <span class="tag tag-neutral" id="dlg-kind">Document</span>
+        <div class="dialog-title dlg-title" id="dlg-title">Document</div>
+      </div>
+      <button class="btn btn-icon btn-secondary" id="dlg-x" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+      </button>
+    </div>
+    <div class="text-muted" id="dlg-meta" style="font-size:12px"></div>
+    <div class="dialog-body dlg-excerpt" id="dlg-excerpt"></div>
+    <div class="dlg-actions">
+      <button class="btn btn-secondary" id="dlg-close">Close</button>
+      <a class="btn btn-primary" id="dlg-open" href="#" target="_blank" rel="noopener">
+        Open full PDF
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="12"/><polyline points="14,4 20,4 20,10"/><line x1="10" y1="14" x2="20" y2="4"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════
+   Essex Policy Assistant — blueprint UI (/preview).
+
+   Conversation handling, markdown rendering, feedback posting, the mobile
+   drawer and swipe-to-delete are carried over from static/index.html, which is
+   the shipped and daily-used implementation; this file re-skins them rather
+   than re-deriving them.
+
+   Two things the mockup showed are deliberately NOT here:
+     - confidence tags ("High confidence" / "Partial match"): the backend has no
+       confidence signal and retrieval score does not track answer correctness,
+       so any badge would be invented.
+     - document section labels and "Updated <date>" lines: no such field exists
+       in the index. Only real metadata (title, doc_type, academic_year) shows.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+let activeConversationId = null;
+let currentScreen = 'onboarding';
+
+const messagesEl = document.getElementById('messages');
+const conversationList = document.getElementById('conversation-list');
+const convEmpty = document.getElementById('conv-empty');
+
+async function fetchJSON(url, options) {
+  const res = await fetch(url, options);
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+/* ── blueprint registration marks ──────────────────────────────────────────
+   .blueprint > .corner draws the small "+" at each corner. Applied to any
+   [data-corners] element, static or dynamically created. */
+function addCorners(el) {
+  if (el.dataset.cornered === '1') return;
+  el.dataset.cornered = '1';
+  for (const pos of ['tl', 'tr', 'bl', 'br']) {
+    const i = document.createElement('i');
+    i.className = 'corner ' + pos;
+    el.appendChild(i);
+  }
+}
+function applyCorners(root) {
+  (root || document).querySelectorAll('[data-corners]').forEach(addCorners);
+}
+
+/* ── screens ──────────────────────────────────────────────────────────────── */
+function showScreen(name) {
+  currentScreen = name;
+  for (const el of document.querySelectorAll('.screen')) {
+    el.classList.toggle('active', el.id === 'screen-' + name);
+  }
+  // The conversation list lives in the chat screen's sidebar, so without this
+  // a returning user landing on onboarding would have no route back to their
+  // history at all (the mockup has the same dead end).
+  document.getElementById('nav-chat').hidden = (name === 'chat');
+  setDrawer(false);
+  if (name === 'chat') {
+    if (!activeConversationId && !messagesEl.children.length) {
+      const hint = document.createElement('div');
+      hint.className = 'text-muted chat-hint';
+      hint.textContent = 'Pick a conversation on the left, or ask a question below to start a new one.';
+      messagesEl.appendChild(hint);
+    }
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+}
+
+document.getElementById('brand-home').onclick = () => showScreen('onboarding');
+document.getElementById('nav-settings').onclick = () => showScreen('settings');
+document.getElementById('nav-chat').onclick = () => showScreen('chat');
+document.getElementById('settings-back').onclick = () => showScreen(activeConversationId ? 'chat' : 'onboarding');
+
+/* ── text helpers (from index.html) ───────────────────────────────────────── */
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function inlineMd(s) {
+  return s
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/(https?:\/\/[^\s<)]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+}
+function markdownToHtml(text) {
+  const lines = escapeHtml(text).split('\n');
+  let html = '', list = null, para = [];
+  const flushPara = () => { if (para.length) { html += '<p>' + para.map(inlineMd).join('<br>') + '</p>'; para = []; } };
+  const closeList = () => { if (list) { html += '</' + list + '>'; list = null; } };
+  for (const raw of lines) {
+    const line = raw.replace(/\s+$/, '');
+    const bullet = line.match(/^\s*[-*•]\s+(.*)/);
+    const numbered = line.match(/^\s*\d+[.)]\s+(.*)/);
+    if (bullet) {
+      flushPara();
+      if (list !== 'ul') { closeList(); html += '<ul>'; list = 'ul'; }
+      html += '<li>' + inlineMd(bullet[1]) + '</li>';
+    } else if (numbered) {
+      flushPara();
+      if (list !== 'ol') { closeList(); html += '<ol>'; list = 'ol'; }
+      html += '<li>' + inlineMd(numbered[1]) + '</li>';
+    } else if (line.trim() === '') {
+      flushPara(); closeList();
+    } else {
+      closeList(); para.push(line);
+    }
+  }
+  flushPara(); closeList();
+  return html;
+}
+// The only document name the backend has is the stored filename, so that is
+// what is shown - tidied, never invented.
+function readableTitle(url) {
+  const name = (url.split('/').pop() || url).replace(/\.pdf$/i, '').replace(/[-_]+/g, ' ').trim();
+  return name || url;
+}
+function normaliseQ(s) {
+  return (s || '').toLowerCase().replace(/[\s’'".,?!]+/g, ' ').trim();
+}
+function relativeDate(ts) {
+  if (!ts && ts !== 0) return '';
+  const ms = Number(ts) < 1e12 ? Number(ts) * 1000 : Number(ts);
+  const d = new Date(ms);
+  if (isNaN(d.getTime())) return '';
+  const startOf = (x) => new Date(x.getFullYear(), x.getMonth(), x.getDate()).getTime();
+  const days = Math.round((startOf(new Date()) - startOf(d)) / 86400000);
+  if (days <= 0) return 'Today';
+  if (days === 1) return 'Yesterday';
+  if (days < 7) return d.toLocaleDateString(undefined, { weekday: 'short' });
+  return d.toLocaleDateString(undefined, { day: 'numeric', month: 'short' });
+}
+
+/* ── composer ─────────────────────────────────────────────────────────────── */
+function buildComposer() {
+  const wrap = document.createElement('div');
+  wrap.className = 'composer';
+  wrap.innerHTML = `
+    <div class="composer-row">
+      <textarea class="input" rows="1" placeholder="Ask about a policy or rule of assessment…"></textarea>
+      <button class="btn btn-primary blueprint send-btn" data-corners>
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3,11 21,3 13,21 11,13"/></svg>
+        Send
+      </button>
+    </div>
+    <span class="text-muted composer-note">Assistant can make mistakes. Verify against the official document before acting.</span>`;
+  const ta = wrap.querySelector('textarea');
+  const btn = wrap.querySelector('button');
+  const grow = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 180) + 'px'; };
+  ta.addEventListener('input', grow);
+  ta.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const t = ta.value.trim();
+      if (t) { ta.value = ''; grow(); send(t); }
+    }
+  });
+  btn.onclick = () => {
+    const t = ta.value.trim();
+    if (t) { ta.value = ''; grow(); send(t); }
+  };
+  applyCorners(wrap);
+  return { wrap, textarea: ta, button: btn };
+}
+const obComposer = buildComposer();
+document.getElementById('ob-composer-slot').appendChild(obComposer.wrap);
+const chatComposer = buildComposer();
+document.getElementById('chat-composer-bar').appendChild(chatComposer.wrap);
+function setSending(on) {
+  for (const c of [obComposer, chatComposer]) c.button.disabled = on;
+}
+
+/* ── example questions ────────────────────────────────────────────────────
+   Real questions from the project's own evaluation sets (eval/questions*.json),
+   i.e. questions this corpus is known to contain answers for - not invented
+   copy dressed up as capability. */
+const EXAMPLE_QUESTIONS = [
+  'What constitutes plagiarism according to University of Essex policy?',
+  'How long does a research degree viva last, and what happens if it runs long?',
+  'Under which circumstances can a concern be raised under the whistleblowing policy?',
+  'A student has failed a core taught module with a mark of 45. Can that failure be condoned?',
+];
+const exampleGrid = document.getElementById('example-grid');
+for (const q of EXAMPLE_QUESTIONS) {
+  const card = document.createElement('button');
+  card.className = 'card blueprint example-card';
+  card.dataset.corners = '';
+  card.innerHTML = `<div class="eq"></div>
+    <div class="ask">Ask
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13,6 19,12 13,18"/></svg>
+    </div>`;
+  card.querySelector('.eq').textContent = q;
+  card.onclick = () => send(q);
+  exampleGrid.appendChild(card);
+}
+applyCorners(document);
+
+/* ── follow-up suggestions ────────────────────────────────────────────────
+   There is no follow-up endpoint and nothing in the backend generates these.
+   They are derived here, in the browser, from terms that actually appear in
+   the answer just given (bolded spans and multi-word proper-noun phrases) and
+   from the real title of a cited document. Nothing is hardcoded per topic, and
+   the row is labelled as built from the answer rather than presented as a
+   model suggestion. When no term can be extracted, no chips are shown. */
+const FU_BLOCKLIST = new Set([
+  'university of essex', 'the university', 'essex policy', 'policy assistant',
+]);
+const FU_LEAD_STOP = new Set(['The', 'This', 'These', 'Those', 'A', 'An', 'It', 'If', 'You', 'Your',
+  'However', 'Where', 'When', 'What', 'For', 'In', 'On', 'At', 'As', 'And', 'But', 'Note', 'Source',
+  'Sources', 'Section', 'According']);
+
+function extractTerms(text) {
+  const out = [], seen = new Set();
+  const push = (raw) => {
+    let t = String(raw).replace(/\s+/g, ' ').replace(/^[^\w(]+|[^\w)]+$/g, '').trim();
+    t = t.replace(/^(The|A|An)\s+/, '');
+    if (t.length < 6 || t.length > 60) return;
+    // Multi-word only. Single bolded words are nearly always list headers
+    // ("Acknowledgment", "Inclusivity") and make a limp, ambiguous question.
+    if (!/\s/.test(t)) return;
+    const k = t.toLowerCase();
+    if (seen.has(k) || FU_BLOCKLIST.has(k)) return;
+    // near-duplicates ("Code of Practice for Postgraduate Research" vs the same
+    // phrase + " Degrees") would otherwise fill both chip slots with one idea
+    for (const prev of seen) if (prev.includes(k) || k.includes(prev)) return;
+    seen.add(k); out.push(t);
+  };
+  for (const m of text.matchAll(/\*\*([^*\n]{4,60})\*\*/g)) push(m[1]);
+  const plain = text.replace(/\*\*/g, '');
+  const phrase = /\b([A-Z][a-z]{2,}(?:\s+(?:of|for|and|the|in|to|on)\s+[A-Z][a-z]{2,}|\s+[A-Z][a-z]{2,})+)\b/g;
+  for (const m of plain.matchAll(phrase)) {
+    const first = m[1].split(/\s+/)[0];
+    if (FU_LEAD_STOP.has(first)) continue;
+    push(m[1]);
+  }
+  return out;
+}
+
+function deriveFollowUps(answerText, sources) {
+  const terms = extractTerms(answerText || '');
+  const chips = [];
+  if (terms[0]) chips.push(`What does the policy say about ${terms[0]}?`);
+  if (terms[1]) chips.push(`Where is ${terms[1]} set out?`);
+  if (chips.length && sources && sources.length) {
+    const doc = readableTitle(sources[0]);
+    if (doc.length <= 70) chips.push(`What else does "${doc}" cover?`);
+  }
+  return chips.slice(0, 3);
+}
+
+/* ── source chips + modal ─────────────────────────────────────────────────── */
+const sourceCache = new Map();            // url -> {title, doc_type, academic_year, excerpt}
+const modal = document.getElementById('source-modal');
+let lastFocused = null;
+
+function docKindLabel(docType) {
+  if (!docType) return 'Document';
+  const t = String(docType).toLowerCase();
+  if (t === 'roa' || t.includes('rules')) return 'Rules of assessment';
+  if (t === 'policy') return 'Policy document';
+  return docType;
+}
+
+let modalUrl = null;
+
+function paintModal(url, info, loading) {
+  document.getElementById('dlg-title').textContent = info.title ? readableTitle(info.title) : readableTitle(url);
+  document.getElementById('dlg-kind').textContent = docKindLabel(info.doc_type);
+  const meta = document.getElementById('dlg-meta');
+  meta.textContent = info.academic_year ? 'Academic year ' + info.academic_year : '';
+  meta.hidden = !info.academic_year;
+  const ex = document.getElementById('dlg-excerpt');
+  if (info.excerpt) {
+    // Real stored text from this document, the passage nearest the question -
+    // see ingest.passages_for_documents for exactly what it is.
+    ex.textContent = '“' + info.excerpt.trim() + '”';
+  } else if (loading) {
+    ex.textContent = 'Finding the matching passage…';
+  } else {
+    ex.textContent = 'No passage could be retrieved for this document — open the full PDF instead.';
+  }
+  document.getElementById('dlg-open').href = url;
+}
+
+async function openSourceModal(url, question) {
+  lastFocused = document.activeElement;
+  modalUrl = url;
+  const cached = sourceCache.get(url);
+  paintModal(url, cached || {}, !cached);
+  modal.hidden = false;
+  modal.querySelector('.dialog').focus();
+  if (cached) return;
+  // the per-answer prefetch has not landed (or failed) - fetch just this one
+  try {
+    const rows = await fetchJSON('/api/sources', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ urls: [url], question: question || '' }),
+    });
+    if (rows && rows[0]) sourceCache.set(url, rows[0]);
+  } catch (e) { /* fall through to the no-passage message */ }
+  if (!modal.hidden && modalUrl === url) paintModal(url, sourceCache.get(url) || {}, false);
+}
+function closeSourceModal() {
+  modal.hidden = true;
+  if (lastFocused && lastFocused.focus) lastFocused.focus();
+}
+modal.addEventListener('click', closeSourceModal);                       // backdrop closes
+modal.querySelector('.dialog').addEventListener('click', (e) => e.stopPropagation());  // inside does not
+document.getElementById('dlg-close').onclick = closeSourceModal;
+document.getElementById('dlg-x').onclick = closeSourceModal;
+
+// The mockup has no keyboard affordance; a modal that traps attention must be
+// dismissable from the keyboard.
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  if (!modal.hidden) { closeSourceModal(); return; }
+  setDrawer(false);
+});
+
+/* Metadata + a matching passage for the cited documents (POST /api/sources).
+   Fired once per answer, non-blocking: chips render immediately with the
+   URL-derived name and are upgraded in place when the lookup lands. */
+async function hydrateSources(urls, question, chipEls) {
+  const missing = urls.filter(u => !sourceCache.has(u));
+  if (missing.length) {
+    try {
+      const rows = await fetchJSON('/api/sources', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: missing, question: question || '' }),
+      });
+      for (const r of rows) sourceCache.set(r.url, r);
+    } catch (e) { /* chips still work as links to the PDF */ }
+  }
+  for (const [url, el] of chipEls) {
+    const info = sourceCache.get(url);
+    if (info && info.title) el.querySelector('span').textContent = readableTitle(info.title);
+  }
+}
+
+function buildSourceChips(sources, question) {
+  const row = document.createElement('div');
+  row.className = 'chip-row';
+  const chipEls = [];
+  for (const url of sources) {
+    const b = document.createElement('button');
+    b.className = 'tag tag-outline src-chip';
+    b.title = url;
+    b.innerHTML = `<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="13" x2="16" y2="13"/></svg><span></span>`;
+    b.querySelector('span').textContent = readableTitle(url);
+    b.onclick = () => openSourceModal(url, question);
+    row.appendChild(b);
+    chipEls.push([url, b]);
+  }
+  hydrateSources(sources, question, chipEls);
+  return row;
+}
+
+/* ── feedback ─────────────────────────────────────────────────────────────
+   Same payload and the same tag vocabulary as the shipped UI, so ratings from
+   both pages land in one log that feedback_report.py can read. */
+const FEEDBACK_TAGS = [
+  ['wrong_programme', 'Wrong programme / document'],
+  ['wrong_figure', 'Wrong or made-up figure'],
+  ['outdated', 'Out of date / wrong year'],
+  ['no_answer', "Didn't answer / too vague"],
+  ['other', 'Other'],
+];
+
+function submitFeedback(rating, tags, comment, context, answer) {
+  fetch('/api/feedback', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      rating,
+      question: context.question || '',
+      answer,
+      conversation_id: activeConversationId,
+      retrieval_query: context.retrieval_query || null,
+      sources: context.sources || [],
+      ranked_top_urls: context.ranked_top_urls || [],
+      tags,
+      comment: comment || null,
+    }),
+  }).catch(() => {});
+}
+
+function buildFeedback(content, context) {
+  const bar = document.createElement('div');
+  bar.className = 'msg-actions';
+  const note = document.createElement('span');
+  note.className = 'text-muted rate-note';
+
+  const up = document.createElement('button');
+  up.className = 'btn btn-icon btn-secondary';
+  up.title = 'Helpful'; up.setAttribute('aria-label', 'Helpful');
+  up.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,14 12,8 18,14"/><line x1="12" y1="8" x2="12" y2="19"/></svg>';
+  const down = document.createElement('button');
+  down.className = 'btn btn-icon btn-secondary';
+  down.title = 'Not helpful'; down.setAttribute('aria-label', 'Not helpful');
+  down.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,10 12,16 18,10"/><line x1="12" y1="16" x2="12" y2="5"/></svg>';
+  bar.append(note, up, down);
+
+  const panel = document.createElement('div');
+  panel.className = 'fb-panel';
+  const prompt = document.createElement('div');
+  prompt.className = 'fb-prompt text-muted';
+  prompt.textContent = 'What went wrong? (optional — pick any that apply)';
+  const tagRow = document.createElement('div');
+  tagRow.className = 'chip-row';
+  const selected = new Set();
+  for (const [key, label] of FEEDBACK_TAGS) {
+    const t = document.createElement('button');
+    t.className = 'btn btn-secondary fb-tag';
+    t.textContent = label;
+    t.onclick = () => {
+      if (selected.has(key)) { selected.delete(key); t.classList.remove('on'); }
+      else { selected.add(key); t.classList.add('on'); }
+    };
+    tagRow.appendChild(t);
+  }
+  const comment = document.createElement('textarea');
+  comment.className = 'input';
+  comment.placeholder = 'Anything else? (optional)';
+  comment.style.minHeight = '60px';
+  const submit = document.createElement('button');
+  submit.className = 'btn btn-primary';
+  submit.style.alignSelf = 'flex-start';
+  submit.textContent = 'Send feedback';
+  panel.append(prompt, tagRow, comment, submit);
+
+  // Single-select, and clicking the active one clears it. An 'up' is sent the
+  // moment it is chosen; a 'down' is sent when the panel is submitted, so the
+  // optional detail travels with it in one record rather than two. Clearing
+  // resets the control - it cannot retract a rating already written to the
+  // append-only log, so the control says so rather than pretending.
+  let rating = null, sentUp = false, sentDown = false;
+  const paint = () => {
+    up.classList.toggle('rate-on', rating === 'up');
+    down.classList.toggle('rate-on', rating === 'down');
+    panel.classList.toggle('open', rating === 'down' && !sentDown);
+  };
+  up.onclick = () => {
+    if (rating === 'up') { rating = null; note.textContent = sentUp ? 'Rating already recorded.' : ''; paint(); return; }
+    rating = 'up'; paint();
+    if (!sentUp) { submitFeedback('up', [], '', context, content); sentUp = true; }
+    note.textContent = 'Thanks — recorded.';
+  };
+  down.onclick = () => {
+    if (rating === 'down') { rating = null; note.textContent = sentDown ? 'Rating already recorded.' : ''; paint(); return; }
+    rating = 'down'; note.textContent = sentDown ? 'Rating already recorded.' : ''; paint();
+  };
+  submit.onclick = () => {
+    submitFeedback('down', [...selected], comment.value.trim(), context, content);
+    sentDown = true;
+    note.textContent = 'Thanks — logged for improvement.';
+    paint();
+  };
+
+  const wrap = document.createDocumentFragment();
+  wrap.append(bar, panel);
+  return wrap;
+}
+
+/* ── message rendering ────────────────────────────────────────────────────── */
+function renderUser(text) {
+  const hint = messagesEl.querySelector('.chat-hint');
+  if (hint) hint.remove();
+  const el = document.createElement('div');
+  el.className = 'msg-user';
+  el.textContent = text;
+  messagesEl.appendChild(el);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return el;
+}
+
+function renderAssistant(content, sources, context) {
+  const card = document.createElement('div');
+  card.className = 'blueprint msg-assistant';
+  card.dataset.corners = '';
+
+  const body = document.createElement('div');
+  body.className = 'msg-body';
+  body.innerHTML = markdownToHtml(content);
+  card.appendChild(body);
+
+  if (sources && sources.length) {
+    card.appendChild(buildSourceChips(sources, (context && context.question) || ''));
+  }
+
+  // The rewritten retrieval query, shown only when it really differs from what
+  // was typed - carried over from index.html, where it exists because a
+  // contextualizer that misreads a topic switch is otherwise invisible.
+  if (context && context.retrieval_query && context.question
+      && normaliseQ(context.retrieval_query) !== normaliseQ(context.question)) {
+    const rw = document.createElement('details');
+    rw.className = 'rewrite text-muted';
+    rw.innerHTML = '<summary>Searched for a rephrased version of your question</summary>'
+      + '<div class="rewrite-q"></div>';
+    rw.querySelector('.rewrite-q').textContent = context.retrieval_query;
+    card.appendChild(rw);
+  }
+
+  if (context) {
+    const chips = deriveFollowUps(content, sources || []);
+    if (chips.length) {
+      const box = document.createElement('div');
+      box.className = 'followups';
+      const label = document.createElement('div');
+      label.className = 'fu-label text-muted';
+      label.textContent = 'Ask next — built from the wording of this answer';
+      const row = document.createElement('div');
+      row.className = 'chip-row';
+      for (const q of chips) {
+        const b = document.createElement('button');
+        b.className = 'btn btn-ghost fu-btn';
+        b.textContent = q;
+        b.onclick = () => send(q);
+        row.appendChild(b);
+      }
+      box.append(label, row);
+      card.appendChild(box);
+    }
+    card.appendChild(buildFeedback(content, context));
+  }
+
+  messagesEl.appendChild(card);
+  addCorners(card);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return card;
+}
+
+/* ── conversations ────────────────────────────────────────────────────────── */
+async function loadConversations() {
+  let convs = [];
+  try { convs = await fetchJSON('/api/conversations'); } catch (e) { return; }
+  conversationList.innerHTML = '';
+  convEmpty.hidden = convs.length > 0;
+  for (const c of convs) {
+    const item = document.createElement('div');
+    item.className = 'conv-item' + (c.id === activeConversationId ? ' active' : '');
+
+    const actions = document.createElement('div');
+    actions.className = 'conv-actions';
+    const swipeDel = document.createElement('button');
+    swipeDel.className = 'conv-swipe-del';
+    swipeDel.textContent = 'Delete';
+    swipeDel.onclick = (e) => { e.stopPropagation(); deleteConversation(c.id); };
+    actions.appendChild(swipeDel);
+
+    const content = document.createElement('button');
+    content.className = 'conv-content';
+    content.onclick = () => {
+      if (closeSwipe(item)) return;      // a tap that dismisses a swipe must not also open the row
+      setDrawer(false);
+      openConversation(c.id);
+    };
+    const text = document.createElement('div');
+    text.className = 'conv-text';
+    const title = document.createElement('div');
+    title.className = 'conv-title';
+    title.textContent = (c.title || '').trim() || 'Untitled conversation';
+    title.title = title.textContent;
+    const date = document.createElement('div');
+    date.className = 'conv-date text-muted';
+    date.textContent = relativeDate(c.created_at);
+    text.append(title, date);
+    const del = document.createElement('button');
+    del.className = 'conv-del';
+    del.innerHTML = '&times;';
+    del.title = 'Delete conversation';
+    del.setAttribute('aria-label', 'Delete conversation');
+    del.onclick = (e) => { e.stopPropagation(); deleteConversation(c.id); };
+    content.append(text, del);
+
+    item.append(actions, content);
+    attachSwipe(item, content);
+    conversationList.appendChild(item);
+  }
+}
+
+async function deleteConversation(id) {
+  await fetch('/api/conversations/' + id, { method: 'DELETE' }).catch(() => {});
+  if (id === activeConversationId) {
+    activeConversationId = null;
+    messagesEl.innerHTML = '';
+    showScreen('onboarding');
+  }
+  await loadConversations();
+}
+
+async function openConversation(id) {
+  activeConversationId = id;
+  messagesEl.innerHTML = '';
+  showScreen('chat');
+  let msgs = [];
+  try { msgs = await fetchJSON(`/api/conversations/${id}/messages`); } catch (e) { msgs = []; }
+  let lastUserQ = '';
+  for (const m of msgs) {
+    if (m.role === 'user') { lastUserQ = m.content; renderUser(m.content); }
+    // Stored messages carry no sources: the messages endpoint returns role and
+    // content only. Citations therefore appear on live answers, not on reloaded
+    // history - inventing them here is not an option.
+    else renderAssistant(m.content, null, { question: lastUserQ });
+  }
+  await loadConversations();
+}
+
+document.getElementById('new-conv-btn').onclick = async () => {
+  try {
+    const conv = await fetchJSON('/api/conversations', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}),
+    });
+    await openConversation(conv.id);
+    chatComposer.textarea.focus();
+  } catch (e) { /* leave the current view alone */ }
+};
+
+/* ── sending ──────────────────────────────────────────────────────────────── */
+async function send(text) {
+  text = (text || '').trim();
+  if (!text) return;
+
+  if (!activeConversationId) {
+    try {
+      const conv = await fetchJSON('/api/conversations', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}),
+      });
+      activeConversationId = conv.id;
+    } catch (e) {
+      alert('Could not start a conversation: ' + e.message);
+      return;
+    }
+  }
+  showScreen('chat');
+  renderUser(text);
+  setSending(true);
+
+  const pending = document.createElement('div');
+  pending.className = 'blueprint msg-assistant msg-pending';
+  pending.textContent = 'Searching the policy documents…';
+  messagesEl.appendChild(pending);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+
+  try {
+    const result = await fetchJSON(`/api/conversations/${activeConversationId}/messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: text }),
+    });
+    pending.remove();
+    renderAssistant(result.answer, result.sources, {
+      question: text,
+      retrieval_query: result.retrieval_query,
+      sources: result.sources,
+      ranked_top_urls: result.ranked_top_urls,
+    });
+    await loadConversations();
+    // The generated title lands ~5s after the answer (background task), so the
+    // list still shows the truncated fallback until it is re-read.
+    if (result.title_pending) {
+      setTimeout(loadConversations, 3500);
+      setTimeout(loadConversations, 9000);
+    }
+  } catch (err) {
+    pending.remove();
+    renderAssistant('Error: ' + err.message, null, null);
+  } finally {
+    setSending(false);
+  }
+}
+
+/* ── mobile drawer ────────────────────────────────────────────────────────── */
+const backdrop = document.getElementById('drawer-backdrop');
+const menuBtn = document.getElementById('menu-btn');
+function setDrawer(open) {
+  document.body.classList.toggle('drawer-open', open);
+  menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+menuBtn.onclick = () => {
+  if (currentScreen !== 'chat') showScreen('chat');
+  setDrawer(!document.body.classList.contains('drawer-open'));
+};
+backdrop.onclick = () => setDrawer(false);
+
+/* ── swipe-to-delete (carried over from index.html) ───────────────────────── */
+const SWIPE_WIDTH = 84;
+const SWIPE_OPEN_AT = 42;
+let openSwipeItem = null;
+
+function closeSwipe(except) {
+  if (openSwipeItem && openSwipeItem !== except) {
+    const c = openSwipeItem.querySelector('.conv-content');
+    if (c) c.style.transform = 'translateX(0)';
+    openSwipeItem.classList.remove('swipe-open');
+    openSwipeItem = null;
+    return true;
+  }
+  if (openSwipeItem === except && except) {
+    const c = except.querySelector('.conv-content');
+    if (c) c.style.transform = 'translateX(0)';
+    except.classList.remove('swipe-open');
+    openSwipeItem = null;
+    return true;
+  }
+  return false;
+}
+
+function attachSwipe(item, content) {
+  let x0 = 0, y0 = 0, dx = 0, dragging = false, decided = false;
+  item.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    if (openSwipeItem && openSwipeItem !== item) closeSwipe(null);
+    x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+    dx = 0; dragging = true; decided = false;
+    // nothing visible changes here on purpose: iOS treats a first tap that
+    // changes appearance as a hover pass and swallows the click
+  }, { passive: true });
+  item.addEventListener('touchmove', (e) => {
+    if (!dragging) return;
+    const nx = e.touches[0].clientX - x0;
+    const ny = e.touches[0].clientY - y0;
+    if (!decided) {
+      if (Math.abs(ny) > Math.abs(nx)) { dragging = false; item.classList.remove('swiping'); return; }
+      if (Math.abs(nx) < 8) return;
+      decided = true;
+      item.classList.add('swiping');
+    }
+    const base = openSwipeItem === item ? -SWIPE_WIDTH : 0;
+    dx = Math.max(-SWIPE_WIDTH, Math.min(0, base + nx));
+    content.style.transform = `translateX(${dx}px)`;
+  }, { passive: true });
+  function end() {
+    if (!dragging) return;
+    dragging = false;
+    item.classList.remove('swiping');
+    if (!decided) return;
+    const open = dx <= -SWIPE_OPEN_AT;
+    content.style.transform = open ? `translateX(${-SWIPE_WIDTH}px)` : 'translateX(0)';
+    item.classList.toggle('swipe-open', open);
+    openSwipeItem = open ? item : (openSwipeItem === item ? null : openSwipeItem);
+  }
+  item.addEventListener('touchend', end, { passive: true });
+  item.addEventListener('touchcancel', end, { passive: true });
+}
+document.addEventListener('touchstart', (e) => {
+  if (openSwipeItem && !openSwipeItem.contains(e.target)) closeSwipe(null);
+}, { passive: true });
+
+/* ── settings (localStorage) ──────────────────────────────────────────────── */
+const SETTINGS_KEY = 'essex-assistant-settings';
+const DEFAULT_SETTINGS = { detail: 'concise', notifyDigest: false, notifyChanges: false };
+function loadSettings() {
+  try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') }; }
+  catch (e) { return { ...DEFAULT_SETTINGS }; }
+}
+let settings = loadSettings();
+function saveSettings() {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+}
+function paintSettings() {
+  for (const r of document.querySelectorAll('#detail-seg input')) r.checked = (r.value === settings.detail);
+  document.getElementById('tg-digest').setAttribute('aria-pressed', settings.notifyDigest ? 'true' : 'false');
+  document.getElementById('tg-changes').setAttribute('aria-pressed', settings.notifyChanges ? 'true' : 'false');
+}
+for (const r of document.querySelectorAll('#detail-seg input')) {
+  r.addEventListener('change', () => { settings.detail = r.value; saveSettings(); });
+}
+document.getElementById('tg-digest').onclick = () => {
+  settings.notifyDigest = !settings.notifyDigest; saveSettings(); paintSettings();
+};
+document.getElementById('tg-changes').onclick = () => {
+  settings.notifyChanges = !settings.notifyChanges; saveSettings(); paintSettings();
+};
+paintSettings();
+
+const historyStatus = document.getElementById('history-status');
+function setHistoryStatus(msg) {
+  historyStatus.textContent = msg;
+  historyStatus.hidden = !msg;
+}
+
+document.getElementById('export-history').onclick = async () => {
+  setHistoryStatus('Collecting conversations…');
+  try {
+    const convs = await fetchJSON('/api/conversations');
+    const out = [];
+    for (const c of convs) {
+      let msgs = [];
+      try { msgs = await fetchJSON(`/api/conversations/${c.id}/messages`); } catch (e) {}
+      out.push({ ...c, messages: msgs });
+    }
+    const blob = new Blob([JSON.stringify(out, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'essex-assistant-history.json';
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    setHistoryStatus(`Exported ${out.length} conversation${out.length === 1 ? '' : 's'}.`);
+  } catch (e) {
+    setHistoryStatus('Export failed: ' + e.message);
+  }
+};
+
+document.getElementById('clear-history').onclick = async () => {
+  let convs = [];
+  try { convs = await fetchJSON('/api/conversations'); } catch (e) { setHistoryStatus('Could not read history.'); return; }
+  if (!convs.length) { setHistoryStatus('There is no history to clear.'); return; }
+  if (!confirm(`Delete all ${convs.length} conversations? This cannot be undone.`)) return;
+  for (const c of convs) await fetch('/api/conversations/' + c.id, { method: 'DELETE' }).catch(() => {});
+  activeConversationId = null;
+  messagesEl.innerHTML = '';
+  await loadConversations();
+  setHistoryStatus('All conversations deleted.');
+};
+
+/* ── boot ─────────────────────────────────────────────────────────────────── */
+showScreen('onboarding');
+loadConversations();
+</script>

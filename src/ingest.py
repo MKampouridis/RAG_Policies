@@ -295,3 +295,51 @@ def query(text: str, n_results: int = 6, where: dict | None = None) -> dict:
     collection = _get_collection()
     query_embedding = embed_batch([EMBED_QUERY_PREFIX + text])[0]
     return collection.query(query_embeddings=[query_embedding], n_results=n_results, where=where)
+
+
+def passages_for_documents(urls: list[str], query_text: str = "") -> list[dict]:
+    """Read-only lookup for the UI's source modal: per document, its stored
+    metadata and (when a query is given) the chunk of THAT document nearest the
+    query embedding.
+
+    NOT the exact chunk rag.answer() put in the generator's context - answer()
+    returns source URLs only, and reading its real context would mean changing
+    rag.py. This re-runs just the dense stage, scoped to one document, so the
+    passage shown is real stored text from the cited document that matches the
+    question; it is usually the same chunk, but that is not guaranteed and the
+    UI must not claim otherwise.
+
+    Embeds the query once for the whole batch. No writes, no cache mutation,
+    nothing that can affect retrieval or an eval run.
+    """
+    collection = _get_collection()
+    query_embedding = None
+    if query_text.strip():
+        query_embedding = embed_batch([EMBED_QUERY_PREFIX + query_text])[0]
+
+    out = []
+    for url in urls:
+        record = {"url": url, "title": None, "doc_type": None, "academic_year": None, "excerpt": None}
+        try:
+            if query_embedding is not None:
+                res = collection.query(
+                    query_embeddings=[query_embedding], n_results=1, where={"source_url": url}
+                )
+                docs = (res.get("documents") or [[]])[0]
+                metas = (res.get("metadatas") or [[]])[0]
+                if docs:
+                    record["excerpt"] = docs[0]
+                meta = metas[0] if metas else {}
+            else:
+                got = collection.get(where={"source_url": url}, limit=1, include=["metadatas"])
+                metas = got.get("metadatas") or []
+                meta = metas[0] if metas else {}
+            record["title"] = meta.get("title")
+            record["doc_type"] = meta.get("doc_type")
+            record["academic_year"] = meta.get("academic_year")
+        except Exception:
+            # a cited URL that is no longer in the index must not break the
+            # answer that cited it - the modal falls back to the link alone
+            pass
+        out.append(record)
+    return out
