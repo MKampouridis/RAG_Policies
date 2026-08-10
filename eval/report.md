@@ -3578,3 +3578,56 @@ ledger retracted a headline for exactly that reason.
   mechanism. The clean figure from Round 8g (~11s added) stands; nothing in
   this run's timings does. Scores are unaffected - retrieval is deterministic
   and generation is cloud-side.
+
+## Round 8i — Partner exclusion: 4/17 real complaints -> 0/17 (2026-08-10)
+
+`PARTNER_INSTITUTION_DEMOTE_ENABLED` re-sorts WITHIN the already-chosen top 6,
+so it never frees a slot. That is why partner documents still reached the user
+on 4 of 17 real thumbs-down questions despite the demotion being on - the
+complaint raised twice in the user's own words ("Answers need to focus on Essex
+programmes, not partners").
+
+`PARTNER_EXCLUDE_WHEN_UNNAMED` drops partner chunks from the CANDIDATE POOL
+before rerank, so the freed slots are filled by Essex documents. Gated on the
+conversation not naming a partner.
+
+| | before | after |
+|---|---|---|
+| real complaints with a partner doc in top 6 | **4/17** | **0/17** |
+| partner-held slots on those questions | 5.5% | 0.0% |
+| hit@6, 160 turns (history-aware replay) | 123 | **124** (0 lost) |
+
+The three complaint documents removed are exactly the ones the user named:
+`kol-pg-masters-roa` on the MSc AI exit-awards question, `sak-principles` on
+the longest-UG-degree question, and the Tavistock code on both independent-chair
+questions.
+
+### Why the gate reads the CONVERSATION, not the question
+
+First version read only the current query and scored **net -1 (gained 1, lost
+2)**. Both losses were follow-ups, and they were different failures:
+
+- **Tavistock**: a real bug. The primary named the partner; the contextualizer's
+  follow-up rewrite dropped it ("what actions should new Professional Doctorate
+  students take after receiving..."), so the gate excluded partner documents on
+  a turn whose own conversation was explicitly about a partner. Fixed by reading
+  prior user messages.
+- **SKKU**: not a bug. Neither turn names a partner - the question is "maximum
+  non-core credits condoned across a three-year degree", entirely generic, with
+  an SKKU gold by test-set assignment. Excluding partners there is arguably
+  CORRECT and was being scored as a loss by an arbitrary label.
+
+With the conversation-aware gate: **net +1, 0 lost**.
+
+### A harness limitation worth recording
+
+`eval/retrieval_replay.py` replays each stored query in ISOLATION, so history is
+always empty - it structurally cannot test a conversation-aware mechanism, and
+its first verdict on this change (-1) was an artifact of that. Any future gate
+that reads conversation state needs a replay that reconstructs the conversation
+from the primary turn, as this round did. The isolated replay remains correct
+for anything that depends only on the query.
+
+Note also that **hit@6 understates this change by construction**: it asks
+whether the gold was retrieved, not whether a wrong-institution document took a
+slot. The 4/17 -> 0/17 figure is the one that tracks the complaint.

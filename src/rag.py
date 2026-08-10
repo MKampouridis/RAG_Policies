@@ -784,7 +784,11 @@ PARTNER_INSTITUTION_DEMOTE_ENABLED = True
 # than because a partner document is what the user needs. That is the
 # gold-multiplicity problem eval/gold_multiplicity.py already documents.
 # Strict hit@6 therefore UNDERSTATES this change by construction.
-PARTNER_EXCLUDE_WHEN_UNNAMED = os.environ.get("RAG_PARTNER_EXCLUDE", "") == "1"
+# ENABLED 2026-08-10 after measurement (eval/report.md Round 8i).
+#   Real complaints with a partner doc in the top 6: 4/17 -> 0/17
+#   Partner-held slots on those questions:            5.5% -> 0.0%
+#   hit@6 on 160 turns (history-aware replay):        123 -> 124, 0 lost
+PARTNER_EXCLUDE_WHEN_UNNAMED = os.environ.get("RAG_PARTNER_EXCLUDE", "1") == "1"
 
 _PARTNER_NAME_TOKENS = (
     "tavistock", "portman", "aegean", "omiros", "laksamana", "skku", "kaplan",
