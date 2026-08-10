@@ -182,12 +182,25 @@
     will-change: transform;
   }
   .conv-item.swiping .conv-content { transition: none; }
+  /* HIDDEN AT REST. The first version relied on .conv-content's background
+     painting over this panel, which is fragile - any coverage gap and the red
+     shows through, which is exactly what happened (a red bar behind every row,
+     bleeding into the 3px gaps). Visibility is now explicit: the panel only
+     exists while a row is actually being swiped or is held open. */
   .conv-actions {
     position: absolute;
-    inset: 0 0 0 auto;
+    top: 0; right: 0; bottom: 0;
     width: 84px;
     display: flex;
     align-items: stretch;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .12s;
+  }
+  .conv-item.swiping .conv-actions,
+  .conv-item.swipe-open .conv-actions {
+    opacity: 1;
+    pointer-events: auto;
   }
   .conv-swipe-del {
     flex: 1;
@@ -804,12 +817,14 @@
     if (openSwipeItem && openSwipeItem !== except) {
       const c = openSwipeItem.querySelector('.conv-content');
       if (c) c.style.transform = 'translateX(0)';
+      openSwipeItem.classList.remove('swipe-open');
       openSwipeItem = null;
       return true;
     }
     if (openSwipeItem === except) {
       const c = except.querySelector('.conv-content');
       if (c) c.style.transform = 'translateX(0)';
+      except.classList.remove('swipe-open');
       openSwipeItem = null;
       return true;
     }
@@ -851,6 +866,7 @@
       if (!decided) return;
       const open = dx <= -SWIPE_OPEN_AT;
       content.style.transform = open ? `translateX(${-SWIPE_WIDTH}px)` : 'translateX(0)';
+      item.classList.toggle('swipe-open', open);
       openSwipeItem = open ? item : (openSwipeItem === item ? null : openSwipeItem);
     }
     item.addEventListener('touchend', end, { passive: true });
