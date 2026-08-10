@@ -3631,3 +3631,44 @@ for anything that depends only on the query.
 Note also that **hit@6 understates this change by construction**: it asks
 whether the gold was retrieved, not whether a wrong-institution document took a
 slot. The 4/17 -> 0/17 figure is the one that tracks the complaint.
+
+## Round 8j — Chunk order: the general claim is FALSIFIED (2026-08-10)
+
+Round 8g observed that the same chunks in a different order produced a
+materially wrong answer, and concluded "nothing in this ledger measures chunk
+ORDER". `RAG_CHUNK_ORDER` re-orders the final context without changing its
+membership, so an A/B isolates ordering alone. `reversed` (worst-ranked first)
+was run FIRST, deliberately, as a spoiler: if quality survives that, the
+pipeline is order-insensitive and the Round 8g reading was wrong.
+
+**Set 4, ordinary 6-chunk contexts:**
+
+| | primary | follow-up | overall | hit@6 | keyphrase |
+|---|---|---|---|---|---|
+| rank | 4.60 | 4.30 | **4.45** | 10/10 | 0.55 |
+| reversed | 4.50 | 4.10 | **4.30** | 10/10 | **0.58** |
+
+Reversing the entire context - the most aggressive perturbation available -
+costs 0.15 on a 5-point scale over 20 turns, and keyphrase coverage moves the
+OTHER way. **The general claim that chunk order matters materially is not
+supported.** On ordinary contexts this pipeline is largely order-insensitive.
+
+Running the spoiler first is what produced this. A `rank` vs `grouped`
+comparison would have shown some small difference and been read as
+confirmation of the hypothesis that motivated it.
+
+### A scope flaw in the test itself
+
+Set 4 does not trigger multi-entity retrieval, so these were 6-chunk contexts.
+The Round 8g observation was on a **14-chunk** context in which one document's
+chunks were split top-and-bottom by four other departments' material - a far
+more severe fragmentation than reversing six chunks. **Set 4 therefore tested a
+weaker version of the claim than the one that was made**, and should have been
+recognised as doing so before it was run, not after.
+
+The direct test (set 5, 14-chunk multi-entity contexts, where `reversed` breaks
+the document-contiguity fix added in 8g) follows. Three outcomes were named in
+advance: a real effect narrows the claim to large fragmented contexts; no
+effect means the CSEE accreditation error had another cause and the contiguity
+fix was justified by coincidence; a noise-sized effect means dropping the
+ordering claim entirely.
