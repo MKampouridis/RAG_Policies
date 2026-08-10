@@ -214,25 +214,15 @@ figcaption {
 .btn svg { display: block; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-primary {
-  /* The essex.ac.uk primary-button motif, in place of the mockup's corner
-     marks: 3px left/right borders in currentColor plus a 3px rule above and
-     below, inverting to outline-on-ground on hover rather than darkening.
-     This is the one flourish the live site actually uses. */
-  position: relative;
-  background: var(--color-accent); color: var(--color-bg);
-  border: none;
-  border-left: 3px solid currentColor;
-  border-right: 3px solid currentColor;
-  transition: background .15s linear, color .15s linear;
+  /* Plain violet fill that DARKENS on hover, matching the production controls
+     in static/index.html. An earlier version carried essex.ac.uk's 3px-rule
+     motif with an invert-on-hover; it was disliked in use, so the flourish is
+     gone rather than kept for authenticity's sake. */
+  background: var(--color-accent); color: #fff;
+  border: 1px solid var(--color-accent);
 }
-.btn-primary::before, .btn-primary::after {
-  content: ''; position: absolute; left: 0;
-  width: 100%; height: 3px; background: currentColor;
-}
-.btn-primary::before { top: 0; }
-.btn-primary::after { bottom: 0; }
-.btn-primary:hover { background: var(--color-bg); color: var(--color-accent); }
-.btn-primary:active { background: var(--color-accent-100); color: var(--color-accent); }
+.btn-primary:hover { background: var(--color-accent-600); border-color: var(--color-accent-600); }
+.btn-primary:active { background: var(--color-accent-700); border-color: var(--color-accent-700); }
 .btn-secondary { border-color: var(--color-divider); }
 .btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
 .btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }

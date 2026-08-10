@@ -201,6 +201,17 @@
   .fb-panel.open { display: flex; }
   .fb-prompt { font-size: 12px; }
   .fb-tag { font-size: 12px; padding: 3px 9px; font-family: var(--font-body); }
+  /* Production's feedback submit (static/index.html): solid violet, square,
+     no border, darkening on hover - not the bar-motif primary button. */
+  .fb-submit {
+    align-self: flex-start;
+    border: none; border-radius: 0;
+    background: var(--color-accent); color: #fff;
+    font-family: var(--font-body);
+    padding: 6px 14px; font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: background .15s;
+  }
+  .fb-submit:hover { background: var(--color-accent-600); }
   .fb-tag.on { border-color: var(--color-accent); color: var(--color-accent-700); }
   .rewrite { font-size: 12px; }
   .rewrite summary { cursor: pointer; }
@@ -909,8 +920,7 @@ function buildFeedback(content, context) {
   comment.placeholder = 'Anything else? (optional)';
   comment.style.minHeight = '60px';
   const submit = document.createElement('button');
-  submit.className = 'btn btn-primary';
-  submit.style.alignSelf = 'flex-start';
+  submit.className = 'fb-submit';
   submit.textContent = 'Send feedback';
   panel.append(prompt, tagRow, comment, submit);
 
