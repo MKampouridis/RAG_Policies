@@ -3860,3 +3860,59 @@ Two further cautions on the cost table above:
 exists (22 affected turns in the 160-turn baseline) if it is ever wanted, but
 the live impact does not justify the risk of touching a guard whose predecessor
 cost 8.8 points.
+
+## Round 8n — Life Sciences, and the #11 defect diagnosed (2026-08-10)
+
+### #11 is a real, stable defect - not variance
+
+"In which cases is an independent chair required for the examination of PGR
+degrees?" scored 1 of 6 circumstances on **three consecutive runs**. Its own
+follow-up in the same conversation gets 6. Tested standalone to separate
+phrasing from conversation context:
+
+| query | circumstances named |
+|---|---|
+| #11 phrasing | **1/6** |
+| #12 phrasing ("what are the circumstances that require...") | **5/6** |
+| explicit ("what circumstances require the Faculty Dean to appoint...") | 4/6 |
+
+Root cause is chunk-level and precise: the list lives in **exactly one chunk**,
+`independent-chairs-policy.pdf` index 2. #11 retrieves chunks **1 and 6** of
+that document and not 2; #12 gets chunk 2 at rank 2. `hit@6` is True in both
+cases, so every document-level metric scores them identically.
+
+The answer-bearing chunk is the immediate neighbour of a chunk already at rank
+1. That makes adjacent-chunk expansion the obvious candidate fix, and it is
+NOT attempted here - it would need its own flag and measurement, and this
+project's history with unmeasured retrieval mechanisms is the reason.
+
+### Life Sciences: partially closed, and honestly partial
+
+The gap was real (0 Life Sciences chunks in the six-department fan-out), not a
+metric artifact - checked before acting. Two causes, two fixes:
+
+1. **The school does have reachable metadata.** "Biomedical Science" is a
+   programme area of the School of Life Sciences and IS carried as a department
+   value. `life sciences -> ["Biomedical Science"]` reaches part of the school
+   rather than nothing.
+2. **The metadata-less fallback was diluted.** It prepended the alias to the
+   WHOLE multi-entity question, so five other departments' terms dominated the
+   embedding. Stripping the other named entities focuses it. This now applies
+   to Sociology, Criminology and the Philosophical/Historical school rather
+   than to Life Sciences.
+
+| | before | after |
+|---|---|---|
+| explicit six-department question | 5/6 | **6/6** |
+| faculty form | 5/6 | **6/6** |
+| set 5 department coverage (regression) | 100% | 100% (8/8 unchanged) |
+
+**What "6/6" does and does not mean.** The Life Sciences slot is filled by
+`biomedical-science-year-one/two.pdf` - genuinely part of that school, but a
+programme area, not the school's full rules. The school's broader UG rules live
+as a "BS - Life Sciences" SECTION inside multi-department variations documents
+that carry no department at all, and those are still not reached on a
+multi-entity question. A user asking specifically about Life Sciences does get
+them (tested: 6/6 chunks), because a focused single-entity query is not
+diluted. So the coverage metric now reads 6/6 while the underlying situation is
+"partially covered" - recorded so the number is not mistaken for completeness.

@@ -67,7 +67,14 @@ DEPARTMENT_ALIASES: dict[str, list[str]] = {
         "Department of Psychosocial and Psychoanalytic Studies",
         "DEPARTMENT OF PSYCHOSOCIAL AND PSYCHOANALYTIC STUDIES",
     ],
-    "life sciences": [],          # in document text only - see note above
+    # School of Life Sciences has no department value of its own, but
+    # Biomedical Science is one of its programme areas and IS carried as a
+    # department value, so filtering on it reaches part of the school rather
+    # than nothing. The rest of the school's rules live as a "BS - Life
+    # Sciences" SECTION inside multi-department UG variations documents, which
+    # carry no department at all - those are reached by the query-side
+    # fallback, not by filtering.
+    "life sciences": ["Biomedical Science"],
     "biomedical science": ["Biomedical Science"],
     "essex business school": [
         "ESSEX BUSINESS SCHOOL", "Essex Business School",

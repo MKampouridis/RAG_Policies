@@ -1225,8 +1225,20 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
             where = {"$and": [{"is_current": True}, {"department": {"$in": values}}]}
             res = vector_query(retrieval_query, n_results=pool_size, where=where)
         else:
-            # no metadata for this entity - hint it in the query text instead
-            res = vector_query(f"{alias} {retrieval_query}", n_results=pool_size,
+            # No metadata for this entity, so hint it in the query text. The
+            # hint must be FOCUSED: prepending the alias to the full
+            # multi-entity question ("life sciences What are the accredited
+            # programmes offered by CSEE, MSAS, Psychology, HSC, SRES and Life
+            # Sciences?") leaves the other five departments' terms dominating
+            # the embedding and returns none of this entity's content -
+            # measured, 0 Life Sciences chunks. Stripping the other named
+            # entities restores the signal.
+            focused = retrieval_query
+            for other in aliases:
+                if other != alias:
+                    focused = re.sub(re.escape(other), " ", focused, flags=re.I)
+            focused = re.sub(r"[,\s]{2,}", " ", focused).strip()
+            res = vector_query(f"{alias} {focused}", n_results=pool_size,
                                where={"is_current": True})
         docs = res.get("documents", [[]])[0]
         metas = res.get("metadatas", [[]])[0]
