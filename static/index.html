@@ -833,7 +833,11 @@
       if (openSwipeItem && openSwipeItem !== item) closeSwipe(null);
       x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
       dx = 0; dragging = true; decided = false;
-      item.classList.add('swiping');
+      // Deliberately NOT adding .swiping here. Changing anything visible on
+      // touchstart makes iOS treat the first tap as a hover pass and swallow
+      // the click - which is what made opening a conversation take two taps -
+      // and it flashed the red Delete panel on every plain tap. The class is
+      // added only once the gesture is confirmed horizontal, below.
     }, { passive: true });
 
     item.addEventListener('touchmove', (e) => {
@@ -847,6 +851,7 @@
         if (Math.abs(ny) > Math.abs(nx)) { dragging = false; item.classList.remove('swiping'); return; }
         if (Math.abs(nx) < 8) return;
         decided = true;
+        item.classList.add('swiping');   // first visual change, gesture confirmed
       }
       const base = openSwipeItem === item ? -SWIPE_WIDTH : 0;
       dx = Math.max(-SWIPE_WIDTH, Math.min(0, base + nx));
