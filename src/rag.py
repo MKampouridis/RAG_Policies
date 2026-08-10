@@ -1290,6 +1290,90 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
             "metadatas": [[metas[i] for i in idx]]}
 
 
+# Adjacent-chunk expansion (2026-08-10). Traced from a real user question:
+# "in which cases is an independent chair required for the examination of PGR
+# degrees?" answered "the materials available don't specify the exact
+# triggering circumstances" - false, the policy lists seven in section 3.1.
+# That list lives in ONE chunk (independent-chairs-policy.pdf index 2) and the
+# query retrieved chunks 1 and 6 of the same document. hit@6 was True, so no
+# metric in the ledger could see it.
+#
+# MEASURED BEFORE BUILDING (eval/report.md Round 8o): across 160 turns, 79% of
+# turns already hold an answer-bearing chunk; of the 26 that do NOT, 31% have
+# one sitting immediately beside a retrieved chunk. So the ceiling is ~8 turns
+# in 160 - real but bounded, and the larger 11% "FAR" slice needs ranking work
+# this cannot touch. Built on that basis, not on the single vivid case.
+#
+# ADDS chunks rather than displacing them: the neighbours are appended after
+# the ranked results, so a turn that was already correct keeps its ordering and
+# its top chunk. Cost is context length, which is why the count is capped.
+# ENABLED 2026-08-10 (eval/report.md Round 8p).
+#   Real case: "in which cases is an independent chair required" went from
+#   0/7 circumstances AND a false "the materials don't specify" denial, to 5/7
+#   with no denial.
+#   A/B on 20 questions (sets 4+5, cloud generator): 4.17 -> 4.22, delta +0.05,
+#   inside the +/-0.20 noise floor. So: no detectable harm, no detectable
+#   broad benefit - which is the expected shape when the benefit concentrates
+#   in the ~5% of turns that have an adjacent answer chunk.
+ADJACENT_CHUNK_EXPANSION = os.environ.get("RAG_ADJACENT_CHUNKS", "1") == "1"
+# Narrowed after measuring (2026-08-10). Expanding around the top THREE hits
+# with a cap of 3 touched 97% of turns and added 2.62 chunks each - a
+# system-wide context change for a benefit concentrated in ~5% of turns, which
+# is the ratio that has cost this project points before. Expanding only around
+# the RANK-1 chunk still fixes the real case while touching 81% of turns and
+# adding 1.26 chunks: same fix, less than half the context growth.
+#
+# Note the A/B above measured the WIDER setting. The shipped setting is a
+# strict subset of it - strictly fewer added chunks - so the no-harm result
+# carries over a fortiori. That is an inference, not a measurement of this
+# exact configuration.
+ADJACENT_MAX_ADDED = 2          # hard cap on appended neighbours
+ADJACENT_FROM_TOP_N = 1         # only expand around the rank-1 chunk
+
+
+def _adjacent_chunks(results: dict) -> dict:
+    """Append the immediate neighbours (chunk_index +/-1) of the top-ranked
+    chunks, skipping any already present. Returns the input unchanged if the
+    collection lookup fails - an expansion failure must never cost a retrieval."""
+    metas = results.get("metadatas", [[]])[0]
+    docs = results.get("documents", [[]])[0]
+    if not metas:
+        return results
+
+    have = {(m.get("source_url"), m.get("chunk_index")) for m in metas}
+    wanted: list[tuple] = []
+    for m in metas[:ADJACENT_FROM_TOP_N]:
+        url, idx = m.get("source_url"), m.get("chunk_index")
+        if url is None or idx is None:
+            continue
+        for nb in (idx - 1, idx + 1):
+            if nb >= 0 and (url, nb) not in have and (url, nb) not in wanted:
+                wanted.append((url, nb))
+    if not wanted:
+        return results
+
+    try:
+        from src.ingest import _get_collection
+        coll = _get_collection()
+        add_docs, add_metas = [], []
+        for url, idx in wanted:
+            if len(add_docs) >= ADJACENT_MAX_ADDED:
+                break
+            got = coll.get(where={"$and": [{"source_url": url}, {"chunk_index": idx}]},
+                           include=["documents", "metadatas"], limit=1)
+            gd = got.get("documents") or []
+            gm = got.get("metadatas") or []
+            if gd and gm:
+                add_docs.append(gd[0])
+                add_metas.append(gm[0])
+    except Exception:
+        return results
+
+    if not add_docs:
+        return results
+    return {"documents": [docs + add_docs], "metadatas": [metas + add_metas]}
+
+
 def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dict, str]:
     """The full retrieval path used by answer() - query contextualization
     plus recency preference - exposed separately so eval/scoring code can
@@ -1444,6 +1528,12 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
 
     if PARTNER_INSTITUTION_DEMOTE_ENABLED:
         results = _demote_partner_institutions(results)
+
+    if ADJACENT_CHUNK_EXPANSION:
+        # last, so neighbours are appended to the FINAL ordering rather than
+        # competing in the rerank - the point is to add context, not to
+        # re-rank on it
+        results = _adjacent_chunks(results)
 
     _stage_timer("retrieve", _t0)
     return results, retrieval_query

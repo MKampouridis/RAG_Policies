@@ -3916,3 +3916,55 @@ multi-entity question. A user asking specifically about Life Sciences does get
 them (tested: 6/6 chunks), because a focused single-entity query is not
 diluted. So the coverage metric now reads 6/6 while the underlying situation is
 "partially covered" - recorded so the number is not mistaken for completeness.
+
+## Round 8p — Adjacent-chunk expansion (2026-08-10)
+
+Traced from a real user question. "In which cases is an independent chair
+required for the examination of PGR degrees?" answered *"the materials
+available don't specify the exact triggering circumstances"* - **false**. The
+policy lists seven in section 3.1. That list lives in ONE chunk
+(`independent-chairs-policy.pdf` index 2) and the query retrieved chunks 1 and
+6 of the same document. `hit@6` was True, so nothing in this ledger could see
+it. A confident "not specified" about a clearly specified policy is the worst
+failure mode available to this tool.
+
+### Measured before building
+
+Across 160 turns, classifying where the answer-bearing chunks sit:
+
+| | turns | |
+|---|---|---|
+| answer chunk already retrieved | 127 | 79% |
+| **adjacent to a retrieved chunk** | **8** | **5%** |
+| far from anything retrieved | 18 | 11% |
+| no identifiable answer chunk | 7 | 4% |
+
+**Of the 26 turns missing the answer chunk, 31% have one immediately beside a
+retrieved chunk.** Ceiling on benefit is therefore ~8 turns in 160; the larger
+11% "far" slice needs ranking work this cannot touch.
+
+### Result
+
+| | |
+|---|---|
+| the real case | 0/7 circumstances + false denial -> **5/7, no denial** |
+| A/B, 20 questions (sets 4+5) | 4.17 -> 4.22, **delta +0.05** |
+| noise floor | +/-0.20 |
+
+**No detectable harm, no detectable broad benefit** - the expected shape when a
+benefit concentrates in 5% of turns and the sample is 20 questions.
+
+### The blast radius mattered more than the delta
+
+Expanding around the top 3 hits touched **97% of turns**, adding 2.62 chunks
+each: a system-wide context change for a benefit concentrated in 5%. That ratio
+is what `_has_extraneous_family` had when it cost 8.8 points. Narrowed to the
+rank-1 chunk only: still fixes the real case, touches 81%, adds 1.26 chunks -
+same fix, less than half the context growth. Shipped narrow.
+
+**Two honest limits.** The A/B measured the WIDER setting; the shipped one is a
+strict subset, so no-harm carries over a fortiori but is an inference rather
+than a measurement of the exact configuration. And `hit@6` is structurally
+blind here - neighbours come from documents already retrieved, so the document
+set was unchanged on all 160 turns and the free replay could only ever report
+"no change". End-to-end was the only instrument that could detect dilution.

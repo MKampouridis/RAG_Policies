@@ -1,0 +1,726 @@
+[
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+    "source_title": "MScs in School of Mathematics, Statistics and Actuarial Science 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Do MSAS and CSEE Masters students face the same dissertation requirements?",
+      "expected_answer": "No. For MSAS dissertation modules (MA981/MA983) students must achieve a pass mark of 50 in the interview component AND 50 in the written report in order to pass the module and gain the credits - a two-component requirement. The CSEE accredited Masters rules do not impose that split interview/report requirement; CSEE's rules concern the accredited programme list and the non-accredited exit award titles.",
+      "actual_answer": "Both schools require a dual pass mark for the dissertation/project element, but the specifics differ:\n\n**MSAS (School of Mathematics, Statistics and Actuarial Science):** For dissertation modules (e.g., on MSc Data Science, MSc Applied Data Science, MSc Data Science with Professional Placement, MSc Data Science and its Applications, and other MSc courses listed for 2025-26), students must achieve a pass mark of 50 in the interview component **and** 50 in the written report to pass the module and gain the credits. (https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf; https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf)\n\n**CSEE:** For accredited MSc Project and Dissertation courses, students must achieve a pass mark of 50 in the Project Demonstration Oral (PDO) **and** 50 in the written Dissertation element to pass the module and achieve the credits — the same dual-component structure, but the components are named differently (PDO rather than \"interview\") and it is framed within CSEE's broader accredited Masters award rules (180 credits attempted, 160 passed, core modules and dissertation must be passed, condonement rules for up to 20 non-core credits, etc.). (https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf; https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf; https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf; https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf)\n\n**In short:** The underlying principle — a mandatory 50 pass mark in each of two dissertation components — is the same for both schools, but the CSEE documents also spell out much more detailed award-eligibility rules (credit totals, condonement, resubmission conditions, Merit/Distinction thresholds) that aren't mirrored in the MSAS excerpts I have. It's possible MSAS has equivalent broader award-eligibility rules elsewhere in its Rules of Assessment documents, but they are not included in what I can see here, so I can't confirm whether MSAS's overall eligibility criteria match CSEE's exactly.\n\n_Note: this answer is based primarily on \"pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf"
+        ],
+        "retrieval_query": "Do MSAS and CSEE Masters students face the same dissertation requirements?"
+      },
+      "keyphrase_coverage": 0.6666666666666666,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and comprehensive, matching the reference answer while providing additional details about both MSAS and CSEE requirements."
+      }
+    },
+    "follow_up": {
+      "question": "What happens to a CSEE student who doesn't meet the accredited award requirements?",
+      "expected_answer": "They may be considered for a non-accredited exit award instead - titled MSc Computing for students originally enrolled on Advanced Computer Science, Artificial Intelligence, Big Data and Text Analytics or Computer Games, and MSc Computer Systems Engineering for students on 5G and Emerging Communication Systems, Computer Engineering, Computer Networks and Security, Electronic Engineering or Intelligent Systems and Robotics.",
+      "actual_answer": "A CSEE student who doesn't meet the requirements for an accredited Masters award will be considered by the Board of Examiners for a **non-accredited Masters exit award** instead, provided they meet these criteria:\n\n- **Credits:** Must have attempted 180 credits at Masters Level (Level 7), of which 140 must be passed, with the remaining credits condoned (subject to the condonement condition below).\n- **Core modules and dissertation:** Must pass all taught core modules and the dissertation (or equivalent) — this cannot be condoned.\n- **Condonement of non-core failures:** Failure with a mark of 40 or more in up to 40 credits of non-core taught modules may be condoned, provided the overall weighted average for all taught modules is 50 or more.\n- The 2024-25 rules also specify passing at least 60 taught module credits at the first attempt, unless there are substantiated extenuating circumstances accepted by the Board.\n\n**Merit/Distinction:** This non-accredited award can still be passed with Merit or Distinction, using the same overall weighted average thresholds as the accredited award (60+ for Merit, 70+ for Distinction).\n\n**Title:** The non-accredited award carries a different title from the accredited one — for example, students originally enrolled on the accredited \"MSc Artificial Intelligence\" would receive the non-accredited exit award title \"MSc Computing.\"\n\n**If a student was transferred onto a non-accredited course but still doesn't meet even these requirements**, the Board will consider them for a non-accredited exit award under their new course title, following the same criteria.\n\n**Reassessment:** Separately, students who fail a taught module get one opportunity for reassessment (in the 2025-26 rules) or, under the 2024-25 rules, may attempt reassessment in failed modules up to a maximum of 60 taught module credits. No second attempt is allowed before the Board of Examiners confirms marks, and a reassessment mark is normally capped at 50 unless extenuating circumstances are accepted.\n\nSources: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf; https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf; https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf"
+        ],
+        "retrieval_query": "What happens to a CSEE student who does not meet the accredited award requirements for their Master's degree?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is comprehensive but includes details not in the reference answer and adds information about reassessment which was not part of the original question."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+    "source_title": "SRES Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Is the pass mark and condonement rule the same for SRES and East 15 Masters students?",
+      "expected_answer": "Yes, on both points. For SRES and for East 15 the pass mark for all Masters modules is 50, credits are only awarded if the module is passed, and where failure with a mark of 40 is condoned the credits are not awarded. Core modules must be passed with no condonement of marks below a pass allowed in both.",
+      "actual_answer": "Yes, the core rules are essentially the same for both the School of Sport, Rehabilitation and Exercise Science (SRES) and East 15 Acting School Masters students (2025-26):\n\n- **Pass mark**: 50 for all modules in both cases. Credits are only awarded if a module is passed; if a fail mark of 40 is condoned, no credits are awarded for that module.\n- **Condonement**: In both cases, to pass the Masters a student must attempt 180 credits at Level 7, of which 140 must be passed, with the remaining credits condoned. Failure with a mark of 40 or more, for up to 40 credits in non-core taught modules, may be condoned provided the overall weighted average for all taught modules is 50.\n- **Core modules and dissertation**: In both, core modules and the dissertation (or equivalent) must be passed outright, with no condonement allowed below the pass mark.\n\nOne additional SRES-specific requirement not mentioned for East 15 is that SRES students must also pass all placement/work-based assessments.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf"
+        ],
+        "retrieval_query": "Is the pass mark and condonement rule the same for SRES and East 15 Masters students?"
+      },
+      "keyphrase_coverage": 0.3333333333333333,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but includes an additional SRES requirement not asked for in the question and slightly overstates the condonement rules."
+      }
+    },
+    "follow_up": {
+      "question": "Can either of them condone a failed core module?",
+      "expected_answer": "No. In both, a core module must be taken as part of the programme structure and passed, with no condonement of marks below a pass allowed.",
+      "actual_answer": "No. For both SRES and East 15 Masters students (MA and MFA routes), core modules must be passed outright — condonement only applies to non-core taught modules (up to 40 credits with a mark of 40 or more, provided the overall weighted average for all taught modules is 50). Core modules and the dissertation or equivalent cannot be condoned in either case.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf"
+        ],
+        "retrieval_query": "Can SRES and East 15 Acting School Masters students condone a failed core module?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary details about non-core modules and specific credit limits."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+    "source_title": "MSc Occupational Therapy 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "How are placements and practice-based modules assessed in HSC and SRES programmes?",
+      "expected_answer": "In the HSC MSc Occupational Therapy, placements are marked on a pass/fail basis rather than with a numerical mark. In SRES, certain modules require students to pass all module assignments in addition to passing the module overall - for example HS632 Preparation for Independent and Supplementary Prescribing V300 (NMC/HCPC) and the musculoskeletal ultrasound modules SE708, SE709 and SE710.",
+      "actual_answer": "Placements and practice-based modules are consistently treated as pass/fail, credit-bearing assessments across these programmes, though the specific rules differ slightly by programme type:\n\n**Undergraduate 3-year and 4-year Honours Degree placements** (Years 1, 2 and 3 variations documents; department not specified but covering practice-based learning placements generally):\n- The practice-based learning placement element of all placement modules is assessed as pass/fail only.\n- Students must pass all practice-based learning placements.\n- Students get only two attempts at the placement element (compared with three attempts for other module assessments).\n- If a student fails a placement, they must undertake and pass a full repeat placement in the same clinical specialty, normally as the next scheduled placement subject to capacity.\n- Failing a placement on reassessment, or failing two placements at first attempt, leads to required withdrawal from the programme, unless the Board of Examiners accepts valid Extenuating Circumstances.\n- Students may trail no more than one practice-based learning placement into the subsequent level.\n- Resubmission marks are capped: if the pre-resubmission Module Aggregate was under the Pass Mark, it can only be improved up to the Pass Mark.\n\n**MSci Nursing (Health and Social Care, 2024-25 and 2025-26)**:\n- \"Person-Centred Care\" modules are assessed via a Practice Assessment Document (PAD) and a Drug Calculations Exam; these are credit-bearing but ungraded, awarded pass/fail only.\n- Progression also requires a minimum 90% mark in the Drug Calculation Exam component of module HS187, and students must pass all \"Professional Values in Practice\" placement elements for HS187 to be trailed into Year Three.\n\n**SRES Modular programmes (School of Sport, Rehabilitation and Exercise Science, 2025-26)**:\n- All work placement/work-based assessments are assessed on a pass/fail basis. They are non-credit-bearing but must be passed.\n- Certain named modules (e.g., HS632, various SE-coded ultrasound and musculoskeletal modules) additionally require students to pass all individual module assignments, not just the overall module mark.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscinursing_25-transfers.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf\n\n_Note: this answer is based primarily on \"mscinursing_23-transfers-v4.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscinursing_25-transfers.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscinursing_25-transfers.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf"
+        ],
+        "retrieval_query": "How are placements and practice-based modules assessed in HSC and SRES programmes?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer provides detailed information but includes additional details about undergraduate and MSci Nursing programs not specifically requested in the question."
+      }
+    },
+    "follow_up": {
+      "question": "Does either lead to professional registration?",
+      "expected_answer": "Yes. Successful completion of the HSC MSc Occupational Therapy leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). The SRES prescribing module is likewise tied to NMC/HCPC professional requirements.",
+      "actual_answer": "Based on what's visible here, only the MSc OT programme and the SRES musculoskeletal/prescribing modules give clear signals on professional registration:\n\n- **MSc OT (Health and Social Care, 2025-26)**: This is described as a \"pre-registration programme,\" and placement failure rules explicitly reference withdrawal from \"a pre-registration programme\" and fitness to practise concerns — indicating this programme does lead to professional registration (as an Occupational Therapist).\n\n- **SRES Modular programmes (School of Sport, Rehabilitation and Exercise Science, 2025-26)**: The module HS632 is named \"Preparation for Independent and Supplementary Prescribing V300 (NMC/HCPC)\" — explicitly tied to Nursing and Midwifery Council/Health and Care Professions Council registration/regulation. Separately, the MSc Advanced Musculoskeletal Assessment and Practice programmes have a note that the non-accredited Postgraduate Diploma award \"does not lead to eligibility to register with the Health and Care Professions Council\" — implying the full accredited Masters award normally does lead to HCPC registration eligibility, but the Diploma alternative does not.\n\nSo: yes, both the MSc OT and the SRES musculoskeletal/prescribing-related programmes connect to professional registration (HCPC and/or NMC), though the Postgraduate Diploma variant in SRES does not.\n\nI don't see registration details for the other documents referenced (the 3-year/4-year Honours Degree placement variations, the foundation year variations, or the Masters with Professional Placement document) — those excerpts don't specify whether those particular programmes lead to professional registration.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n\n_Note: this answer is based primarily on \"msc-ot_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/masters-with-professional-placement-january-starts-year-1-starting-24-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-variations.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/masters-with-professional-placement-january-starts-year-1-starting-24-25.pdf"
+        ],
+        "retrieval_query": "Do placements and practice-based modules in HSC and SRES programmes lead to professional registration?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant's answer is mostly correct but lacks minor details and precision regarding the specific modules within SRES."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+    "source_title": "MSc Occupational Therapy 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "For HSC and Psychology Masters programmes, what is the pass mark and how is progression handled?",
+      "expected_answer": "In both, the pass mark for all modules of the Masters degree is 50, credits are only awarded if the module is passed, and failure with a mark of 40 may be condoned without credits being awarded. In the HSC MSc Occupational Therapy students may progress to Year 2 while trailing a maximum of 30 credits.",
+      "actual_answer": "## Health and Social Care (HSC) Masters Programmes\n\n**MSc Periodontology** (2025-26):\n- Pass mark for all modules is **50**. Credits are only awarded if the module is passed. If a failure with a mark of 40 is condoned, the credits are still not awarded, though the mark counts toward the overall weighted average.\n- Taught module averages and dissertation marks are rounded to the nearest whole number (e.g., 49.5 rounds to 50, 49.4 rounds to 49).\n- **Progression**: Students may progress to Year 2 or Year 3 while trailing a maximum of 30 credits, meaning they carry forward reassessment in up to 30 credits and complete it at the earliest opportunity offered by the School in the following year. An in-year Board of Examiners meeting may be convened.\n\n**MSc Advanced Clinical Practitioner Apprenticeship / Leadership in Health and Care / HS632 modules** (2025-26):\n- For Leadership in Health and Care, progression is based on **passing all core modules**.\n- For HS632, specific components have distinct pass marks: the Pharmacology Examination requires a mark of **80** to pass, and the Numeracy Examination requires a mark of **100** to pass. Failed HS632 work is normally resubmitted within four weeks of students receiving marked work.\n- Progression for HS632 is handled **between modules rather than by levels or stages**.\n- Note: students on the Apprenticeship route are not eligible for a Postgraduate Certificate exit award, though a transfer request to PG Cert Health Care Practice can be made.\n\n## Psychology Masters Programmes\n\nFor the **MSc Psychology (C800 JS)**, part-time Model 2 January starts and related January-start Masters rules (2024-25/2025-26):\n- Pass mark for all modules is **50**. Credits are only awarded if the module is passed; if a failure with a mark of 40 is condoned, credits are still not awarded.\n- Taught module averages and dissertation marks are rounded to the nearest whole number as above.\n- **Progression to Year Two**: Students may still progress even if they failed modules in Year One following a reassessment attempt. However, they will no longer be on track for the Masters degree if further reassessment attempts cannot be offered due to a lack of accepted extenuating circumstances. In certain scenarios, students may only proceed if still eligible for an exit award (Postgraduate Diploma or Postgraduate Certificate).\n- To be awarded a **Postgraduate Certificate**: attempt 60 credits at Level 7, of which at least 40 must be passed (remaining credits condoned); pass all taught core modules; pass 15 credits at the first attempt unless extenuating circumstances are accepted; failure with a mark of 40+ for up to 20 credits in non-core modules may be condoned.\n- Merit requires an overall weighted average of 60+ across 120 PG Diploma credits; Distinction requires 70+.\n\nBoth HSC and Psychology programmes therefore share the standard Masters pass mark of 50, with condoned fails at 40 not earning credit, though HSC has additional programme-specific rules (e.g., HS632's stricter marks and module-based progression) not seen in the Psychology documents.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf\n\n_Note: this answer is based primarily on \"modular_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-3.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-3.pdf"
+        ],
+        "retrieval_query": "For HSC and Psychology Masters programmes, what is the pass mark and how is progression handled?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant provides detailed information but includes incorrect and irrelevant details about specific programs not mentioned in the question."
+      }
+    },
+    "follow_up": {
+      "question": "How are marks rounded in the HSC programme?",
+      "expected_answer": "The overall weighted average for the taught modules and the mark for the dissertation or equivalent are rounded to the nearest whole number - 49.5 counts as 50, and 49.4 counts as 49.",
+      "actual_answer": "For Health and Social Care Masters programmes, marks are rounded to the nearest whole number. This applies to:\n\n- Taught module averages\n- The overall weighted average for the taught modules\n- The mark for the dissertation or equivalent\n\nThe convention is: **49.5 rounds up to 50**, while **49.4 rounds down to 49**.\n\nThis rounding rule is consistent across the HSC Masters programmes covered, including MSc Periodontology, MA Social Work, MSc Occupational Therapy, MSc Speech and Language Therapy, and the modular programmes (HS632, HS918, HS955, ACP and MaCE pathways, Leadership in Health and Care).\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf\n\n_Note: this answer is based primarily on \"mscperiodontology_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf"
+      ],
+      "retrieval": {
+        "rank": 3,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.3333333333333333,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf"
+        ],
+        "retrieval_query": "How are marks rounded in the Health and Social Care (HSC) Masters programmes?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is comprehensive and accurate but includes unnecessary details about specific programmes and sources not requested in the question."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+    "source_title": "MScs in School of Mathematics, Statistics and Actuarial Science 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Which of MSAS, Psychology and CSEE have programme-specific dissertation rules that differ from the standard Masters rules?",
+      "expected_answer": "MSAS does: its dissertation modules MA981/MA983 require a pass mark of 50 in the interview component and 50 in the written report separately. The Psychology MSc rules follow the standard Masters pattern (pass mark 50 for all modules, condonement at 40). The CSEE rules concern accredited programme lists and non-accredited exit award titles rather than a distinct dissertation requirement.",
+      "actual_answer": "All three have department-specific dissertation rules layered on top of the standard Masters framework, though the nature of the variation differs:\n\n- **School of Mathematics, Statistics and Actuarial Science (MSAS)**: For Dissertation modules (MA981/MA983) on its MSc courses, students must achieve a pass mark of 50 in **both** the interview component and the written report in order to pass the module and gain the credits — a dual-component pass requirement beyond a single overall module mark ([mscs-in-school-maths-statistics-actuarial-science-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf); also confirmed for the January-start courses in the 2024-25 variation).\n\n- **CSEE**: For the MSc Project and Dissertation, students must achieve a pass mark of 50 in **both** the Project Demonstration Oral (PDO) and the written Dissertation element to pass the module and gain credits — the same dual-component structure as MSAS, applied across full-time and part-time accredited Masters and the non-accredited January-start MSc Artificial Intelligence and its Applications ([csee-ft-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf); [csee-pt-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf); [csee_non_accredited_january_start_2025_msc.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf)).\n\n- **Psychology (MSc Psychology, part-time January start)**: The excerpts I have show only the standard Masters rules — pass mark of 50 for all modules, and the standard treatment of the dissertation for Postgraduate Diploma/Certificate exit awards (dissertation credits can count toward a PG Diploma but not a PG Certificate). There is no indication of a special dual-component or otherwise varied dissertation pass requirement for Psychology in what I can see ([pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf)).\n\n**Summary**: MSAS and CSEE both have explicit programme-specific dissertation rules requiring separate pass marks of 50 in two distinct components (interview/written report for MSAS; PDO/written dissertation for CSEE), which differ from the standard single-mark approach. For Psychology, the documents I can see don't show any such variation — only the standard Masters dissertation/exit-award rules.\n\n_Note: this answer is based primarily on \"mscs-in-school-maths-statistics-actuarial-science-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf"
+        ],
+        "retrieval_query": "Which of MSAS, Psychology and CSEE have programme-specific dissertation rules that differ from the standard Masters rules?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant correctly identifies MSAS and CSEE as having specific dissertation rules but incorrectly suggests Psychology also has such rules, though it notes no variation was found for Psychology."
+      }
+    },
+    "follow_up": {
+      "question": "Which MSAS programmes does that dissertation rule apply to?",
+      "expected_answer": "It applies to the MScs in the School of Mathematics, Statistics and Actuarial Science, which include MSc Data Science and its Applications (October and January starts) and MSc Optimisation with Data Analytics among others.",
+      "actual_answer": "The dual-component dissertation pass rule (50 in the interview component and 50 in the written report) applies to:\n\n**2025-26 (Dissertation modules MA981/MA983):**\n- MSc Mathematics (FT and PT)\n- MSc Statistics\n- MSc Data Science (October start, FT and PT)\n- MSc Data Science (January start)\n- MSc Actuarial Science\n- MSc Mathematics and Finance (FT and PT)\n- MSc Applied Data Science (October start, FT and PT)\n- MSc Applied Data Science (January start)\n- MSc Data Science with Professional Placement (October start)\n- MSc Data Science with Professional Placement (January start)\n- MSc Optimisation with Data Analytics\n- MSc Data Science and its Applications (October start, FT and PT)\n- MSc Data Science and its Applications (January start)\n\n**2024-25 (January-start courses only, per the separate variation document):**\n- MSc Data Science (January start)\n- MSc Applied Data Science (January start)\n- MSc Data Science with Professional Placement (January start)\n- MSc Data Science and its Applications (January start)\n\nThe 2025-26 document is broader, covering both October and January start variants across the full MSAS portfolio, whereas the 2024-25 excerpt only covers the January-start courses.\n\nSources: [pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf), [mscs-in-school-maths-statistics-actuarial-science-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf)\n\n_Note: this answer is based primarily on \"pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-variations-model-a-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-variations-model-a-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf"
+        ],
+        "retrieval_query": "Which MSc programmes offered by the School of Mathematics, Statistics and Actuarial Science (MSAS) have the dissertation rule requiring students to achieve a pass mark of 50 in both the interview component and the written report?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and comprehensive, matching the reference answer's substance and providing additional relevant details."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+    "source_title": "East 15 Acting School Masters Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "How do the East 15 and Edge Hotel School rules of assessment differ in structure?",
+      "expected_answer": "They cover different levels and delivery models. The East 15 rules are Masters-level rules: pass mark 50 for all modules, condonement of a mark of 40 without credit, and Masters degrees awardable with Distinction and Merit. The Edge Hotel School rules are undergraduate Honours degree rules for an accelerated delivery mode, with maximum periods of study that are shorter than for degrees delivered over a standard timeframe.",
+      "actual_answer": "Based on what's available, here's how the structures differ:\n\n**East 15 Acting School (MA and MFA programmes, 2025-26)**\nThe East 15 rules cover taught Masters degrees, split into two separate documents:\n- One for MA Acting, MA Acting (International), and MA Theatre Directing\n- One for MFA Theatre Directing, MFA Acting (International), MFA Acting, and MFA Acting with Digital Media\n\nBoth share a common structure: a Preamble explaining that the rules apply to practice-based Masters programmes and should be read alongside the Programme Structure, Programme Specification, and Module Directory; a definition of a \"taught module\" as any assessed component excluding the dissertation, with core modules requiring an uncondoned pass; confirmation that degrees can be awarded with Distinction and Merit; and a stated pass mark of 50 for all modules.\n(https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf, https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf)\n\n**Edge Hotel School (undergraduate)**\nEdge Hotel School's rules are undergraduate, not postgraduate, and are organised differently around delivery mode rather than degree title:\n- A dedicated document for Honours Degrees delivered in **Accelerated Delivery Mode** (BA Hotel Management, BA Events Management with Hospitality), where the full 360-credit Honours course is compressed into 24 months (120 credits per level, each over 8 months), with correspondingly shorter maximum periods of study than standard-timeframe courses.\n- A separate \"Variations\" document for **Non-Accelerated Delivery Mode** courses, which sets out course-specific rules such as pass/fail work-based learning/placement requirements (e.g. required shift hours at Wivenhoe House Hotel that must be completed before a Professional Performance Assessment can be undertaken).\n\nEdge Hotel School also appears as a named section within the general University Undergraduate Rules of Assessment \"Approved Variations\" appendices (alongside East 15 and other departments), which apply variation rules by year of study (Year 1, Year 3, Year 4, etc.) across multiple academic years.\n\n**Key structural differences:**\n1. **Level of study**: East 15's rules here are for postgraduate (Masters) programmes; Edge Hotel School's are undergraduate.\n2. **Organising principle**: East 15 splits its rules by degree type (MA vs MFA), while Edge Hotel School splits by delivery mode (accelerated vs non-accelerated) and by year of study within the general UG variations appendices.\n3. **Distinctive content**: East 15 rules emphasise Distinction/Merit awards and core module pass requirements without condonement; Edge Hotel School's non-accelerated variations focus on practical/placement requirements (e.g., mandatory hotel shift hours as a pass/fail gate to further assessment), reflecting its vocational, placement-based programmes.\n4. **Both East 15 and Edge Hotel School also feature as sections within the cross-departmental UG \"Approved Variations\" documents** (Years 1, 3, 4, etc.), which apply general University of Essex Undergraduate Rules of Assessment with department-specific adjustments - this shared structure is common to many departments, not unique to either school.\n\n_Note: this answer is based primarily on \"east15-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-variations.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-ehs-hons-stage-two-final-rules.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-ehs-year-1-variations.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-ehs-hons-stage-two-final-rules.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-ehs-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-variations.pdf"
+        ],
+        "retrieval_query": "How do the East 15 and Edge Hotel School rules of assessment differ in structure?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant provides detailed and accurate information but includes extra details not in the reference answer."
+      }
+    },
+    "follow_up": {
+      "question": "Can East 15 Masters degrees be awarded with Distinction?",
+      "expected_answer": "Yes. East 15 Masters degrees can be awarded with Distinction and Merit, and it is for the Board of Examiners to determine whether the criteria for an award have been satisfied.",
+      "actual_answer": "Yes. According to the East 15 Acting School Rules of Assessment for Full-Time Taught Masters Degrees (2025-26), East 15 Masters degrees can be awarded with Distinction (and Merit), for both:\n\n- **MA Acting, MA Acting (International), MA Theatre Directing**\n- **MFA Theatre Directing, MFA Acting (International), MFA Acting, MFA Acting with Digital Media**\n\nTo achieve a **Pass with Distinction** at Masters level, in addition to meeting the standard pass requirements, a student must have an overall weighted average mark of 70 or more.\n\nDistinction is also available at the Postgraduate Diploma and Postgraduate Certificate exit award levels (for students who don't complete or achieve the full Masters), again requiring an overall weighted average of 70 or more on the relevant credits (120 for PG Diploma, 60 for PG Certificate).\n\nSources: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf, https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/ea15_mfa_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf"
+        ],
+        "retrieval_query": "Can East 15 Acting School Masters degrees be awarded with Distinction?"
+      },
+      "keyphrase_coverage": 0.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes specific degree names and detailed criteria not present in the reference answer."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+    "source_title": "SRES Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "For SRES, HSC and CSEE Masters programmes, what is the maximum period allowed to complete studies by credit accumulation?",
+      "expected_answer": "For SRES the maximum period for completion of studies using credit accumulation is six years, normally five years to complete all taught elements. The SRES rules also give a six-year maximum period for a module. The HSC and CSEE department-specific rules should be read alongside the general Masters rules for their own maximum periods.",
+      "actual_answer": "For **SRES** (School of Sport, Rehabilitation and Exercise Science) and **HSC** (Health and Social Care) modular Masters programmes, the maximum period for completion of studies using credit accumulation is **six years** — normally five years to complete all taught elements, plus a further year to complete the dissertation (or equivalent). This period is measured from when a student first registered for a module counting towards the award, and the credit lifetime for any module is six years.\n\nFor **CSEE**, the excerpts I have don't specify a credit-accumulation maximum period in the same terms — the CSEE documents available cover accredited Masters variations (progression, reassessment, and exit awards) and a January-start rules document about Postgraduate Diploma/Certificate award calculations, but neither states a maximum period for completion by credit accumulation. If you need that figure for CSEE, it would likely be in the general CSEE modular Rules of Assessment document, which isn't among what I can see here.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/other-pgt-awards/pgt_modular-study24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pgt-modular-study-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/other-pgt-awards/pgt_modular-study24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/pgt-modular-study-25.pdf"
+        ],
+        "retrieval_query": "For SRES, HSC and CSEE Masters programmes, what is the maximum period allowed to complete studies by credit accumulation?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but lacks specific details for the HSC and CSEE programs beyond SRES."
+      }
+    },
+    "follow_up": {
+      "question": "Is condonement allowed on core modules in SRES?",
+      "expected_answer": "No. A core module must be taken as part of the programme structure and passed, with no condonement of marks below a pass allowed.",
+      "actual_answer": "No. According to the SRES Rules of Assessment, a core module \"must be taken as part of the programme structure and passed, with no condonement of marks below a pass allowed.\"\n\nSource: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/msc_sports-therapy_24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pt_msc_sports_therapy_24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pt_msc_sports_therapy_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/msc_sports-therapy_24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf"
+        ],
+        "retrieval_query": "Is condonement allowed on core modules in SRES (School of Sport, Rehabilitation and Exercise Science)?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 5,
+        "justification": "The assistant's answer is fully correct and matches the reference answer's substance."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+    "source_title": "CSEE Full-time Masters Accredited Variations 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity",
+    "expects_abstention": false,
+    "primary": {
+      "question": "Which Masters programmes in CSEE, MSAS and SRES lead to a professional or accredited outcome?",
+      "expected_answer": "CSEE has a set of accredited Masters programmes (5G and Emerging Communication Systems, Advanced Computer Science, Artificial Intelligence, Computer Engineering, Computer Games, Computer Networks and Security, Electronic Engineering, Intelligent Systems and Robotics), with non-accredited exit award titles for students who do not meet the accredited requirements. SRES has modules tied to professional requirements including prescribing V300 (NMC/HCPC). The MSAS rules do not describe an accreditation route; they set the MA981/MA983 dissertation requirement.",
+      "actual_answer": "Here's what the retrieved policies show for each area:\n\n**CSEE (Computer Science and Electronic Engineering):** The excerpts don't directly list which specific CSEE Masters programmes carry professional accreditation, but they do establish that these full-time and part-time programmes have both accredited and non-accredited pathways:\n- MSc 5G and Emerging Communication Systems\n- MSc Advanced Computer Science\n- MSc Artificial Intelligence\n- MSc Computer Engineering\n- MSc Computer Games\n- MSc Computer Networks and Security\n- MSc Electronic Engineering\n- MSc Intelligent Systems and Robotics\n\nThe documents describe \"non-accredited\" exit awards (PG Diploma/PG Certificate) for these courses, implying the full Masters awards themselves are accredited, while exit awards taken on a \"non-accredited Masters course\" title are not. However, the specific professional accrediting body and which named degree titles are accredited isn't stated in what I have. The document explicitly titled \"csee-ft-masters-accredited-variations\" and \"csee-pt-masters-accredited-variations\" suggests these programmes are treated as accredited, but the accrediting body (e.g., BCS, IET) is not specified in the excerpts.\n\n**MSAS (School of Mathematics, Statistics and Actuarial Science):** The excerpt covering this school (MSc Mathematics, MSc Statistics, MSc Data Science, MSc Actuarial Science, MSc Mathematics and Finance, MSc Applied Data Science, MSc Optimisation with Data Analytics, MSc Data Science and its Applications) only addresses dissertation pass-mark rules. There is no mention of professional or accredited outcomes for these programmes in what I can see.\n\n**SRES (School of Sport, Rehabilitation and Exercise Science):** The excerpts explicitly state that the **MSc Advanced Musculoskeletal Assessment and Practice** and the **MSc Advanced Musculoskeletal Assessment and Practice (Hand Therapy)** are the accredited programmes — the exit awards (PG Certificate/PG Diploma) are described as \"non-accredited\" and explicitly noted as **not leading to eligibility to register with the Health and Care Professions Council (HCPC)**, confirming that the full Masters award on these two programmes does carry professional/HCPC-linked accreditation.\n\n**Summary:** Only for SRES is there a clear, explicit statement of professional accreditation (HCPC registration eligibility) tied to specific named Masters programmes. For CSEE, the documents imply accredited vs. non-accredited Masters pathways exist across the eight listed MSc programmes, but don't name the accrediting body or confirm which individual titles hold it. For MSAS, nothing in the retrieved material addresses professional or accredited outcomes at all.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/pg-roa-jan-start-mscs-school-of-mathsstatisticsactuarial-sci-24.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf"
+        ],
+        "retrieval_query": "Which Masters programmes in CSEE, MSAS and SRES lead to a professional or accredited outcome?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but lacks minor precision regarding the specific professional accreditation bodies for CSEE programmes and incorrectly states that SRES has accredited outcomes only for two MSc programmes."
+      }
+    },
+    "follow_up": {
+      "question": "What are the two non-accredited exit award titles in CSEE?",
+      "expected_answer": "MSc Computing and MSc Computer Systems Engineering.",
+      "actual_answer": "The two non-accredited exit award titles in CSEE are:\n\n1. **MSc Computing (G456)** — for students originally enrolled on MSc Advanced Computer Science, MSc Artificial Intelligence, MSc Big Data and Text Analytics, or MSc Computer Games\n2. **MSc Computer Systems Engineering (GH64)** — for students originally enrolled on MSc 5G and Emerging Communication Systems, MSc Computer Engineering, MSc Computer Networks and Security, MSc Electronic Engineering, or MSc Intelligent Systems and Robotics\n\nThese apply to both full-time and part-time variants of the accredited programmes.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 1,
+        "hit_at_6": true,
+        "reciprocal_rank": 1.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf"
+        ],
+        "retrieval_query": "What are the two non-accredited exit award titles available in CSEE (Computer Science and Electronic Engineering) Masters programmes?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes unnecessary details about the original enrolment programmes and variants."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+    "source_title": "PGT Modular Rules of Assessment 2025-26",
+    "doc_type": "rules_of_assessment",
+    "question_style": "multi_entity_general",
+    "expects_abstention": false,
+    "primary": {
+      "question": "For CSEE and Psychology Masters students, how many credits of non-core failure can be condoned in total?",
+      "expected_answer": "This is a general Masters rule rather than a departmental variation: failure with a mark of 40 or more may be condoned for up to 20 credits in non-core modules, provided the other progression requirements are met. Core modules must be passed and cannot be condoned.",
+      "actual_answer": "For CSEE full-time and part-time accredited Masters courses, non-core taught module failure (with a mark of 40 or more) can be condoned for **up to 20 credits**, provided the overall weighted average for all taught modules is 50 (with the additional requirement of a minimum mark of 40 in both coursework aggregate and exam mark) ([csee-ft-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf), [csee-pt-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf), [csee-full-time-accredited-degrees---jan-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf)).\n\nFor the CSEE **non-accredited Masters exit award**, up to **40 credits** of non-core failure can be condoned, again with an overall weighted average of 50 required ([csee-pt-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf); [csee-full-time-accredited-degrees---jan-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf)).\n\nFor **Psychology** Masters students (part-time, Model 2, January starts), up to **40 credits** of non-core taught module failure (mark of 40 or more) can be condoned for the full Masters award, provided the overall weighted average for all taught modules is 50 ([pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf)).\n\nFor the **Postgraduate Diploma** exit award (relevant to both CSEE and Psychology structures shown), up to **30 credits** of non-core failure may be condoned, provided the overall weighted average for the 120 PG Diploma credits is 50 (as seen in both CSEE and Psychology documents).\n\nSo the exact figure depends on the specific award: 20 credits for CSEE accredited Masters, 40 credits for CSEE non-accredited Masters exit awards and for the Psychology Masters, and 30 credits for the PG Diploma exit award in both departments.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf"
+        ],
+        "retrieval_query": "For CSEE and Psychology Masters students, how many credits of non-core failure can be condoned in total?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 3,
+        "justification": "The assistant provides detailed information but introduces variations not mentioned in the reference answer, such as different credit limits for accredited vs non-accredited programs."
+      }
+    },
+    "follow_up": {
+      "question": "Does naming the departments change that answer?",
+      "expected_answer": "No. The condonement limit is set by the general rules of assessment rather than by department-specific variations, so it is the same for both.",
+      "actual_answer": "No — naming the departments doesn't change the answer, since the figures already come from department-specific documents for both CSEE and Psychology. To summarise clearly by department and award:\n\n**CSEE**\n- Accredited Masters (full-time and part-time, including January starts): up to **20 credits** of non-core taught module failure (mark 40+) may be condoned, provided the overall weighted average across all taught modules is 50, and a minimum of 40 is achieved in both coursework aggregate and exam mark ([csee-ft-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf), [csee-full-time-accredited-degrees---jan-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf)).\n- Non-accredited Masters exit award: up to **40 credits** condoned ([csee-pt-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf), [csee-full-time-accredited-degrees---jan-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf), [csee_model_1_accredited_january_starts_rules_jan25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf)).\n- Postgraduate Diploma exit award: up to **30 credits** condoned ([csee-pt-masters-accredited-variations-25.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf)).\n\n**Psychology**\n- Full Masters award (part-time Model 2, January starts): up to **40 credits** condoned, with the same overall weighted average of 50 requirement ([pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf)).\n- Postgraduate Diploma exit award: up to **30 credits** condoned ([pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf)).\n\nSo the condonable credit total is the same for both departments at each award level (20 for CSEE's accredited Masters specifically, 40 for the full non-accredited/full Masters award in both, 30 for the PG Diploma in both) — the department name itself doesn't alter the limit, it's the award type (accredited Masters vs. non-accredited Masters vs. PG Diploma) that determines the figure.",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf"
+      ],
+      "retrieval": {
+        "rank": null,
+        "hit_at_6": false,
+        "reciprocal_rank": 0.0,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/pgt-part-time-model-2-january-starts-rules-of-assessment-jan-25-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf"
+        ],
+        "retrieval_query": "Does the answer about how many credits of non-core failure can be condoned in total for CSEE and Psychology Masters students change depending on which specific department is named?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The assistant provides detailed information but contradicts the reference answer by suggesting department-specific variations exist."
+      }
+    }
+  },
+  {
+    "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+    "source_title": "Code of Practice: Postgraduate Research Degrees",
+    "doc_type": "policy",
+    "question_style": "multi_entity_general",
+    "expects_abstention": false,
+    "primary": {
+      "question": "For PGR students in CSEE and History, who can decide to discontinue a student?",
+      "expected_answer": "This is set by the university-wide Code of Practice, not by department: a decision or recommendation for discontinuation, downgrading or upgrading, to confirm PhD status or change to MPhil, to permit entry into completion, or to extend the standard period can only be made by the RSPB. The Supervisory Panel can only recommend.",
+      "actual_answer": "I don't have documents covering PGR discontinuation decisions for CSEE or History specifically. The policies I can see on discontinuation are the general Code of Practice for Postgraduate Research and the Code of Practice for Professional Doctorates, which apply to postgraduate research students university-wide rather than being department-specific to CSEE or History.\n\nUnder those general codes, the decision-making process works as follows: the Research Student Progress Board (RSPB) can recommend that a student's studies be discontinued, but the student must first be given an opportunity to discuss this with the RSPB (or its Chair) and present any extenuating circumstances before a final recommendation is forwarded to the Dean. The recommendation is then confirmed by the RSPB and the Dean together. The student can subsequently request a review of the decision through the Progress and Appeals Procedures for Research Degree Students. For professional doctorates specifically, there is an added step where the Dean may accept or reject the RSPB's recommendation and can require the Supervisory Panel or RSPB to reconvene.\n\nIf you need department-specific procedures for CSEE or History PGR students, these would likely sit with each department's Postgraduate Research Education Team or be found in department-specific PGR handbooks, which are not among the materials I have access to here.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n\n_Note: this answer is based primarily on \"csee-pt-masters-accredited-variations-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+        "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf"
+      ],
+      "retrieval": {
+        "rank": 4,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.25,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-pt-masters-accredited-variations-25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+          "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf"
+        ],
+        "retrieval_query": "For PGR students in CSEE and History, who can decide to discontinue a student?"
+      },
+      "keyphrase_coverage": 0.5,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes minor inaccuracies and unnecessary details about professional doctorates."
+      }
+    },
+    "follow_up": {
+      "question": "Are there membership rules for that RSPB?",
+      "expected_answer": "Yes. Where the RSPB is considering a recommendation of discontinuation or downgrading, or a change of status to MPhil at confirmation, its membership must include at least two members who were not on the student's last Supervisory Panel. Smaller departments may co-opt a supervisor from another department in a cognate discipline.",
+      "actual_answer": "Yes. The Research Students' Progress Board (RSPB) is established by each department and chaired by the Postgraduate Research Director or Head of Department, including at least two other experienced supervisors. The Chair must not be a partner or close relative of the student's supervisor, nor have a professional or personal relationship with the student that could create a conflict of interest.\n\nThere's an additional rule for cases involving discontinuation or downgrading: when the RSPB is considering a Supervisory Panel's recommendation for discontinuation or downgrading (or a status change to MPhil at confirmation), the RSPB membership must include at least two members who were not on the student's last Supervisory Panel. Smaller departments may co-opt a supervisor from another department in a cognate discipline to help satisfy this requirement if needed.\n\nThese rules apply generally to postgraduate research students and are echoed in the Code of Practice for Professional Doctorates as well. There's nothing specific to CSEE or History beyond this university-wide framework in what I have available.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf\n- https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf\n\n_Note: this answer is based primarily on \"progress-appeals-procedures-research-degree-students.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+      "api_sources": [
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+        "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf"
+      ],
+      "retrieval": {
+        "rank": 2,
+        "hit_at_6": true,
+        "reciprocal_rank": 0.5,
+        "top_urls": [
+          "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+          "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf"
+        ],
+        "retrieval_query": "Are there membership rules for the Research Student Progress Board (RSPB) that decides on discontinuation of postgraduate research students?"
+      },
+      "keyphrase_coverage": 1.0,
+      "judge": {
+        "score": 4,
+        "justification": "The answer is mostly correct but includes additional details not in the reference answer."
+      }
+    }
+  }
+]
