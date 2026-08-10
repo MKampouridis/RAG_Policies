@@ -4,45 +4,64 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* University of Essex brand palette (essex.ac.uk/staff/brand/colour-palette):
-     Scarlet #CD202C, Violet #622567, Black/White, greys. Typeface: Archivo. */
+  /* Palette and geometry taken from the LIVE essex.ac.uk stylesheet
+     (/assets/dist/app.css), not from the brand-guidelines page: the site's
+     working accent is coral #db4433 (85 uses) rather than scarlet #cd202c
+     (15), violet #622567 is the structural colour, and the greys are a
+     specific ramp (#f6f6f6 / #eaeaea / #e6e6e6 / #adadad).
+
+     The defining trait is GEOMETRY, not colour: essex.ac.uk uses square
+     corners throughout (border-radius:0) and marks primary buttons with 3px
+     rules top and bottom plus 3px left/right borders, which is why the
+     previous rounded-bubble treatment read as generic-modern rather than as
+     Essex even though it already used Archivo and Essex reds. */
   :root {
     color-scheme: light dark;
-    --scarlet: #CD202C;
-    --scarlet-deep: #A81A24;
+    --coral: #db4433;
     --violet: #622567;
+    --plum: #792259;
+    --lime: #bed600;
     --bg: #ffffff;
-    --fg: #1c1c1e;
-    --muted: #6b6b70;
-    --border: #e4e2e6;
-    --accent: var(--scarlet);
-    --link: #b3121d;
-    --bubble-user: var(--scarlet);
+    --fg: #181818;
+    --muted: #4c4c4c;
+    --border: #e6e6e6;
+    --panel: #f6f6f6;
+    --accent: var(--coral);
+    --link: #792259;
+    --bubble-user: var(--violet);
     --bubble-user-fg: #ffffff;
-    --bubble-assistant: #f4f2f5;
-    --sidebar-bg: #faf9fb;
-    --header-bg: var(--scarlet);
+    --bubble-assistant: #f6f6f6;
+    --sidebar-bg: #ffffff;
+    --header-bg: var(--violet);
     --header-fg: #ffffff;
-    --conv-hover: rgba(98,37,103,0.06);
-    --conv-active: rgba(205,32,44,0.10);
+    --conv-hover: #f6f6f6;
+    --conv-active: #eaeaea;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #161318;
-      --fg: #ececed;
-      --muted: #9c959f;
-      --border: #2d2a31;
-      --accent: #ef4b57;
-      --link: #ff8f97;
-      --bubble-user: #c31f2a;
+      --bg: #181818;
+      --fg: #f6f6f6;
+      --muted: #adadad;
+      --border: #393939;
+      --panel: #252525;
+      --accent: #ef6a58;
+      --link: #e59ac4;
+      --bubble-user: #7d3382;
       --bubble-user-fg: #ffffff;
-      --bubble-assistant: #221f27;
-      --sidebar-bg: #1b1820;
-      --header-bg: #b31a24;
+      --bubble-assistant: #252525;
+      --sidebar-bg: #1f1f1f;
+      --header-bg: #4a1c4e;
       --header-fg: #ffffff;
-      --conv-hover: rgba(255,255,255,0.05);
-      --conv-active: rgba(239,75,87,0.16);
+      --conv-hover: #252525;
+      --conv-active: #303030;
     }
+  }
+  /* essex.ac.uk is square-cornered throughout. One rule rather than editing
+     every radius individually, so nothing drifts back to rounded later. */
+  #new-chat-btn, .conv-item, .conv-icon, .conv-del, .bubble, #composer textarea,
+  #composer button, .act-btn, .fb-panel textarea, .fb-panel button,
+  #conversation-list::-webkit-scrollbar-thumb, #brand-mark {
+    border-radius: 0 !important;
   }
   * { box-sizing: border-box; }
   body {
@@ -50,6 +69,8 @@
     font-family: "Archivo", "Helvetica Neue", Arial, -apple-system, BlinkMacSystemFont, sans-serif;
     background: var(--bg);
     color: var(--fg);
+    font-size: 16px;
+    line-height: 1.25;
     height: 100vh;
     display: flex;
     -webkit-font-smoothing: antialiased;
@@ -73,8 +94,7 @@
   #brand-mark {
     flex-shrink: 0;
     width: 34px; height: 34px;
-    border-radius: 7px;
-    background: var(--scarlet);
+    background: var(--coral);
     color: #fff;
     font-weight: 800;
     font-size: 17px;
@@ -85,20 +105,35 @@
   #brand-uni { font-weight: 700; font-size: 14px; letter-spacing: -0.01em; }
   #brand-sub { font-size: 11px; color: var(--muted); font-weight: 500; }
   #sidebar-header { padding: 12px; }
+  /* The essex.ac.uk primary-button motif: square, 3px left/right borders in
+     currentColor and 3px rules top and bottom via ::before/::after. Hover
+     inverts to white-on-coral rather than darkening the fill. */
   #new-chat-btn {
+    position: relative;
     width: 100%;
-    padding: 11px;
+    padding: 13px 11px;
     border: none;
-    border-radius: 9px;
-    background: var(--scarlet);
+    border-left: 3px solid currentColor;
+    border-right: 3px solid currentColor;
+    background: var(--coral);
     color: #fff;
     font-family: inherit;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 0.01em;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.15s linear, color 0.15s linear;
   }
-  #new-chat-btn:hover { background: var(--scarlet-deep); }
+  #new-chat-btn::before, #new-chat-btn::after {
+    content: ''; display: block; position: absolute;
+    width: 100%; height: 3px; left: 0; background-color: currentColor;
+  }
+  #new-chat-btn::before { top: 0; }
+  #new-chat-btn::after { bottom: 0; }
+  #new-chat-btn:hover { background: #fff; color: var(--coral); }
+  @media (prefers-color-scheme: dark) {
+    #new-chat-btn:hover { background: transparent; color: var(--accent); }
+  }
   #conv-label {
     padding: 12px 16px 7px;
     font-size: 10.5px;
@@ -149,13 +184,15 @@
     transition: opacity 0.13s, background 0.13s, color 0.13s;
   }
   .conv-item:hover .conv-del { opacity: 1; }
-  .conv-del:hover { background: rgba(205,32,44,0.12); color: var(--scarlet); }
+  .conv-del:hover { background: var(--panel); color: var(--coral); }
   .conv-item:hover { background: var(--conv-hover); }
   .conv-item:hover .conv-icon { opacity: 0.75; }
   .conv-item.active {
     background: var(--conv-active);
-    border-color: rgba(205,32,44,0.22);
-    font-weight: 600;
+    border-color: transparent;
+    border-left: 3px solid var(--coral);
+    padding-left: 9px;   /* 11 - (3-1): keeps the title from jumping 2px */
+    font-weight: 700;
   }
   .conv-item.active .conv-icon { border-color: var(--accent); background: var(--accent); opacity: 1; }
   .conv-item.active .conv-title { color: var(--accent); }
@@ -167,7 +204,7 @@
     padding: 14px 22px;
     background: var(--header-bg);
     color: var(--header-fg);
-    border-bottom: 3px solid var(--violet);
+    border-bottom: 4px solid var(--lime);
   }
   #header .h-uni { font-size: 12px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; opacity: 0.9; }
   #header .h-app { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
@@ -189,8 +226,11 @@
     line-height: 1.5;
     font-size: 14px;
   }
-  .msg-row.user .bubble { background: var(--bubble-user); color: var(--bubble-user-fg); border-bottom-right-radius: 5px; }
-  .msg-row.assistant .bubble { background: var(--bubble-assistant); color: var(--fg); border-bottom-left-radius: 5px; }
+  .msg-row.user .bubble { background: var(--bubble-user); color: var(--bubble-user-fg); }
+  .msg-row.assistant .bubble {
+    background: var(--bubble-assistant); color: var(--fg);
+    border-left: 3px solid var(--violet);
+  }
   .sources { margin-top: 8px; font-size: 12px; color: var(--muted); }
   .sources a { color: var(--link); word-break: break-all; }
   #composer {
@@ -210,20 +250,28 @@
     font-size: 14px;
     font-family: inherit;
   }
-  #composer textarea:focus { outline: none; border-color: var(--scarlet); box-shadow: 0 0 0 3px rgba(205,32,44,0.13); }
+  #composer textarea:focus { outline: none; border-color: var(--coral); box-shadow: 0 0 0 3px rgba(219,68,51,0.16); }
   #composer button {
-    padding: 0 22px;
+    position: relative;
+    padding: 0 26px;
     border: none;
-    border-radius: 10px;
-    background: var(--scarlet);
-    color: white;
+    border-left: 3px solid currentColor;
+    border-right: 3px solid currentColor;
+    background: var(--coral);
+    color: #fff;
     font-family: inherit;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.15s linear, color 0.15s linear;
   }
-  #composer button:hover:not(:disabled) { background: var(--scarlet-deep); }
+  #composer button::before, #composer button::after {
+    content: ''; display: block; position: absolute;
+    width: 100%; height: 3px; left: 0; background-color: currentColor;
+  }
+  #composer button::before { top: 0; }
+  #composer button::after { bottom: 0; }
+  #composer button:hover:not(:disabled) { background: var(--bg); color: var(--coral); }
   #composer button:disabled { opacity: 0.5; cursor: default; }
   .empty-state { margin: auto; color: var(--muted); text-align: center; font-size: 14px; max-width: 320px; line-height: 1.5; }
   .empty-state strong { color: var(--fg); font-weight: 700; }
@@ -250,7 +298,7 @@
     line-height: 1.4;
   }
   .act-btn:hover { background: var(--bg); color: var(--fg); }
-  .act-btn.selected { border-color: var(--scarlet); color: var(--scarlet); font-weight: 600; }
+  .act-btn.selected { border-color: var(--coral); color: var(--coral); font-weight: 700; }
   .act-sep { width: 1px; align-self: stretch; background: var(--border); margin: 0 2px; }
   .fb-panel { margin-top: 8px; display: none; flex-direction: column; gap: 8px; }
   .fb-panel.open { display: flex; }
@@ -271,8 +319,8 @@
   .fb-submit {
     align-self: flex-start;
     border: none;
-    border-radius: 7px;
-    background: var(--scarlet);
+    border-radius: 0;
+    background: var(--coral);
     color: white;
     font-family: inherit;
     padding: 6px 14px;
