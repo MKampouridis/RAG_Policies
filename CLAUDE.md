@@ -59,6 +59,23 @@ it. Report the residual rather than the headline.
 - **`eval/retrieval_replay.py`** scores hit@6 by replaying stored queries — no generation, no
   judging, minutes not hours. Use it for anything retrieval-only.
 
+## Know the noise floor before believing a delta
+
+Two runs of the **same** configuration on a 10-question set scored 4.05 and 3.85 (Round 8k).
+Cloud generation cannot be temperature-pinned, so **on a 10-question / 20-turn set any delta
+below ~0.20 is uninterpretable**. Three findings recorded the same day sat at or below it,
+including one reported as an effect and one whose direction reversed on retest.
+
+Before believing a small cloud-generator delta, **run one arm twice**. The repeat costs exactly
+what the comparison cost and is the only thing separating a real effect from a reroll. Larger
+sets lower the floor; local+deterministic runs remove it, which is why the ledger's baselines
+are local.
+
+Related: when testing whether something matters, **run the spoiler first** — the arm that should
+break it if the mechanism is real. Chunk order was investigated by running `reversed` (worst
+chunk first) before `grouped`, and it falsified the hypothesis outright; a `rank` vs `grouped`
+comparison would have produced a small difference and been read as confirmation.
+
 ## Eval hygiene
 
 - **Use `./eval_session.sh <name> [questions.json ...]`** — it stops production, starts a local

@@ -3672,3 +3672,52 @@ advance: a real effect narrows the claim to large fragmented contexts; no
 effect means the CSEE accreditation error had another cause and the contiguity
 fix was justified by coincidence; a noise-sized effect means dropping the
 ordering claim entirely.
+
+### Set 5, 14-chunk multi-entity contexts - falsified again, and harder
+
+| | primary | follow-up | overall |
+|---|---|---|---|
+| rank | 3.70 | 4.00 | **3.85** |
+| reversed | 4.20 | 3.90 | **4.05** |
+
+Reversing a 14-chunk context - which shreds the document-contiguity the 8g fix
+was built to preserve - scored **higher**, not lower. Direction opposite to the
+hypothesis, magnitude inside noise (below).
+
+**The Round 8g explanation was wrong.** The CSEE accreditation error was
+attributed to chunk interleaving, code was changed on that basis, and the
+effect does not reproduce when tested directly on the very context shape where
+it was observed. The contiguity grouping in `_multi_entity_results` is still
+defensible code - grouping a document's chunks is reasonable on its own terms -
+but the reason recorded for it is not supported, and the real cause of that one
+wrong answer is unexplained. With cloud generation unpinned, one wrong answer
+may simply have been variance.
+
+## Round 8k — The noise floor: +/-0.20 on a 10-question set (2026-08-10)
+
+Measured accidentally and worth more than the experiment that produced it. Two
+runs of the SAME configuration on set 5 (multi-entity ON, cloud generator,
+local judge) scored **4.05 and 3.85**. Nothing differed but the run.
+
+Cloud generation cannot be temperature-pinned (Sonnet rejects the parameter),
+so this is irreducible for any cloud-generator comparison. **On a 10-question /
+20-turn set, a delta below ~0.20 is uninterpretable.**
+
+Consequences for numbers already in this ledger:
+
+| finding | delta | verdict |
+|---|---|---|
+| Round 8h multi-entity gain | +0.50 (both judges) | clears the floor |
+| Round 8j set-4 chunk order | 0.15 | **below the floor - not an effect** |
+| Round 8j set-5 chunk order | 0.20, wrong direction | **at the floor - not an effect** |
+| Round 8d spanning vs set 3 | 0.15 | **below the floor - reported as "slightly harder", should be "indistinguishable"** |
+
+The Round 8d wording ("only slightly harder") should be read as "no measurable
+difference". The conclusion it supported - that removing the single-document
+confound did not expose a hidden weakness - is unchanged and arguably
+strengthened.
+
+**Rule: before believing a small cloud-generator delta, run one arm twice.**
+The repeat costs the same as the comparison and is the only thing that
+distinguishes a real effect from a reroll. No number below ~0.2 on a set this
+size should be reported as an effect without it.
