@@ -768,6 +768,54 @@ def _prefer_home_institution(results: dict) -> dict:
 PARTNER_INSTITUTION_DEMOTE_ENABLED = True
 
 
+# Partner EXCLUSION vs demotion (2026-08-10). _demote_partner_institutions
+# (below) re-sorts WITHIN the already-chosen top 6, so it never frees a slot -
+# which is why partner documents still reach the user on 4 of 17 real
+# thumbs-down complaints ("Answers need to focus on Essex programmes, not
+# partners", twice). Excluding them from the CANDIDATE POOL frees the slot for
+# an Essex document.
+#
+# Gated on the question not naming a partner, because 9 of 120 eval questions
+# have a partner edition as their gold. Measured: only 4 of those 9 name their
+# partner, so this gate does lose the labelled gold on 5. Inspect those 5
+# before reading that as damage - they are generic questions ("what are the
+# general principles for reassessment?", "what is the requirement for passing
+# Year One?") whose gold is a partner edition by test-set assignment rather
+# than because a partner document is what the user needs. That is the
+# gold-multiplicity problem eval/gold_multiplicity.py already documents.
+# Strict hit@6 therefore UNDERSTATES this change by construction.
+PARTNER_EXCLUDE_WHEN_UNNAMED = os.environ.get("RAG_PARTNER_EXCLUDE", "") == "1"
+
+_PARTNER_NAME_TOKENS = (
+    "tavistock", "portman", "aegean", "omiros", "laksamana", "skku", "kaplan",
+    "kol", "south essex", "colchester institute", "portobello", "chula",
+    "writtle", "edge hotel", "east 15", "east15", "sak", "eput", "northwest",
+    "north west", "alexandria", "partner institution", "partner-institution",
+)
+
+
+def _names_partner_institution(query: str) -> bool:
+    low = query.lower()
+    return any(tok in low for tok in _PARTNER_NAME_TOKENS)
+
+
+def _exclude_partner_institutions(results: dict) -> dict:
+    """Drop partner-edition chunks entirely. Unlike the demotion this FREES
+    slots. Returns the input unchanged if everything would be dropped - an
+    empty context is worse than a partner-sourced answer."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    keep = [i for i, m in enumerate(metadatas) if not _is_partner_institution(m)]
+    if not keep or len(keep) == len(documents):
+        return results
+    out = {"documents": [[documents[i] for i in keep]],
+           "metadatas": [[metadatas[i] for i in keep]]}
+    dists = results.get("distances")
+    if dists:
+        out["distances"] = [[dists[0][i] for i in keep]]
+    return out
+
+
 def _demote_partner_institutions(results: dict) -> dict:
     documents = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
@@ -1316,6 +1364,11 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
 
     global _LAST_CANDIDATE_POOL  # debug hook for the retrieval recall diagnostic (no behavior change)
     _LAST_CANDIDATE_POOL = candidates
+
+    if PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query):
+        # before the rerank, so the freed slots are filled by Essex documents
+        # rather than left empty
+        candidates = _exclude_partner_institutions(candidates)
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
 

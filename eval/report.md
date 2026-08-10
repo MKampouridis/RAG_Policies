@@ -3538,25 +3538,37 @@ two-department questions already retrieved both. The mechanism closes a
 
 ### End-to-end (cloud generator, LOCAL judge both arms)
 
-| | OFF | ON |
-|---|---|---|
-| primary | 3.70 | 3.80 |
-| follow-up | 3.40 | **4.30** |
-| overall | 3.55 | **4.05** |
-| hit@6 primary / follow-up | 5/10 / 5/10 | **7/10 / 8/10** |
+| | OFF (qwen) | ON (qwen) | OFF (phi4) | ON (phi4) |
+|---|---|---|---|---|
+| primary | 3.70 | 3.80 | 3.20 | 3.60 |
+| follow-up | 3.40 | 4.30 | 2.90 | 3.50 |
+| overall | 3.55 | **4.05** | 3.05 | **3.55** |
+| hit@6 primary / follow-up | 5/10 / 5/10 | **7/10 / 8/10** | (same retrieval) | (same retrieval) |
 
-The gain concentrates in FOLLOW-UPS (+0.90 vs +0.10 on primary), which is the
-opposite of this project's usual pattern - every prior round found follow-ups
-the weak turn and resistant to every mechanism tried. Plausible reading: the
-widened context persists into the follow-up turn, so a follow-up about the
-second department can be answered from material already retrieved. Stated as a
-hypothesis; nothing here isolates it.
+**CORRECTION (2026-08-10, same day).** This first read "the gain concentrates
+in FOLLOW-UPS (+0.90 vs +0.10 on primary), the opposite of this project's usual
+pattern". Re-judged with phi4 (neutral, free) that is mostly a JUDGE ARTIFACT:
+
+| | primary | follow-up | overall |
+|---|---|---|---|
+| qwen2.5:14b delta | +0.10 | +0.90 | +0.50 |
+| phi4 delta | +0.40 | +0.60 | **+0.50** |
+
+What survives is the part that matters: **overall +0.50 replicates exactly
+across two judges**, so the mechanism's benefit is real and judge-independent.
+What does not survive is the interesting story - under phi4 the split is
++0.40/+0.60, a mild asymmetry, not an inversion of the project's follow-up
+pattern. phi4 is also stricter in absolute terms (3.05 -> 3.55, vs qwen's
+3.55 -> 4.05).
+
+Recorded because the follow-up claim was the most eye-catching thing in this
+round and it was written from a single local judge, hours after this same
+ledger retracted a headline for exactly that reason.
 
 ### Three limits
 
-- **The judge is qwen2.5:14b, not phi4.** Both arms used it, so the comparison
-  is like-for-like, but these absolute numbers are NOT comparable to the
-  phi4-judged sets 3 and 4.
+- **Both judges now reported** (qwen2.5:14b and phi4). The +0.50 overall gain
+  is identical under both; only the primary/follow-up split moves.
 - **This set was built for this mechanism.** It validates that the mechanism
   does what it is designed to do. It is not evidence of general benefit, and
   the 0/160 trigger rate means it cannot be.
