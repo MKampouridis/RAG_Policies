@@ -3818,3 +3818,45 @@ doctorate -> PhD). One leaked: "what is the pass mark for an undergraduate
 module?" was rewritten to "... (Professional Doctorates)" and retrieved PG
 documents for a UG question. `_is_faithful_rewrite` cannot catch that shape -
 appending a parenthetical preserves every original word, so overlap is 100%.
+
+### Step 0 — base rate, and a correction to this round's framing
+
+Free proxy: `_contextualize_query` returns the ORIGINAL question when it
+discards a rewrite, so on a follow-up turn `retrieval_query == question` marks
+a turn that retrieved on the raw, unresolved question.
+
+| contextualizer | follow-ups retrieving on the raw question |
+|---|---|
+| local qwen2.5:7b (what every ledger baseline uses) | **27%** (28/103) |
+| cloud claude-haiku-4-5 (what PRODUCTION uses) | **2%** (3/123) |
+
+Cost on the affected turns, both main sets:
+
+| | hit@6 | judge |
+|---|---|---|
+| raw question used (n=22) | 80% / 50% | 3.00 / 3.50 |
+| rewrite used (n=58) | 90% / 68% | 3.70 / 3.82 |
+
+**This corrects the framing earlier in Round 8m.** That entry offered the guard
+as a candidate explanation for the standing follow-up gap. It may well explain
+part of the gap *in the ledger*, whose baselines all run the local
+contextualizer at 27%. It cannot explain much in PRODUCTION, which runs Haiku
+at 2%. The 7 real reject-log entries are real, and rare.
+
+The consequence for effort: **fixing this guard would improve the ledger's
+numbers far more than the live system.** That is close to the definition of
+work not worth doing, and it would have been easy to spend a full A/B cycle
+discovering it afterwards rather than in a free base-rate check.
+
+Two further cautions on the cost table above:
+- **It is correlational.** Turns whose rewrite is discarded are plausibly the
+  more elliptical and harder ones to begin with; the comparison does not
+  isolate the guard.
+- `retrieval_query == question` is an UPPER BOUND on guard rejections - it also
+  counts turns where the contextualizer legitimately returned the question
+  unchanged because it was already standalone.
+
+**Recommendation: do not proceed to Steps 1-4 as a priority.** The instrument
+exists (22 affected turns in the 160-turn baseline) if it is ever wanted, but
+the live impact does not justify the risk of touching a guard whose predecessor
+cost 8.8 points.
