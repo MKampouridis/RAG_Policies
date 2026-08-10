@@ -487,21 +487,18 @@ async function fetchJSON(url, options) {
   return res.json();
 }
 
-/* ── blueprint registration marks ──────────────────────────────────────────
-   .blueprint > .corner draws the small "+" at each corner. Applied to any
-   [data-corners] element, static or dynamically created. */
-function addCorners(el) {
-  if (el.dataset.cornered === '1') return;
-  el.dataset.cornered = '1';
-  for (const pos of ['tl', 'tr', 'bl', 'br']) {
-    const i = document.createElement('i');
-    i.className = 'corner ' + pos;
-    el.appendChild(i);
-  }
-}
-function applyCorners(root) {
-  (root || document).querySelectorAll('[data-corners]').forEach(addCorners);
-}
+/* ── corner registration marks: REMOVED 2026-08-10 ────────────────────────
+   The mockup drew a small "+" at each corner of every card, button and
+   dialog. essex.ac.uk does not do this - its panels are plain square
+   hairline boxes, and its one signature flourish is the 3px rule above and
+   below a primary button (see .btn-primary in blueprint.css). The marks read
+   as drafting-board decoration rather than Essex.
+
+   Kept as no-ops rather than deleted so the [data-corners] attributes and the
+   applyCorners() calls scattered through the render paths stay valid; drop
+   both if the marks are never coming back. */
+function addCorners() {}
+function applyCorners() {}
 
 /* ── screens ──────────────────────────────────────────────────────────────── */
 function showScreen(name) {
@@ -851,11 +848,11 @@ function buildFeedback(content, context) {
   const up = document.createElement('button');
   up.className = 'btn btn-icon btn-secondary';
   up.title = 'Helpful'; up.setAttribute('aria-label', 'Helpful');
-  up.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,14 12,8 18,14"/><line x1="12" y1="8" x2="12" y2="19"/></svg>';
+  up.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10.5v9H4.5a1 1 0 0 1-1-1v-7a1 1 0 0 1 1-1H7z"/><path d="M7 10.5l4-7a2 2 0 0 1 2.9 2.3L13 9h5.2a2 2 0 0 1 2 2.5l-1.6 6a2 2 0 0 1-1.9 1.5H7"/></svg>';
   const down = document.createElement('button');
   down.className = 'btn btn-icon btn-secondary';
   down.title = 'Not helpful'; down.setAttribute('aria-label', 'Not helpful');
-  down.innerHTML = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,10 12,16 18,10"/><line x1="12" y1="16" x2="12" y2="5"/></svg>';
+  down.innerHTML = '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 13.5v-9H4.5a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1H7z"/><path d="M7 13.5l4 7a2 2 0 0 0 2.9-2.3L13 15h5.2a2 2 0 0 0 2-2.5l-1.6-6A2 2 0 0 0 16.7 5H7"/></svg>';
   bar.append(note, up, down);
 
   const panel = document.createElement('div');
