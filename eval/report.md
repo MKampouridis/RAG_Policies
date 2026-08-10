@@ -3449,3 +3449,63 @@ information would live.
 coverage, judge score and keyphrase coverage all score these answers
 identically before and after - the facts were right both times. It cost trust,
 not accuracy.
+
+## Round 8g — Multi-entity retrieval: coverage 1/6 -> 5/6 (2026-08-10)
+
+Closes the COVERAGE half of the six-school failure that the
+`MULTI_ENTITY_COVERAGE` note called "not fixable by prompting". `N_RESULTS`
+caps CHUNKS, not documents: the real question returned 6 chunks resolving to 3
+documents, all CSEE.
+
+`src/entities.py` maps department aliases (CSEE, MSAS, HSC, SRES...) to the
+corpus's own `department` metadata values, which are inconsistent enough
+(case variants, singular/plural, parenthesised abbreviations) that the mapping
+is curated and auditable rather than inferred. When >= 2 departments are named,
+each gets a reserved slot budget filled by a retrieval FILTERED to its metadata
+values; the rest of the widened set (cap 14) comes from the ordinary ranking.
+
+| | OFF | ON |
+|---|---|---|
+| chunks / distinct documents | 6 / 3 | 14 / 8 |
+| departments covered | **1 of 6** | **5 of 6** |
+| CSEE accredited programmes named | 8/8 | 8/8 |
+| latency on a triggering question | 26.1s | 37.8s |
+| hit@6, 160 existing turns | 124/160 | **124/160** (0 gained, 0 lost) |
+
+### Two implementation defects found by measuring, not by review
+
+**1. The fan-out bypassed the recency pass.** Per-entity results surfaced
+`csee_ft_masters_accredited_variations_24` (2024-25) above the 2025-26 edition.
+Not an is_current bug: both are flagged current because the older one lives
+under `/ug/current/`, a path rule that deliberately overrides the family-max
+rule. `is_current` is a coarse pre-filter, not a within-family ordering - the
+unfiltered path applies `_prefer_most_recent_year` on top of it and this path
+was not. Fixed.
+
+**2. Interleaving cost accuracy on the one department that already worked.**
+First working version reported only 5 of CSEE's 8 programmes as accredited,
+demoting four genuinely accredited ones into the non-accredited exit-award
+group - a REGRESSION on the part the unfiltered path got right. CSEE received
+6 chunks either way, so this was not a budget effect: the reserved chunks sat
+at the top and the fill chunks for the SAME document landed at the bottom,
+separated by four other departments' material, and the generator read one
+strong source as two weak ones. Grouping each document's chunks contiguously
+restored 8/8 with the exit-award mapping correct.
+
+Worth generalising: **the same chunks in a different order produced a
+materially wrong answer.** Nothing in this ledger measures chunk ORDER - hit@6,
+span coverage and evidence-sufficiency are all set-membership tests.
+
+### Limits, recorded as limits
+
+- **Life Sciences is still missed (5/6, not 6/6).** It appears in 11 current
+  documents' TEXT but never as a `department` metadata value, so there is
+  nothing to filter on and the query-side fallback does not surface it.
+- **Evidence is thin: one target question and one control.** The safety
+  argument for enabling is blast radius, not weight of evidence - the trigger
+  fires on 0/160 existing eval turns (verified empirically by replay, not just
+  by the detector), so no committed number can move and single-entity
+  questions take the unchanged path. A multi-entity question set is the
+  outstanding follow-up and would be the first set in this project able to
+  measure the mechanism properly.
+- Costs ~11s on triggering questions only.

@@ -17,6 +17,7 @@ from src import splade as _splade
 from src.docid import document_family as _document_family
 from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.ingest import query as vector_query
+from src.entities import detect_departments, department_filter_values
 from src.llm import CONTEXTUALIZE_MODEL, chat, contextualize_chat, generate
 
 N_RESULTS = 6
@@ -1087,6 +1088,115 @@ def _stage_timer(stage: str, started: float) -> None:
         pass
 
 
+# Multi-entity RETRIEVAL (2026-08-10). MULTI_ENTITY_COVERAGE (above) fixed the
+# HONESTY half of the six-school failure; this targets the COVERAGE half that
+# note calls "not fixable by prompting". N_RESULTS caps CHUNKS, so the real
+# question ("CSEE, MSAS, Psychology, HSC, SRES, Life Sciences") returned six
+# chunks that resolved to THREE documents, all CSEE - one department in six.
+#
+# Reserves a slot budget per named department and fills it with a retrieval
+# FILTERED to that department's metadata values, so coverage is guaranteed by
+# construction rather than hoped for from one ranked list. Remaining slots go
+# to the ordinary unfiltered ranking, so a question that names entities but
+# whose answer lives elsewhere is not starved.
+#
+# Why this is not the rejected MULTIHOP_DECOMPOSITION (-7.5pts RoA hit@6):
+# that asked a model to HYPOTHESISE candidate documents for a vague question,
+# on an ambiguity trigger that fired on ordinary questions. Here the entities
+# are named explicitly, the mapping is a curated lookup (src/entities.py), and
+# the trigger requires >= 2 named departments - measured at 0/160 on the
+# existing eval turns, so it cannot move any committed ledger number.
+# ENABLED 2026-08-10 (eval/report.md Round 8g). On the real failing question:
+# department coverage 1/6 -> 5/6, and the answer gains substantive content for
+# CSEE, MSAS, SRES and HSC instead of CSEE alone, with CSEE's own accuracy
+# preserved (8/8 accredited programmes, correct exit-award mapping) once the
+# contiguity fix was in. Cost is ~11s on triggering questions only.
+#
+# The safety argument is the BLAST RADIUS, not the weight of evidence: the
+# trigger fires on 0/160 existing eval turns, so no committed ledger number can
+# move, and single-entity questions take the unchanged path. Evidence on the
+# target case is one real user question plus one control - thin, and recorded
+# as thin. A multi-entity question set is the outstanding follow-up.
+MULTI_ENTITY_RETRIEVAL = os.environ.get("RAG_MULTI_ENTITY_RETRIEVAL", "1") == "1"
+MULTI_ENTITY_MIN_ENTITIES = 2
+MULTI_ENTITY_PER_ENTITY = 2      # chunks reserved per named department
+MULTI_ENTITY_MAX_RESULTS = 14    # hard ceiling on the widened result set
+
+
+def _multi_entity_results(retrieval_query: str, aliases: list[str],
+                          base_results: dict, pool_size: int) -> dict:
+    """Per-department retrieval merged with the ordinary ranking.
+
+    Departments with no `department` metadata (Life Sciences is the live case:
+    11 current documents mention it, none carry it as a metadata value) fall
+    back to a query-side hint. Filtering on a value the corpus never stores
+    would return nothing and silently drop that entity."""
+    picked_docs: list[str] = []
+    picked_metas: list[dict] = []
+    seen: set[tuple] = set()
+
+    def take(docs, metas, limit):
+        n = 0
+        for d, m in zip(docs, metas):
+            key = (m.get("source_url"), m.get("chunk_index"))
+            if key in seen:
+                continue
+            seen.add(key)
+            picked_docs.append(d)
+            picked_metas.append(m)
+            n += 1
+            if n >= limit:
+                return
+
+    for alias in aliases:
+        values = department_filter_values([alias])
+        if values:
+            where = {"$and": [{"is_current": True}, {"department": {"$in": values}}]}
+            res = vector_query(retrieval_query, n_results=pool_size, where=where)
+        else:
+            # no metadata for this entity - hint it in the query text instead
+            res = vector_query(f"{alias} {retrieval_query}", n_results=pool_size,
+                               where={"is_current": True})
+        docs = res.get("documents", [[]])[0]
+        metas = res.get("metadatas", [[]])[0]
+        if not docs:
+            continue
+        # Same recency pass the unfiltered path applies to its candidate pool.
+        # Without it this path surfaced csee_ft_masters_accredited_variations_24
+        # (2024-25) above the 2025-26 edition: both are is_current=True because
+        # the older one lives under /ug/current/, which the path rule treats as
+        # authoritative and which therefore overrides the family-max rule.
+        # is_current is a coarse pre-filter, not a within-family ordering.
+        fresh = _prefer_most_recent_year({"documents": [docs], "metadatas": [metas]})
+        ranked = _rerank.rerank(retrieval_query, fresh, MULTI_ENTITY_PER_ENTITY)
+        take(ranked.get("documents", [[]])[0], ranked.get("metadatas", [[]])[0],
+             MULTI_ENTITY_PER_ENTITY)
+
+    # fill the remainder from the ordinary ranking
+    take(base_results.get("documents", [[]])[0],
+         base_results.get("metadatas", [[]])[0],
+         max(0, MULTI_ENTITY_MAX_RESULTS - len(picked_docs)))
+
+    docs = picked_docs[:MULTI_ENTITY_MAX_RESULTS]
+    metas = picked_metas[:MULTI_ENTITY_MAX_RESULTS]
+
+    # Keep each document's chunks CONTIGUOUS, preserving first-appearance order
+    # of the documents themselves. Without this the reserved per-entity chunks
+    # sit at the top and the fill chunks for the SAME document land at the
+    # bottom, separated by other departments' material - and the generator
+    # reads that as two weaker sources instead of one strong one. Measured: on
+    # the six-department question it demoted four genuinely accredited CSEE
+    # programmes into the non-accredited exit-award group, an accuracy
+    # regression on the one department the unfiltered path already got right.
+    # Same chunk set, same count - only the interleaving changed.
+    order: dict[str, list[int]] = {}
+    for i, m in enumerate(metas):
+        order.setdefault(m.get("source_url") or "", []).append(i)
+    idx = [i for group in order.values() for i in group]
+    return {"documents": [[docs[i] for i in idx]],
+            "metadatas": [[metas[i] for i in idx]]}
+
+
 def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dict, str]:
     """The full retrieval path used by answer() - query contextualization
     plus recency preference - exposed separately so eval/scoring code can
@@ -1208,6 +1318,11 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     _LAST_CANDIDATE_POOL = candidates
 
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
+
+    if MULTI_ENTITY_RETRIEVAL:
+        _entities = detect_departments(retrieval_query)
+        if len(_entities) >= MULTI_ENTITY_MIN_ENTITIES:
+            results = _multi_entity_results(retrieval_query, _entities, results, pool_size)
 
     if MULTIHOP_DECOMPOSITION_ENABLED:
         prelim_metas = results.get("metadatas", [[]])[0]
