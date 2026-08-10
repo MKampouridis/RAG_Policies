@@ -1244,14 +1244,24 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
     metas = picked_metas[:MULTI_ENTITY_MAX_RESULTS]
 
     # Keep each document's chunks CONTIGUOUS, preserving first-appearance order
-    # of the documents themselves. Without this the reserved per-entity chunks
-    # sit at the top and the fill chunks for the SAME document land at the
-    # bottom, separated by other departments' material - and the generator
-    # reads that as two weaker sources instead of one strong one. Measured: on
-    # the six-department question it demoted four genuinely accredited CSEE
-    # programmes into the non-accredited exit-award group, an accuracy
-    # regression on the one department the unfiltered path already got right.
-    # Same chunk set, same count - only the interleaving changed.
+    # of the documents themselves.
+    #
+    # HONEST STATUS (corrected 2026-08-10). This was added because the
+    # six-department question reported four genuinely accredited CSEE
+    # programmes as non-accredited, and the interleaved context looked like the
+    # cause: the reserved per-entity chunks sat at the top and the same
+    # document's fill chunks at the bottom, split by other departments'
+    # material. That causal claim is FALSIFIED. Round 8j tested ordering
+    # directly on this exact context shape (14 chunks, multi-entity) by
+    # reversing it, which shreds contiguity far more thoroughly than the
+    # interleaving did: quality did not drop - it was nominally HIGHER
+    # (4.05 vs 3.85), inside a +/-0.20 noise floor.
+    #
+    # The grouping is kept because it is a harmless default that makes the
+    # assembled context easier to read and reason about, NOT because it was
+    # shown to help. The original CSEE wrong answer is unexplained; with cloud
+    # generation unpinnable it may simply have been variance. Anyone tempted to
+    # build further on "chunk order matters" should read Round 8j first.
     order: dict[str, list[int]] = {}
     for i, m in enumerate(metas):
         order.setdefault(m.get("source_url") or "", []).append(i)
