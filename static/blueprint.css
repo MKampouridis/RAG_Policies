@@ -3,7 +3,7 @@
    remains the source of truth: re-copy this file after any change there rather
    than editing it in place. Page-specific layout lives in preview.html. */
 /* Industry — design-system tokens and component classes. This file is the source of truth for the system's look; retune it here and see readme.md. */
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;700&family=Barlow+Condensed:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap');
 
 :root {
   /* PALETTE RETUNED to the production UI (2026-08-10, user's request).
@@ -55,9 +55,13 @@
   --color-accent-2-800: #5c1943;
   --color-accent-2-900: #3f102d;
 
-  --font-heading: "Barlow Condensed", system-ui, sans-serif;
+  /* Archivo, not Barlow (2026-08-10): it is the typeface essex.ac.uk itself
+     serves and the one already in static/index.html. Archivo has no condensed
+     cut here, so headings take the weight + tight tracking below to keep the
+     mockup's compact headline feel without a second family. */
+  --font-heading: "Archivo", "Helvetica Neue", Arial, system-ui, sans-serif;
   --font-heading-weight: 600;
-  --font-body: "Barlow", system-ui, sans-serif;
+  --font-body: "Archivo", "Helvetica Neue", Arial, system-ui, sans-serif;
 
   --space-1: 3.4px;
   --space-2: 6.8px;
@@ -75,6 +79,59 @@
   --shadow-sm: 0 1px 2px color-mix(in srgb, #181818 12%, transparent);
   --shadow-md: 0 3px 10px color-mix(in srgb, #181818 14%, transparent);
   --shadow-lg: 0 12px 32px color-mix(in srgb, #181818 20%, transparent);
+}
+
+/* DARK MODE (2026-08-10). Only token VALUES are redefined - no component
+   rule is duplicated, which is the payoff of keeping every colour in :root.
+   Mirrors the production UI's dark palette (static/index.html): #181818
+   ground, #f6f6f6 ink, #393939 hairlines, and a lightened violet, because
+   #622567 on a near-black ground has too little contrast to read as an
+   accent. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #181818;
+    --color-surface: #252525;
+    --color-text: #f6f6f6;
+    --color-accent: #c07fc6;
+    --color-accent-2: #cf8fb4;
+    --color-divider: #393939;
+
+    --color-neutral-100: #252525;
+    --color-neutral-200: #2f2f2f;
+    --color-neutral-300: #393939;
+    --color-neutral-400: #4c4c4c;
+    --color-neutral-500: #6d6d6d;
+    --color-neutral-600: #8f8f8f;
+    --color-neutral-700: #adadad;
+    --color-neutral-800: #d7d7d7;
+    --color-neutral-900: #f6f6f6;
+
+    /* ramp inverted: on a dark ground the low numbers must be the DARK
+       tints, or the active-row wash (accent-100) would glow white */
+    --color-accent-100: #33203a;
+    --color-accent-200: #452a4d;
+    --color-accent-300: #5c3a66;
+    --color-accent-400: #7a4f85;
+    --color-accent-500: #9968a5;
+    --color-accent-600: #d199d6;
+    --color-accent-700: #e0b8e4;
+    --color-accent-800: #ecd4ef;
+    --color-accent-900: #f7ecf8;
+
+    --color-accent-2-100: #3a1f2f;
+    --color-accent-2-200: #4d2a3d;
+    --color-accent-2-300: #663a51;
+    --color-accent-2-400: #854f6b;
+    --color-accent-2-500: #a56888;
+    --color-accent-2-600: #c78fab;
+    --color-accent-2-700: #dcb3c8;
+    --color-accent-2-800: #ecd4e0;
+    --color-accent-2-900: #f8ecf2;
+
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.5);
+    --shadow-md: 0 3px 10px rgba(0,0,0,0.55);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
+  }
 }
 
 body {
@@ -122,7 +179,9 @@ h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-headi
 body { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; }
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading); font-weight: var(--font-heading-weight);
-  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+  /* -0.03em rather than -0.015em: Archivo is wider than Barlow Condensed, so
+     the headings need tighter tracking to hold the mockup's proportions. */
+  line-height: 1.12; letter-spacing: -0.03em; margin: 0 0 var(--space-2);
 }
 h1 { font-size: 42px; }
 h2 { font-size: 32px; }
