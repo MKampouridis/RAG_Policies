@@ -88,7 +88,58 @@ DEPARTMENT_ALIASES: dict[str, list[str]] = {
     ],
     "human resource management": ["Human Resource Management"],
     "early childhood care and education": ["Early Childhood Care and Education"],
+    # Faculty roster members added 2026-08-10. Empty list = named on the
+    # University's faculty page but carrying NO department metadata in the
+    # corpus, so detection fires (the entity is real and the user may name it)
+    # while retrieval falls back to a query-side hint rather than filtering on
+    # a value that would match nothing.
+    "economics": ["BE ESSEX BUSINESS SCHOOL and EC ECONOMICS", "Business and Economics"],
+    "sociology": [],
+    "criminology": [],
+    "philosophical, historical and interdisciplinary studies": [],
+    "language, literature and media": ["Modern Languages", "Modern Languages (Translation)"],
+    "essex law school": ["Law", "School of Law"],
 }
+
+# Faculty -> member departments, from the University's own faculty pages
+# (essex.ac.uk/about/university/faculties/..., retrieved 2026-08-10).
+#
+# WHY: a question naming a FACULTY rather than its departments - "what are the
+# accredited programmes offered by Schools/Departments in the Faculty of
+# Science and Health" - was a real thumbs-down, and multi-entity retrieval
+# could not help because it triggers on named DEPARTMENTS and that question
+# names none. Expanding the faculty to its roster makes such a question
+# behave exactly like the explicit six-department version the user also asked.
+#
+# The rosters are recorded verbatim from the source pages even where the
+# corpus has no matching documents (Sociology, Criminology, ISER, UK Data
+# Archive): a roster that silently omits members would be wrong as a fact, and
+# the empty-alias convention above already handles "named but not filterable".
+FACULTY_DEPARTMENTS: dict[str, list[str]] = {
+    "science and health": [
+        "life sciences", "csee", "hsc", "msas", "psychology", "sres",
+    ],
+    "arts, humanities and social sciences": [
+        "east 15", "economics", "essex business school", "edge hotel school",
+        "essex law school", "government", "language, literature and media",
+        "philosophical, historical and interdisciplinary studies",
+        "psychosocial and psychoanalytic studies", "sociology", "criminology",
+    ],
+}
+
+_FACULTY_PATTERNS = {
+    "science and health": ("faculty of science and health", "science and health faculty",
+                           "science & health"),
+    "arts, humanities and social sciences": (
+        "faculty of arts, humanities and social sciences", "arts, humanities and social sciences",
+        "arts and humanities faculty", "ahss",
+    ),
+}
+
+
+def detect_faculties(text: str) -> list[str]:
+    low = text.lower()
+    return [f for f, pats in _FACULTY_PATTERNS.items() if any(p in low for p in pats)]
 
 # Longest aliases first so "health and social care" wins over a bare "hsc"
 # substring inside another word, and so multi-word names are not shadowed.
@@ -110,6 +161,11 @@ def detect_departments(text: str) -> list[str]:
     caller decides whether to filter or fall back."""
     low = text.lower()
     found: list[str] = []
+    # A named FACULTY stands in for its member departments, so "departments in
+    # the Faculty of Science and Health" behaves like naming all six.
+    faculty_expanded: list[str] = []
+    for fac in detect_faculties(text):
+        faculty_expanded.extend(FACULTY_DEPARTMENTS.get(fac, []))
     seen_targets: set[tuple[str, ...]] = set()
     claimed: list[tuple[int, int]] = []
     for alias in _ALIASES_BY_LENGTH:
@@ -127,7 +183,13 @@ def detect_departments(text: str) -> list[str]:
             seen_targets.add(target)
         claimed.append((m.start(), m.end()))
         found.append((m.start(), alias))
-    return [a for _, a in sorted(found)]
+    named = [a for _, a in sorted(found)]
+    # faculty members appended after explicitly-named departments, de-duplicated,
+    # so an explicit mention keeps its position and priority
+    for a in faculty_expanded:
+        if a not in named:
+            named.append(a)
+    return named
 
 
 def department_filter_values(aliases: list[str]) -> list[str]:

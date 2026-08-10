@@ -3721,3 +3721,43 @@ strengthened.
 The repeat costs the same as the comparison and is the only thing that
 distinguishes a real effect from a reroll. No number below ~0.2 on a set this
 size should be reported as an effect without it.
+
+## Round 8l — Faculty -> department expansion (2026-08-10)
+
+Complaint #5 ("accredited programmes offered by Schools/Departments in the
+Faculty of Science and Health" answered only about HSC) could not be fixed by
+multi-entity retrieval, because that triggers on named DEPARTMENTS and the
+question names none - it names a FACULTY. `FACULTY_DEPARTMENTS` in
+`src/entities.py` expands a named faculty to its member departments, taken
+verbatim from the University's own faculty pages (user-supplied, 2026-08-10).
+
+| question | OFF | ON |
+|---|---|---|
+| "...Faculty of Science and Health?" | 1/6 departments (4 docs) | **5/6 (11 docs)** |
+| "...CSEE, MSAS, Psychology, HSC, SRES, Life Sciences?" | 1/6 (3 docs) | 5/6 (8 docs) |
+
+The faculty form now behaves identically to the explicit six-department form,
+which is the point: the user asked both and got the same bad answer for
+different reasons.
+
+Trigger rate on 226 existing eval turns: **0**. Unchanged from before the
+expansion, so no committed number can move.
+
+### A bug the expansion exposed in the mechanism's own budget
+
+Arts, Humanities and Social Sciences has 11 member departments. At the fixed 2
+slots each that is 22 reserved against a cap of 14 - the final slice would have
+silently dropped the last four departments, which is precisely the failure this
+mechanism exists to prevent, reintroduced by its own budget. The per-entity
+allocation now scales: `max(1, min(2, cap // n))`, so 11 departments get 1 slot
+each and 6 still get 2. Found by testing the second faculty, not the first.
+
+### Rosters recorded even where the corpus is empty
+
+Sociology, Criminology, ISER and UK Data Archive appear on the faculty page but
+carry no `department` metadata (and in two cases no documents at all). They are
+recorded in the roster anyway, with the existing empty-alias convention marking
+them as detectable-but-not-filterable. A roster that silently omitted them
+would be wrong as a statement of fact about the University, and the resulting
+behaviour - "I have nothing for Sociology" - is the correct answer rather than
+a gap to hide.

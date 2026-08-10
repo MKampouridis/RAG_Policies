@@ -1194,6 +1194,14 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
     11 current documents mention it, none carry it as a metadata value) fall
     back to a query-side hint. Filtering on a value the corpus never stores
     would return nothing and silently drop that entity."""
+    # Scale the per-entity budget to the entity count. A faculty expansion can
+    # name 11 departments (Arts, Humanities and Social Sciences); at a fixed 2
+    # slots each that is 22 against a cap of 14, and the final slice would
+    # silently drop the last four departments - the exact failure this
+    # mechanism exists to prevent, reintroduced by its own budget.
+    # At least 1 slot each, never more than MULTI_ENTITY_PER_ENTITY.
+    per_entity = max(1, min(MULTI_ENTITY_PER_ENTITY,
+                            MULTI_ENTITY_MAX_RESULTS // max(len(aliases), 1)))
     picked_docs: list[str] = []
     picked_metas: list[dict] = []
     seen: set[tuple] = set()
@@ -1231,9 +1239,9 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
         # authoritative and which therefore overrides the family-max rule.
         # is_current is a coarse pre-filter, not a within-family ordering.
         fresh = _prefer_most_recent_year({"documents": [docs], "metadatas": [metas]})
-        ranked = _rerank.rerank(retrieval_query, fresh, MULTI_ENTITY_PER_ENTITY)
+        ranked = _rerank.rerank(retrieval_query, fresh, per_entity)
         take(ranked.get("documents", [[]])[0], ranked.get("metadatas", [[]])[0],
-             MULTI_ENTITY_PER_ENTITY)
+             per_entity)
 
     # fill the remainder from the ordinary ranking
     take(base_results.get("documents", [[]])[0],
