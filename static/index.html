@@ -38,6 +38,7 @@
     --sidebar-accent: var(--violet);
     --conv-hover: #f6f6f6;
     --conv-active: #eaeaea;
+    --scarlet-del: #cd202c;
   }
   @media (prefers-color-scheme: dark) {
     :root {
@@ -57,6 +58,7 @@
       --sidebar-accent: #c07fc6;   /* violet lightened for contrast on dark */
       --conv-hover: #252525;
       --conv-active: #303030;
+      --scarlet-del: #b3232e;
     }
   }
   /* GEOMETRY (2026-08-10). An earlier pass matched essex.ac.uk's own
@@ -147,26 +149,58 @@
   #conversation-list { overflow-y: auto; flex: 1; padding: 0 8px 12px; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
   #conversation-list::-webkit-scrollbar { width: 8px; }
   #conversation-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 8px; border: 2px solid var(--sidebar-bg); }
+  /* Swipe-to-delete (2026-08-10). .conv-item is a fixed track that clips;
+     .conv-content is the layer that slides left to uncover .conv-actions
+     underneath. Deletion stays a TWO-step gesture - swipe reveals, tap
+     confirms - because it is irreversible and an accidental swipe must not
+     destroy a conversation. */
   .conv-item {
     position: relative;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    /* min-width/overflow required for the ellipsis on .conv-title below.
-       Without them the row cannot shrink and overflows the clipped sidebar. */
     min-width: 0;
     overflow: hidden;
-    padding: 9px 8px 9px 11px;
     margin-bottom: 3px;
     border-radius: 9px;
     cursor: pointer;
+    border: 1px solid transparent;
+    transition: border-color 0.13s;
+  }
+  .conv-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    padding: 9px 8px 9px 11px;
     font-size: 13px;
     font-weight: 500;
     line-height: 1.35;
     color: var(--fg);
-    border: 1px solid transparent;
-    transition: background 0.13s, border-color 0.13s;
+    background: var(--sidebar-bg);
+    border-radius: 9px;
+    transition: background 0.13s, transform 0.18s ease;
+    will-change: transform;
   }
+  .conv-item.swiping .conv-content { transition: none; }
+  .conv-actions {
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 84px;
+    display: flex;
+    align-items: stretch;
+  }
+  .conv-swipe-del {
+    flex: 1;
+    border: none;
+    background: var(--scarlet-del);
+    color: #fff;
+    font-family: inherit;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    border-radius: 0 9px 9px 0;
+  }
+  .conv-swipe-del:active { filter: brightness(0.9); }
   .conv-icon {
     flex-shrink: 0;
     width: 15px; height: 15px;
@@ -211,7 +245,7 @@
   @media (hover: hover) and (pointer: fine) {
     .conv-item:hover .conv-del { opacity: 1; }
     .conv-del:hover { background: var(--panel); color: var(--sidebar-accent); }
-    .conv-item:hover { background: var(--conv-hover); }
+    .conv-item:hover .conv-content { background: var(--conv-hover); }
     .conv-item:hover .conv-icon { opacity: 0.75; }
   }
   /* On touch there is no hover to reveal it, so the delete control is simply
@@ -222,15 +256,13 @@
     .conv-item, #new-chat-btn, .act-btn, #composer button, .conv-del {
       -webkit-tap-highlight-color: transparent;
     }
-    .conv-del {
-      opacity: 0.55;
-      min-width: 34px; min-height: 34px;
-      display: flex; align-items: center; justify-content: center;
-    }
+    /* swipe-to-delete replaces it on touch; keeping both would duplicate the
+       action and eat width next to the title */
+    .conv-del { display: none; }
     .conv-item { padding-top: 11px; padding-bottom: 11px; }
-    .conv-item:active { background: var(--conv-hover); }
+    .conv-item:active .conv-content { background: var(--conv-hover); }
   }
-  .conv-item.active {
+  .conv-item.active .conv-content {
     background: var(--conv-active);
     border-color: transparent;
     border-left: 3px solid var(--violet);
@@ -725,7 +757,23 @@
       const item = document.createElement('div');
       item.className = 'conv-item' + (c.id === activeConversationId ? ' active' : '');
       item.title = c.title;
-      item.onclick = () => { setDrawer(false); openConversation(c.id); };
+
+      const actions = document.createElement('div');
+      actions.className = 'conv-actions';
+      const swipeDel = document.createElement('button');
+      swipeDel.className = 'conv-swipe-del';
+      swipeDel.textContent = 'Delete';
+      swipeDel.onclick = (e) => { e.stopPropagation(); deleteConversation(c.id); };
+      actions.appendChild(swipeDel);
+
+      const content = document.createElement('div');
+      content.className = 'conv-content';
+      content.onclick = () => {
+        // a tap that closes an open swipe must not also open the conversation
+        if (closeSwipe(item)) return;
+        setDrawer(false);
+        openConversation(c.id);
+      };
       const icon = document.createElement('span');
       icon.className = 'conv-icon';
       icon.setAttribute('aria-hidden', 'true');
@@ -737,10 +785,82 @@
       del.innerHTML = '&times;';
       del.title = 'Delete conversation';
       del.onclick = (e) => { e.stopPropagation(); deleteConversation(c.id); };
-      item.append(icon, title, del);
+      content.append(icon, title, del);
+
+      item.append(actions, content);
+      attachSwipe(item, content);
       conversationList.appendChild(item);
     }
   }
+
+  // ---- swipe-to-delete -------------------------------------------------
+  const SWIPE_WIDTH = 84;     // must match .conv-actions width
+  const SWIPE_OPEN_AT = 42;   // past half-way, settle open
+  let openSwipeItem = null;
+
+  function closeSwipe(except) {
+    // returns true if something was actually closed, so the caller can treat
+    // this tap as "dismiss" rather than "open the conversation"
+    if (openSwipeItem && openSwipeItem !== except) {
+      const c = openSwipeItem.querySelector('.conv-content');
+      if (c) c.style.transform = 'translateX(0)';
+      openSwipeItem = null;
+      return true;
+    }
+    if (openSwipeItem === except) {
+      const c = except.querySelector('.conv-content');
+      if (c) c.style.transform = 'translateX(0)';
+      openSwipeItem = null;
+      return true;
+    }
+    return false;
+  }
+
+  function attachSwipe(item, content) {
+    let x0 = 0, y0 = 0, dx = 0, dragging = false, decided = false;
+
+    item.addEventListener('touchstart', (e) => {
+      if (e.touches.length !== 1) return;
+      if (openSwipeItem && openSwipeItem !== item) closeSwipe(null);
+      x0 = e.touches[0].clientX; y0 = e.touches[0].clientY;
+      dx = 0; dragging = true; decided = false;
+      item.classList.add('swiping');
+    }, { passive: true });
+
+    item.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      const nx = e.touches[0].clientX - x0;
+      const ny = e.touches[0].clientY - y0;
+      if (!decided) {
+        // Only claim the gesture once it is clearly horizontal, otherwise the
+        // list must keep scrolling normally - a swipe handler that grabs every
+        // touch makes the sidebar impossible to scroll.
+        if (Math.abs(ny) > Math.abs(nx)) { dragging = false; item.classList.remove('swiping'); return; }
+        if (Math.abs(nx) < 8) return;
+        decided = true;
+      }
+      const base = openSwipeItem === item ? -SWIPE_WIDTH : 0;
+      dx = Math.max(-SWIPE_WIDTH, Math.min(0, base + nx));
+      content.style.transform = `translateX(${dx}px)`;
+    }, { passive: true });
+
+    function end() {
+      if (!dragging) return;
+      dragging = false;
+      item.classList.remove('swiping');
+      if (!decided) return;
+      const open = dx <= -SWIPE_OPEN_AT;
+      content.style.transform = open ? `translateX(${-SWIPE_WIDTH}px)` : 'translateX(0)';
+      openSwipeItem = open ? item : (openSwipeItem === item ? null : openSwipeItem);
+    }
+    item.addEventListener('touchend', end, { passive: true });
+    item.addEventListener('touchcancel', end, { passive: true });
+  }
+
+  // any tap elsewhere dismisses an open swipe
+  document.addEventListener('touchstart', (e) => {
+    if (openSwipeItem && !openSwipeItem.contains(e.target)) closeSwipe(null);
+  }, { passive: true });
 
   async function deleteConversation(id) {
     await fetch(`/api/conversations/${id}`, { method: 'DELETE' }).catch(() => {});
