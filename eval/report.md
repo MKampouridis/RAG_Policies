@@ -4919,3 +4919,37 @@ unless `RAG_DETERMINISTIC=1`, with an explicit
 pinned. A run was voided on 2026-08-07 for exactly this and nothing in the
 harness noticed; `eval_session.sh` set it correctly, but only when the harness
 was invoked through that script.
+
+## Round 25 — One regression set instead of six (2026-08-11)
+
+All four reviews said the same thing: stop running comparisons on whichever
+8-23 question set is nearest to hand, against a +/-0.20 noise floor.
+`eval/build_regression_set.py` merges the six sets into
+`eval/questions_regression.json`.
+
+| | |
+|---|---|
+| unique questions | **151** (302 turns with follow-ups) |
+| duplicates dropped | 13 |
+| rules-of-assessment / policy | 80 / 68 |
+| PGR / PGT | 33 / 20 |
+| departmental | 15 |
+| abstention | **3 - thin, flagged** |
+
+No questions were invented. Every item already existed and had already been
+checked; the merge only removes duplicates and records provenance (`_source`)
+and strata (`_strata`) on each item, so a later analysis can split by question
+type without re-deriving it.
+
+`questions_abstention.json` and `questions_pgr_interpretive2.json` contributed
+**0** - every one of their questions was already inside set 3. That is the
+dedup working, and it is also a small warning about how much these sets
+overlapped while being treated as independent evidence.
+
+**The tool reports thin strata rather than hiding them.** Abstention has 3
+questions, so a comparison aimed at abstention still cannot resolve anything.
+Merging fixes OVERALL power, not per-stratum power, and the script says so on
+every run.
+
+Not yet run end-to-end - 302 turns is a long run and belongs in a deliberate
+session with production stopped, not alongside other work.
