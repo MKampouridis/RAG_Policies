@@ -4124,11 +4124,16 @@ with the home controls here unaffected. The cost is the inverse case, which
 that user may never hit but a partner-college administrator would hit
 immediately.
 
-Options if it should be softened:
-1. Extend the gate's token list with partner PROGRAMME names (3D Design &
-   Craft, BSc Economics link agreement...), curated like `DEPARTMENT_ALIASES`.
-2. Demote rather than exclude when no Essex alternative covers the topic.
-3. Leave as is - the intended audience is Essex staff.
+**DECIDED 2026-08-11: leave as is** (user's call, trade stated in full). The
+direction that matters to the intended audience - Essex staff asking about
+Essex programmes - is fixed, and the two softening options both add ongoing
+maintenance: a curated list of partner PROGRAMME names would need extending
+with every new partnership agreement, and "demote unless no Essex alternative
+covers the topic" requires knowing what a document covers before retrieving it.
+
+Recorded as a closed decision so it is not re-proposed. The cost is real and
+stays on the record: a question naming a partner course but not its institution
+loses the document that answers it.
 
 Recorded with the measurement so the choice is made on evidence rather than
 rediscovered later.
