@@ -27,7 +27,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 7 | `_adjacent_chunks` uses a metadata scan | O | **DONE via #6** — one scan instead of two; rows verified rather than trusted by position |
 | 8 | No assertion that an adjacent chunk belongs to the same document | D | **DONE** — each row checked against the requested (url, index) set |
 | 9 | Entity budget leaves only 3 of 14 slots for base ranking | O | **INSTRUMENTED, not changed** — #10 now logs fill per entity; changing the budget moves retrieval and needs the 151-question set first |
-| 10 | Multi-entity budget can starve genuine docs — log per-entity candidate counts | D | OPEN |
+| 10 | Log per-entity candidate counts | D | **DONE** — candidates/took/starved under `RAG_TIMING`. First run: MSAS 3 candidates vs CSEE 48 |
 | 11 | Conversation summarisation race | C | **DONE** — per-conversation lock; 4 concurrent calls summarise **once** |
 | 12 | Mid-stream failure leaves the conversation inconsistent | D | **DONE** — and it found a bug in MY streaming fallback: the question could be stored twice. Retry is now allowed only before the first SSE byte |
 | 13 | `FETCH_POOL_MULTIPLIER=4` "costs quality" unsupported | O | **REJECTED** — came from stage-2 e2e run (fc1bf45), not the sweep file |
