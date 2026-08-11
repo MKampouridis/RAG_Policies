@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 21 of 94 resolved (15 done, 4 rejected-with-reason, 2 moot). Phases 1-2 complete; see `eval/report.md` Rounds 13-15 for the measurements.
+**Progress:** 23 of 94 resolved (17 done, 4 rejected-with-reason, 2 moot). Phases 1-2 complete, Phase 3 in progress; measurements in `eval/report.md` Rounds 13-16.
 
 ---
 
@@ -20,7 +20,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 |---|---|---|---|
 | 1 | `hit@6` scored `rank is not None` — no cap; 7 false hits | O | **DONE** |
 | 2 | `_names_partner_institution` unbounded substrings ("eput" in *deputy*) | O | **DONE** |
-| 3 | Multi-entity re-admits partner docs AFTER exclusion; demotion only reorders | O | **CONFIRMED** |
+| 3 | Multi-entity re-admits partner docs AFTER exclusion; demotion only reorders | O | **DONE** — `MULTI_ENTITY_PARTNER_RECHECK`. Exhibited on the 3 aliases lacking department metadata: **3 partner chunks → 0**, 0 of 23 other questions changed. `eval/partner_multientity_probe.py` is the regression test |
 | 4 | Multi-entity per-entity retrievals are dense-only — no BM25, no RRF | O | **CONFIRMED** |
 | 5 | `_adjacent_chunks` drops `distances` that `_exclude_partner_institutions` keeps | O | OPEN |
 | 6 | `_adjacent_chunks` does 2 Chroma round-trips where one `$or` would do | O | OPEN |
@@ -67,7 +67,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 32 | Stop saying "confirmed no harm" | O | **DONE** — retracted in Round 15; the tool now prints the distinction so it is not left to prose |
 | 33 | Evaluate the ~8 turns a mechanism CAN change, binary, not a 20-turn mean | O | OPEN |
 | 34 | Core regression set 100–150, stratified by question type | C,G,D | OPEN |
-| 35 | Targeted failure set (10–30) per mechanism | C | OPEN |
+| 35 | Targeted failure set (10–30) per mechanism | C | **STARTED** — `eval/partner_multientity_probe.py` is the first; built because 3 existing instruments were blind to the defect |
 | 36 | Canary set (~50) that must never regress | C | OPEN |
 | 37 | Decouple retrieval eval (deterministic, £0) from generation eval | G,D | OPEN |
 | 38 | Cloud smoke set ~12 turns × n=3, report **rates** not mean judge scores | O | OPEN |
