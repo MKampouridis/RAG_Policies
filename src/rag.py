@@ -320,9 +320,23 @@ _DETAILED_RULE = (
 )
 
 
+# What "default" MEANS, changed 2026-08-11 on the user's instruction. Generation
+# is the dominant latency term and output length is the generation cost - a real
+# answer ran 996 output tokens in ~10s (Round 19) - so concise is worth ~2-3s on
+# every turn. It was measured to lose no named entities and no list items
+# (Round 10), and the rule explicitly forbids dropping either.
+#
+# "detailed" still exists and still lengthens; a user who wants the old
+# behaviour picks it in Settings.
+DEFAULT_DETAIL = os.environ.get("RAG_DEFAULT_DETAIL", "concise")
+
+
 def system_prompt_for(detail: str = "default") -> str:
     """SYSTEM_PROMPT with a detail-level rule appended. Unknown values fall back
-    to default rather than raising - a bad preference must not cost an answer."""
+    to the default rather than raising - a bad preference must not cost an
+    answer. Note "default" is a POINTER to DEFAULT_DETAIL, not a third style."""
+    if detail not in ("concise", "detailed"):
+        detail = DEFAULT_DETAIL      # covers "default" AND any unknown value
     if detail == "concise":
         return SYSTEM_PROMPT + _CONCISE_RULE + "\n"
     if detail == "detailed":

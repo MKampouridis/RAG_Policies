@@ -4712,3 +4712,39 @@ The 124ms and 161ms savings are real but swamped by the memory-pressure effect
 in Round 13 (Chroma's filtered query degrading 81ms -> 2543ms once the ColBERT
 index is resident). That remains the dominant term and still needs an eval
 before it can be changed, because it moves retrieval results.
+
+## Round 20 — Concise becomes the default (2026-08-11, user's instruction)
+
+Round 19 established that output length IS the generation cost (996 output
+tokens in ~10s). `concise` was measured in Round 10 to lose no named entities
+and no list items, and its rule explicitly forbids dropping either. Made the
+default; "detailed" still exists in Settings for the old behaviour.
+
+`default` is now a POINTER to `DEFAULT_DETAIL` rather than a third style, and
+any unknown value resolves to it too - the first version let a garbage
+preference fall through to the bare prompt, contradicting its own docstring.
+
+### Verified on three cases chosen because brevity would damage them
+
+| case | detailed | default (concise) | entities/keyphrases |
+|---|---|---|---|
+| enumeration (3 departments) | 2383 chars | **1881** (-21%) | **all kept** |
+| seven-item list | 1527 chars | **692** (-55%) | **identical coverage** |
+| multi-part (Merit + Distinction) | 2595 chars | **1242** (-52%) | **all kept, 60 and 70 present** |
+
+The list case looked alarming at first - bullets fell 8 to 6 - so the actual
+circumstances were counted by keyword rather than by bullet. Both arms contain
+exactly the same set. **The bullet drop was formatting, not content**, which is
+the distinction the Round 10 measurement was making and which a length metric
+alone would have misread.
+
+Latency fell on every case, though those timings are confounded (the
+`detailed` arm ran first each time, so it absorbed any warm-up). The length
+reduction is the reliable number; the ~2-3s estimate from Round 19 stands as an
+estimate.
+
+**Unrelated observation, NOT a concise defect:** both arms surfaced only 2 of
+the 7 qualifying circumstances by my keyword markers. The markers are guesses,
+so this is not evidence of a regression - but it is consistent with Round 8p's
+finding that the seven-item list splits across chunks, and it is identical in
+both arms.
