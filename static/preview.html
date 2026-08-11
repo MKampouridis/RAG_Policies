@@ -25,13 +25,6 @@
     background: none; border: none; padding: 0; cursor: pointer;
     color: inherit; font: inherit; text-align: left;
   }
-  .brand-mark {
-    width: 30px; height: 30px; flex: none;
-    border: 1px solid var(--color-accent);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-heading); font-weight: 600;
-    color: var(--color-accent); font-size: 15px;
-  }
   .nav-spacer { margin-left: auto; }
   #menu-btn { display: none; }
 
@@ -166,10 +159,36 @@
     border-bottom: 4px solid var(--lime);
     padding: 12px 18px; display: flex; align-items: center; gap: 12px;
   }
-  .brand-btn { background: none; border: none; padding: 0; cursor: pointer; color: #fff; }
+  .brand-btn {
+    background: none; border: none; padding: 0; cursor: pointer; color: #fff;
+    display: flex; align-items: center; gap: 10px;
+  }
+  /* The UE mark from the classic UI, INVERTED. There it was a violet square on
+     white; here it sits inside the violet bar, so the same treatment would
+     disappear into the background - white ground, violet letters keeps the
+     shape and weight while staying legible. */
+  .brand-mark {
+    flex-shrink: 0;
+    width: 34px; height: 34px; border-radius: 6px;
+    /* The ground here is always white, so the letters must NOT follow
+       --color-accent: dark mode remaps it to a pale violet (#c07fc6) that
+       drops to ~2.6:1 on white. Pinned to the deep brand violet, which reads
+       in both themes. */
+    background: #fff; color: #622567; border: none;
+    font-family: var(--font-heading);
+    font-weight: 800; font-size: 15px; letter-spacing: -0.02em;
+    display: flex; align-items: center; justify-content: center;
+  }
   .brand-stack { display: flex; flex-direction: column; line-height: 1.2; text-align: left; }
   .brand-uni { font-size: 12px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; opacity: .9; }
   .brand-app { font-size: 17px; font-weight: 700; letter-spacing: -.01em; }
+  /* On a phone the bar already carries a hamburger and a Settings button, so
+     the wordmark is dropped rather than the mark - the mark identifies the app
+     in less space and survives being next to the menu control. */
+  @media (max-width: 520px) {
+    .brand-uni { display: none; }
+    .brand-app { font-size: 15px; }
+  }
   .nav-spacer { margin-left: auto; }
   .nav-ghost {
     background: transparent; border: 1px solid rgba(255,255,255,.45); color: #fff;
@@ -331,6 +350,7 @@
       <span></span><span></span><span></span>
     </button>
     <button class="brand-btn" id="brand-home">
+      <span class="brand-mark" aria-hidden="true">UE</span>
       <span class="brand-stack">
         <span class="brand-uni">University of Essex</span>
         <span class="brand-app">Policy Assistant</span>
