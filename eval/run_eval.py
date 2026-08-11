@@ -236,6 +236,25 @@ def _eval_one(conv_id: str, item: dict) -> dict:
     return result
 
 
+def _require_determinism() -> None:
+    """Refuse to run a scoring pass that cannot be reproduced. A run was voided
+    on 2026-08-07 because the server it drove had not been started with
+    RAG_DETERMINISTIC=1, and nothing in the harness noticed. Set
+    RAG_EVAL_ALLOW_NONDETERMINISTIC=1 to override deliberately - a cloud
+    generator cannot be temperature-pinned, so cloud arms need it."""
+    if os.environ.get("RAG_DETERMINISTIC") == "1":
+        return
+    if os.environ.get("RAG_EVAL_ALLOW_NONDETERMINISTIC") == "1":
+        print("WARNING: running WITHOUT RAG_DETERMINISTIC - results are not reproducible",
+              file=sys.stderr)
+        return
+    raise SystemExit(
+        "refusing to run: RAG_DETERMINISTIC=1 is not set.\n"
+        "  Set it on BOTH this script and the server it drives, or pass\n"
+        "  RAG_EVAL_ALLOW_NONDETERMINISTIC=1 if a non-pinnable cloud arm is intended."
+    )
+
+
 def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
     """Retries a failing question once (transient Ollama/HTTP hiccups
     shouldn't silently shrink the denominator - a prior run lost 16/40
@@ -244,6 +263,7 @@ def run(output_name: str, questions_path: Path = QUESTIONS_PATH) -> None:
     failure rather than continuing to write partial results, since a
     partial-but-silently-succeeding run is exactly the failure mode that
     caused the original bug."""
+    _require_determinism()
     questions = json.loads(questions_path.read_text())
     total_questions = len(questions)  # fixed denominator: `questions` shrinks on resume
     output_path = Path(f"eval/results_{output_name}.json")

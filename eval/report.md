@@ -4888,3 +4888,34 @@ Two defects caught in the scrubber while testing it:
   need whole phrases and a token boundary can split one. The client re-renders
   from the returned text, so the final answer is scrubbed - but a leaked phrase
   can flicker mid-stream. Recorded rather than hidden.
+
+## Round 24 — Concurrency claim FALSIFIED; eval determinism now enforced (2026-08-11)
+
+**Two reviewers argued the p90 latency figures are single-user numbers** - that
+FastAPI's threadpool plus one ColBERT model plus the GIL would make concurrent
+requests contend badly, and that a second user would collapse the experience.
+
+Measured directly against production:
+
+| | |
+|---|---|
+| serial baseline (1 request) | **12.2s** |
+| 4 concurrent: each | 8.1 / 7.9 / 12.4 / 10.4s |
+| 4 concurrent: slowest | **12.4s** |
+| slowdown | **1.0x** |
+
+**No contention.** Four simultaneous questions finish in the time one takes.
+The reasoning behind the concern was sound but the premise was wrong for this
+workload: most of a turn is the cloud generation call, which is network wait
+that releases the GIL, and retrieval is a small and now-cheaper fraction. The
+concern would apply to a LOCAL generator, where the compute is in-process.
+
+Recorded as falsified so it is not re-raised. It does not clear the way for
+many users - that is bounded by RAM and by the absent auth, not by this.
+
+**Eval determinism is now enforced (#45).** `run_eval.py` refuses to start
+unless `RAG_DETERMINISTIC=1`, with an explicit
+`RAG_EVAL_ALLOW_NONDETERMINISTIC=1` override for cloud arms that cannot be
+pinned. A run was voided on 2026-08-07 for exactly this and nothing in the
+harness noticed; `eval_session.sh` set it correctly, but only when the harness
+was invoked through that script.
