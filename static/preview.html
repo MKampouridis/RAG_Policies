@@ -378,7 +378,7 @@
           <button class="btn btn-secondary" id="export-history">Export history</button>
           <button class="btn btn-secondary danger" id="clear-history">Clear all history</button>
         </div>
-        <div class="text-muted set-note" id="history-status" hidden></div>
+        <div class="set-note" id="history-status" hidden style="font-weight:600;color:var(--color-accent)"></div>
       </div>
 
       <div class="card blueprint set-card" data-corners>
@@ -1268,15 +1268,45 @@ document.getElementById('export-history').onclick = async () => {
 };
 
 document.getElementById('clear-history').onclick = async () => {
+  /* A destructive action has to make its result unmistakable. The first
+     version deleted everything and reported it with one muted line on the
+     Settings screen, where the conversation list is not visible - success and
+     failure looked identical, and it read as a dead button. It also fired
+     ~115 sequential DELETEs while refreshing the list only at the very end,
+     so navigating away mid-loop showed a stale sidebar that still listed
+     conversations already gone. Both are fixed below. */
   let convs = [];
-  try { convs = await fetchJSON('/api/conversations'); } catch (e) { setHistoryStatus('Could not read history.'); return; }
+  try { convs = await fetchJSON('/api/conversations'); }
+  catch (e) { setHistoryStatus('Could not read history — nothing was deleted.'); return; }
   if (!convs.length) { setHistoryStatus('There is no history to clear.'); return; }
-  if (!confirm(`Delete all ${convs.length} conversations? This cannot be undone.`)) return;
-  for (const c of convs) await fetch('/api/conversations/' + c.id, { method: 'DELETE' }).catch(() => {});
+
+  // Type-to-confirm rather than OK/Cancel: this cannot be undone and there is
+  // no backup, so it should take more than a reflex click.
+  const typed = prompt(
+    `This permanently deletes all ${convs.length} conversations.\n` +
+    `It cannot be undone.\n\nType DELETE to confirm.`);
+  if (typed !== 'DELETE') { setHistoryStatus('Cancelled — nothing was deleted.'); return; }
+
+  const btn = document.getElementById('clear-history');
+  btn.disabled = true;
+  let done = 0, failed = 0;
+  for (const c of convs) {
+    try {
+      const r = await fetch('/api/conversations/' + c.id, { method: 'DELETE' });
+      r.ok ? done++ : failed++;
+    } catch (e) { failed++; }
+    // Progress, and the list refreshed AS IT GOES, so the sidebar can never
+    // show conversations that no longer exist.
+    setHistoryStatus(`Deleting… ${done} of ${convs.length}`);
+    if (done % 10 === 0) await loadConversations();
+  }
   activeConversationId = null;
   messagesEl.innerHTML = '';
   await loadConversations();
-  setHistoryStatus('All conversations deleted.');
+  btn.disabled = false;
+  setHistoryStatus(failed
+    ? `Deleted ${done} conversation${done === 1 ? '' : 's'}; ${failed} could not be deleted.`
+    : `Deleted ${done} conversation${done === 1 ? '' : 's'}. Your history is now empty.`);
 };
 
 /* ── boot ─────────────────────────────────────────────────────────────────── */
