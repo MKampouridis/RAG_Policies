@@ -128,7 +128,9 @@ p90 total is 28.2s; worst observed 84s.
 
 **Why this matters more than the raw numbers suggest:** everything here is lazily initialised on first use, and the server is under launchd `KeepAlive`, so every restart resets it. Only 14% of my *logged* requests were cold — but I am a heavy user. **An alpha tester asking two questions a day is cold essentially every time**, so the experience I've measured as "9.8s median" would be ~28s for them.
 
-The obvious fix — issue one dummy retrieval in a background thread at startup — is **not yet built or measured**, and I'd rather hear whether it's the right first move than assume it.
+**Since writing this I built and measured the fix** — one throwaway retrieval in a daemon thread at startup: **first query 16.97s → 3.40s** (6 fresh processes, arms alternated, spread 0.4s), server still serving in 0.4ms while it warms, results identical. So the cold case is largely solved and **the warm 9.8s — of which 6.8s is one cloud generation call — is now the whole problem.**
+
+**There is a companion prompt dedicated to latency** (`docs/review_prompt_round7_latency.md`) with the full breakdown, what's already been ruled out, and specific questions. If latency is your area, use that one.
 
 ## 10. Ops failures I'd like judged
 
@@ -154,7 +156,7 @@ The obvious fix — issue one dummy retrieval in a background thread at startup 
 
 7. **The partner trade-off in §5** — right call or wrong?
 
-8. **Latency (§9) — how would you attack this?** Specifically: (a) is startup pre-warming the right first move, or is there a better structural answer (persistent warm process, pinning the ColBERT model, a lighter reranker for the first call, `torch.compile`/quantisation of the ColBERT encoder, serialising the BM25 index instead of rebuilding it)? (b) With the system warm, **6.8s of the 9.8s is one cloud generation call** — is streaming the answer token-by-token the honest fix (perceived latency, no real saving), or is there a real one that doesn't cost answer quality? (c) Is my warm/cold split the right way to characterise this at all, or is it hiding something — e.g. should I be reporting the distribution a *new* user actually experiences rather than a median over my own usage?
+8. **Latency (§9).** The cold case is now fixed; the warm 9.8s is not, and 6.8s of it is one cloud generation call. Full treatment and specific questions are in the companion prompt `docs/review_prompt_round7_latency.md` — answer there if this is your area.
 
 9. **Single highest-expected-value thing left, and what to STOP.** Round 6 asked this and the answer was "clarification UX"; I've since declined it. If the honest answer is "this is done, stop optimising and get it in front of users," say so — the real blockers now are hosting and per-user separation, not retrieval.
 
