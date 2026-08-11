@@ -103,7 +103,7 @@ def score_retrieval(expected_url: str, retrieval_query: str, ranked_top_urls: li
             break
     return {
         "rank": rank,
-        "hit_at_6": rank is not None,
+        "hit_at_6": rank is not None and rank <= 6,
         "reciprocal_rank": (1.0 / rank) if rank else 0.0,
         "top_urls": ranked_top_urls,
         "retrieval_query": retrieval_query,

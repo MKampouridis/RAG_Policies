@@ -836,6 +836,17 @@ _PARTNER_NAME_TOKENS = (
     "north west", "alexandria", "partner institution", "partner-institution",
 )
 
+# Substring matching on these tokens fired on ordinary governance vocabulary:
+# "eput" is inside *deputy* and *reputation*, "sak" inside *for the sake of*.
+# Each false positive silently switched PARTNER_EXCLUDE_WHEN_UNNAMED OFF, and
+# because the gate reads the whole conversation, one "deputy" disabled
+# exclusion for the rest of it. In a corpus of university governance documents
+# "deputy" is not a rare word. Word-boundary matching, compiled once at import.
+# Multi-word tokens keep internal spaces; \b works at both ends regardless.
+_PARTNER_NAME_RE = re.compile(
+    r"\b(?:" + "|".join(re.escape(t) for t in _PARTNER_NAME_TOKENS) + r")\b"
+)
+
 
 def _names_partner_institution(query: str, history: list[dict] | None = None) -> bool:
     """Checks the CONVERSATION, not just this turn. Measured: the Tavistock
@@ -850,7 +861,7 @@ def _names_partner_institution(query: str, history: list[dict] | None = None) ->
         if m.get("role") == "user" and m.get("content"):
             haystacks.append(m["content"])
     low = " ".join(haystacks).lower()
-    return any(tok in low for tok in _PARTNER_NAME_TOKENS)
+    return _PARTNER_NAME_RE.search(low) is not None
 
 
 def _exclude_partner_institutions(results: dict) -> dict:

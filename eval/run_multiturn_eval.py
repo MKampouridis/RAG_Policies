@@ -54,7 +54,7 @@ def run_conversation(conv_spec: dict) -> dict:
             "expected_source_url": expected_url,
             "retrieval_query": api_result["retrieval_query"],
             "rank": rank,
-            "hit_at_6": rank is not None,
+            "hit_at_6": rank is not None and rank <= 6,
             "ranked_top_urls": ranked_top_urls,
             "answer": api_result["answer"],
             "keyphrase_coverage": keyphrase_coverage(api_result["answer"], turn.get("expected_keyphrases", [])),

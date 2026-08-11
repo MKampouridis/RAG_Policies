@@ -4330,3 +4330,90 @@ racing threads: no deadlock, no duplicate load, one model instance.
 Only the COLD case moves. Warm latency is unchanged and is dominated by the
 cloud generator (6.8s of 9.8s) - pre-warming cannot touch it. A user who asks
 within ~18s of a restart still races the warmup rather than benefiting from it.
+
+## Round 13 — External review: what was verified, and one finding of my own (2026-08-11)
+
+Four models reviewed rounds 7-12. Every checkable claim was verified against
+code and data rather than accepted.
+
+### CONFIRMED - real defects
+
+**1. `hit@6` did not cap at 6.** `run_eval.py` and `run_multiturn_eval.py`
+scored `hit_at_6: rank is not None`, scanning the WHOLE `ranked_top_urls` list.
+Since 2026-08-10 that list is no longer 6 long (adjacent expansion appends up to
+2, multi-entity up to 14). `retrieval_replay.py:106` had it right (`rank <= 6`)
+- the harnesses disagreed with each other.
+
+Actual damage, re-derived from stored `rank` fields without re-running:
+**7 false hits, all in `results_o5_reversed_set5_multientity.json`** (ranks 7-10
+scored True); that file's hit@6 goes **15 -> 8 of 20**. No other result file is
+affected. Round 8j/8o's chunk-order conclusion rests on judge means, not hit@6,
+so it stands.
+
+Also confirmed: the adjacent-chunk A/B was **unfair by construction** - the OFF
+arm's lists are exactly 6 URLs, the ON arm's are 7-9, so the ON arm had extra
+slots to hit in. No hit landed beyond rank 6, so the reported delta is
+unchanged, but the comparison was not like-for-like and I could not have seen it.
+
+**2. `_names_partner_institution` matched unbounded substrings.** `"eput"` is
+inside *deputy* and *reputation*; `"sak"` inside *for the sake of*. Verified
+live: "Who is the Deputy Dean?", "the deputy chair", "for the sake of clarity"
+and "University reputation policy" ALL triggered partner mode, each silently
+switching `PARTNER_EXCLUDE_WHEN_UNNAMED` off - and since the gate reads the
+whole conversation, one "deputy" disabled exclusion for the rest of it. Fixed
+with a word-boundary regex compiled at import; 4/4 false positives gone, 8/8
+true positives kept.
+
+### NOT CONFIRMED
+
+`FETCH_POOL_MULTIPLIER=4` "costs quality" was challenged as unsupported by
+`fetch_pool_sweep_result.json` (124/160 at both 8 and 4). Correct about that
+file - but the claim came from **stage 2**, an 80-question end-to-end run
+(`results_pool4.json`, commit fc1bf45): primary hit@6 80.0% -> 77.5%, mean
+4.05 -> 3.91. The two-stage protocol exists precisely because stage 1 was blind
+to it. Caveat now recorded: those deltas are small, and the hit@6 difference is
+one turn.
+
+### MY OWN ERROR, which shaped three of the four reviews
+
+I reported "0.76s to ColBERT-encode one short query" in the latency prompt.
+**Wrong: warm steady-state is 19ms.** The 0.76s was the FIRST encode - the
+torch/MPS warmup already counted in the cold budget. I double-counted it, and
+three reviewers built device/dtype/`pylate-rs`/quantisation recommendations on
+a number that does not exist in the warm path.
+
+### THE ACTUAL WARM BOTTLENECK - not what anyone (including me) said
+
+Attributing a warm `retrieve()` by wrapping the hot functions:
+
+| | share of warm retrieve |
+|---|---|
+| `vector_query` (embed + Chroma) | **72-84%** |
+| `_adjacent_chunks` | 5-12% |
+| `rerank` (ColBERT encode + cache + MaxSim) | **6-13%** |
+| BM25 | 2-3% |
+
+Reranking - which every reviewer targeted - is 0.20-0.25s total. Inside
+`vector_query`, embedding is ~34ms, so the cost is the Chroma call.
+
+**And it is memory-pressure-dependent.** Chroma's filtered query
+(`where={"is_current": True}`, n=48), same process, same queries:
+
+| | |
+|---|---|
+| before `colbert_index._load()` | **81ms** |
+| after `_load()` | **2543ms** |
+
+`_load()` takes RSS 1.39GB -> 5.11GB (the Voyager index, not the model -
+`get_model()` alone changes nothing). **A 31x slowdown of dense retrieval,
+caused by the residency of an index whose only job is a rerank cache that saves
+0.2s.** On 16GB shared with Ollama this is compressed-memory thrashing.
+
+Fully hot, the cache is still net-positive (1.09s vs 1.30s with
+`RAG_COLBERT_CACHE=0`) but costs 2.6GB (4.97GB vs 2.36GB peak RSS). So warm
+latency is **bimodal in memory pressure**, which explains the 0.5-3.4s spread
+in `latency.jsonl` that I had recorded as ordinary variance.
+
+**Not yet decided.** The trade is 0.2s of rerank speed against 2.6GB of RSS
+that can cost 2.5s per query when pressure is high. Needs measuring under
+realistic pressure (browser + Ollama + server) before changing a default.
