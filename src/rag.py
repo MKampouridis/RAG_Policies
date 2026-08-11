@@ -1850,7 +1850,8 @@ def generate_title(question: str) -> str:
     return out
 
 
-def answer(question: str, history: list[dict], summary: str = "", detail: str = "default") -> tuple[str, list[str], str, list[str]]:
+def answer(question: str, history: list[dict], summary: str = "", detail: str = "default",
+           on_token=None) -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
 
     The last two are the exact retrieval this call actually used, not a
@@ -1905,14 +1906,22 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     messages.append({"role": "user", "content": f"Context:\n{context}\n\nQuestion: {question}"})
 
     _tg = _perf.time()
-    response_text = generate(messages=messages)
+    # on_token streams text to the caller as it arrives. The full text is still
+    # returned, so storage and the non-streaming callers are unchanged - there
+    # is ONE answer() and no parallel streaming implementation to drift from it.
+    response_text = generate(messages=messages, on_token=on_token)
     _stage_timer("generate", _tg)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         # variance gate: skip the "rules differ by programme" caveat when the
         # measured answer does NOT differ by programme (see the variance map).
         if not (VARIANCE_GATED_DISCLOSURE and _answer_is_programme_invariant(question)):
-            response_text += _ambiguity_disclosure(metadatas)
+            _disclosure = _ambiguity_disclosure(metadatas)
+            response_text += _disclosure
+            # it is appended, not interleaved, so a streaming caller can emit it
+            # as the final chunk and still show exactly what gets stored
+            if on_token is not None and _disclosure:
+                on_token(_disclosure)
 
     sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
     _stage_timer("answer_total", _ta)

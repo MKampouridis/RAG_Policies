@@ -1,12 +1,14 @@
 """FastAPI app: conversation + chat endpoints, serves the single-page UI."""
 
+import json
 import os
+import queue
 import threading
 import time
 from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -207,6 +209,77 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         # this it renders the truncated fallback once and never looks again.
         "title_pending": is_first_message and GENERATED_TITLES,
     }
+
+
+@app.post("/api/conversations/{conversation_id}/messages/stream")
+def api_post_message_stream(conversation_id: str, payload: NewMessage):
+    """Server-sent-events variant of the endpoint above. Same work, same
+    storage, same response fields - the only difference is that answer text
+    reaches the client as it is generated rather than after it is complete.
+
+    The non-streaming endpoint stays: the eval harness uses it, and a client
+    that cannot do SSE still works. Both call the same rag.answer().
+
+    NOTE what streaming can and cannot do here. It removes the ~7s the user
+    spent watching nothing while the generator wrote; it CANNOT remove the
+    retrieval that precedes the first token, because there is nothing to show
+    until the context exists. The `stage` events carry that phase instead.
+    """
+    if not payload.content.strip():
+        raise HTTPException(status_code=400, detail="content must not be empty")
+    if not memory.conversation_exists(conversation_id):
+        raise HTTPException(status_code=404, detail="conversation not found")
+
+    summary, history = memory.get_conversation_context(conversation_id)
+    is_first_message = not summary and not history
+    memory.add_message(conversation_id, "user", payload.content)
+    if is_first_message:
+        memory.update_title(conversation_id, payload.content[:60])
+    history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
+
+    q: "queue.Queue[tuple[str, object]]" = queue.Queue()
+
+    def work() -> None:
+        try:
+            q.put(("stage", "retrieving"))
+            result = rag_answer(
+                payload.content, history_for_prompt, summary, detail=payload.detail,
+                on_token=lambda t: q.put(("token", t)),
+            )
+            answer_text, sources, retrieval_query, ranked_top_urls = result
+            # Store from the RETURNED text, never from the concatenated tokens:
+            # a provider that ignores on_token still returns a complete answer,
+            # and what is stored must equal what answer() produced either way.
+            memory.add_message(conversation_id, "assistant", answer_text)
+            if is_first_message:
+                _retitle(conversation_id, payload.content)
+            q.put(("done", {
+                "answer": answer_text,
+                "sources": sources,
+                "retrieval_query": retrieval_query,
+                "ranked_top_urls": ranked_top_urls,
+                "title_pending": is_first_message and GENERATED_TITLES,
+            }))
+        except Exception as exc:  # noqa: BLE001 - must reach the client as an event
+            q.put(("error", str(exc)))
+        finally:
+            q.put(("__end__", None))
+
+    threading.Thread(target=work, name="answer-stream", daemon=True).start()
+
+    def events():
+        while True:
+            kind, data = q.get()
+            if kind == "__end__":
+                return
+            yield f"event: {kind}\ndata: {json.dumps(data)}\n\n"
+
+    return StreamingResponse(
+        events(),
+        media_type="text/event-stream",
+        # nginx and friends buffer SSE by default, which would defeat the point
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 class StalenessQuery(BaseModel):

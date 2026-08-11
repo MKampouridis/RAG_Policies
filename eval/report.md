@@ -4417,3 +4417,53 @@ in `latency.jsonl` that I had recorded as ordinary variance.
 **Not yet decided.** The trade is 0.2s of rerank speed against 2.6GB of RSS
 that can cost 2.5s per query when pressure is high. Needs measuring under
 realistic pressure (browser + Ollama + server) before changing a default.
+
+## Round 14 — Streaming, and why the ColBERT cache was NOT turned off (2026-08-11)
+
+Built streaming so the answer appears as it is written instead of after a
+blocking wait. Threaded an `on_token` callback through the EXISTING
+`rag.answer()` rather than writing a second streaming implementation - there is
+one answer path and nothing to drift. The ambiguity disclosure is appended
+after generation, so it streams as a final chunk and the stored text still
+equals what the user saw.
+
+`POST /api/conversations/{id}/messages/stream` (SSE) sits beside the blocking
+endpoint, which stays: the eval harness uses it, and the UI falls back to it if
+SSE fails, so a transport problem cannot cost a user their answer. Storage is
+written from `answer()`'s RETURN value, never from concatenated tokens - a
+provider that ignores `on_token` still returns complete text.
+
+### Measured on the live server
+
+| | dead time before text appears | total |
+|---|---|---|
+| blocking | 14.86s | 14.86s |
+| streaming | **7.17s** | 14.86s |
+
+Decomposed: 5.34s retrieval + ~1.8s until the generator's first token.
+**Streaming cannot cover retrieval** - there is nothing to show until the
+context exists - so retrieval is now the whole of the remaining wait.
+
+### The cache experiment: a large win that changes answers, so NOT shipped
+
+Round 13 found Chroma's filtered query degrades 81ms -> 2543ms once
+`colbert_index._load()` puts the Voyager index resident. Tested
+`RAG_COLBERT_CACHE=0` on a live server:
+
+| | retrieve | dead time | server RSS | warmup |
+|---|---|---|---|---|
+| cache ON (production) | 5.34s | 7.17s | ~5.0GB | 16.8s |
+| cache OFF | **1.40s** | **3.3s** | **2.11GB** | 11.4s |
+
+Retrieval 3.8x faster and 2.9GB lighter, because the cache saves ~0.2s of
+reranking and costs ~3.9s of memory pressure.
+
+**Not adopted.** Retrieval results are NOT identical: on 5 probe queries, 2
+returned different document sets. The cached embeddings were computed offline
+and are not equivalent to freshly-encoded ones, so this is a retrieval-changing
+mechanism, not a config tweak. It goes through an eval like anything else.
+Recorded as the most promising latency lever measured so far, pending that.
+
+The near-miss is worth stating plainly: the latency case was strong enough that
+shipping it on those numbers alone would have been easy, and it would have
+silently changed what documents answers are based on.

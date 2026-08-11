@@ -1,6 +1,7 @@
 """Thin wrappers around the local Ollama models. Swap models by changing the
 constants below — nothing else in the codebase needs to change."""
 
+import json
 import os
 import sys
 import time
@@ -150,7 +151,72 @@ ANTHROPIC_MAX_TOKENS = int(os.environ.get("ANTHROPIC_MAX_TOKENS", "2048"))
 ANTHROPIC_THINKING = os.environ.get("ANTHROPIC_THINKING", "disabled").lower()
 
 
-def _anthropic_generate(messages: list[dict], model: str | None = None) -> str:
+_SESSION = None
+
+
+def _session():
+    """One pooled HTTPS connection instead of a fresh TCP+TLS handshake per
+    call. Every cloud request paid that handshake before; it is ~0.2-0.3s on
+    the generator and again on the contextualizer."""
+    global _SESSION
+    if _SESSION is None:
+        _SESSION = requests.Session()
+    return _SESSION
+
+
+def _anthropic_generate_stream(payload: dict, headers: dict, on_token) -> str:
+    """Streaming variant. Emits text deltas through `on_token` as they arrive
+    and still returns the complete text, so callers that also need the whole
+    answer (to store it) are unchanged.
+
+    Retries only BEFORE the first token: once text has reached the user,
+    replaying the request would duplicate what they have already read.
+    """
+    payload = dict(payload, stream=True)
+    emitted = False
+    for attempt in range(6):
+        with _session().post(
+            "https://api.anthropic.com/v1/messages",
+            headers=headers, json=payload, stream=True, timeout=120,
+        ) as resp:
+            if resp.status_code in (429, 529) and not emitted:
+                raw = resp.headers.get("retry-after")
+                try:
+                    wait = float(raw) if raw else min(2 ** attempt, 30)
+                except ValueError:
+                    wait = min(2 ** attempt, 30)
+                time.sleep(min(wait + 0.5, 30))
+                continue
+            if not resp.ok:
+                raise RuntimeError(
+                    f"anthropic generator HTTP {resp.status_code}: {resp.text[:500]}"
+                )
+            parts: list[str] = []
+            for line in resp.iter_lines(decode_unicode=True):
+                if not line or not line.startswith("data:"):
+                    continue
+                try:
+                    evt = json.loads(line[5:].strip())
+                except ValueError:
+                    continue
+                kind = evt.get("type")
+                if kind == "content_block_delta":
+                    delta = evt.get("delta") or {}
+                    # text_delta only - thinking_delta must never reach the user
+                    if delta.get("type") == "text_delta" and delta.get("text"):
+                        parts.append(delta["text"])
+                        emitted = True
+                        on_token(delta["text"])
+                elif kind == "error":
+                    raise RuntimeError(f"anthropic stream error: {evt.get('error')}")
+                elif kind == "message_delta":
+                    if (evt.get("delta") or {}).get("stop_reason") == "refusal":
+                        return "I can't answer that from the provided documents."
+            return "".join(parts)
+    raise RuntimeError("anthropic generator rate-limited/overloaded after retries")
+
+
+def _anthropic_generate(messages: list[dict], model: str | None = None, on_token=None) -> str:
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
         raise RuntimeError("anthropic provider selected but ANTHROPIC_API_KEY is empty")
@@ -176,8 +242,10 @@ def _anthropic_generate(messages: list[dict], model: str | None = None) -> str:
         "anthropic-version": "2023-06-01",
         "content-type": "application/json",
     }
+    if on_token is not None:
+        return _anthropic_generate_stream(payload, headers, on_token)
     for attempt in range(6):
-        resp = requests.post(
+        resp = _session().post(
             "https://api.anthropic.com/v1/messages", headers=headers, json=payload, timeout=120
         )
         # 429 = rate limited, 529 = overloaded; both are retryable per Anthropic's docs
@@ -280,13 +348,18 @@ def contextualize_chat(messages: list[dict], model: str | None = None) -> str:
     return chat(messages=messages, model=model or CONTEXTUALIZE_MODEL)
 
 
-def generate(messages: list[dict]) -> str:
+def generate(messages: list[dict], on_token=None) -> str:
     """Answer-generation call. Routes to a cloud generator when
     GENERATOR_PROVIDER is set (else the local CHAT_MODEL via chat()). Kept
     separate from chat() so ONLY answer generation moves to the cloud while the
-    contextualizer/judge/etc. stay local and free."""
+    contextualizer/judge/etc. stay local and free.
+
+    `on_token` streams text deltas as they arrive and is honoured only by the
+    Anthropic path. Other providers ignore it and return the whole answer at
+    once - callers must not assume streaming happened, only that the return
+    value is complete either way."""
     if GENERATOR_PROVIDER == "anthropic":
-        return _anthropic_generate(messages)
+        return _anthropic_generate(messages, on_token=on_token)
     if not GENERATOR_PROVIDER:
         # local generation: the 14B production generator (LOCAL_GENERATOR_MODEL),
         # or a GENERATOR_MODEL override. CHAT_MODEL (7B) is untouched so the

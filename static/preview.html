@@ -1165,14 +1165,22 @@ async function send(text) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 
   try {
-    const result = await fetchJSON(`/api/conversations/${activeConversationId}/messages`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      // detail level travels with the message: there is no account to store
-      // it against, and it must apply to the very next answer
-      body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
-    });
+    // Streamed, so text appears as it is written instead of after ~7s of
+    // nothing. Falls back to the blocking endpoint if SSE fails for any
+    // reason - a streaming transport problem must not cost the user an answer.
+    let result;
+    try {
+      result = await sendStreaming(text, pending);
+    } catch (streamErr) {
+      console.warn('stream failed, falling back to blocking request', streamErr);
+      result = await fetchJSON(`/api/conversations/${activeConversationId}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
+      });
+    }
     pending.remove();
+    if (streamedEl) { streamedEl.remove(); streamedEl = null; }
     renderAssistant(result.answer, result.sources, {
       question: text,
       retrieval_query: result.retrieval_query,
@@ -1192,6 +1200,63 @@ async function send(text) {
   } finally {
     setSending(false);
   }
+}
+
+
+/* ── streaming ────────────────────────────────────────────────────────────
+   Reads the SSE endpoint and paints tokens as they arrive. The final `done`
+   event carries the same JSON the blocking endpoint returns, so the caller
+   re-renders from that: the streamed element is a PREVIEW, and the answer the
+   user ends up with is always the stored one, formatted the normal way. */
+let streamedEl = null;
+
+async function sendStreaming(text, pending) {
+  const res = await fetch(`/api/conversations/${activeConversationId}/messages/stream`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
+  });
+  if (!res.ok || !res.body) throw new Error('stream unavailable (' + res.status + ')');
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = '', done = null, failed = null;
+
+  while (true) {
+    const { value, done: finished } = await reader.read();
+    if (finished) break;
+    buf += decoder.decode(value, { stream: true });
+    // SSE frames are separated by a blank line; keep any partial tail in buf
+    const frames = buf.split('\n\n');
+    buf = frames.pop();
+    for (const frame of frames) {
+      let event = 'message', data = '';
+      for (const line of frame.split('\n')) {
+        if (line.startsWith('event:')) event = line.slice(6).trim();
+        else if (line.startsWith('data:')) data += line.slice(5).trim();
+      }
+      if (!data) continue;
+      let parsed;
+      try { parsed = JSON.parse(data); } catch { continue; }
+      if (event === 'token') {
+        if (!streamedEl) {
+          pending.remove();
+          streamedEl = document.createElement('div');
+          streamedEl.className = 'msg-assistant';
+          messagesEl.appendChild(streamedEl);
+        }
+        streamedEl.textContent += parsed;
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+      } else if (event === 'done') {
+        done = parsed;
+      } else if (event === 'error') {
+        failed = parsed;
+      }
+    }
+  }
+  if (failed) throw new Error(failed);
+  if (!done) throw new Error('stream ended without a result');
+  return done;
 }
 
 /* ── mobile drawer ────────────────────────────────────────────────────────── */
