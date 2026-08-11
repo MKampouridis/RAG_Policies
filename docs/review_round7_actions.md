@@ -10,6 +10,8 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
+**Progress:** 21 of 94 resolved (15 done, 4 rejected-with-reason, 2 moot). Phases 1-2 complete; see `eval/report.md` Rounds 13-15 for the measurements.
+
 ---
 
 ## 1. Correctness defects
@@ -59,10 +61,10 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 29 | **Paired diff + bootstrap CI + win/tie/loss** instead of comparing two means. Opus ran it on my adj0/adj1: mean **+0.000**, **20 of 26 turns unchanged** | O,G,C,D | OPEN — **highest value, ~1h, zero compute** |
-| 30 | Report "turns changed" beside every mean | O | OPEN |
-| 31 | Build `eval/compare.py` | O | OPEN |
-| 32 | Stop saying "confirmed no harm" — say "failed to detect harm >0.2" | O | OPEN (wording, real) |
+| 29 | **Paired diff + bootstrap CI + win/tie/loss** instead of comparing two means | O,G,C,D | **DONE** — `eval/compare.py`. Re-analysed Round 8p: mean +0.050, CI [-0.250,+0.350], **3 win / 14 tie / 3 loss** |
+| 30 | Report "turns changed" beside every mean | O | **DONE** — printed by default; 6 of 20 for Round 8p |
+| 31 | Build `eval/compare.py` | O | **DONE** — both `score` and `hit_at_6` modes |
+| 32 | Stop saying "confirmed no harm" | O | **DONE** — retracted in Round 15; the tool now prints the distinction so it is not left to prose |
 | 33 | Evaluate the ~8 turns a mechanism CAN change, binary, not a 20-turn mean | O | OPEN |
 | 34 | Core regression set 100–150, stratified by question type | C,G,D | OPEN |
 | 35 | Targeted failure set (10–30) per mechanism | C | OPEN |
@@ -77,7 +79,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 44 | Use feedback only to author test cases, never tune against the log | G | OPEN |
 | 45 | Eval harness should refuse to run without the deterministic env var | D | OPEN |
 | 46 | Config schemas (`.env.eval` / `.env.prod`) rather than a port-collision guard | G | OPEN |
-| 47 | Adjacent-chunk: shipped config ≠ tested config — call it "accepted low-risk", not validated | C | OPEN (wording, correct) |
+| 47 | Adjacent-chunk: shipped config ≠ tested config — "accepted low-risk", not validated | C | **DONE** — Round 15 restates it as a targeted decision on a named failure case, not a measured improvement |
 
 ## 5. Latency
 
