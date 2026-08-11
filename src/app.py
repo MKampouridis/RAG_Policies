@@ -67,6 +67,13 @@ def api_sources(payload: SourceLookup):
     return ingest.passages_for_documents(urls, payload.question or "")
 
 
+@app.get("/drafts")
+def drafts_index():
+    """Static landing-page drafts for design review (2026-08-11). No JS, no
+    backend calls - they exist to be looked at, not used."""
+    return FileResponse(STATIC_DIR / "drafts" / "index.html")
+
+
 @app.get("/api/conversations")
 def api_list_conversations():
     return memory.list_conversations()
