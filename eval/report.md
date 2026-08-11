@@ -4748,3 +4748,62 @@ the 7 qualifying circumstances by my keyword markers. The markers are guesses,
 so this is not evidence of a regression - but it is consistent with Round 8p's
 finding that the seven-item list splits across chunks, and it is identical in
 both arms.
+
+## Round 21 — The misses, finally classified (2026-08-11)
+
+Every retrieval mechanism this project has tried against its residual misses
+has been a RANKER, and every one was falsified. That is only the right family
+of fix if the gold document is IN the candidate pool. Nobody had checked.
+
+`eval/far_miss_taxonomy.py` sweeps `FETCH_POOL_MULTIPLIER` UPWARD - it had only
+ever been swept down (8, 4, 2) - and asks, for each of the 39 document-level
+misses in the 160-turn replay, whether the gold enters the pool at 8x, 16x or
+32x.
+
+| verdict | n | share | meaning |
+|---|---|---|---|
+| **RANKING** | 23 | **59%** | already in the pool at 8x; a ranker could in principle fix it |
+| POOL_SIZE | 4 | 10% | enters only at 16x/32x (depths 95-292) - recall, not ranking |
+| **REPRESENTATION** | 12 | **31%** | never enters at ANY size tested; no reranker can help |
+
+### The finding worth acting on
+
+Pool depths for the RANKING class: **1, 1, 1, 4, 6, 7, 7, 10, 12, 13, 17, ...**
+
+**Five turns have the gold in the pool's top 6 - three of them at depth 1 - and
+it is still absent from the final top 6.** The fused dense+BM25 list ranks the
+correct document FIRST and the ColBERT rerank pushes it out. Examples:
+
+- "What does the University of Essex Rules of Assessment cover regarding the
+  final award?" -> `ug-principles-and-framework.pdf` at depth 1
+- "What types of classifications are available...?" -> same document, depth 1
+- Professional Doctorate Trust-visit follow-up -> depth 1
+
+This is not a recall problem, a pool problem, or an embedding problem. On these
+turns the reranker is actively demoting the right answer.
+
+### And 31% cannot be fixed by ranking at all
+
+The REPRESENTATION class is dominated by GENERAL policy documents against
+generic queries - academic offences, fitness to practise, professional
+doctorate codes of practice - several phrased "according to the document",
+i.e. questions generated FROM a document that contain none of its distinctive
+vocabulary. Neither dense nor BM25 puts them near the query at 32x pool size.
+
+That retroactively explains a large part of the falsified list: roughly a third
+of the misses were never reachable by any reranker, so experiments aimed there
+could only ever move the other two thirds.
+
+### Scope, stated precisely
+
+This classifies all 39 DOCUMENT-level misses in the replay set. It is NOT the
+same population as Round 8p's chunk-level "11% far from anything retrieved",
+which was about where answer-bearing CHUNKS sit within retrieved documents. The
+two must not be conflated; this one is about whether the document is reachable
+at all.
+
+**No mechanism built off this yet, deliberately.** The reviewers' unanimous
+advice was to diagnose before building, and the diagnosis has just changed what
+the target looks like: the highest-value lead is now "why does the reranker
+demote a depth-1 document", which is a different question from every ranker
+swap already falsified.
