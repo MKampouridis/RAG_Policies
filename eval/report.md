@@ -4807,3 +4807,43 @@ advice was to diagnose before building, and the diagnosis has just changed what
 the target looks like: the highest-value lead is now "why does the reranker
 demote a depth-1 document", which is a different question from every ranker
 swap already falsified.
+
+## Round 22 — RETRACTION: the "reranker demotes depth-1 documents" claim (2026-08-11)
+
+Round 21 said, of the five misses whose gold sat in the candidate pool's top 6:
+*"On these turns the reranker is actively demoting the right answer."*
+
+**That was asserted without reading the chunks, and it is wrong for four of the
+five.** Inspecting each:
+
+| # | gold, pool depth | what the depth-N chunk actually contains | verdict |
+|---|---|---|---|
+| 1 | `roa-ug-glossary.pdf`, 4 | the literal definition: *"Capped Mark ... the maximum mark that will be recorded for the Module Aggregate is 40"* | **GENUINE reranker failure** |
+| 2 | `ug-principles-and-framework.pdf`, 1 | contents/intro: *"What are the Rules of Assessment? 1.2. The Rules of Assessment describe what y..."* | marginal |
+| 3 | `ug-principles-and-framework.pdf`, 1 | **the TITLE PAGE** (chunk_index=0), no answer content at all | **hit@6 artefact - the reranker was right** |
+| 4 | `...professional-doctorates-tavistock.pdf`, 1 | irrelevant: gold is a PARTNER edition and the query does not name the partner | **partner exclusion, not the reranker** |
+| 5 | `roa-ug-foundation-year-variations.pdf`, 6 | a section header for the Language/Linguistics rules | reranker served the dedicated `roa-ug-mlang-year-1.pdf` instead - arguably better |
+
+Case 3 is the instructive one. The gold document enters the pool **only via its
+title page**, and the reranker correctly preferred a chunk that actually
+answers ("Classification Requirement to achieve this Classification"). hit@6
+scores that turn a MISS while the user plausibly got a better answer. Case 4 is
+`PARTNER_EXCLUDE_WHEN_UNNAMED` doing exactly what Round 8r decided it should,
+verified directly (gate returns False, gold is a partner document).
+
+**So the corrected count is one clear reranker failure, not five.** The pattern
+in that one case is worth naming: a DEFINITIONAL glossary entry lost to
+topically-similar PROCEDURAL text about capping. n=1, so it is a lead, not a
+finding.
+
+### Why this happened, since it is the ledger's recurring failure
+
+The pool-depth numbers were real and I explained them before looking at the
+chunks. Depth 1 *sounds* like "the retriever knew the answer and the reranker
+threw it away"; it can equally mean "the document's front matter matched". The
+check cost one script and four minutes.
+
+CLAUDE.md's first rule is to state causal explanations as hypotheses until
+measured. Round 21's decomposition stands - 59% ranking / 10% pool size / 31%
+unreachable is unaffected - but its interpretation of the shallow cases is
+withdrawn.
