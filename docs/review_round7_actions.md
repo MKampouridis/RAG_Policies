@@ -134,7 +134,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 81 | **Classify the misses before any new mechanism** | C | **DONE** — and it changed the target: 5 turns have gold at pool depth ≤6 (three at depth 1) yet absent from the final top 6, i.e. the reranker demotes it |
+| 81 | **Classify the misses before any new mechanism** | C | **DONE** — 59% ranking / 10% pool-size / **31% never enter the pool**. The follow-up "reranker demotes depth-1 docs" reading was **RETRACTED** (Round 22): 4 of 5 were a title-page artefact, partner exclusion, or a better document served |
 | 82 | Run `gold_multiplicity.py` on the FAR subset — some isn't fixable, remove from denominator | O | OPEN |
 | 83 | RM3 pseudo-relevance feedback on the BM25 channel only | O | OPEN |
 | 84 | Document-level rerank: group pool by document, score by aggregated top-3 chunk MaxSim | D | OPEN |
