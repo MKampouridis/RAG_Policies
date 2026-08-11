@@ -50,14 +50,25 @@ class SourceLookup(BaseModel):
 
 @app.get("/")
 def index():
-    return FileResponse(STATIC_DIR / "index.html")
+    """The redesigned UI is now the default (2026-08-11). The previous one is
+    still served at /classic rather than deleted: it is the interface that has
+    actually been used daily, and a one-word URL change is a faster way back
+    than a git checkout if something here turns out to be wrong."""
+    return FileResponse(STATIC_DIR / "preview.html")
 
 
 @app.get("/preview")
 def preview():
-    """Redesigned UI, served alongside the existing one at / so the daily-use
-    page is never in the way of design work."""
+    """Kept as an alias so existing bookmarks and any of the user's open tabs
+    keep working after the swap."""
     return FileResponse(STATIC_DIR / "preview.html")
+
+
+@app.get("/classic")
+def classic():
+    """The original UI. Fully functional, not a snapshot - it shares the same
+    backend, conversations and history as the page at /."""
+    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.post("/api/sources")
