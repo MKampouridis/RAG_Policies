@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 51 of 94 resolved (38 done, 6 rejected/null/falsified-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-6 complete, Phase 7 partial; measurements in `eval/report.md` Rounds 13-24.
+**Progress:** 57 of 94 resolved (43 done, 7 rejected/null/falsified-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-26.
 
 ---
 
@@ -26,10 +26,10 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 6 | `_adjacent_chunks` does 2 Chroma round-trips | O | **DONE** — single `$or` query |
 | 7 | `_adjacent_chunks` uses a metadata scan | O | **DONE via #6** — one scan instead of two; rows verified rather than trusted by position |
 | 8 | No assertion that an adjacent chunk belongs to the same document | D | **DONE** — each row checked against the requested (url, index) set |
-| 9 | With 11 aliases the entity budget leaves only 3 of 14 slots for base ranking | O | OPEN |
+| 9 | Entity budget leaves only 3 of 14 slots for base ranking | O | **INSTRUMENTED, not changed** — #10 now logs fill per entity; changing the budget moves retrieval and needs the 151-question set first |
 | 10 | Multi-entity budget can starve genuine docs — log per-entity candidate counts | D | OPEN |
 | 11 | Conversation summarisation race | C | **DONE** — per-conversation lock; 4 concurrent calls summarise **once** |
-| 12 | Mid-stream cloud failure may leave the conversation inconsistent | D | OPEN |
+| 12 | Mid-stream failure leaves the conversation inconsistent | D | **DONE** — and it found a bug in MY streaming fallback: the question could be stored twice. Retry is now allowed only before the first SSE byte |
 | 13 | `FETCH_POOL_MULTIPLIER=4` "costs quality" unsupported | O | **REJECTED** — came from stage-2 e2e run (fc1bf45), not the sweep file |
 
 ## 2. Security, data safety, multi-user
@@ -67,10 +67,10 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 31 | Build `eval/compare.py` | O | **DONE** — both `score` and `hit_at_6` modes |
 | 32 | Stop saying "confirmed no harm" | O | **DONE** — retracted in Round 15; the tool now prints the distinction so it is not left to prose |
 | 33 | Evaluate the ~8 turns a mechanism CAN change, binary, not a 20-turn mean | O | OPEN |
-| 34 | Core regression set 100–150, stratified by question type | C,G,D | OPEN |
+| 34 | Core regression set 100–150, stratified | C,G,D | **DONE** — `eval/questions_regression.json`, **151 questions / 302 turns**, built by `build_regression_set.py`; thin strata reported on every run |
 | 35 | Targeted failure set (10–30) per mechanism | C | **STARTED** — `eval/partner_multientity_probe.py` is the first; built because 3 existing instruments were blind to the defect |
 | 36 | Canary set (~50) that must never regress | C | OPEN |
-| 37 | Decouple retrieval eval (deterministic, £0) from generation eval | G,D | OPEN |
+| 37 | Decouple retrieval eval from generation eval | G,D | **ALREADY TRUE** — `retrieval_replay.py` scores hit@6 with no generation or judging; used throughout Rounds 13-21 |
 | 38 | Cloud smoke set ~12 turns × n=3, report **rates** not mean judge scores | O | OPEN |
 | 39 | Periodic shadow eval (20 q) on production config | D | OPEN |
 | 40 | Human-calibrate the judge on ~30 questions | C | OPEN |
