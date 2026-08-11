@@ -1280,12 +1280,14 @@ document.getElementById('clear-history').onclick = async () => {
   catch (e) { setHistoryStatus('Could not read history — nothing was deleted.'); return; }
   if (!convs.length) { setHistoryStatus('There is no history to clear.'); return; }
 
-  // Type-to-confirm rather than OK/Cancel: this cannot be undone and there is
-  // no backup, so it should take more than a reflex click.
-  const typed = prompt(
-    `This permanently deletes all ${convs.length} conversations.\n` +
-    `It cannot be undone.\n\nType DELETE to confirm.`);
-  if (typed !== 'DELETE') { setHistoryStatus('Cancelled — nothing was deleted.'); return; }
+  // OK/Cancel confirm. The count is in the message so the dialog states what
+  // is actually at stake rather than asking abstractly.
+  if (!confirm(
+        `Delete all ${convs.length} conversation${convs.length === 1 ? '' : 's'}?\n\n` +
+        `This cannot be undone.`)) {
+    setHistoryStatus('Cancelled — nothing was deleted.');
+    return;
+  }
 
   const btn = document.getElementById('clear-history');
   btn.disabled = true;
