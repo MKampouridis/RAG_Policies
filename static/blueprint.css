@@ -20,6 +20,8 @@
   --color-accent: #622567;
   --color-accent-2: #792259;
   --color-divider: #e6e6e6;
+  /* essex.ac.uk's lime keyline, used under the purple header bar. */
+  --lime: #bed600;
 
   --color-neutral-100: #f6f6f6;
   --color-neutral-200: #eaeaea;
@@ -95,6 +97,7 @@
     --color-accent: #c07fc6;
     --color-accent-2: #cf8fb4;
     --color-divider: #393939;
+    --lime: #a8bd00;   /* slightly deepened so it does not glare on dark */
 
     --color-neutral-100: #252525;
     --color-neutral-200: #2f2f2f;
