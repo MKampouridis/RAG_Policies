@@ -1238,6 +1238,10 @@ def _stage_timer(stage: str, started: float) -> None:
 # target case is one real user question plus one control - thin, and recorded
 # as thin. A multi-entity question set is the outstanding follow-up.
 MULTI_ENTITY_RETRIEVAL = os.environ.get("RAG_MULTI_ENTITY_RETRIEVAL", "1") == "1"
+# Flag-gated so the fix can be A/B'd. retrieval_replay CANNOT measure it: 0 of
+# its 160 turns name >=2 departments, so that harness reports "no change" for a
+# defect it structurally cannot see. Measured on sets 5 and 6 instead.
+MULTI_ENTITY_PARTNER_RECHECK = os.environ.get("RAG_MULTI_ENTITY_PARTNER_RECHECK", "1") == "1"
 MULTI_ENTITY_MIN_ENTITIES = 2
 MULTI_ENTITY_PER_ENTITY = 2      # chunks reserved per named department
 MULTI_ENTITY_MAX_RESULTS = 14    # hard ceiling on the widened result set
@@ -1562,6 +1566,16 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         _entities = detect_departments(retrieval_query)
         if len(_entities) >= MULTI_ENTITY_MIN_ENTITIES:
             results = _multi_entity_results(retrieval_query, _entities, results, pool_size)
+            # The per-entity retrievals inside _multi_entity_results are FRESH
+            # vector_query calls filtered only on is_current/department, so they
+            # re-admit partner chunks that were excluded from `candidates`
+            # above. Without this, any question naming >=2 departments quietly
+            # bypassed the exclusion, and _demote_partner_institutions below
+            # only reorders what is already there. Re-applied to the MERGED
+            # result (external review, 2026-08-11).
+            if (MULTI_ENTITY_PARTNER_RECHECK and PARTNER_EXCLUDE_WHEN_UNNAMED
+                    and not _names_partner_institution(retrieval_query, history)):
+                results = _exclude_partner_institutions(results)
 
     if MULTIHOP_DECOMPOSITION_ENABLED:
         prelim_metas = results.get("metadatas", [[]])[0]

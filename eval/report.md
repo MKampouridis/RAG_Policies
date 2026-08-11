@@ -4515,3 +4515,64 @@ The review that prompted this reported +0.000 over 26 turns for this
 comparison. That does not reproduce - the files hold 20 scored turns - but its
 conclusion (most turns unchanged, effect unresolvable) is exactly right, and
 was right for reasons the mean alone could not show.
+
+## Round 16 — Multi-entity partner leak: real, latent, and hard to exhibit (2026-08-11)
+
+External review found that `_multi_entity_results` issues FRESH retrievals after
+`_exclude_partner_institutions` has run, so partner chunks re-enter through the
+per-entity slots. Confirmed by reading the call order (rag.py ~1550-1565):
+exclusion applies to `candidates`, multi-entity runs after the rerank, and
+`_demote_partner_institutions` only reorders what is already there.
+
+### Three instruments could not see it
+
+| instrument | why it is blind |
+|---|---|
+| `retrieval_replay` (160 turns) | **0 turns name >=2 departments** |
+| set 5 (multi-entity, 10 q) | those questions surface no partner documents at all |
+| set 6 (partner, 8 q) | they NAME a partner, so the gate correctly disables exclusion |
+| 5 constructed adversarial questions | 0 partner chunks in either arm |
+
+Running any of them would have reported "no change" and been read as "the fix
+does nothing" - for a defect that is genuinely there.
+
+### Exhibiting it required finding the exposed path
+
+Per-entity retrieval filters on `department` metadata. Partner documents do not
+carry those values, so that path CANNOT return them. The exposure is the ELSE
+branch: aliases with no department metadata fall back to `where={"is_current":
+True}` alone. Exactly **three** aliases qualify - sociology, criminology,
+philosophical/historical/interdisciplinary studies.
+
+| | partner chunks served |
+|---|---|
+| fix OFF | **3** (on 3 of 4 questions) |
+| fix ON | **0** |
+
+Collateral: **0 of 23** other questions changed (sets 5 and 6, plus 5
+constructed multi-department questions).
+
+Shipped as `MULTI_ENTITY_PARTNER_RECHECK`, default on. `eval/partner_multientity_probe.py`
+is the permanent regression test, because nothing else in the eval suite can
+detect a recurrence.
+
+### The generalisable point
+
+"Ran the eval, no change" is not evidence a fix is unnecessary when the eval
+contains no case the fix applies to. The blindness has to be checked
+explicitly - here by counting how many turns even trigger the mechanism (0 of
+160) BEFORE running anything.
+
+### An unattributed -1 on the replay, recorded not buried
+
+Current code scores **121/160**, twice, byte-identical across runs (so the
+replay is deterministic and this is not noise). The Round 9 post-ingest
+baseline was 122/160. The lost turns are two "Essex Abroad / Term Abroad"
+questions whose gold is `roa-ug-3yr-year-1-variations.pdf`.
+
+**Not caused by the partner-gate fix**: neither query matches any partner token
+under the old substring rule OR the new word-boundary rule, so the gate returns
+False in both versions. The cause is somewhere in the ~6 commits between the
+Round 9 baseline and now. Not bisected - one turn in 160, and the reviewers'
+unanimous advice was to stop spending on exactly this. 121/160 is the reference
+from here.
