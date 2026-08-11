@@ -36,8 +36,8 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 14 | **No auth/ownership: `/api/conversations` returns everyone's** | O,C,G | OPEN — **precondition to sharing** |
-| 15 | Add `user_id` to the schema NOW; `WHERE id=? AND user_id=?` | C | OPEN |
+| 14 | **No auth/ownership: `/api/conversations` returns everyone's** | O,C,G | **DEFERRED BY DECISION (2026-08-11)** — single-user local machine; auth is a precondition for SHARING, not for today. Revisit before any colleague uses it |
+| 15 | Add `user_id` to the schema NOW | C | **DEFERRED BY DECISION** — follows #14. Noted that doing it later costs a migration on a DB with a data-loss history |
 | 16 | SQLite has no WAL mode → "database is locked" with 2 users | O,G,C | **DONE** — `journal_mode=WAL` verified active |
 | 17 | `busy_timeout` unset | G,C | **DONE** — 5000ms + `timeout=5.0` on connect |
 | 18 | FK declared without `ON DELETE CASCADE`; deletion is 2 manual statements | C | **REJECTED** — `with _connect()` already wraps both DELETEs in one transaction, so deletion is atomic. CASCADE needs a table rebuild on a DB with a data-loss history: cosmetic gain, real risk |
@@ -46,7 +46,8 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 21 | **Second data-loss cause still unexplained** — stop-ship until found | O | OPEN |
 | 22 | Append-only writes / backup before every destructive op | O | OPEN |
 | 23 | Feedback payload is client-asserted; derive question/answer/sources server-side from `conversation_id`+`message_id` | C | OPEN |
-| 24 | Per-user database isolation | G | OPEN |
+| 24 | Per-user database isolation | G | **DEFERRED BY DECISION** — follows #14 |
+| 24b | Server binds `0.0.0.0`, reachable at 192.168.86.103:8000 by anyone on the LAN | *(found while checking #14)* | **DECIDED 2026-08-11: leave as is** — deliberate, it is what makes the mobile UI reachable from a phone. Trusted home network. Cost stated: the exposure is real on campus/public wifi |
 | 25 | Feedback JSONL has no rotation or size cap | D | **REJECTED** — rotation already exists (`_MAX_BYTES` = 50MB, `src/feedback.py:24`) |
 
 ## 3. Provenance & auditability
