@@ -1180,7 +1180,12 @@ async function send(text) {
     try {
       result = await sendStreaming(text, pending);
     } catch (streamErr) {
-      console.warn('stream failed, falling back to blocking request', streamErr);
+      if (streamErr && streamErr.committed) {
+        // The server already stored the question; retrying would duplicate it.
+        // Surface the failure instead of quietly asking twice.
+        throw streamErr;
+      }
+      console.warn('stream failed before any work, retrying without streaming', streamErr);
       result = await fetchJSON(`/api/conversations/${activeConversationId}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1237,6 +1242,9 @@ async function sendStreaming(text, pending) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
   });
+  // Before this point the server has done nothing, so a failure here is safe to
+  // retry on the blocking endpoint. After it, the user message is already
+  // stored and retrying would store it TWICE.
   if (!res.ok || !res.body) throw new Error('stream unavailable (' + res.status + ')');
 
   const reader = res.body.getReader();
@@ -1280,8 +1288,8 @@ async function sendStreaming(text, pending) {
       }
     }
   }
-  if (failed) throw new Error(failed);
-  if (!done) throw new Error('stream ended without a result');
+  if (failed) { const e = new Error(failed); e.committed = true; throw e; }
+  if (!done) { const e = new Error('stream ended without a result'); e.committed = true; throw e; }
   return done;
 }
 

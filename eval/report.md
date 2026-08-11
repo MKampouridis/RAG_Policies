@@ -4953,3 +4953,41 @@ every run.
 
 Not yet run end-to-end - 302 turns is a long run and belongs in a deliberate
 session with production stopped, not alongside other work.
+
+## Round 26 — Entity-fill logging, and a duplicate-question bug I introduced (2026-08-11)
+
+**Per-entity fill logging (#10).** Multi-entity retrieval reserves a slot budget
+per named department, and an entity that contributes nothing looked identical
+to one that was never asked for. Each per-entity retrieval now records how many
+candidates it saw and how many slots it filled, plus a `starved` list, under
+`RAG_TIMING`. First run on a three-department question:
+
+| alias | filtered | candidates | took |
+|---|---|---|---|
+| csee | yes | 48 | 2/2 |
+| msas | yes | **3** | 2/2 |
+| psychology | yes | 16 | 2/2 |
+
+No starvation, but the asymmetry is now visible: MSAS has 3 candidates where
+CSEE has 48. That distinguishes a metadata gap from a retrieval gap, which was
+previously guesswork.
+
+**A duplicate-question bug, introduced by my own streaming fallback (#12).**
+The UI falls back to the blocking endpoint if streaming fails. Both endpoints
+store the user's message BEFORE doing any work - so a failure part-way through
+a stream meant the fallback stored the same question a second time, and the
+user would see their question twice with one answer.
+
+The fix is a boundary rather than a retry policy: everything before the first
+SSE byte is safe to retry (the server has done nothing), everything after it is
+not (the question is already committed). Errors raised after that point carry a
+`committed` flag and the client surfaces the failure instead of silently asking
+again.
+
+Verified end-to-end: one question, 12 tokens streamed, exactly
+`['user', 'assistant']` stored.
+
+Worth noting how this was found - not by testing streaming, but by working
+through a reviewer's item about mid-stream failure leaving a conversation
+inconsistent. The reviewer was describing the pre-existing code; the same
+reasoning applied to code I had written that afternoon.

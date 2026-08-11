@@ -1250,6 +1250,20 @@ RAG_TIMING = os.environ.get("RAG_TIMING", "") == "1"
 _TIMING_PATH = os.environ.get("RAG_TIMING_PATH", "data/latency.jsonl")
 
 
+def _stage_note(kind: str, payload: dict) -> None:
+    """Structured diagnostic line beside the timings. Same file, same
+    best-effort contract - instrumentation must never break a request."""
+    if not RAG_TIMING:
+        return
+    try:
+        rec = {"ts": _dt.datetime.now(_dt.timezone.utc).isoformat(),
+               "stage": kind, "seconds": None, "detail": payload}
+        with open(_TIMING_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+    except Exception:
+        pass
+
+
 # Resolved once, not per call: the imports, the mkdir and the Path construction
 # below all used to run on every stage of every request - inside the very
 # window this function exists to measure.
@@ -1335,6 +1349,7 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
     picked_docs: list[str] = []
     picked_metas: list[dict] = []
     seen: set[tuple] = set()
+    _entity_fill: list[dict] = []
 
     def take(docs, metas, limit):
         n = 0
@@ -1407,8 +1422,23 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
         # is_current is a coarse pre-filter, not a within-family ordering.
         fresh = _prefer_most_recent_year({"documents": [docs], "metadatas": [metas]})
         ranked = _rerank.rerank(retrieval_query, fresh, per_entity)
+        before = len(picked_docs)
         take(ranked.get("documents", [[]])[0], ranked.get("metadatas", [[]])[0],
              per_entity)
+        # Starvation is otherwise invisible: an entity that contributes nothing
+        # looks identical to one that was never asked for. With 11 aliases the
+        # budget already leaves only 3 of 14 slots for the base ranking, so
+        # knowing WHICH entity came up empty is the difference between a
+        # metadata gap and a retrieval gap.
+        if RAG_TIMING:
+            _entity_fill.append({"alias": alias, "filtered": bool(values),
+                                 "candidates": len(docs),
+                                 "took": len(picked_docs) - before,
+                                 "budget": per_entity})
+
+    if RAG_TIMING and _entity_fill:
+        starved = [e["alias"] for e in _entity_fill if e["took"] == 0]
+        _stage_note("multi_entity_fill", {"entities": _entity_fill, "starved": starved})
 
     # fill the remainder from the ordinary ranking
     take(base_results.get("documents", [[]])[0],
