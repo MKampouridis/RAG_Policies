@@ -4649,3 +4649,66 @@ rather than for today. Checking it did surface that the server binds `0.0.0.0`,
 so it is reachable across the LAN now rather than hypothetically; that was also
 reviewed and deliberately kept, since it is what makes the mobile UI work from
 a phone.
+
+## Round 19 — Latency backlog: two real savings, one question closed (2026-08-11)
+
+### Memoised pylate's per-query pickle load (#52)
+
+`Voyager.get_documents_embeddings()` calls `_load_documents_ids_to_embeddings()`
+unconditionally - a `pickle.load` of the whole-corpus id->embedding map, from
+disk, on EVERY query. On this index that file is 23MB.
+
+| | |
+|---|---|
+| pylate's supported call | **127.5ms** |
+| memoised (file read once) | **3.0ms** |
+| saved per query | **124.5ms** |
+
+Embeddings verified numerically identical across 30 documents before adopting.
+Falls back to pylate's own path if its internals change. The irony stands: this
+cache exists to avoid ~0.2s of encoding and was charging 0.13s to do it.
+
+### The warmup only warmed the PRIMARY path (#55)
+
+`_warmup()` calls `retrieve(query, [])` with empty history, so
+`_contextualize_query` returns early and `_identity_anchor_index()` never
+builds - a glob + `json.loads` over **1,188 files**, measured at **161ms**,
+paid by the first FOLLOW-UP after every restart. Now built directly during
+warmup rather than by faking a history, which would have run the
+contextualizer and made startup a paid cloud call.
+
+### Progress indicator (#54)
+
+The SSE endpoint already emitted a `stage` event before retrieval; the UI now
+shows "Searching the policy documents…" then "Writing the answer…". Streaming
+structurally cannot fill the pre-token retrieval wait, so naming the phase is
+the only honest thing to show there.
+
+### `max_tokens=2048` is NOT a latency lever - CLOSED (#59)
+
+Three reviewers suspected this; token logging (#58) settles it.
+
+| call | input | output | stop_reason |
+|---|---|---|---|
+| a real answer | 4,124 | 996 | **end_turn** |
+| title generation | 77 | 11 | end_turn |
+
+**0 of 2 turns reached the cap.** Output stops on its own at roughly half the
+limit, so lowering `max_tokens` would save nothing and could only truncate.
+Closed as a non-lever.
+
+Two things fall out of the same data. Generation ran ~996 output tokens in
+~10s, so **output length is the generation cost** - which makes `concise`
+(-27% output, already measured to lose no entities and no list items) worth
+about 2-3s, and it is still not the default (#61, open). And prompt caching
+needs a stable >=1024-token prefix: the system prompt is ~385 tokens and the
+retrieved context changes every turn, so there is no qualifying prefix (#60) -
+consistent with the review's reading.
+
+### What this did NOT fix
+
+Dead time before text appears is still **7.27s**, with retrieve at **4.98s**.
+The 124ms and 161ms savings are real but swamped by the memory-pressure effect
+in Round 13 (Chroma's filtered query degrading 81ms -> 2543ms once the ColBERT
+index is resident). That remains the dominant term and still needs an eval
+before it can be changed, because it moves retrieval results.

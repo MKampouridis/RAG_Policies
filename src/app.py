@@ -51,6 +51,12 @@ def _warmup() -> None:
     WARMUP_STATE["status"] = "warming"
     try:
         rag.retrieve(WARMUP_QUERY, [])
+        # retrieve() with EMPTY history never touches the follow-up path, so
+        # the first follow-up after a restart still paid for building the
+        # identity anchor index - a glob and json.loads over ~1,188 files.
+        # Built directly rather than by warming with a fake history, because
+        # that would run the contextualizer, which is a paid cloud call.
+        rag._identity_anchor_index()
     except Exception as exc:  # noqa: BLE001 - warmup is best-effort by design
         WARMUP_STATE.update(status="failed", seconds=round(time.time() - started, 1),
                             error=repr(exc)[:300])

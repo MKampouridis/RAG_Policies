@@ -1259,7 +1259,12 @@ async function sendStreaming(text, pending) {
       if (!data) continue;
       let parsed;
       try { parsed = JSON.parse(data); } catch { continue; }
-      if (event === 'token') {
+      if (event === 'stage') {
+        // The ~1-3s search happens before any token exists, so streaming
+        // cannot fill it. Naming the phase is the only honest thing to show.
+        if (parsed === 'retrieving') pending.textContent = 'Searching the policy documents…';
+      } else if (event === 'token') {
+        if (pending.textContent !== 'Writing the answer…') pending.textContent = 'Writing the answer…';
         if (!streamedEl) {
           pending.remove();
           streamedEl = document.createElement('div');

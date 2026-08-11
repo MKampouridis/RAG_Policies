@@ -8,3 +8,4 @@ __pycache__/
 .groq_key
 data/latency*.jsonl
 data/backups/
+data/usage.jsonl

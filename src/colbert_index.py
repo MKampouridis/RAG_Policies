@@ -19,6 +19,7 @@ the single canonical loader both modules call) so it's loaded once per
 process, not twice.
 """
 
+import itertools
 import json
 import threading
 from pathlib import Path
@@ -50,6 +51,7 @@ _documents = None
 _metadatas = None
 _id_to_pos = None
 _meta_key_to_pos = None
+_ids_to_embeddings = None   # memoised pylate map; see _get_documents_embeddings
 
 # Both loaders below are check-then-set on module globals. That was safe while
 # only request threads reached them and the first request was alone; the
@@ -98,6 +100,35 @@ def _load_locked() -> None:
     }
 
 
+def _get_documents_embeddings(found_ids: list) -> list:
+    """pylate's Voyager.get_documents_embeddings() calls
+    _load_documents_ids_to_embeddings() first, which is an unconditional
+    pickle.load of the WHOLE-corpus id->embedding map, from disk, on EVERY
+    call. Measured on this index: document_ids_to_embeddings.pkl is 23MB and
+    takes ~136ms to load - paid once per query, to save the ~0.2s of encoding
+    that this cache exists to avoid.
+
+    The file is immutable between index builds, so it is read once here and the
+    mapping reused. Falls back to pylate's own path if its internals change.
+    """
+    global _ids_to_embeddings
+    try:
+        if _ids_to_embeddings is None:
+            _ids_to_embeddings = _index._load_documents_ids_to_embeddings()
+        emb_ids = list(itertools.chain.from_iterable(
+            _ids_to_embeddings[doc_id] for doc_id in found_ids))
+        vectors = _index.index.get_vectors(emb_ids)
+        out, at = [], 0
+        for doc_id in found_ids:
+            n = len(_ids_to_embeddings[doc_id])
+            out.append(vectors[at:at + n])
+            at += n
+        return out
+    except Exception:
+        # any mismatch with pylate's internals: use the supported call
+        return _index.get_documents_embeddings([found_ids])[0]
+
+
 def get_cached_embeddings_by_meta(pool_metas: list[dict]) -> list | None:
     """Idea 1: for each item in pool_metas, the cached embedding if that
     exact chunk (identified by (source_url, chunk_index), which survives
@@ -117,7 +148,7 @@ def get_cached_embeddings_by_meta(pool_metas: list[dict]) -> list | None:
     if not found_ids:
         return [None] * len(pool_metas)
 
-    found_embeddings = _index.get_documents_embeddings([found_ids])[0]
+    found_embeddings = _get_documents_embeddings(found_ids)
     id_to_embedding = dict(zip(found_ids, found_embeddings))
 
     return [id_to_embedding.get(_ids[p]) if p is not None else None for p in positions]

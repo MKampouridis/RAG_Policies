@@ -151,6 +151,30 @@ ANTHROPIC_MAX_TOKENS = int(os.environ.get("ANTHROPIC_MAX_TOKENS", "2048"))
 ANTHROPIC_THINKING = os.environ.get("ANTHROPIC_THINKING", "disabled").lower()
 
 
+USAGE_PATH = os.environ.get("RAG_USAGE_PATH", "data/usage.jsonl")
+
+
+def _log_usage(data: dict) -> None:
+    """Token counts beside the generate timing. Without these, a slow turn
+    cannot be told apart from a long answer - and `max_tokens` cannot be
+    judged a latency lever without knowing whether it is ever REACHED
+    (stop_reason 'max_tokens' vs 'end_turn'). Best-effort; never breaks a
+    request."""
+    if os.environ.get("RAG_TIMING") != "1":
+        return
+    try:
+        u = data.get("usage") or {}
+        rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%S"),
+               "input_tokens": u.get("input_tokens"),
+               "output_tokens": u.get("output_tokens"),
+               "cache_read": u.get("cache_read_input_tokens"),
+               "stop_reason": data.get("stop_reason")}
+        with open(USAGE_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(rec) + "\n")
+    except Exception:
+        pass
+
+
 _SESSION = None
 
 
@@ -210,6 +234,8 @@ def _anthropic_generate_stream(payload: dict, headers: dict, on_token) -> str:
                 elif kind == "error":
                     raise RuntimeError(f"anthropic stream error: {evt.get('error')}")
                 elif kind == "message_delta":
+                    _log_usage({"usage": evt.get("usage") or {},
+                                "stop_reason": (evt.get("delta") or {}).get("stop_reason")})
                     if (evt.get("delta") or {}).get("stop_reason") == "refusal":
                         return "I can't answer that from the provided documents."
             return "".join(parts)
@@ -262,6 +288,7 @@ def _anthropic_generate(messages: list[dict], model: str | None = None, on_token
         data = resp.json()
         # A safety refusal returns HTTP 200 with stop_reason 'refusal' and no text
         # block, so indexing content[0] blindly would IndexError on a live refusal.
+        _log_usage(data)
         if data.get("stop_reason") == "refusal":
             return "I can't answer that from the provided documents."
         return "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
