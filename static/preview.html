@@ -405,14 +405,15 @@
         </div>
         <div class="set-row">
           <div>
-            <div class="t">Notify when a cited policy changes</div>
-            <div class="d text-muted">Alerts you if a document you were given as a source is later updated.</div>
+            <div class="t">When a cited policy changes</div>
+            <div class="d text-muted">
+              Always on, and shown in place rather than sent: reopening a conversation marks any
+              answer whose cited document has been updated since it was given.
+            </div>
           </div>
-          <button class="toggle" id="tg-changes" aria-pressed="false" aria-label="Notify when a cited policy changes"><span class="knob"></span></button>
         </div>
         <div class="text-muted set-note">
-          Saved on this device only. There is no notification service behind these yet, so nothing is
-          sent either way.
+          The weekly digest has no delivery service behind it yet, so nothing is sent either way.
         </div>
       </div>
 
@@ -1054,6 +1055,35 @@ async function deleteConversation(id) {
   await loadConversations();
 }
 
+/* An answer can be perfectly faithful to a rule that has since been rewritten.
+   Conversations already record what was cited (the URLs are printed in the
+   answer) and when, so this needs no per-user state and no accounts: for each
+   stored answer, ask whether any document it cited changed after that answer
+   was given. Failure is silent - a missing marker is a smaller harm than a
+   false one, which would teach people to ignore it. */
+async function markStaleAnswers(rendered) {
+  for (const r of rendered) {
+    const urls = [...new Set((r.content.match(/https?:\/\/[^\s)\]]+/g) || [])
+      .map(u => u.replace(/[.,;]+$/, '')))];
+    if (!urls.length || !r.at) continue;
+    let res;
+    try {
+      res = await fetchJSON('/api/staleness', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls, since: r.at }),
+      });
+    } catch (e) { continue; }
+    if (!res.stale || !res.stale.length) continue;
+    const warn = document.createElement('div');
+    warn.className = 'stale-warn';
+    const names = res.stale.map(s => s.title).join(', ');
+    warn.textContent = res.stale.length === 1
+      ? `The document this answer cited has been updated since: ${names}. Re-ask to get the current rule.`
+      : `${res.stale.length} documents this answer cited have been updated since: ${names}. Re-ask to get the current rules.`;
+    r.el.appendChild(warn);
+  }
+}
+
 async function openConversation(id) {
   activeConversationId = id;
   messagesEl.innerHTML = '';
@@ -1061,13 +1091,20 @@ async function openConversation(id) {
   let msgs = [];
   try { msgs = await fetchJSON(`/api/conversations/${id}/messages`); } catch (e) { msgs = []; }
   let lastUserQ = '';
+  const rendered = [];
   for (const m of msgs) {
     if (m.role === 'user') { lastUserQ = m.content; renderUser(m.content); }
     // Stored messages carry no sources: the messages endpoint returns role and
     // content only. Citations therefore appear on live answers, not on reloaded
-    // history - inventing them here is not an option.
-    else renderAssistant(m.content, null, { question: lastUserQ });
+    // history - inventing them here is not an option. The URLs printed in the
+    // answer text ARE recoverable though, which is enough for the staleness
+    // check below.
+    else {
+      const el = renderAssistant(m.content, null, { question: lastUserQ });
+      rendered.push({ el, content: m.content, at: m.created_at });
+    }
   }
+  markStaleAnswers(rendered);
   await loadConversations();
 }
 
@@ -1228,16 +1265,12 @@ function saveSettings() {
 function paintSettings() {
   for (const r of document.querySelectorAll('#detail-seg input')) r.checked = (r.value === settings.detail);
   document.getElementById('tg-digest').setAttribute('aria-pressed', settings.notifyDigest ? 'true' : 'false');
-  document.getElementById('tg-changes').setAttribute('aria-pressed', settings.notifyChanges ? 'true' : 'false');
 }
 for (const r of document.querySelectorAll('#detail-seg input')) {
   r.addEventListener('change', () => { settings.detail = r.value; saveSettings(); });
 }
 document.getElementById('tg-digest').onclick = () => {
   settings.notifyDigest = !settings.notifyDigest; saveSettings(); paintSettings();
-};
-document.getElementById('tg-changes').onclick = () => {
-  settings.notifyChanges = !settings.notifyChanges; saveSettings(); paintSettings();
 };
 paintSettings();
 

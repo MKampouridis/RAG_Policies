@@ -161,6 +161,43 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
     }
 
 
+class StalenessQuery(BaseModel):
+    urls: list[str] = []
+    since: float = 0.0
+
+
+@app.post("/api/staleness")
+def api_staleness(payload: StalenessQuery):
+    """Which of these documents changed AFTER the given timestamp.
+
+    Lets a stored answer be marked when the policy it cited has since been
+    rewritten - the case that actually matters for a policy tool, because the
+    answer can be perfectly faithful to a rule that no longer applies. Needs no
+    per-user state: the conversation already records what was cited and when.
+
+    Read-only, and silent about documents it does not know: an unknown URL is
+    reported as not-stale rather than as changed, because claiming a false
+    change would train people to ignore the marker.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    manifest_path = _Path("data/manifest.json")
+    if not manifest_path.is_file() or not payload.urls:
+        return {"stale": [], "checked": 0}
+    docs = _json.loads(manifest_path.read_text()).get("documents", {})
+    stale = []
+    for u in payload.urls:
+        rec = docs.get(u)
+        if not rec:
+            continue
+        changed = rec.get("content_changed_at")
+        if changed and payload.since and changed > payload.since:
+            stale.append({"url": u, "title": rec.get("title") or u.rsplit("/", 1)[-1],
+                          "changed_at": changed})
+    return {"stale": stale, "checked": len(payload.urls)}
+
+
 @app.post("/api/feedback")
 def api_feedback(fb: Feedback):
     if fb.rating not in ("up", "down"):
