@@ -1242,6 +1242,11 @@ MULTI_ENTITY_RETRIEVAL = os.environ.get("RAG_MULTI_ENTITY_RETRIEVAL", "1") == "1
 # its 160 turns name >=2 departments, so that harness reports "no change" for a
 # defect it structurally cannot see. Measured on sets 5 and 6 instead.
 MULTI_ENTITY_PARTNER_RECHECK = os.environ.get("RAG_MULTI_ENTITY_PARTNER_RECHECK", "1") == "1"
+# Adds the BM25 channel to per-entity retrieval. OFF until an eval justifies it
+# (the project rule that _has_extraneous_family was shipped in violation of, at
+# a cost of -8.8 points). Measured on set 5's department coverage, which is the
+# only metric this can move.
+MULTI_ENTITY_LEXICAL = os.environ.get("RAG_MULTI_ENTITY_LEXICAL", "0") == "1"
 MULTI_ENTITY_MIN_ENTITIES = 2
 MULTI_ENTITY_PER_ENTITY = 2      # chunks reserved per named department
 MULTI_ENTITY_MAX_RESULTS = 14    # hard ceiling on the widened result set
@@ -1284,7 +1289,8 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
         values = department_filter_values([alias])
         if values:
             where = {"$and": [{"is_current": True}, {"department": {"$in": values}}]}
-            res = vector_query(retrieval_query, n_results=pool_size, where=where)
+            entity_query = retrieval_query
+            res = vector_query(entity_query, n_results=pool_size, where=where)
         else:
             # No metadata for this entity, so hint it in the query text. The
             # hint must be FOCUSED: prepending the alias to the full
@@ -1299,10 +1305,34 @@ def _multi_entity_results(retrieval_query: str, aliases: list[str],
                 if other != alias:
                     focused = re.sub(re.escape(other), " ", focused, flags=re.I)
             focused = re.sub(r"[,\s]{2,}", " ", focused).strip()
-            res = vector_query(f"{alias} {focused}", n_results=pool_size,
+            entity_query = f"{alias} {focused}"
+            res = vector_query(entity_query, n_results=pool_size,
                                where={"is_current": True})
         docs = res.get("documents", [[]])[0]
         metas = res.get("metadatas", [[]])[0]
+
+        # The per-entity retrieval above is DENSE-ONLY - no BM25, no RRF - on
+        # the one query shape where exact name matching is most valuable, since
+        # the entity is named literally in the question. The ordinary path
+        # fuses both channels; these reserved slots were filled by a strictly
+        # weaker retriever (external review, 2026-08-11).
+        if MULTI_ENTITY_LEXICAL:
+            bm = lexical.query(entity_query, n_results=pool_size, current_only=True)
+            b_docs = [h[1] for h in bm]
+            b_metas = [h[2] for h in bm]
+            if values:
+                # BM25 has no department filter, so apply the same restriction
+                # the dense `where` clause applied - otherwise this channel
+                # would widen the entity slot instead of filling it.
+                keep = [i for i, m in enumerate(b_metas) if m.get("department") in values]
+                b_docs = [b_docs[i] for i in keep]
+                b_metas = [b_metas[i] for i in keep]
+            if b_docs:
+                fused = _dedup_by_chunk(_rrf_fuse(
+                    _surrogate_hits(docs, metas), _surrogate_hits(b_docs, b_metas)))
+                docs = fused.get("documents", [[]])[0]
+                metas = fused.get("metadatas", [[]])[0]
+
         if not docs:
             continue
         # Same recency pass the unfiltered path applies to its candidate pool.

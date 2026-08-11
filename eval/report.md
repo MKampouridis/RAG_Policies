@@ -4576,3 +4576,37 @@ False in both versions. The cause is somewhere in the ~6 commits between the
 Round 9 baseline and now. Not bisected - one turn in 160, and the reviewers'
 unanimous advice was to stop spending on exactly this. 121/160 is the reference
 from here.
+
+## Round 17 — BM25 in per-entity retrieval: measured NULL, left off (2026-08-11)
+
+External review: `_multi_entity_results` fills its reserved slots with a
+DENSE-ONLY retrieval - no BM25, no RRF - on the query shape where exact name
+matching should matter most, because the entity is named literally in the
+question. The ordinary path fuses both channels. Confirmed by reading the code.
+
+Implemented behind `MULTI_ENTITY_LEXICAL` (default OFF, per the rule
+`_has_extraneous_family` was shipped in violation of). BM25 has no department
+filter, so the same restriction the dense `where` applied is enforced on its
+hits - otherwise the channel would widen the entity slot rather than fill it.
+
+### Result on set 5, the only metric it can move
+
+| | department coverage | questions changed |
+|---|---|---|
+| OFF (production) | 22/23 (95.7%) | — |
+| ON | **22/23 (95.7%)** | **0 of 10** |
+
+### The mechanism was verified to FIRE before the null was believed
+
+A mechanism that never executes also produces "no change", and this ledger has
+recorded a void run for exactly that reason before. Instrumented
+`lexical.query` during one multi-entity retrieve: **3 calls** (1 base + 2
+per-entity) returning **144 hits**. It runs, returns candidates, and changes
+nothing.
+
+**Not adopted.** Coverage is already at 95.7% - one uncovered entity in 23 - so
+there is almost no room for a second channel to help, and the ColBERT rerank
+that follows dominates the ordering either way. Left in the code, off, with
+this measurement, so it is not re-proposed.
+
+The defect in the review's reasoning was real; its consequence was not.
