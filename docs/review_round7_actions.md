@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 40 of 94 resolved (28 done, 5 rejected/null-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-6 complete; measurements in `eval/report.md` Rounds 13-21.
+**Progress:** 51 of 94 resolved (38 done, 6 rejected/null/falsified-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-6 complete, Phase 7 partial; measurements in `eval/report.md` Rounds 13-24.
 
 ---
 
@@ -22,13 +22,13 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 2 | `_names_partner_institution` unbounded substrings ("eput" in *deputy*) | O | **DONE** |
 | 3 | Multi-entity re-admits partner docs AFTER exclusion; demotion only reorders | O | **DONE** — `MULTI_ENTITY_PARTNER_RECHECK`. Exhibited on the 3 aliases lacking department metadata: **3 partner chunks → 0**, 0 of 23 other questions changed. `eval/partner_multientity_probe.py` is the regression test |
 | 4 | Multi-entity per-entity retrievals are dense-only — no BM25, no RRF | O | **MEASURED NULL, LEFT OFF** — `MULTI_ENTITY_LEXICAL`. Set 5 coverage 22/23 both arms, 0 of 10 changed. Verified the path fires first (3 BM25 calls, 144 hits). Real defect, no consequence |
-| 5 | `_adjacent_chunks` drops `distances` that `_exclude_partner_institutions` keeps | O | OPEN |
-| 6 | `_adjacent_chunks` does 2 Chroma round-trips where one `$or` would do | O | OPEN |
-| 7 | `_adjacent_chunks` uses a metadata scan; chunk ids are deterministic → use `ids=[...]` | O | OPEN |
-| 8 | No assertion that an adjacent chunk belongs to the same document | D | OPEN |
+| 5 | `_adjacent_chunks` drops `distances` | O | **DONE** — preserved; neighbours carry `None` rather than a fabricated distance |
+| 6 | `_adjacent_chunks` does 2 Chroma round-trips | O | **DONE** — single `$or` query |
+| 7 | `_adjacent_chunks` uses a metadata scan | O | **DONE via #6** — one scan instead of two; rows verified rather than trusted by position |
+| 8 | No assertion that an adjacent chunk belongs to the same document | D | **DONE** — each row checked against the requested (url, index) set |
 | 9 | With 11 aliases the entity budget leaves only 3 of 14 slots for base ranking | O | OPEN |
 | 10 | Multi-entity budget can starve genuine docs — log per-entity candidate counts | D | OPEN |
-| 11 | Conversation summarisation race: two requests can both summarise | C | OPEN |
+| 11 | Conversation summarisation race | C | **DONE** — per-conversation lock; 4 concurrent calls summarise **once** |
 | 12 | Mid-stream cloud failure may leave the conversation inconsistent | D | OPEN |
 | 13 | `FETCH_POOL_MULTIPLIER=4` "costs quality" unsupported | O | **REJECTED** — came from stage-2 e2e run (fc1bf45), not the sweep file |
 
@@ -54,7 +54,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 26 | Record `corpus_version`, `retriever_version`, generator, contextualizer per answer | C | OPEN |
+| 26 | Record provenance per answer | C | **DONE** — corpus version, code revision, generator, contextualizer on every answer and `/api/config` |
 | 27 | Promote staleness from UI feature to first-class answer property | C | OPEN |
 | 28 | Store staleness in DB metadata at query time for audit compliance | G | OPEN |
 
@@ -78,7 +78,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 42 | Three shipping classes: A broad/statistical, B targeted, C UX-by-judgement | C | OPEN |
 | 43 | Tag each mechanism "wrong for anyone" vs "right for me" | O | OPEN |
 | 44 | Use feedback only to author test cases, never tune against the log | G | OPEN |
-| 45 | Eval harness should refuse to run without the deterministic env var | D | OPEN |
+| 45 | Eval harness should refuse to run without the deterministic env var | D | **DONE** — `run_eval.py` refuses; explicit override for cloud arms |
 | 46 | Config schemas (`.env.eval` / `.env.prod`) rather than a port-collision guard | G | OPEN |
 | 47 | Adjacent-chunk: shipped config ≠ tested config — "accepted low-risk", not validated | C | **DONE** — Round 15 restates it as a targeted decision on a named failure case, not a measured improvement |
 
@@ -116,8 +116,8 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 70 | Warmup failure only prints to a log nobody reads | O | **DONE** — `WARMUP_STATE` exposed at `/api/config` |
 | 71 | Explicit readiness state STARTING→WARMING→READY | G,C | **DONE** — starting/warming/ready/failed at `/api/config` |
 | 72 | A/B can't detect paging after hours idle — consider a 5-min keep-alive tickle | O | OPEN |
-| 73 | Concurrency: FastAPI threadpool, one ColBERT, GIL — **p90 is a single-user p90** | O,C | OPEN |
-| 74 | Test 4 simultaneous requests | C,O | OPEN |
+| 73 | Concurrency: p90 is a single-user p90 | O,C | **FALSIFIED** — 4 concurrent requests, slowest 12.4s vs 12.2s serial: **1.0x**. Most of a turn is cloud network wait |
+| 74 | Test 4 simultaneous requests | C,O | **DONE** — see #73 |
 | 75 | Monitor swap/compressed memory on 16GB unified | C,G | OPEN |
 | 76 | **Silent cloud→local fallback should fail loud** | G | **DONE** — daemon sets `RAG_DEGRADED`; UI shows a red banner. Deliberate local mode is not flagged |
 
@@ -127,7 +127,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 |---|---|---|---|
 | 77 | `rag.py` is 1,688 lines — split into retrieval/generation/conversation modules | C | OPEN |
 | 78 | Move falsified mechanisms out of production code; git history is the reference | C | OPEN |
-| 79 | Replace prompt-based plumbing suppression with a deterministic output scrubber (`USER_FACING_LANGUAGE` only got 4/4→2/4) | G | OPEN |
+| 79 | Deterministic output scrubber for plumbing language | G | **DONE** — post-generation substitution, narrow by design; testing caught a sentence-capitalisation bug and a mid-stream flicker, both recorded |
 | 80 | Title generation is another non-determinism source | D | OPEN |
 
 ## 8. Retrieval research — none of these are on the falsified list
