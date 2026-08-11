@@ -389,8 +389,8 @@
           <label class="seg-opt"><input type="radio" name="detail" value="detailed">Detailed</label>
         </div>
         <div class="text-muted set-note">
-          Saved on this device only. The assistant has no detail-level setting yet, so this does not
-          change the answers it gives.
+          Saved on this device and sent with each question. Concise leads with the rule and stops;
+          detailed adds the cases, exceptions and thresholds around it.
         </div>
       </div>
 
@@ -1111,7 +1111,9 @@ async function send(text) {
     const result = await fetchJSON(`/api/conversations/${activeConversationId}/messages`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: text }),
+      // detail level travels with the message: there is no account to store
+      // it against, and it must apply to the very next answer
+      body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
     });
     pending.remove();
     renderAssistant(result.answer, result.sources, {

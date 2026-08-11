@@ -4182,3 +4182,41 @@ new baseline is `eval/retrieval_replay_post_ingest.json` at 122/160 (76.2%).
 This was a deliberate decision taken with the cost stated in advance, not a
 side effect discovered afterwards - which is the whole reason the ingest was
 sequenced this way rather than just run.
+
+## Round 10 — Answer detail level (concise / detailed) (2026-08-11)
+
+The redesign's Settings screen had a Concise/Detailed control that saved to
+localStorage and did nothing - the backend accepted only `content`. Built for
+real, per-request rather than as a global flag: the preference travels with the
+message, and DEFAULT is unchanged behaviour, so a user who never touches the
+control gets exactly what production gives today.
+
+### The risk, and why the rule is worded the way it is
+
+This project's two prior base-prompt rules went in opposite directions -
+`INLINE_CITATIONS` cost 11 points of groundedness, `MULTI_ENTITY_COVERAGE`
+helped. A naive "be brief" instruction plausibly damages the exact failure the
+user complained about twice: dropping named entities and list items. So the
+concise rule protects those explicitly:
+
+> "Do NOT drop any of the following to save space: an entity the question
+> named, an item of a list the document gives, or the source citation -
+> brevity must never turn a complete answer into a partial one."
+
+### Measured on the two questions most at risk
+
+| question | default | concise |
+|---|---|---|
+| six departments named | 6/6 entities, 4641 chars | **6/6 entities**, 3393 chars |
+| seven-item circumstances list | 6/7 items, 783 chars | **6/7 items**, 797 chars |
+| source cited | yes | yes |
+
+**Concise loses no entities and no list items** - it removes 27% of the length
+on the enumeration question while keeping every department, and is length-
+neutral on the short list question, which is the correct behaviour: there was
+nothing padding it to remove.
+
+Not a general quality A/B - two questions chosen because they are where a
+brevity instruction would do damage if it were going to. A broader regression
+is not possible here anyway: default is byte-identical to current production,
+so nobody who leaves the setting alone is affected.

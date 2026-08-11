@@ -25,6 +25,10 @@ class NewConversation(BaseModel):
 
 class NewMessage(BaseModel):
     content: str
+    # Answer detail level, chosen in Settings and sent with the message rather
+    # than stored server-side - there is no user account to store it against.
+    # Unknown values fall back to default in rag.system_prompt_for().
+    detail: str = "default"
 
 
 class Feedback(BaseModel):
@@ -128,7 +132,9 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         memory.update_title(conversation_id, payload.content[:60])
 
     history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
-    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(payload.content, history_for_prompt, summary)
+    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(
+        payload.content, history_for_prompt, summary, detail=payload.detail
+    )
 
     memory.add_message(conversation_id, "assistant", answer_text)
 
