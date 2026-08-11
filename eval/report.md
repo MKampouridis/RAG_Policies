@@ -4220,3 +4220,56 @@ Not a general quality A/B - two questions chosen because they are where a
 brevity instruction would do damage if it were going to. A broader regression
 is not possible here anyway: default is byte-identical to current production,
 so nobody who leaves the setting alone is affected.
+
+## Round 11 — Latency: warm 9.8s, cold 28.2s (2026-08-11)
+
+Prompted by "it still takes considerable time to respond". `RAG_TIMING=1` has
+been writing `data/latency.jsonl` since 2026-08-09; 473 records over 118 real
+requests.
+
+**The system has two very different behaviours depending on warmth.**
+
+| | n | median total | retrieve | generate | contextualize |
+|---|---|---|---|---|---|
+| warm (<10 min since last request) | 101 | **9.8s** | 0.5-3.4s | 6.8s | ~0.5s |
+| cold (>10 min idle) | 17 | **28.2s** | **22.6s** | 6.8s | ~0.5s |
+
+p90 total 28.2s; worst observed 84.3s.
+
+Warm, the cloud generator IS the latency (6.8s of 9.8s) and retrieval is nearly
+free. Cold, retrieval costs ~21 extra seconds.
+
+### Reproduced outside the server, then decomposed
+
+Fresh process: `retrieve()` #1 20.87s, #2 3.19s, #3 0.50s - the 20.4s gap
+matches the log-derived ~21s independently. Pre-warming each loader in turn:
+
+| component | cold cost |
+|---|---|
+| torch / ColBERT first-encode warmup | **~8.0s** |
+| ColBERT model load (pylate) | ~4.1s |
+| BM25 index build (rank_bm25, 21.7k chunks) | ~2.5s |
+| module import | ~2.5s |
+| Chroma first dense query | ~0.3s |
+
+~17s of the ~21s; the remainder is run-to-run variance. Everything here is
+lazily initialised on first use, and launchd `KeepAlive` restarts reset all of
+it.
+
+### Why the median understates the problem
+
+Only 14% of LOGGED requests were cold - but the log is dominated by my own
+heavy use. **A tester asking two questions a day is cold essentially every
+time**, so the experience measured here as "9.8s median" is ~28s for them. Any
+future latency claim should state which population it describes.
+
+**Not fixed.** The obvious move - one dummy retrieval in a background thread at
+startup - is unbuilt and unmeasured, and is recorded here as a hypothesis, not
+a result. Note it only moves the cold case; warm latency is the generator.
+
+**Probe artifact, for the record:** an early probe called Chroma with
+`query_texts` instead of `query_embeddings`, which triggered Chroma's DEFAULT
+onnx embedder (all-MiniLM-L6-v2, 384-dim vs the collection's 768) and
+downloaded 79MB into `~/.cache/chroma`. Not a production path - production
+embeds via `llm.embed` and passes `query_embeddings` - but it is why that cache
+directory exists.

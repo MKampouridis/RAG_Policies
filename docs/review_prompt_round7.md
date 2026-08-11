@@ -104,7 +104,33 @@ Production answers said *"the context you've provided across both turns"* and *"
 
 I also rebuilt the UI substantially (Essex branding, mobile drawer, source modal, staleness marker that flags stored answers whose cited policy has since changed, generated conversation titles).
 
-## 9. Ops failures I'd like judged
+## 9. Latency — measured, largely unaddressed
+
+Responses still feel slow, so I instrumented per-stage timing (`RAG_TIMING=1` → `data/latency.jsonl`, 473 records over 118 real requests). **The headline is that there are two very different systems depending on whether the server is warm:**
+
+| | n | median total | retrieve | generate | contextualize |
+|---|---|---|---|---|---|
+| **warm** (request within 10 min of the last) | 101 | **9.8s** | 0.5–3.4s | 6.8s | ~0.5s |
+| **cold** (>10 min idle) | 17 | **28.2s** | **22.6s** | 6.8s | ~0.5s |
+
+p90 total is 28.2s; worst observed 84s.
+
+**When warm, the cloud generator is the cost** (6.8s of 9.8s) and retrieval is nearly free. **When cold, retrieval costs ~21 extra seconds.** I reproduced this outside the server — 20.87s first call vs 0.50s third call in a fresh process — and then isolated it by pre-warming each loader in turn:
+
+| component | cold cost |
+|---|---|
+| torch / ColBERT **first-encode warmup** | **~8.0s** |
+| ColBERT model load (`pylate`) | ~4.1s |
+| BM25 index build (`rank_bm25`, 21.7k chunks) | ~2.5s |
+| module import | ~2.5s |
+| Chroma first dense query | ~0.3s |
+| *(≈17s of the ~21s; remainder is run-to-run variance)* | |
+
+**Why this matters more than the raw numbers suggest:** everything here is lazily initialised on first use, and the server is under launchd `KeepAlive`, so every restart resets it. Only 14% of my *logged* requests were cold — but I am a heavy user. **An alpha tester asking two questions a day is cold essentially every time**, so the experience I've measured as "9.8s median" would be ~28s for them.
+
+The obvious fix — issue one dummy retrieval in a background thread at startup — is **not yet built or measured**, and I'd rather hear whether it's the right first move than assume it.
+
+## 10. Ops failures I'd like judged
 
 - **Two data-loss incidents.** "Clear all history" deleted every conversation; its only feedback was a muted line, so it read as doing nothing and was pressed repeatedly. Recovered by carving freed SQLite pages (DELETE unlinks rows without zeroing them). Now: OK/Cancel confirm, progress, nightly `sqlite3 .backup` keeping 14. **The second incident's cause is still unknown, and I state it as unknown.**
 - My first recovery filter kept **1801 of 1825** conversations — too permissive, because question-*generation* scripts also create conversations through the same API. Only "the user rated it" was a reliable human signal.
@@ -128,6 +154,8 @@ I also rebuilt the UI substantially (Essex branding, mobile drawer, source modal
 
 7. **The partner trade-off in §5** — right call or wrong?
 
-8. **Single highest-expected-value thing left, and what to STOP.** Round 6 asked this and the answer was "clarification UX"; I've since declined it. If the honest answer is "this is done, stop optimising and get it in front of users," say so — the real blockers now are hosting and per-user separation, not retrieval.
+8. **Latency (§9) — how would you attack this?** Specifically: (a) is startup pre-warming the right first move, or is there a better structural answer (persistent warm process, pinning the ColBERT model, a lighter reranker for the first call, `torch.compile`/quantisation of the ColBERT encoder, serialising the BM25 index instead of rebuilding it)? (b) With the system warm, **6.8s of the 9.8s is one cloud generation call** — is streaming the answer token-by-token the honest fix (perceived latency, no real saving), or is there a real one that doesn't cost answer quality? (c) Is my warm/cold split the right way to characterise this at all, or is it hiding something — e.g. should I be reporting the distribution a *new* user actually experiences rather than a median over my own usage?
+
+9. **Single highest-expected-value thing left, and what to STOP.** Round 6 asked this and the answer was "clarification UX"; I've since declined it. If the honest answer is "this is done, stop optimising and get it in front of users," say so — the real blockers now are hosting and per-user separation, not retrieval.
 
 Please be specific and critical.
