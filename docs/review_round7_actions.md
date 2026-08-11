@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 37 of 94 resolved (25 done, 5 rejected/null-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-5 largely complete; measurements in `eval/report.md` Rounds 13-19.
+**Progress:** 40 of 94 resolved (28 done, 5 rejected/null-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-6 complete; measurements in `eval/report.md` Rounds 13-21.
 
 ---
 
@@ -99,10 +99,10 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 58 | Log `usage.input_tokens`/`output_tokens` beside generate seconds | O,C | **DONE** — `data/usage.jsonl`, both streaming and blocking paths |
 | 59 | `max_tokens=2048` is not a latency lever | O,C,D | **CLOSED — confirmed a non-lever.** A real answer used 996 of 2048 and stopped on `end_turn`; 0 of 2 turns hit the cap |
 | 60 | Prompt caching | O,G,C | **CLOSED — no qualifying prefix.** System prompt ~385 tokens (<1024 minimum) and retrieved context changes every turn |
-| 61 | **`concise` = −27% output, measured quality-neutral, still not default** | O | **OPEN — now quantified**: generation ran 996 output tokens in ~10s, so output length IS the cost. Worth ~2–3s. Needs a decision, not a measurement |
+| 61 | **`concise` as default** | O | **DONE (user's instruction)** — 21–55% shorter on 3 enumeration/list cases, all keyphrases kept, identical content coverage |
 | 62 | Batch/parallelise multi-entity queries (`asyncio.gather`) | G,C | OPEN |
 | 63 | Do entity queries need ColBERT each, or one final rerank? | C | OPEN |
-| 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** (16, 32) on the FAR subset as a diagnostic | O | OPEN |
+| 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** as a diagnostic | O | **DONE** — `eval/far_miss_taxonomy.py`. 59% ranking / 10% pool-size / **31% never enter the pool at all** |
 | 65 | Partition `latency.jsonl` at the adjacent-expansion commit — free check | O | **DONE, NULL** — retrieve median 6.54s before → 3.03s after. No step-up. (n=12 before, so weak, and confounded by other changes) |
 | 66 | py-spy once, after stage instrumentation | C | OPEN |
 | 67 | Report 4 distributions incl. session-start latency; targets TTFT<4s, p50<8s, p90<12s | C | OPEN |
@@ -134,7 +134,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 81 | **Classify the 11% far-misses into a taxonomy (A–I) and count** before any new mechanism | C | OPEN — cheapest, most informative |
+| 81 | **Classify the misses before any new mechanism** | C | **DONE** — and it changed the target: 5 turns have gold at pool depth ≤6 (three at depth 1) yet absent from the final top 6, i.e. the reranker demotes it |
 | 82 | Run `gold_multiplicity.py` on the FAR subset — some isn't fixable, remove from denominator | O | OPEN |
 | 83 | RM3 pseudo-relevance feedback on the BM25 channel only | O | OPEN |
 | 84 | Document-level rerank: group pool by document, score by aggregated top-3 chunk MaxSim | D | OPEN |
