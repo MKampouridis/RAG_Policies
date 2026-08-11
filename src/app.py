@@ -1,5 +1,8 @@
 """FastAPI app: conversation + chat endpoints, serves the single-page UI."""
 
+import os
+import threading
+import time
 from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
@@ -14,6 +17,43 @@ from src.rag import answer as rag_answer
 from src.rag import GENERATED_TITLES, generate_title
 
 app = FastAPI(title="Essex Policies & Rules of Assessment Assistant")
+
+# Every retrieval dependency is lazily initialised on first use, so the FIRST
+# request after a restart pays ~21s that later requests do not (Round 11:
+# torch/ColBERT first-encode ~8s, ColBERT model load ~4s, BM25 index build
+# ~2.5s, module import ~2.5s). launchd KeepAlive restarts reset all of it, and
+# an occasional user is cold nearly every time - so that first-request cost is
+# the experience most testers actually get.
+#
+# This runs one throwaway retrieval in a background thread at startup to pay it
+# before anyone asks. It CANNOT change any answer: it calls the same retrieve()
+# every request calls, keeps nothing, and only populates process-level caches
+# that would otherwise be filled by the first real query.
+STARTUP_WARMUP = os.environ.get("RAG_STARTUP_WARMUP", "1") == "1"
+WARMUP_QUERY = "What are the rules of assessment?"
+
+
+def _warmup() -> None:
+    """Pre-load the retrieval stack. Never raises into the server: a failed
+    warmup must degrade to today's lazy behaviour, not stop the app booting."""
+    from src import rag
+
+    started = time.time()
+    try:
+        rag.retrieve(WARMUP_QUERY, [])
+    except Exception as exc:  # noqa: BLE001 - warmup is best-effort by design
+        print(f"[warmup] failed after {time.time() - started:.1f}s: {exc!r}", flush=True)
+        return
+    print(f"[warmup] retrieval stack ready in {time.time() - started:.1f}s", flush=True)
+
+
+@app.on_event("startup")
+def _start_warmup() -> None:
+    if not STARTUP_WARMUP:
+        return
+    # daemon: never hold up shutdown, and never block the health check - the
+    # server must answer immediately even while the warmup is still running.
+    threading.Thread(target=_warmup, name="retrieval-warmup", daemon=True).start()
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")

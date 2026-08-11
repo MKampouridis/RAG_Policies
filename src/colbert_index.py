@@ -20,6 +20,7 @@ process, not twice.
 """
 
 import json
+import threading
 from pathlib import Path
 
 from pylate import indexes, retrieve
@@ -50,12 +51,22 @@ _metadatas = None
 _id_to_pos = None
 _meta_key_to_pos = None
 
+# Both loaders below are check-then-set on module globals. That was safe while
+# only request threads reached them and the first request was alone; the
+# startup warmup in src/app.py now runs concurrently with real requests, so two
+# threads can pass the `is None` check together and each load a full ColBERT
+# model - several GB of duplicate allocation on a 16GB machine. The lock makes
+# the second caller wait for the first rather than repeat the work.
+_load_lock = threading.Lock()
+
 
 def get_model():
     global _model
     if _model is None:
-        from pylate import models
-        _model = models.ColBERT(model_name_or_path=MODEL_NAME)
+        with _load_lock:
+            if _model is None:  # re-check: another thread may have loaded it
+                from pylate import models
+                _model = models.ColBERT(model_name_or_path=MODEL_NAME)
     return _model
 
 
@@ -63,6 +74,14 @@ def _load() -> None:
     global _index, _retriever, _ids, _documents, _metadatas, _id_to_pos, _meta_key_to_pos
     if _index is not None:
         return
+    with _load_lock:
+        if _index is not None:  # re-check under the lock
+            return
+        _load_locked()
+
+
+def _load_locked() -> None:
+    global _index, _retriever, _ids, _documents, _metadatas, _id_to_pos, _meta_key_to_pos
     if not DOCS_PATH.exists():
         raise RuntimeError("ColBERT index not built yet - run `python build_colbert_index.py` first")
     _index = indexes.Voyager(

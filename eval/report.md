@@ -4273,3 +4273,60 @@ onnx embedder (all-MiniLM-L6-v2, 384-dim vs the collection's 768) and
 downloaded 79MB into `~/.cache/chroma`. Not a production path - production
 embeds via `llm.embed` and passes `query_embeddings` - but it is why that cache
 directory exists.
+
+## Round 12 — Startup warmup: first query 17.0s -> 3.4s (2026-08-11)
+
+Round 11 measured a ~21s cold penalty and recorded pre-warming as a hypothesis.
+Built and measured.
+
+`src/app.py` runs one throwaway `retrieve()` in a daemon thread on startup
+(`RAG_STARTUP_WARMUP`, default on). It pays the lazy initialisation before a
+user asks.
+
+### A/B: 6 fresh processes, arms alternated
+
+One process per trial - the effect IS process-level lazy init, so reusing a
+process would measure nothing. Arms alternated (A,B,A,B,A,B) so the OS page
+cache, warmed by trial 1 regardless of arm, cannot systematically favour
+whichever ran first.
+
+| arm | first query | all trials |
+|---|---|---|
+| no warmup | **16.97s** | 16.88 / 16.97 / 17.28 |
+| warmup | **3.40s** | 3.38 / 3.40 / 3.41 |
+
+**-13.6s on the first query**, spread 0.4s across trials - far tighter than
+this project's usual noise, because no generator is involved.
+
+The warmup itself costs ~17s, absorbed in the background. The first real query
+still costs 3.4s rather than the ~1.5s of a fully warm one: the warmup query is
+not the user's, so per-query embedding and ColBERT encoding of new candidates
+remain.
+
+### Verified on the real server
+
+Restarted under launchd: `Application startup complete` and pages served in
+**0.4ms while the warmup was still running** - it does not block boot or the
+health check. `[warmup] retrieval stack ready in 17.7s` then appears; RSS goes
+400MB -> 4.87GB, confirming the model is resident rather than the log line
+merely being printed.
+
+### It cannot change answers - checked, not assumed
+
+Same `retrieve()` every request uses, keeping nothing. Compared top-6 document
+sets across 4 queries with warmup ON vs OFF: **identical**.
+
+### A concurrency bug this introduced, and the fix
+
+`colbert_index.get_model()` and `_load()` were check-then-set on module globals.
+That was safe when only request threads reached them; the warmup thread now
+runs *concurrently with real requests*, so two threads could pass `is None`
+together and each load a full ColBERT model - GBs of duplicate allocation on a
+16GB machine. Added `_load_lock` with double-checked locking. Tested with 4
+racing threads: no deadlock, no duplicate load, one model instance.
+
+### Limits
+
+Only the COLD case moves. Warm latency is unchanged and is dominated by the
+cloud generator (6.8s of 9.8s) - pre-warming cannot touch it. A user who asks
+within ~18s of a restart still races the warmup rather than benefiting from it.
