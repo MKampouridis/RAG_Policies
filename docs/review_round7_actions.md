@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 24 of 94 resolved (17 done, 5 rejected/null-with-evidence, 2 moot). Phases 1-3 complete; measurements in `eval/report.md` Rounds 13-17.
+**Progress:** 31 of 94 resolved (20 done, 5 rejected/null-with-evidence, 3 deferred-by-decision, 3 mitigated/moot). Phases 1-4 complete; measurements in `eval/report.md` Rounds 13-18.
 
 ---
 
@@ -41,10 +41,10 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 16 | SQLite has no WAL mode → "database is locked" with 2 users | O,G,C | **DONE** — `journal_mode=WAL` verified active |
 | 17 | `busy_timeout` unset | G,C | **DONE** — 5000ms + `timeout=5.0` on connect |
 | 18 | FK declared without `ON DELETE CASCADE`; deletion is 2 manual statements | C | **REJECTED** — `with _connect()` already wraps both DELETEs in one transaction, so deletion is atomic. CASCADE needs a table rebuild on a DB with a data-loss history: cosmetic gain, real risk |
-| 19 | Soft deletes (`is_archived`) instead of destructive DELETE | G | OPEN |
-| 20 | Mass delete should be an atomic background job, not client-driven | G | OPEN |
-| 21 | **Second data-loss cause still unexplained** — stop-ship until found | O | OPEN |
-| 22 | Append-only writes / backup before every destructive op | O | OPEN |
+| 19 | Soft deletes instead of destructive DELETE | G | **DONE** — `deleted_at`; no endpoint removes rows. `restore_history.py` replaces the forensic carver |
+| 20 | Mass delete should be an atomic background job, not client-driven | G | **PARTLY MOOT** — clear-all is now a sequence of reversible soft deletes, so partial failure is recoverable rather than destructive. Still client-driven |
+| 21 | **Second data-loss cause still unexplained** | O | **MITIGATED, NOT EXPLAINED** — cause still unknown and stays open; #19 makes it non-destructive, so it can now only hide conversations |
+| 22 | Append-only writes / backup before every destructive op | O | **DONE via #19** — deletion is now non-destructive by construction, which is stronger than backing up before it. Nightly `.backup` still runs |
 | 23 | Feedback payload is client-asserted; derive question/answer/sources server-side from `conversation_id`+`message_id` | C | OPEN |
 | 24 | Per-user database isolation | G | **DEFERRED BY DECISION** — follows #14 |
 | 24b | Server binds `0.0.0.0`, reachable at 192.168.86.103:8000 by anyone on the LAN | *(found while checking #14)* | **DECIDED 2026-08-11: leave as is** — deliberate, it is what makes the mobile UI reachable from a phone. Trusted home network. Cost stated: the exposure is real on campus/public wifi |
