@@ -281,6 +281,56 @@ _MULTI_ENTITY_RULE = (
 # sentences - the opening framing is fixed in all 4, the model does not fully
 # comply with the explicit "never say excerpts" instruction.
 USER_FACING_LANGUAGE = os.environ.get("RAG_USER_FACING_LANGUAGE", "1") == "1"
+
+# Deterministic backstop for USER_FACING_LANGUAGE. The prompt rule cut
+# plumbing-leaking answers from 4/4 to 2/4, not to zero - "the excerpts I can
+# see" survives an explicit instruction not to say it. A prompt asks; a
+# substitution guarantees. Applied AFTER generation, so it cannot cost
+# groundedness the way INLINE_CITATIONS did (-11 points).
+#
+# Deliberately narrow: only phrases whose replacement is unambiguous. It does
+# NOT try to rewrite sentences that ask the user to paste documents - that
+# needs meaning, not string replacement, and a bad rewrite is worse than the
+# leak. Those stay the prompt rule's job, and the residual stays measured.
+SCRUB_PLUMBING_LANGUAGE = os.environ.get("RAG_SCRUB_PLUMBING", "1") == "1"
+
+_PLUMBING_SUBS = [
+    (r"\bthe (?:provided |supplied )?context (?:does not|doesn't) contain\b",
+     "the policies I can see don't cover"),
+    (r"\bthe (?:provided |supplied )?context (?:does not|doesn't) (?:mention|specify|include)\b",
+     "the policies I can see don't cover"),
+    (r"\b(?:the |these |those )?(?:provided |supplied )?excerpts? (?:I can see|provided|you(?:'ve| have) provided)\b",
+     "the policies I can see"),
+    (r"\bthe (?:provided |supplied )excerpts?\b", "the policies I can see"),
+    (r"\bthe context (?:you(?:'ve| have) provided|provided)\b", "the policies I can see"),
+    (r"\bthe documents (?:you(?:'ve| have) provided|provided)\b", "the policies I can see"),
+    (r"\bin the (?:provided |supplied )?context\b", "in the policies I can see"),
+    (r"\bbased on the (?:provided |supplied )?context\b", "based on the policies I can see"),
+]
+_PLUMBING_RES = [(re.compile(pat, re.I), rep) for pat, rep in _PLUMBING_SUBS]
+
+
+def _scrub_plumbing(text: str) -> str:
+    """Replace retrieval-plumbing vocabulary with user-facing wording."""
+    if not SCRUB_PLUMBING_LANGUAGE or not text:
+        return text
+
+    def _sub(m):
+        rep = m.expand(_current_rep[0])
+        # Replacements are written lowercase, but a match can start a sentence.
+        # Without this, "The context does not contain X" became "the policies I
+        # can see don't cover X" - a mid-sentence lowercase word opening a line.
+        return rep[:1].upper() + rep[1:] if m.group(0)[:1].isupper() else rep
+
+    for rx, rep in _PLUMBING_RES:
+        _current_rep[0] = rep
+        text = rx.sub(_sub, text)
+    return text
+
+
+_current_rep = [""]   # bound per substitution for _sub above
+
+
 _USER_FACING_RULE = (
     "\n- Write for a reader who cannot see the retrieval machinery. Never mention \"the context\", "
     "\"excerpts\", \"the provided excerpts\", \"the documents provided\", or what the user did or "
@@ -1457,26 +1507,43 @@ def _adjacent_chunks(results: dict) -> dict:
     if not wanted:
         return results
 
+    wanted = wanted[:ADJACENT_MAX_ADDED]
     try:
         from src.ingest import _get_collection
         coll = _get_collection()
+        # ONE metadata query for all neighbours instead of one per neighbour.
+        # Each coll.get() with a `where` and no ids is a metadata scan over
+        # 21.7k chunks, and this ran twice per query on ~81% of turns.
+        got = coll.get(
+            where={"$or": [{"$and": [{"source_url": u}, {"chunk_index": i}]}
+                           for u, i in wanted]} if len(wanted) > 1 else
+                  {"$and": [{"source_url": wanted[0][0]}, {"chunk_index": wanted[0][1]}]},
+            include=["documents", "metadatas"],
+        )
+        gd = got.get("documents") or []
+        gm = got.get("metadatas") or []
         add_docs, add_metas = [], []
-        for url, idx in wanted:
-            if len(add_docs) >= ADJACENT_MAX_ADDED:
-                break
-            got = coll.get(where={"$and": [{"source_url": url}, {"chunk_index": idx}]},
-                           include=["documents", "metadatas"], limit=1)
-            gd = got.get("documents") or []
-            gm = got.get("metadatas") or []
-            if gd and gm:
-                add_docs.append(gd[0])
-                add_metas.append(gm[0])
+        for d, m in zip(gd, gm):
+            # $or returns matches in arbitrary order, and a metadata filter is
+            # only as good as the metadata: verify each row is genuinely the
+            # neighbour asked for, and belongs to the SAME document.
+            if (m.get("source_url"), m.get("chunk_index")) in wanted:
+                add_docs.append(d)
+                add_metas.append(m)
     except Exception:
         return results
 
     if not add_docs:
         return results
-    return {"documents": [docs + add_docs], "metadatas": [metas + add_metas]}
+    out = {"documents": [docs + add_docs], "metadatas": [metas + add_metas]}
+    # `distances` is preserved by _exclude_partner_institutions but was dropped
+    # here, so an expanded result silently lost a field the unexpanded one had.
+    # Appended neighbours have no distance of their own - they were never
+    # scored - so they carry None rather than a fabricated number.
+    dists = results.get("distances")
+    if dists:
+        out["distances"] = [list(dists[0]) + [None] * len(add_docs)]
+    return out
 
 
 def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dict, str]:
@@ -1976,6 +2043,12 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     # is ONE answer() and no parallel streaming implementation to drift from it.
     response_text = generate(messages=messages, on_token=on_token)
     _stage_timer("generate", _tg)
+    # Deterministic backstop to the prompt rule, which only got plumbing-leaking
+    # answers from 4/4 to 2/4. NOTE the streamed text is NOT scrubbed as it
+    # flies past - substitutions need whole phrases, which a token boundary can
+    # split. The client re-renders from the returned text, so what the user ends
+    # up with is scrubbed; a leaked phrase can flicker mid-stream.
+    response_text = _scrub_plumbing(response_text)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         # variance gate: skip the "rules differ by programme" caveat when the

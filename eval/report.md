@@ -4847,3 +4847,44 @@ CLAUDE.md's first rule is to state causal explanations as hypotheses until
 measured. Round 21's decomposition stands - 59% ranking / 10% pool size / 31%
 unreachable is unaffected - but its interpretation of the shallow cases is
 withdrawn.
+
+## Round 23 — Phase 7 batch: adjacency, a race, provenance, and a scrubber (2026-08-11)
+
+**Adjacent-chunk cleanups (#5-8).** `_adjacent_chunks` made one Chroma metadata
+scan PER neighbour - two per query on ~81% of turns, over 21.7k chunks. Now one
+`$or` query. `$or` returns rows in arbitrary order, so each row is verified to
+be a neighbour that was actually asked for rather than trusted by position.
+`distances` is now preserved (it was silently dropped here while
+`_exclude_partner_institutions` kept it); appended neighbours carry `None`,
+because they were never scored and a fabricated distance would be worse than a
+missing one.
+
+**Summarisation race (#11).** `get_conversation_context` reads the summary
+watermark, decides, calls the LLM, then writes - not atomic. Serialised with a
+per-conversation lock. Verified: 4 concurrent calls on one conversation now
+invoke the summariser **once**, where unserialised would allow four.
+
+**Answer provenance (#26).** Every answer response and `/api/config` now carry
+corpus version, code revision, generator and contextualizer. For a policy tool
+this matters as much as the citation - "why did this say 40?" six months on is
+unanswerable without knowing which corpus and model produced it, and it cannot
+be reconstructed after the fact.
+
+**Deterministic plumbing scrubber (#79).** `USER_FACING_LANGUAGE` is a prompt
+rule and got leaks from 4/4 to 2/4, not zero. A prompt asks; a substitution
+guarantees. Applied AFTER generation, so unlike `INLINE_CITATIONS` (-11 points
+of groundedness) it cannot affect what the model produces.
+
+Deliberately narrow - only phrases with an unambiguous replacement. It does NOT
+rewrite sentences asking the user to paste documents: that needs meaning, not
+string replacement, and a bad rewrite is worse than the leak. Those remain the
+prompt's job and the residual stays measured.
+
+Two defects caught in the scrubber while testing it:
+- replacements are written lowercase, so *"The context does not contain X"*
+  became *"the policies I can see don't cover X"* - a lowercase word opening a
+  sentence. Capitalisation of the match is now preserved.
+- the STREAMED text is not scrubbed as it flies past, because substitutions
+  need whole phrases and a token boundary can split one. The client re-renders
+  from the returned text, so the final answer is scrubbed - but a leaked phrase
+  can flicker mid-stream. Recorded rather than hidden.

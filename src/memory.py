@@ -3,6 +3,7 @@ restarts and are resumable from either machine that points at the same
 data/chat.db."""
 
 import sqlite3
+import threading
 import time
 import uuid
 from pathlib import Path
@@ -199,13 +200,37 @@ def _set_summary_state(conversation_id: str, summary: str, summarized_through: i
         )
 
 
+# Per-conversation lock. get_conversation_context reads the summary watermark,
+# decides whether to summarise, calls the LLM, then writes the new watermark -
+# so two requests on the same conversation could both observe the same
+# watermark and summarise the same messages twice. Reachable today: the server
+# runs sync endpoints in a threadpool and the streaming endpoint adds a worker
+# thread, so one user with two tabs is enough.
+_conv_locks: dict[str, threading.Lock] = {}
+_conv_locks_guard = threading.Lock()
+
+
+def _conversation_lock(conversation_id: str) -> threading.Lock:
+    with _conv_locks_guard:
+        return _conv_locks.setdefault(conversation_id, threading.Lock())
+
+
 def get_conversation_context(conversation_id: str) -> tuple[str, list[dict]]:
     """Returns (summary, recent_messages) for use as prompt history, prior to
     the current turn. Messages already folded into the rolling summary are
     tracked via the summarized_through watermark (a message id), so each
     message is summarized exactly once: the summarizer LLM call fires only
     when the UNSUMMARIZED tail exceeds MAX_TURNS_BEFORE_SUMMARY, roughly once
-    per (MAX - KEEP) new messages - not on every turn of a long conversation."""
+    per (MAX - KEEP) new messages - not on every turn of a long conversation.
+
+    Serialised per conversation: the read-decide-summarise-write sequence below
+    is not atomic, so concurrent turns on the same conversation could summarise
+    the same messages twice and write conflicting watermarks."""
+    with _conversation_lock(conversation_id):
+        return _get_conversation_context_locked(conversation_id)
+
+
+def _get_conversation_context_locked(conversation_id: str) -> tuple[str, list[dict]]:
     summary, summarized_through = _get_summary_state(conversation_id)
 
     with _connect() as conn:

@@ -40,6 +40,7 @@ WARMUP_QUERY = "What are the rules of assessment?"
 # alone says nothing about whether the next question will be fast. A FAILED
 # warmup previously only printed to a log nobody reads.
 WARMUP_STATE = {"status": "starting", "seconds": None, "error": None}
+_GIT_REV = None
 
 
 def _warmup() -> None:
@@ -154,6 +155,39 @@ def api_config():
         "degraded": os.environ.get("RAG_DEGRADED") == "1",
         "generator": os.environ.get("GENERATOR_PROVIDER") or "local",
         "warmup": WARMUP_STATE,
+        "provenance": provenance(),
+    }
+
+
+def provenance() -> dict:
+    """What produced an answer: corpus version, code revision, and the models.
+    For a POLICY tool this matters as much as the citation - six months on,
+    "why did this say 40?" is unanswerable without knowing which corpus and
+    which generator produced it. Cheap to record, impossible to reconstruct
+    later."""
+    global _GIT_REV
+    if _GIT_REV is None:
+        try:
+            import subprocess
+            _GIT_REV = subprocess.run(
+                ["git", "rev-parse", "--short", "HEAD"], capture_output=True,
+                text=True, timeout=5, cwd=Path(__file__).resolve().parent.parent,
+            ).stdout.strip() or "unknown"
+        except Exception:
+            _GIT_REV = "unknown"
+    try:
+        corpus = ingest.read_corpus_version()
+    except Exception:
+        corpus = None
+    return {
+        "corpus_version": corpus,
+        "code_revision": _GIT_REV,
+        "generator": os.environ.get("GENERATOR_MODEL")
+                     or ("claude-sonnet-5" if os.environ.get("GENERATOR_PROVIDER") == "anthropic"
+                         else "gemma3:12b"),
+        "contextualizer": os.environ.get("ANTHROPIC_CONTEXTUALIZE_MODEL")
+                          if os.environ.get("CONTEXTUALIZE_PROVIDER") == "anthropic"
+                          else "qwen2.5:7b-instruct",
     }
 
 
@@ -237,6 +271,7 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         # so the client must be told to re-read the conversation list; without
         # this it renders the truncated fallback once and never looks again.
         "title_pending": is_first_message and GENERATED_TITLES,
+        "provenance": provenance(),
     }
 
 
@@ -288,6 +323,7 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage):
                 "retrieval_query": retrieval_query,
                 "ranked_top_urls": ranked_top_urls,
                 "title_pending": is_first_message and GENERATED_TITLES,
+                "provenance": provenance(),
             }))
         except Exception as exc:  # noqa: BLE001 - must reach the client as an event
             q.put(("error", str(exc)))
