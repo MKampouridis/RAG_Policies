@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 23 of 94 resolved (17 done, 4 rejected-with-reason, 2 moot). Phases 1-2 complete, Phase 3 in progress; measurements in `eval/report.md` Rounds 13-16.
+**Progress:** 24 of 94 resolved (17 done, 5 rejected/null-with-evidence, 2 moot). Phases 1-3 complete; measurements in `eval/report.md` Rounds 13-17.
 
 ---
 
@@ -21,7 +21,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 1 | `hit@6` scored `rank is not None` — no cap; 7 false hits | O | **DONE** |
 | 2 | `_names_partner_institution` unbounded substrings ("eput" in *deputy*) | O | **DONE** |
 | 3 | Multi-entity re-admits partner docs AFTER exclusion; demotion only reorders | O | **DONE** — `MULTI_ENTITY_PARTNER_RECHECK`. Exhibited on the 3 aliases lacking department metadata: **3 partner chunks → 0**, 0 of 23 other questions changed. `eval/partner_multientity_probe.py` is the regression test |
-| 4 | Multi-entity per-entity retrievals are dense-only — no BM25, no RRF | O | **CONFIRMED** |
+| 4 | Multi-entity per-entity retrievals are dense-only — no BM25, no RRF | O | **MEASURED NULL, LEFT OFF** — `MULTI_ENTITY_LEXICAL`. Set 5 coverage 22/23 both arms, 0 of 10 changed. Verified the path fires first (3 BM25 calls, 144 hits). Real defect, no consequence |
 | 5 | `_adjacent_chunks` drops `distances` that `_exclude_partner_institutions` keeps | O | OPEN |
 | 6 | `_adjacent_chunks` does 2 Chroma round-trips where one `$or` would do | O | OPEN |
 | 7 | `_adjacent_chunks` uses a metadata scan; chunk ids are deterministic → use `ids=[...]` | O | OPEN |
