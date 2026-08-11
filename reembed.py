@@ -24,6 +24,35 @@ MANIFEST_PATH = Path("data/manifest.json")
 YEAR_DIR_RE = re.compile(r"/(20\d{2}-\d{2,4})/")
 
 
+# Explicitly superseded documents (2026-08-11). Essex CONSOLIDATED the
+# per-degree-length UG variations files into one file per year:
+#
+#   roa-ug-3yr-year-1-variations.pdf  ─┐
+#   roa-ug-4yr-year-1-variations.pdf  ─┴─>  year-1-variations-ug.pdf
+#
+# The weekly watcher caught the old URLs going unreachable while the new ones
+# appeared. Nothing else demotes them: the family rule picks the newest year
+# within a family, and BOTH carry 2025-26, so it is a tie; and the filename
+# schemes are too different for a _FAMILY_ALIASES entry to group them. The old
+# 3yr and 4yr files were already byte-identical to each other (97,229 chars),
+# so Year 1 variations existed THREE times in the index, all flagged current -
+# which is why a general framework question came back with five slots of
+# variations documents.
+#
+# Listed rather than deleted: this is reversible, and retrieval already filters
+# on is_current, so demotion is sufficient. If Essex relinks them, remove the
+# entry rather than re-crawling.
+SUPERSEDED_URLS = {
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-variations.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-variations.pdf",
+}
+
+
 def compute_current_flags(documents: dict) -> dict[str, bool]:
     """URL -> is_current. A document is current when it is the most recent
     academic year within its family. URL path evidence overrides the family
@@ -55,6 +84,9 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
         url = doc["url"]
         year = effective_year(url, doc.get("academic_year"))
         year_dir = YEAR_DIR_RE.search(url)
+        if url in SUPERSEDED_URLS:
+            flags[url] = False
+            continue
         if "/previous-years/" in url:
             flags[url] = False
         elif "/current/" in url:

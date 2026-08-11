@@ -8,6 +8,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from src import feedback as feedback_store
+from src import ingest
 from src import memory
 from src.rag import answer as rag_answer
 from src.rag import GENERATED_TITLES, generate_title
@@ -24,6 +25,10 @@ class NewConversation(BaseModel):
 
 class NewMessage(BaseModel):
     content: str
+    # Answer detail level, chosen in Settings and sent with the message rather
+    # than stored server-side - there is no user account to store it against.
+    # Unknown values fall back to default in rag.system_prompt_for().
+    detail: str = "default"
 
 
 class Feedback(BaseModel):
@@ -38,9 +43,50 @@ class Feedback(BaseModel):
     comment: str | None = None
 
 
+class SourceLookup(BaseModel):
+    urls: list[str]
+    question: str | None = None
+
+
 @app.get("/")
 def index():
+    """The redesigned UI is now the default (2026-08-11). The previous one is
+    still served at /classic rather than deleted: it is the interface that has
+    actually been used daily, and a one-word URL change is a faster way back
+    than a git checkout if something here turns out to be wrong."""
+    return FileResponse(STATIC_DIR / "preview.html")
+
+
+@app.get("/preview")
+def preview():
+    """Kept as an alias so existing bookmarks and any of the user's open tabs
+    keep working after the swap."""
+    return FileResponse(STATIC_DIR / "preview.html")
+
+
+@app.get("/classic")
+def classic():
+    """The original UI. Fully functional, not a snapshot - it shares the same
+    backend, conversations and history as the page at /."""
     return FileResponse(STATIC_DIR / "index.html")
+
+
+@app.post("/api/sources")
+def api_sources(payload: SourceLookup):
+    """Document metadata + a matching passage for the cited URLs, for the source
+    modal. Read-only; see ingest.passages_for_documents for what the passage is
+    and, importantly, what it is not (it is not the generator's exact context)."""
+    urls = [u for u in payload.urls if u][:8]  # bounded: one embed + one query per url
+    if not urls:
+        return []
+    return ingest.passages_for_documents(urls, payload.question or "")
+
+
+@app.get("/drafts")
+def drafts_index():
+    """Static landing-page drafts for design review (2026-08-11). No JS, no
+    backend calls - they exist to be looked at, not used."""
+    return FileResponse(STATIC_DIR / "drafts" / "index.html")
 
 
 @app.get("/api/conversations")
@@ -97,7 +143,9 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         memory.update_title(conversation_id, payload.content[:60])
 
     history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
-    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(payload.content, history_for_prompt, summary)
+    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(
+        payload.content, history_for_prompt, summary, detail=payload.detail
+    )
 
     memory.add_message(conversation_id, "assistant", answer_text)
 
@@ -122,6 +170,43 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         # this it renders the truncated fallback once and never looks again.
         "title_pending": is_first_message and GENERATED_TITLES,
     }
+
+
+class StalenessQuery(BaseModel):
+    urls: list[str] = []
+    since: float = 0.0
+
+
+@app.post("/api/staleness")
+def api_staleness(payload: StalenessQuery):
+    """Which of these documents changed AFTER the given timestamp.
+
+    Lets a stored answer be marked when the policy it cited has since been
+    rewritten - the case that actually matters for a policy tool, because the
+    answer can be perfectly faithful to a rule that no longer applies. Needs no
+    per-user state: the conversation already records what was cited and when.
+
+    Read-only, and silent about documents it does not know: an unknown URL is
+    reported as not-stale rather than as changed, because claiming a false
+    change would train people to ignore the marker.
+    """
+    import json as _json
+    from pathlib import Path as _Path
+
+    manifest_path = _Path("data/manifest.json")
+    if not manifest_path.is_file() or not payload.urls:
+        return {"stale": [], "checked": 0}
+    docs = _json.loads(manifest_path.read_text()).get("documents", {})
+    stale = []
+    for u in payload.urls:
+        rec = docs.get(u)
+        if not rec:
+            continue
+        changed = rec.get("content_changed_at")
+        if changed and payload.since and changed > payload.since:
+            stale.append({"url": u, "title": rec.get("title") or u.rsplit("/", 1)[-1],
+                          "changed_at": changed})
+    return {"stale": stale, "checked": len(payload.urls)}
 
 
 @app.post("/api/feedback")

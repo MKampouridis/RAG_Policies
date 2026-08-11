@@ -1,0 +1,40 @@
+<!doctype html><meta charset="utf-8"><title>Draft 5 — Progressive</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="_shared.css">
+<style>
+ .wrap{max-width:620px;margin:0 auto;padding:88px 22px 40px}
+ h1{font-size:25px;font-weight:700;letter-spacing:-.02em;margin:0 0 26px;text-align:center}
+ details{margin-top:22px;border-top:1px solid var(--border);padding-top:14px}
+ summary{cursor:pointer;font-size:13px;color:var(--violet);font-weight:600;list-style:none}
+ summary::-webkit-details-marker{display:none}
+ summary::before{content:"+ ";font-weight:700}
+ details[open] summary::before{content:"– "}
+ .egs a{display:block;padding:8px 0;text-decoration:none;color:var(--fg);font-size:14px}
+ .egs a:hover{color:var(--violet)}
+ .how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:14px}
+ .how h3{font-size:12px;margin:0 0 4px;color:var(--violet)}
+ .how p{font-size:12px;color:var(--muted);margin:0;line-height:1.45}
+ @media(max-width:640px){.how{grid-template-columns:1fr}}
+</style>
+<div class="bar"><div class="stack"><span class="uni">University of Essex</span>
+ <span class="app">Policy Assistant</span></div><span class="spacer"></span><button>Settings</button></div>
+<div class="wrap">
+  <h1>Ask about Essex policies and rules of assessment</h1>
+  <div class="composer"><input placeholder="Ask about a policy or rule of assessment…"><button><svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12h14M12 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+  <div class="note" style="text-align:center">Answers cite their source. Verify before acting.</div>
+  <details open><summary>Try an example</summary>
+    <div class="egs">
+      <a href="#">In which cases is an independent chair required for a PGR viva?</a>
+      <a href="#">How many credits can be condoned on a Masters?</a>
+      <a href="#">What are the exit awards for MSc Artificial Intelligence?</a>
+    </div>
+  </details>
+  <details><summary>How this works</summary>
+    <div class="how">
+      <div><h3>01 Indexed</h3><p>Crawled from the University's published policy and rules-of-assessment pages.</p></div>
+      <div><h3>02 Cited</h3><p>Each answer links the document it drew on, so you can open the source.</p></div>
+      <div><h3>03 Not a substitute</h3><p>Verify against the full policy before relying on an answer.</p></div>
+    </div>
+  </details>
+</div>
+<div class="draft-tag">Draft 5 · Progressive</div>

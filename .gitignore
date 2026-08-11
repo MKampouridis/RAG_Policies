@@ -7,3 +7,4 @@ __pycache__/
 .claude/settings.local.json
 .groq_key
 data/latency*.jsonl
+data/backups/

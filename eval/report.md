@@ -4124,11 +4124,99 @@ with the home controls here unaffected. The cost is the inverse case, which
 that user may never hit but a partner-college administrator would hit
 immediately.
 
-Options if it should be softened:
-1. Extend the gate's token list with partner PROGRAMME names (3D Design &
-   Craft, BSc Economics link agreement...), curated like `DEPARTMENT_ALIASES`.
-2. Demote rather than exclude when no Essex alternative covers the topic.
-3. Leave as is - the intended audience is Essex staff.
+**DECIDED 2026-08-11: leave as is** (user's call, trade stated in full). The
+direction that matters to the intended audience - Essex staff asking about
+Essex programmes - is fixed, and the two softening options both add ongoing
+maintenance: a curated list of partner PROGRAMME names would need extending
+with every new partnership agreement, and "demote unless no Essex alternative
+covers the topic" requires knowing what a document covers before retrieving it.
+
+Recorded as a closed decision so it is not re-proposed. The cost is real and
+stays on the record: a question naming a partner course but not its institution
+loses the document that answers it.
 
 Recorded with the measurement so the choice is made on evidence rather than
 rediscovered later.
+
+## Round 9 — Corpus re-ingest, and a deliberate ledger re-baseline (2026-08-10)
+
+The weekly watcher (`check_new_documents.py`, first run) found 5 new documents
+and ~20 changed since the last ingest - meaning the system was answering from
+superseded text on documents including `roa-ug-3yr-final-year-rules.pdf`.
+Ingested deliberately, with the checks run in order.
+
+| step | result |
+|---|---|
+| `retrieval_replay` before | 123/160 (76.9%) |
+| `run_ingest.py` | 10 indexed, 1151 unchanged, 23 rejected, **0 errors** |
+| `audit_family_aliases.py` | **0** new rename-split groups |
+| `eval/stale_index_audit.py` | 246 docs, **0** missing content |
+| `retrieval_replay` after | 122/160 (76.2%) — **net -1** (0 gained, 1 lost) |
+
+### The one regression, and why it was accepted
+
+Lost: "What does the University of Essex Rules of Assessment cover regarding
+the final award?" - a GENERAL framework question whose gold is
+`ug-principles-and-framework.pdf`. The new `/ug/current/variations/` files
+(year-1..4, ~107 chunks each) now occupy 5 of the 8 slots and push it out. So
+a general question is now answered from department-specific variations.
+
+Accepted, because the alternative is worse: serving superseded rules from ~20
+documents is a failure at the tool's actual purpose, while this is one turn out
+of 160 on a metric already known to over- and under-state in different
+directions. Recorded rather than buried, because if more general-framework
+questions degrade later, this is the cause.
+
+**Watch item:** the new variations files are large and generically worded, so
+they are broadly "attractive" to UG queries. Only 1 of 160 turns moved, so the
+effect is not widespread today - but a future set with more general UG
+questions should be checked against them specifically.
+
+### THE LEDGER IS NOW RE-BASELINED
+
+Every number in Rounds 1-8 was measured on the pre-ingest corpus. They remain
+valid as a record of what was true then, and remain comparable to each other,
+but **they are no longer comparable to anything measured from here on**. The
+new baseline is `eval/retrieval_replay_post_ingest.json` at 122/160 (76.2%).
+
+This was a deliberate decision taken with the cost stated in advance, not a
+side effect discovered afterwards - which is the whole reason the ingest was
+sequenced this way rather than just run.
+
+## Round 10 — Answer detail level (concise / detailed) (2026-08-11)
+
+The redesign's Settings screen had a Concise/Detailed control that saved to
+localStorage and did nothing - the backend accepted only `content`. Built for
+real, per-request rather than as a global flag: the preference travels with the
+message, and DEFAULT is unchanged behaviour, so a user who never touches the
+control gets exactly what production gives today.
+
+### The risk, and why the rule is worded the way it is
+
+This project's two prior base-prompt rules went in opposite directions -
+`INLINE_CITATIONS` cost 11 points of groundedness, `MULTI_ENTITY_COVERAGE`
+helped. A naive "be brief" instruction plausibly damages the exact failure the
+user complained about twice: dropping named entities and list items. So the
+concise rule protects those explicitly:
+
+> "Do NOT drop any of the following to save space: an entity the question
+> named, an item of a list the document gives, or the source citation -
+> brevity must never turn a complete answer into a partial one."
+
+### Measured on the two questions most at risk
+
+| question | default | concise |
+|---|---|---|
+| six departments named | 6/6 entities, 4641 chars | **6/6 entities**, 3393 chars |
+| seven-item circumstances list | 6/7 items, 783 chars | **6/7 items**, 797 chars |
+| source cited | yes | yes |
+
+**Concise loses no entities and no list items** - it removes 27% of the length
+on the enumeration question while keeping every department, and is length-
+neutral on the short list question, which is the correct behaviour: there was
+nothing padding it to remove.
+
+Not a general quality A/B - two questions chosen because they are where a
+brevity instruction would do damage if it were going to. A broader regression
+is not possible here anyway: default is byte-identical to current production,
+so nobody who leaves the setting alone is affected.

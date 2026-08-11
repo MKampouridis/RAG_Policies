@@ -290,6 +290,45 @@ _USER_FACING_RULE = (
     "missing, say what is missing and, where useful, name the document or team likely to hold it."
 )
 
+# Answer detail level (2026-08-11). A per-request preference, not a global
+# flag: the user picks it in Settings and it travels with the message. The
+# DEFAULT is unchanged behaviour, so a user who never touches the control gets
+# exactly what production gives today.
+#
+# CONCISE is the risky one and is why this is measured rather than assumed. The
+# project's two prior base-prompt rules went in opposite directions -
+# INLINE_CITATIONS cost 11 points of groundedness, MULTI_ENTITY_COVERAGE helped
+# - and a brevity instruction plausibly damages exactly the enumeration
+# questions the user already complained about ("I gave you 6 schools and you
+# answered about one"). The rule below therefore protects enumeration and
+# source-citing explicitly rather than just asking for brevity.
+DETAIL_LEVELS = ("default", "concise", "detailed")
+
+_CONCISE_RULE = (
+    "\n- Answer briefly: lead with the rule itself and stop. Omit background, "
+    "restatement of the question, and caveats the user did not ask for. Do NOT "
+    "drop any of the following to save space: an entity the question named, an "
+    "item of a list the document gives, or the source citation - brevity must "
+    "never turn a complete answer into a partial one."
+)
+_DETAILED_RULE = (
+    "\n- Give the rule and then the context around it: which programmes or "
+    "cases it applies to, any exceptions or thresholds stated in the document, "
+    "and anything adjacent the reader would otherwise have to ask next. Stay "
+    "within what the retrieved documents say."
+)
+
+
+def system_prompt_for(detail: str = "default") -> str:
+    """SYSTEM_PROMPT with a detail-level rule appended. Unknown values fall back
+    to default rather than raising - a bad preference must not cost an answer."""
+    if detail == "concise":
+        return SYSTEM_PROMPT + _CONCISE_RULE + "\n"
+    if detail == "detailed":
+        return SYSTEM_PROMPT + _DETAILED_RULE + "\n"
+    return SYSTEM_PROMPT
+
+
 SYSTEM_PROMPT = (
     _SYSTEM_PROMPT_BASE
     + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "")
@@ -1800,7 +1839,7 @@ def generate_title(question: str) -> str:
     return out
 
 
-def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, list[str], str, list[str]]:
+def answer(question: str, history: list[dict], summary: str = "", detail: str = "default") -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
 
     The last two are the exact retrieval this call actually used, not a
@@ -1848,7 +1887,7 @@ def answer(question: str, history: list[dict], summary: str = "") -> tuple[str, 
         sources = sorted({m.get("source_url") for m in metadatas if m.get("source_url")})
         return _clarify_underspecified_response(), sources, retrieval_query, ranked_top_urls
 
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    messages = [{"role": "system", "content": system_prompt_for(detail)}]
     if summary:
         messages.append({"role": "system", "content": f"Summary of earlier conversation:\n{summary}"})
     messages.extend(history)

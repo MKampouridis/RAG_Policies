@@ -13,6 +13,7 @@ Usage:
 """
 
 import json
+import time
 import sys
 from pathlib import Path
 
@@ -136,12 +137,26 @@ def run(seed_urls: list[str]) -> dict:
                     "reason": f"classification error: {exc}",
                 }
 
+        # content_changed_at (2026-08-11): the timestamp a document's CONTENT
+        # last differed from what we already had. Reaching this line at all
+        # means the hash differed or there was no prior entry, so this is
+        # exactly the moment of change. Used to mark stored answers as
+        # potentially stale - an answer given before its cited document changed
+        # may be quoting a rule that has since been rewritten, which for a
+        # policy tool is the failure worth surfacing.
+        #
+        # A FIRST ingest is not a change, so a brand-new document inherits no
+        # timestamp; otherwise every answer would look stale after the first
+        # crawl. Existing documents keep whatever they already had until they
+        # genuinely change.
+        changed_at = time.time() if prior else (prior or {}).get("content_changed_at")
         entry = {
             "url": item.url,
             "title": item.title,
             "content_type": item.content_type,
             "content_hash": item.content_hash,
             "text_cache_path": str(cache_path),
+            **({"content_changed_at": changed_at} if changed_at else {}),
             **decision,
         }
         documents[item.url] = entry
