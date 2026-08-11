@@ -57,17 +57,21 @@ def index():
     return FileResponse(STATIC_DIR / "preview.html")
 
 
-@app.get("/preview")
-def preview():
-    """Kept as an alias so existing bookmarks and any of the user's open tabs
-    keep working after the swap."""
-    return FileResponse(STATIC_DIR / "preview.html")
-
-
 @app.get("/classic")
 def classic():
-    """The original UI. Fully functional, not a snapshot - it shares the same
-    backend, conversations and history as the page at /."""
+    """The previous UI, kept as a short-term fallback while the new page is
+    unproven in daily use.
+
+    NOT a peer: the detail-level control, the staleness marker and the source
+    modal exist only on the page at /. Falling back here means losing features,
+    not switching to an equivalent - which is why this is temporary. Two
+    front-ends on one backend is a tax that compounds, and this one has been
+    diverging since 2026-08-11. Delete it once a normal working week has passed
+    without anyone reaching for it.
+
+    The landing-page drafts that lived at /drafts were removed the same day:
+    the design review ended when draft 6 was built. They remain in git history.
+    """
     return FileResponse(STATIC_DIR / "index.html")
 
 
@@ -80,13 +84,6 @@ def api_sources(payload: SourceLookup):
     if not urls:
         return []
     return ingest.passages_for_documents(urls, payload.question or "")
-
-
-@app.get("/drafts")
-def drafts_index():
-    """Static landing-page drafts for design review (2026-08-11). No JS, no
-    backend calls - they exist to be looked at, not used."""
-    return FileResponse(STATIC_DIR / "drafts" / "index.html")
 
 
 @app.get("/api/conversations")
