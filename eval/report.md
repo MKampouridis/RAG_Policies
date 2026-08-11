@@ -4467,3 +4467,51 @@ Recorded as the most promising latency lever measured so far, pending that.
 The near-miss is worth stating plainly: the latency case was strong enough that
 shipping it on those numbers alone would have been easy, and it would have
 silently changed what documents answers are based on.
+
+## Round 15 — Paired comparison tooling, and what it says about Round 8p (2026-08-11)
+
+All four external reviews put this first: stop comparing two arm means when
+both arms answered the same questions. `eval/compare.py` reports paired
+per-question differences, a bootstrap CI over QUESTIONS (not turns - the two
+turns of one question share a retrieval), win/tie/loss, and the turns-changed
+count. Zero compute; it reads stored result files.
+
+### Re-analysis of the adjacent-chunk decision (Round 8p)
+
+| | |
+|---|---|
+| originally reported | +0.05, "below the noise floor, no harm detected" |
+| paired mean | **+0.050** |
+| 95% bootstrap CI | **[-0.250, +0.350]** |
+| win / tie / loss | **3 / 14 / 3** |
+| turns changed | **6 of 20** |
+| hit@6 (paired) | gained 0, lost 0, **identical on all 18** |
+
+Same mean, different claim. **Fourteen turns were identical and the six that
+moved split three up, three down.** "+0.05" reads as a small improvement;
+"3 better, 3 worse, 14 untouched, interval straddles zero" is what the data
+supports. The decision to ship stands (it was justified on a named failure
+case, not on this mean), but the ledger's language was stronger than its
+evidence.
+
+**"Confirmed no harm" was the wrong words** and is retracted. A 20-turn A/B can
+only fail to DETECT harm above roughly its resolution. The tool now prints that
+distinction rather than leaving it to the writer.
+
+### Two bugs found by validating the tool rather than trusting it
+
+1. First run paired only 14 of 20 turns. The key was `source_url`, which is
+   **not unique** - three documents carry two questions each in the spanning
+   set - so turns collided and overwrote each other. Now keyed on the turn's
+   own question text. This is the exact failure the tool exists to prevent, and
+   it was in the tool.
+2. `hit` is recomputed from `rank <= 6`, never read from the stored
+   `hit_at_6` flag, because that flag was written uncapped until 2026-08-11 and
+   is wrong in older files.
+
+### On the external figure
+
+The review that prompted this reported +0.000 over 26 turns for this
+comparison. That does not reproduce - the files hold 20 scored turns - but its
+conclusion (most turns unchanged, effect unresolvable) is exactly right, and
+was right for reasons the mean alone could not show.
