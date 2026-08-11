@@ -46,6 +46,11 @@ if [ -z "$RAG_LOCAL_ONLY" ]; then
     export ANTHROPIC_CONTEXTUALIZE_MODEL=claude-haiku-4-5
   else
     echo "$(date '+%F %T') WARNING: ANTHROPIC_API_KEY missing - falling back to local models" >&2
+    # A log line nobody reads is not a warning. This reaches the UI, which
+    # shows a banner: an expired key otherwise degrades every answer silently
+    # and looks like the model simply got worse. Deliberate local serving
+    # (RAG_LOCAL_ONLY=1) is NOT degraded and does not set this.
+    export RAG_DEGRADED=1
   fi
 fi
 

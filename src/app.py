@@ -35,17 +35,28 @@ STARTUP_WARMUP = os.environ.get("RAG_STARTUP_WARMUP", "1") == "1"
 WARMUP_QUERY = "What are the rules of assessment?"
 
 
+# Readiness is observable rather than inferred from "HTTP responds": the server
+# answers immediately while the retrieval stack is still loading, so uptime
+# alone says nothing about whether the next question will be fast. A FAILED
+# warmup previously only printed to a log nobody reads.
+WARMUP_STATE = {"status": "starting", "seconds": None, "error": None}
+
+
 def _warmup() -> None:
     """Pre-load the retrieval stack. Never raises into the server: a failed
     warmup must degrade to today's lazy behaviour, not stop the app booting."""
     from src import rag
 
     started = time.time()
+    WARMUP_STATE["status"] = "warming"
     try:
         rag.retrieve(WARMUP_QUERY, [])
     except Exception as exc:  # noqa: BLE001 - warmup is best-effort by design
+        WARMUP_STATE.update(status="failed", seconds=round(time.time() - started, 1),
+                            error=repr(exc)[:300])
         print(f"[warmup] failed after {time.time() - started:.1f}s: {exc!r}", flush=True)
         return
+    WARMUP_STATE.update(status="ready", seconds=round(time.time() - started, 1))
     print(f"[warmup] retrieval stack ready in {time.time() - started:.1f}s", flush=True)
 
 
@@ -126,6 +137,18 @@ def api_sources(payload: SourceLookup):
     if not urls:
         return []
     return ingest.passages_for_documents(urls, payload.question or "")
+
+
+@app.get("/api/config")
+def api_config():
+    """What the server is actually running. `degraded` means it wanted the
+    cloud generator and could not reach it, so answers come from the weaker
+    local model - the UI surfaces that rather than leaving it in a log."""
+    return {
+        "degraded": os.environ.get("RAG_DEGRADED") == "1",
+        "generator": os.environ.get("GENERATOR_PROVIDER") or "local",
+        "warmup": WARMUP_STATE,
+    }
 
 
 @app.get("/api/conversations")

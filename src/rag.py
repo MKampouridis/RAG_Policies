@@ -2,6 +2,7 @@
 assemble a prompt with retrieved context + conversation history, and
 generate an answer via the local chat model."""
 
+import datetime as _dt
 import json
 import os
 import re
@@ -1185,17 +1186,23 @@ RAG_TIMING = os.environ.get("RAG_TIMING", "") == "1"
 _TIMING_PATH = os.environ.get("RAG_TIMING_PATH", "data/latency.jsonl")
 
 
+# Resolved once, not per call: the imports, the mkdir and the Path construction
+# below all used to run on every stage of every request - inside the very
+# window this function exists to measure.
+_TIMING_READY = False
+
+
 def _stage_timer(stage: str, started: float) -> None:
     if not RAG_TIMING:
         return
+    global _TIMING_READY
     try:
-        from datetime import datetime, timezone
-        from pathlib import Path as _P
-        rec = {"ts": datetime.now(timezone.utc).isoformat(), "stage": stage,
+        rec = {"ts": _dt.datetime.now(_dt.timezone.utc).isoformat(), "stage": stage,
                "seconds": round(_perf.time() - started, 3)}
-        p = _P(_TIMING_PATH)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        with p.open("a", encoding="utf-8") as f:
+        if not _TIMING_READY:
+            os.makedirs(os.path.dirname(_TIMING_PATH) or ".", exist_ok=True)
+            _TIMING_READY = True
+        with open(_TIMING_PATH, "a", encoding="utf-8") as f:
             f.write(json.dumps(rec) + "\n")
     except Exception:
         pass

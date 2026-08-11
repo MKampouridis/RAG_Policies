@@ -36,16 +36,16 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 |---|---|---|---|
 | 14 | **No auth/ownership: `/api/conversations` returns everyone's** | O,C,G | OPEN — **precondition to sharing** |
 | 15 | Add `user_id` to the schema NOW; `WHERE id=? AND user_id=?` | C | OPEN |
-| 16 | SQLite has no WAL mode → "database is locked" with 2 users | O,G,C | OPEN |
-| 17 | `busy_timeout` unset | G,C | OPEN |
-| 18 | FK declared without `ON DELETE CASCADE`; deletion is 2 manual statements | C | OPEN |
+| 16 | SQLite has no WAL mode → "database is locked" with 2 users | O,G,C | **DONE** — `journal_mode=WAL` verified active |
+| 17 | `busy_timeout` unset | G,C | **DONE** — 5000ms + `timeout=5.0` on connect |
+| 18 | FK declared without `ON DELETE CASCADE`; deletion is 2 manual statements | C | **REJECTED** — `with _connect()` already wraps both DELETEs in one transaction, so deletion is atomic. CASCADE needs a table rebuild on a DB with a data-loss history: cosmetic gain, real risk |
 | 19 | Soft deletes (`is_archived`) instead of destructive DELETE | G | OPEN |
 | 20 | Mass delete should be an atomic background job, not client-driven | G | OPEN |
 | 21 | **Second data-loss cause still unexplained** — stop-ship until found | O | OPEN |
 | 22 | Append-only writes / backup before every destructive op | O | OPEN |
 | 23 | Feedback payload is client-asserted; derive question/answer/sources server-side from `conversation_id`+`message_id` | C | OPEN |
 | 24 | Per-user database isolation | G | OPEN |
-| 25 | Feedback JSONL has no rotation or size cap | D | OPEN |
+| 25 | Feedback JSONL has no rotation or size cap | D | **REJECTED** — rotation already exists (`_MAX_BYTES` = 50MB, `src/feedback.py:24`) |
 
 ## 3. Provenance & auditability
 
@@ -92,15 +92,15 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 54 | Progress indicator during retrieval | O,G,C,D | OPEN — streaming can't cover the ~5s search |
 | 55 | Warmup only warms the PRIMARY path; follow-ups still cold (`_identity_anchor_index` globs `data/doc_identity/`) | O | OPEN |
 | 56 | 8–13 timers inside `retrieve()` | O,C | OPEN |
-| 57 | `_stage_timer` does mkdir+open+append+close per stage per request, imports in function body | O | OPEN |
+| 57 | `_stage_timer` does mkdir+open+append+close per stage per request, imports in function body | O | **DONE** — imports + mkdir hoisted; verified still writing |
 | 58 | Log `usage.input_tokens`/`output_tokens` beside generate seconds | O,C | OPEN |
-| 59 | `max_tokens=2048` is not a latency lever — check `stop_reason` first | O,C,D | OPEN (probably no-op) |
+| 59 | `max_tokens=2048` is not a latency lever — check `stop_reason` first | O,C,D | OPEN — token logging (#58) must land first to answer it |
 | 60 | Prompt caching: system prompt is ~385 tokens, below the 1024 minimum — cost lever, not latency | O,G,C | OPEN |
 | 61 | **`concise` = −27% output, already measured quality-neutral ≈ −1.8s, still not default** | O | OPEN |
 | 62 | Batch/parallelise multi-entity queries (`asyncio.gather`) | G,C | OPEN |
 | 63 | Do entity queries need ColBERT each, or one final rerank? | C | OPEN |
 | 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** (16, 32) on the FAR subset as a diagnostic | O | OPEN |
-| 65 | Partition `latency.jsonl` at the adjacent-expansion commit — free check | O | OPEN |
+| 65 | Partition `latency.jsonl` at the adjacent-expansion commit — free check | O | **DONE, NULL** — retrieve median 6.54s before → 3.03s after. No step-up. (n=12 before, so weak, and confounded by other changes) |
 | 66 | py-spy once, after stage instrumentation | C | OPEN |
 | 67 | Report 4 distributions incl. session-start latency; targets TTFT<4s, p50<8s, p90<12s | C | OPEN |
 | 68 | BM25 sort / `_prefer_most_recent_year` are NOT levers (5ms, sub-ms) | O | Noted |
@@ -109,14 +109,14 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 69 | Warmup + `KeepAlive` = possible OOM boot loop (18s CPU + 4.5GB per cycle); check `ThrottleInterval` | O,G,D | OPEN |
-| 70 | Warmup failure only prints to a log nobody reads | O | OPEN |
-| 71 | Explicit readiness state STARTING→WARMING→READY | G,C | OPEN |
+| 69 | Warmup + `KeepAlive` = possible OOM boot loop; check `ThrottleInterval` | O,G,D | **CHECKED, BOUNDED** — `ThrottleInterval` already 30s; 0 crashes/tracebacks in the log. A loop would be ~50% duty cycle, not tight. No change made |
+| 70 | Warmup failure only prints to a log nobody reads | O | **DONE** — `WARMUP_STATE` exposed at `/api/config` |
+| 71 | Explicit readiness state STARTING→WARMING→READY | G,C | **DONE** — starting/warming/ready/failed at `/api/config` |
 | 72 | A/B can't detect paging after hours idle — consider a 5-min keep-alive tickle | O | OPEN |
 | 73 | Concurrency: FastAPI threadpool, one ColBERT, GIL — **p90 is a single-user p90** | O,C | OPEN |
 | 74 | Test 4 simultaneous requests | C,O | OPEN |
 | 75 | Monitor swap/compressed memory on 16GB unified | C,G | OPEN |
-| 76 | **Silent cloud→local fallback should fail loud** — an expired key silently degrades quality | G | OPEN |
+| 76 | **Silent cloud→local fallback should fail loud** | G | **DONE** — daemon sets `RAG_DEGRADED`; UI shows a red banner. Deliberate local mode is not flagged |
 
 ## 7. Code structure
 

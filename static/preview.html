@@ -167,6 +167,13 @@
      white; here it sits inside the violet bar, so the same treatment would
      disappear into the background - white ground, violet letters keeps the
      shape and weight while staying legible. */
+  /* Shown only when the server wanted the cloud generator and could not reach
+     it. Silent degradation looks like "the model got worse today", which is
+     the hardest kind of fault to diagnose from a user report. */
+  .degraded-banner {
+    background: #8a2b2b; color: #fff; padding: 8px 18px;
+    font-size: 13px; font-weight: 600; text-align: center;
+  }
   .brand-mark {
     flex-shrink: 0;
     width: 34px; height: 34px; border-radius: 6px;
@@ -345,6 +352,7 @@
 </style>
 
 <div id="app">
+  <div class="degraded-banner" id="degraded-banner" hidden></div>
   <nav class="nav" id="topnav">
     <button class="menu-btn" id="menu-btn" aria-label="Conversations" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1202,6 +1210,19 @@ async function send(text) {
   }
 }
 
+
+
+/* Warn when the server fell back to the local model unintentionally. */
+(async function checkDegraded() {
+  try {
+    const cfg = await fetchJSON('/api/config');
+    if (cfg && cfg.degraded) {
+      const b = document.getElementById('degraded-banner');
+      b.textContent = 'Running on the local model \u2014 the cloud generator is unreachable, so answers may be weaker than usual.';
+      b.hidden = false;
+    }
+  } catch (e) { /* a missing endpoint must never break the page */ }
+})();
 
 /* ── streaming ────────────────────────────────────────────────────────────
    Reads the SSE endpoint and paints tokens as they arrive. The final `done`

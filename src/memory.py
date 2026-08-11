@@ -40,9 +40,18 @@ _migrated = False
 def _connect() -> sqlite3.Connection:
     global _migrated
     Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(DB_PATH, timeout=5.0)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
+    # WAL lets readers and the writer work at the same time. Under the default
+    # rollback journal a single writer blocks every reader, so the moment two
+    # people use this at once one of them gets "database is locked" - the
+    # server is already multi-threaded (FastAPI runs sync endpoints in a
+    # threadpool, and the streaming endpoint adds a worker thread per request),
+    # so this is reachable with ONE user on two tabs. `timeout` above makes a
+    # contended write wait rather than fail instantly.
+    conn.execute("PRAGMA journal_mode = WAL")
+    conn.execute("PRAGMA busy_timeout = 5000")
     if not _migrated:
         # schema creation + the summarized_through migration only need to run
         # once per process, not on every connection (every message send,
