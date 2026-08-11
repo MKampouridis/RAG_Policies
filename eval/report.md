@@ -4610,3 +4610,42 @@ that follows dominates the ordering either way. Left in the code, off, with
 this measurement, so it is not re-proposed.
 
 The defect in the review's reasoning was real; its consequence was not.
+
+## Round 18 — Deletion no longer destroys anything (2026-08-11)
+
+"Clear all history" has wiped every conversation twice. The first cause was
+found (a button whose only feedback was a muted line, so it was pressed
+repeatedly). **The second was never explained**, and external review called
+that a stop-ship.
+
+Rather than keep hunting an unreproduced cause, the cause was made irrelevant:
+deletion is now a soft delete. `delete_conversation` stamps `deleted_at`; every
+read path filters on `deleted_at IS NULL`. Rows are never removed by any
+endpoint.
+
+Both previous recoveries worked by carving freed SQLite pages, which only
+succeeded because those pages had not been reused yet - luck, not design. That
+is no longer the recovery path.
+
+| | |
+|---|---|
+| delete | hides it; **messages stay on disk** (verified: 2 messages still readable after delete) |
+| `restore_conversation` | brings it back (verified) |
+| `purge_deleted` | the only destructive path, **called from no endpoint** - manual only |
+| `restore_history.py` | list / restore one / restore all / purge, without needing a forensic tool |
+
+Tested end-to-end on a throwaway conversation: created, deleted, confirmed
+hidden but intact, restored, deleted again, purged, count back to its starting
+value.
+
+**What this does and does not fix.** It does not explain the second loss, and
+the cause is still unknown. It removes the consequence: whatever that cause is,
+it can now only hide conversations, and hiding is a one-command undo. The
+unexplained defect stays on the record rather than being quietly closed.
+
+Auth (`/api/conversations` returning everything) was DEFERRED BY DECISION the
+same day - single-user local machine, and it is a precondition for sharing
+rather than for today. Checking it did surface that the server binds `0.0.0.0`,
+so it is reachable across the LAN now rather than hypothetically; that was also
+reviewed and deliberately kept, since it is what makes the mobile UI work from
+a phone.

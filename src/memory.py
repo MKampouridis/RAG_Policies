@@ -66,6 +66,18 @@ def _connect() -> sqlite3.Connection:
             conn.execute("ALTER TABLE conversations ADD COLUMN summarized_through INTEGER DEFAULT 0")
         except sqlite3.OperationalError:
             pass  # column already exists
+        # Soft delete (2026-08-11). "Clear all history" has destroyed every
+        # conversation twice; the first cause was found (a button that looked
+        # inert, so it was pressed repeatedly) and the SECOND IS STILL UNKNOWN.
+        # Recovery both times meant carving freed SQLite pages, which only
+        # worked because the pages had not been reused yet - luck, not design.
+        # Rather than keep hunting an unreproduced cause, deletion no longer
+        # destroys anything: it stamps deleted_at and the rows stay. Whatever
+        # the cause is, it can no longer lose data.
+        try:
+            conn.execute("ALTER TABLE conversations ADD COLUMN deleted_at REAL DEFAULT NULL")
+        except sqlite3.OperationalError:
+            pass  # column already exists
         _migrated = True
     return conn
 
@@ -73,7 +85,8 @@ def _connect() -> sqlite3.Connection:
 def conversation_exists(conversation_id: str) -> bool:
     with _connect() as conn:
         row = conn.execute(
-            "SELECT 1 FROM conversations WHERE id = ?", (conversation_id,)
+            "SELECT 1 FROM conversations WHERE id = ? AND deleted_at IS NULL",
+            (conversation_id,)
         ).fetchone()
     return row is not None
 
@@ -96,7 +109,8 @@ def update_title(conversation_id: str, title: str) -> None:
 def list_conversations() -> list[dict]:
     with _connect() as conn:
         rows = conn.execute(
-            "SELECT id, title, created_at FROM conversations ORDER BY created_at DESC"
+            "SELECT id, title, created_at FROM conversations"
+            " WHERE deleted_at IS NULL ORDER BY created_at DESC"
         ).fetchall()
     return [dict(r) for r in rows]
 
@@ -110,9 +124,51 @@ def add_message(conversation_id: str, role: str, content: str) -> None:
 
 
 def delete_conversation(conversation_id: str) -> None:
+    """Soft delete: the conversation disappears from every read path but the
+    rows remain. See the migration note in _connect() for why - two total
+    losses, one cause still unexplained, and both recoveries depended on freed
+    pages happening not to have been reused yet."""
     with _connect() as conn:
-        conn.execute("DELETE FROM messages WHERE conversation_id = ?", (conversation_id,))
-        conn.execute("DELETE FROM conversations WHERE id = ?", (conversation_id,))
+        conn.execute(
+            "UPDATE conversations SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL",
+            (time.time(), conversation_id),
+        )
+
+
+def restore_conversation(conversation_id: str) -> bool:
+    """Undo a soft delete. Returns whether a deleted row was actually found."""
+    with _connect() as conn:
+        cur = conn.execute(
+            "UPDATE conversations SET deleted_at = NULL WHERE id = ? AND deleted_at IS NOT NULL",
+            (conversation_id,),
+        )
+        return cur.rowcount > 0
+
+
+def list_deleted_conversations() -> list[dict]:
+    """What a soft delete is hiding - the recovery path that used to require a
+    forensic page carver."""
+    with _connect() as conn:
+        rows = conn.execute(
+            "SELECT id, title, created_at, deleted_at FROM conversations"
+            " WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC"
+        ).fetchall()
+    return [dict(r) for r in rows]
+
+
+def purge_deleted(older_than_seconds: float = 30 * 24 * 3600) -> int:
+    """Permanently remove conversations soft-deleted longer ago than the
+    window. NOT called from any endpoint - deliberately a manual operation, so
+    nothing automatic can ever destroy history again."""
+    cutoff = time.time() - older_than_seconds
+    with _connect() as conn:
+        ids = [r[0] for r in conn.execute(
+            "SELECT id FROM conversations WHERE deleted_at IS NOT NULL AND deleted_at < ?",
+            (cutoff,)).fetchall()]
+        for cid in ids:
+            conn.execute("DELETE FROM messages WHERE conversation_id = ?", (cid,))
+            conn.execute("DELETE FROM conversations WHERE id = ?", (cid,))
+    return len(ids)
 
 
 def get_messages(conversation_id: str) -> list[dict]:
