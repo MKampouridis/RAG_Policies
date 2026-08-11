@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 31 of 94 resolved (20 done, 5 rejected/null-with-evidence, 3 deferred-by-decision, 3 mitigated/moot). Phases 1-4 complete; measurements in `eval/report.md` Rounds 13-18.
+**Progress:** 37 of 94 resolved (25 done, 5 rejected/null-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-5 largely complete; measurements in `eval/report.md` Rounds 13-19.
 
 ---
 
@@ -90,16 +90,16 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 49 | Pooled `requests.Session` (fresh TLS per call) | O | **DONE** |
 | 50 | ColBERT query encode is 0.76s → check device/dtype/`torch.compile` | O,G,C,D | **MOOT** — actually **19ms** warm; my 0.76s was the first-encode warmup, double-counted |
 | 51 | `pylate-rs` / WARP / PLAID / ONNX-INT8 backends | G,C | **MOOT** — rerank is only 0.20–0.25s total |
-| 52 | pylate `get_documents_embeddings` does a full `pickle.load` per call — memoise | O | CONFIRMED (23MB, 136ms/query) |
+| 52 | pylate `get_documents_embeddings` does a full `pickle.load` per call | O | **DONE** — 127.5ms → **3.0ms**; embeddings verified identical across 30 docs |
 | 53 | **ColBERT index residency degrades Chroma 81ms → 2543ms** — cache off: retrieve 5.34→1.40s, RSS 5.0→2.1GB | *(mine)* | **CONFIRMED, NOT SHIPPED** — changes retrieval on 2/5 probes; needs an eval |
-| 54 | Progress indicator during retrieval | O,G,C,D | OPEN — streaming can't cover the ~5s search |
-| 55 | Warmup only warms the PRIMARY path; follow-ups still cold (`_identity_anchor_index` globs `data/doc_identity/`) | O | OPEN |
+| 54 | Progress indicator during retrieval | O,G,C,D | **DONE** — SSE `stage` events drive "Searching…" → "Writing…" |
+| 55 | Warmup only warms the PRIMARY path; follow-ups still cold | O | **DONE** — `_identity_anchor_index()` (1,188 files, **161ms**) now built at startup |
 | 56 | 8–13 timers inside `retrieve()` | O,C | OPEN |
 | 57 | `_stage_timer` does mkdir+open+append+close per stage per request, imports in function body | O | **DONE** — imports + mkdir hoisted; verified still writing |
-| 58 | Log `usage.input_tokens`/`output_tokens` beside generate seconds | O,C | OPEN |
-| 59 | `max_tokens=2048` is not a latency lever — check `stop_reason` first | O,C,D | OPEN — token logging (#58) must land first to answer it |
-| 60 | Prompt caching: system prompt is ~385 tokens, below the 1024 minimum — cost lever, not latency | O,G,C | OPEN |
-| 61 | **`concise` = −27% output, already measured quality-neutral ≈ −1.8s, still not default** | O | OPEN |
+| 58 | Log `usage.input_tokens`/`output_tokens` beside generate seconds | O,C | **DONE** — `data/usage.jsonl`, both streaming and blocking paths |
+| 59 | `max_tokens=2048` is not a latency lever | O,C,D | **CLOSED — confirmed a non-lever.** A real answer used 996 of 2048 and stopped on `end_turn`; 0 of 2 turns hit the cap |
+| 60 | Prompt caching | O,G,C | **CLOSED — no qualifying prefix.** System prompt ~385 tokens (<1024 minimum) and retrieved context changes every turn |
+| 61 | **`concise` = −27% output, measured quality-neutral, still not default** | O | **OPEN — now quantified**: generation ran 996 output tokens in ~10s, so output length IS the cost. Worth ~2–3s. Needs a decision, not a measurement |
 | 62 | Batch/parallelise multi-entity queries (`asyncio.gather`) | G,C | OPEN |
 | 63 | Do entity queries need ColBERT each, or one final rerank? | C | OPEN |
 | 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** (16, 32) on the FAR subset as a diagnostic | O | OPEN |
