@@ -105,7 +105,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** as a diagnostic | O | **DONE** — `eval/far_miss_taxonomy.py`. 59% ranking / 10% pool-size / **31% never enter the pool at all** |
 | 65 | Partition `latency.jsonl` at the adjacent-expansion commit — free check | O | **DONE, NULL** — retrieve median 6.54s before → 3.03s after. No step-up. (n=12 before, so weak, and confounded by other changes) |
 | 66 | py-spy once, after stage instrumentation | C | **NOT NEEDED** — the in-stage timers (#56) attribute retrieval to 0.02s granularity; a profiler would add nothing |
-| 67 | Report 4 distributions incl. session-start latency; targets TTFT<4s, p50<8s, p90<12s | C | OPEN |
+| 67 | Report session-first latency, not one median | C | **DONE** — `eval/latency_report.py`, four populations, `--since` to scope to one config. Session-first p50 **26.5s (all history) → 8.0s (current)** |
 | 68 | BM25 sort / `_prefer_most_recent_year` are NOT levers (5ms, sub-ms) | O | Noted |
 
 ## 6. Operational risk
