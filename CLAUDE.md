@@ -145,6 +145,20 @@ comparison would have produced a small difference and been read as confirmation.
   tasks get killed around 60–80 minutes. Results are written incrementally and `run_eval.py`
   resumes; `RAG_EVAL_NO_RESUME=1` forces a clean run after any system change.
 
+## Who this is for (a product decision, not a retrieval one)
+
+**Audience: University of Essex staff asking about Essex programmes.** That single
+line resolves arguments the retrieval metrics cannot. `PARTNER_EXCLUDE_WHEN_UNNAMED`
+drops partner-edition documents when the query names no partner — measured cost, twice:
+a question naming a partner PROGRAMME but not its institution loses the document that
+answers it (set 6: NAMED 4/4, UNNAMED 0/2, HOME 2/2, unchanged after the gate fix).
+
+That is the right trade *for this audience* and the wrong one for a partner-college
+administrator. Three softening options exist (demote-and-cap, soft boost, a toggle) and
+all are recorded as unmotivated while the audience holds. **If the audience widens,
+revisit that decision first** — it is a product assumption wearing retrieval clothing,
+and it will not announce itself.
+
 ## Data
 
 `clean_text` in `src/ingest.py` once deleted repeated *policy clauses* as "page furniture", making

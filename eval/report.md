@@ -5303,3 +5303,41 @@ before the answer was discarded, so the phrasing that got past the scrubber is
 unknown beyond "The context". Widening the scrubber on a guess would be
 substituting confidence for evidence. The smoke set now records failures with
 their matched text, so the next occurrence will be diagnosable.
+
+## Round 34 — Four smaller items closed, two with evidence (2026-08-12)
+
+**Title generation is NOT a determinism risk (#80).** The concern was that
+generated titles add a second non-deterministic LLM call. Checked: the title is
+never read by `get_conversation_context`, never enters `history_for_prompt`,
+and appears in no prompt. It is display-only and cannot influence an answer.
+Closed as falsified rather than mitigated.
+
+**Memory pressure after the cache removal (#75).** 82% free, server RSS
+2.23GB, swap 1.5GB of 3GB. The condition that made Chroma 31x slower (Round 13)
+is not present. Worth re-checking after any change that adds a resident model,
+which is what the number is for.
+
+**Config schemas (#46) - covered, not built.** The proposal was Pydantic
+settings with `.env.eval` / `.env.prod` instead of runtime guards. The failure
+it targets is an eval run against a wrongly-configured server, and two guards
+now close it directly: `eval_session.sh` refuses to start if anything holds
+:8001, and `run_eval.py` refuses to run without `RAG_DETERMINISTIC=1` (Round
+24). A settings refactor would restate the same constraint in a second place.
+Recorded as covered; revisit if a third configuration appears.
+
+**Moving falsified mechanisms out of production code (#78) - DECLINED, and it
+conflicts with this project's own convention.** The review argued git history
+is the reference. This repository deliberately keeps falsified mechanisms in
+place, disabled, with the falsification beside them - `SPLADE_ENABLED`,
+`COLBERT_FIRST_STAGE_ENABLED`, `INLINE_CITATIONS`, and now
+`MULTI_ENTITY_LEXICAL` and `rerank_many`. That is what stops them being
+re-proposed; git history does not surface itself when someone has the idea
+again. The convention stays. Where it does cost something is file length, which
+is #77's problem, not this one.
+
+**`rag.py` at 1,688 lines (#77) - deferred deliberately.** A package split is
+now VERIFIABLE in a way it was not this morning: the canary set (118 turns,
+exits non-zero on any break), `retrieval_replay`, and `compare.py` between them
+would catch a botched move. But it is a large mechanical change with real
+regression risk, and it belongs in a session where the verification run can be
+watched rather than alongside twenty other items. Recorded as ready, not done.

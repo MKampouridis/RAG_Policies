@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 82 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-33.
+**Progress:** 88 of 94 resolved. Remaining: judge calibration (#40, needs human scoring), the `rag.py` split (#77, ready but deferred), three unmotivated partner variants, and real users / the paper (#93, #94).
 
 ---
 
@@ -79,7 +79,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 43 | Tag mechanisms "wrong for anyone" vs "right for me" | O | **DONE** — recorded as a corollary in `CLAUDE.md` |
 | 44 | Feedback authors test cases, never tunes directly | G | **DONE** — recorded in `CLAUDE.md` |
 | 45 | Eval harness should refuse to run without the deterministic env var | D | **DONE** — `run_eval.py` refuses; explicit override for cloud arms |
-| 46 | Config schemas (`.env.eval` / `.env.prod`) rather than a port-collision guard | G | OPEN |
+| 46 | Config schemas instead of runtime guards | G | **COVERED, not built** — `eval_session.sh` port guard + `run_eval.py` determinism guard close the same failure; a schema would restate it in a second place |
 | 47 | Adjacent-chunk: shipped config ≠ tested config — "accepted low-risk", not validated | C | **DONE** — Round 15 restates it as a targeted decision on a named failure case, not a measured improvement |
 
 ## 5. Latency
@@ -118,17 +118,17 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 72 | A/B can't detect paging after hours idle — consider a 5-min keep-alive tickle | O | OPEN |
 | 73 | Concurrency: p90 is a single-user p90 | O,C | **FALSIFIED** — 4 concurrent requests, slowest 12.4s vs 12.2s serial: **1.0x**. Most of a turn is cloud network wait |
 | 74 | Test 4 simultaneous requests | C,O | **DONE** — see #73 |
-| 75 | Monitor swap/compressed memory on 16GB unified | C,G | OPEN |
+| 75 | Monitor swap/compressed memory | C,G | **DONE** — 82% free, RSS 2.23GB, swap 1.5/3GB. The Round 13 pressure condition is gone |
 | 76 | **Silent cloud→local fallback should fail loud** | G | **DONE** — daemon sets `RAG_DEGRADED`; UI shows a red banner. Deliberate local mode is not flagged |
 
 ## 7. Code structure
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 77 | `rag.py` is 1,688 lines — split into retrieval/generation/conversation modules | C | OPEN |
-| 78 | Move falsified mechanisms out of production code; git history is the reference | C | OPEN |
+| 77 | Split `rag.py` (1,688 lines) | C | **DEFERRED, now verifiable** — canary set + replay + compare would catch a botched split. Large mechanical change; belongs in its own session |
+| 78 | Move falsified mechanisms out of production code | C | **DECLINED** — conflicts with this project's convention of keeping them disabled and annotated, which is what stops them being re-proposed. Git history does not surface itself |
 | 79 | Deterministic output scrubber for plumbing language | G | **DONE** — post-generation substitution, narrow by design; testing caught a sentence-capitalisation bug and a mid-stream flicker, both recorded |
-| 80 | Title generation is another non-determinism source | D | OPEN |
+| 80 | Title generation is another non-determinism source | D | **FALSIFIED** — titles never enter any prompt; display-only, cannot influence an answer |
 
 ## 8. Retrieval research — none of these are on the falsified list
 
@@ -150,7 +150,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 89 | Partner: soft boost instead of a hard gate | G | **OPEN, unmotivated** — see #88/#91 |
 | 90 | Partner: expose a toggle | D | **OPEN, unmotivated** — see #88/#91. A toggle nobody needs is a setting to maintain |
 | 91 | Re-measure set 6 after the gate fix | O | **DONE — hypothesis falsified.** Identical to Round 8r (NAMED 4/4, UNNAMED 0/2, HOME 2/2). None of the loss was gate error; the gate is right to not fire on a programme name |
-| 92 | Make "audience = Essex staff, default institution = Essex" an explicit documented product policy | C | OPEN |
+| 92 | Make the audience an explicit product policy | C | **DONE** — written into `CLAUDE.md` with the measured cost and the instruction to revisit if the audience widens |
 | 93 | Get 5–10 real users, prioritising diversity of question style over volume | O,G,C,D | OPEN |
 | 94 | Write the paper — the falsification record is itself the contribution | D | OPEN |
 
