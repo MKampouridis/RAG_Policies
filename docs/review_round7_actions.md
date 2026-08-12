@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 79 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-31.
+**Progress:** 80 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-32.
 
 ---
 
@@ -146,10 +146,10 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 88 | Partner: demote + **cap at one slot** instead of excluding (~5 lines, keeps rank-6 reachable) | O | OPEN |
-| 89 | Partner: soft boost (+15%) to Essex rather than a hard gate | G | OPEN |
-| 90 | Partner: expose `include_partner_docs` as a toggle | D | OPEN |
-| 91 | Partner: re-measure set 6 now the gate bug is fixed — some of 2/2→0/2 may have been gate error | O | OPEN |
+| 88 | Partner: demote + cap at one slot | O | **OPEN, but now unmotivated** — #91 confirms the current behaviour is working as designed, not misfiring. Still the best softening option if the audience ever widens |
+| 89 | Partner: soft boost instead of a hard gate | G | **OPEN, unmotivated** — see #88/#91 |
+| 90 | Partner: expose a toggle | D | **OPEN, unmotivated** — see #88/#91. A toggle nobody needs is a setting to maintain |
+| 91 | Re-measure set 6 after the gate fix | O | **DONE — hypothesis falsified.** Identical to Round 8r (NAMED 4/4, UNNAMED 0/2, HOME 2/2). None of the loss was gate error; the gate is right to not fire on a programme name |
 | 92 | Make "audience = Essex staff, default institution = Essex" an explicit documented product policy | C | OPEN |
 | 93 | Get 5–10 real users, prioritising diversity of question style over volume | O,G,C,D | OPEN |
 | 94 | Write the paper — the falsification record is itself the contribution | D | OPEN |

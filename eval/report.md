@@ -5237,3 +5237,31 @@ Worth noting the sequence: the frequency check came BEFORE the build, and the
 equivalence check came before any adoption decision. The build still happened
 on a wrong premise, but neither check let the wrong premise turn into a shipped
 mechanism.
+
+## Round 32 — Set 6 re-measured after the gate fix: unchanged (2026-08-12)
+
+External review suggested that part of set 6's `UNNAMED 2/2 -> 0/2` loss might
+have been the substring bug in `_names_partner_institution` misfiring, rather
+than the exclusion mechanism itself. Re-measured with the word-boundary gate
+(Round 13):
+
+| group | Round 8r | now |
+|---|---|---|
+| partner NAMED | 4/4 | **4/4** |
+| partner UNNAMED | 0/2 | **0/2** |
+| home control | 2/2 | **2/2** |
+
+**Identical. The hypothesis is falsified.** The gate returns False on both
+unnamed-partner questions and it is RIGHT to: they name a partner PROGRAMME
+("BSc Economics link agreement", "BA (Hons) 3D Design & Craft") and no
+institution, so nothing in the query says a partner is intended. Exclusion then
+correctly applies and correctly removes the gold.
+
+The trade-off recorded in Round 8r is therefore real and unchanged, and the
+decision to keep the exclusion stands on re-verified evidence rather than on
+the original measurement alone. Its cost also stands: a question naming a
+partner course but not its institution loses the document that answers it.
+
+`gate` was verified per question rather than inferred, which is what separates
+this from the Round 22 mistake of explaining numbers without checking the
+mechanism underneath them.
