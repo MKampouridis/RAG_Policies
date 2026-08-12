@@ -1,0 +1,18 @@
+{
+ "counts": {
+  "leaked": 1,
+  "asked_for_docs": 0,
+  "no_sources": 0,
+  "missed_entity": 0,
+  "abstain_ok": 1,
+  "abstain_n": 1,
+  "n": 6
+ },
+ "failures": [
+  [
+   "leaked",
+   "What is the University of Essex policy on ti",
+   "The context"
+  ]
+ ]
+}

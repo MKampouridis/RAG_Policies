@@ -5265,3 +5265,41 @@ partner course but not its institution loses the document that answers it.
 `gate` was verified per question rather than inferred, which is what separates
 this from the Round 22 mistake of explaining numbers without checking the
 mechanism underneath them.
+
+## Round 33 — A production smoke set that reports rates, and what it caught (2026-08-12)
+
+Every ledger baseline is measured on the LOCAL generator; production runs
+Sonnet. That is right for retrieval - identical in both - and wrong for
+everything prompt-shaped, because gemma3's response to an instruction says
+nothing about Sonnet's. `eval/cloud_smoke.py` runs a small set against
+PRODUCTION and reports binary rates, with **no judge at all** - every check is
+deterministic string work, so the only variance is the generator's:
+
+| check | rate (6 questions x 1 sample) |
+|---|---|
+| leaked plumbing vocabulary | **17%** |
+| asked the user to supply a document | 0% |
+| answered with no sources | 0% |
+| dropped a named entity | 0% |
+| abstained when it should | 100% |
+
+### The leak is intermittent, which is the whole point of rates
+
+The flagged answer used the phrase "The context". Re-running the same question
+6 more times produced **0 leaks** - every one said "The policies I can see don't
+cover time travel expenses", which is exactly right.
+
+So the observed rate is **1 in 13 samples (~8%)**, and a single-sample check
+would have reported "clean" or "leaked" on luck alone. This is the concrete
+case for the review's recommendation to report RATES over n samples rather than
+a mean judge score on 20 turns.
+
+It also means the residual the ledger already records - the prompt rule got
+leaks from 4/4 to 2/4, and the Round 23 scrubber is deliberately narrow - is
+now MEASURABLE rather than estimated.
+
+**Not fixed, and honestly so:** the exact leaking sentence was not captured
+before the answer was discarded, so the phrasing that got past the scrubber is
+unknown beyond "The context". Widening the scrubber on a guess would be
+substituting confidence for evidence. The smoke set now records failures with
+their matched text, so the next occurrence will be diagnosable.
