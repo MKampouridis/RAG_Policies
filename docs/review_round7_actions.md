@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 71 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-29.
+**Progress:** 76 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-30.
 
 ---
 
@@ -55,8 +55,8 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | # | Item | Who | Status |
 |---|---|---|---|
 | 26 | Record provenance per answer | C | **DONE** — corpus version, code revision, generator, contextualizer on every answer and `/api/config` |
-| 27 | Promote staleness from UI feature to first-class answer property | C | OPEN |
-| 28 | Store staleness in DB metadata at query time for audit compliance | G | OPEN |
+| 27 | Staleness as a first-class answer property | C | **DONE** — provenance + cited sources stored on each assistant message; `eval/audit_answer.py` reports which cited documents changed since |
+| 28 | Store staleness metadata at query time | G | **DONE** — `messages.meta`, written at answer time |
 
 ## 4. Evaluation methodology — the strongest consensus
 
@@ -69,7 +69,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 33 | Evaluate the ~8 turns a mechanism CAN change, binary, not a 20-turn mean | O | OPEN |
 | 34 | Core regression set 100–150, stratified | C,G,D | **DONE** — `eval/questions_regression.json`, **151 questions / 302 turns**, built by `build_regression_set.py`; thin strata reported on every run |
 | 35 | Targeted failure set (10–30) per mechanism | C | **STARTED** — `eval/partner_multientity_probe.py` is the first; built because 3 existing instruments were blind to the defect |
-| 36 | Canary set (~50) that must never regress | C | OPEN |
+| 36 | Canary set that must never regress | C | **DONE** — 118 turns at rank ≤3, rule-selected; `check_canary.py` exits 1 on any break. Baseline 0 broken |
 | 37 | Decouple retrieval eval from generation eval | G,D | **ALREADY TRUE** — `retrieval_replay.py` scores hit@6 with no generation or judging; used throughout Rounds 13-21 |
 | 38 | Cloud smoke set ~12 turns × n=3, report **rates** not mean judge scores | O | OPEN |
 | 39 | Periodic shadow eval (20 q) on production config | D | OPEN |
@@ -100,8 +100,8 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 59 | `max_tokens=2048` is not a latency lever | O,C,D | **CLOSED — confirmed a non-lever.** A real answer used 996 of 2048 and stopped on `end_turn`; 0 of 2 turns hit the cap |
 | 60 | Prompt caching | O,G,C | **CLOSED — no qualifying prefix.** System prompt ~385 tokens (<1024 minimum) and retrieved context changes every turn |
 | 61 | **`concise` as default** | O | **DONE (user's instruction)** — 21–55% shorter on 3 enumeration/list cases, all keyphrases kept, identical content coverage |
-| 62 | Batch/parallelise multi-entity queries (`asyncio.gather`) | G,C | OPEN |
-| 63 | Do entity queries need ColBERT each, or one final rerank? | C | OPEN |
+| 62 | Batch/parallelise multi-entity queries | G,C | **RETARGETED by #63** — the cost is the per-entity RERANKS (3.32s), not the dense queries (0.18s total). Batching the ColBERT encodes is the real version |
+| 63 | Do entity queries need ColBERT each? | C | **MEASURED, not changed** — 3-entity question: 4 rerank calls / 3.32s vs 1 / 1.11s. Collapsing them would remove the coverage mechanism; batching the encodes is the variant worth building |
 | 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** as a diagnostic | O | **DONE** — `eval/far_miss_taxonomy.py`. 59% ranking / 10% pool-size / **31% never enter the pool at all** |
 | 65 | Partition `latency.jsonl` at the adjacent-expansion commit — free check | O | **DONE, NULL** — retrieve median 6.54s before → 3.03s after. No step-up. (n=12 before, so weak, and confounded by other changes) |
 | 66 | py-spy once, after stage instrumentation | C | **NOT NEEDED** — the in-stage timers (#56) attribute retrieval to 0.02s granularity; a profiler would add nothing |
