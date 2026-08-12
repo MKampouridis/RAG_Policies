@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 76 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-30.
+**Progress:** 79 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-31.
 
 ---
 
@@ -66,7 +66,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 30 | Report "turns changed" beside every mean | O | **DONE** — printed by default; 6 of 20 for Round 8p |
 | 31 | Build `eval/compare.py` | O | **DONE** — both `score` and `hit_at_6` modes |
 | 32 | Stop saying "confirmed no harm" | O | **DONE** — retracted in Round 15; the tool now prints the distinction so it is not left to prose |
-| 33 | Evaluate the ~8 turns a mechanism CAN change, binary, not a 20-turn mean | O | OPEN |
+| 33 | Evaluate the turns a mechanism CAN change | O | **DONE** — practised in Rounds 16 and 31 and now written into `CLAUDE.md` as a pre-run check |
 | 34 | Core regression set 100–150, stratified | C,G,D | **DONE** — `eval/questions_regression.json`, **151 questions / 302 turns**, built by `build_regression_set.py`; thin strata reported on every run |
 | 35 | Targeted failure set (10–30) per mechanism | C | **STARTED** — `eval/partner_multientity_probe.py` is the first; built because 3 existing instruments were blind to the defect |
 | 36 | Canary set that must never regress | C | **DONE** — 118 turns at rank ≤3, rule-selected; `check_canary.py` exits 1 on any break. Baseline 0 broken |
@@ -74,7 +74,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 38 | Cloud smoke set ~12 turns × n=3, report **rates** not mean judge scores | O | OPEN |
 | 39 | Periodic shadow eval (20 q) on production config | D | OPEN |
 | 40 | Human-calibrate the judge on ~30 questions | C | OPEN |
-| 41 | Repeats strategically (dev 1× → promising 2× → headline both arms) | C | OPEN |
+| 41 | Repeats strategically | C | **DONE** — escalation ladder written into `CLAUDE.md`, plus the applicability check that comes before any of it |
 | 42 | Three shipping classes | C | **DONE** — written into `CLAUDE.md` with the failures that motivated each |
 | 43 | Tag mechanisms "wrong for anyone" vs "right for me" | O | **DONE** — recorded as a corollary in `CLAUDE.md` |
 | 44 | Feedback authors test cases, never tunes directly | G | **DONE** — recorded in `CLAUDE.md` |

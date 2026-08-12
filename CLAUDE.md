@@ -85,6 +85,28 @@ audience, and set 6 measured exactly what that choice costs.
 - **`eval/retrieval_replay.py`** scores hit@6 by replaying stored queries — no generation, no
   judging, minutes not hours. Use it for anything retrieval-only.
 
+## Spend repeats where they change the decision
+
+Not every arm needs running twice. Escalate:
+
+- **Exploring** — one run per arm. Enough to discard the obviously-dead.
+- **Looks promising** — repeat the same arm on the same questions. This is where
+  "run one arm twice" belongs; two identical configs scored 4.05 and 3.85 (Round 8k).
+- **Survives that** — run it on the 151-question regression set (`eval/questions_regression.json`),
+  not the 10-question set it was developed against.
+- **Headline claim** — repeat BOTH arms, and report paired diffs with
+  `eval/compare.py`, never two means.
+
+Before any of it, ask **how many turns the mechanism can even touch**. The
+multi-entity partner leak was invisible to three instruments because 0 of 160 replay
+turns name two departments (Round 16); `_adjacent_chunks` had a measured ceiling of
+~8 turns in 160. A run on a set containing no applicable case reports "no change" for
+a defect that is really there.
+
+And check **how often it fires in real traffic** before optimising it: batched
+reranking was correct, identical in output, and abandoned because it bought 11% of a
+stage on ~1 in 10 questions (Round 31).
+
 ## Know the noise floor before believing a delta
 
 Two runs of the **same** configuration on a 10-question set scored 4.05 and 3.85 (Round 8k).
