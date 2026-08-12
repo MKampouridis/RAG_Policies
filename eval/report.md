@@ -5613,3 +5613,42 @@ explicitly this time, after Round 39 shipped a blank page), streaming works end
 to end, first token 3.46s warm, the answer stores correctly. NOT verified:
 whether it actually *looks* smoother - that needs a human watching it, and no
 measurement I can run substitutes for that.
+
+## Round 41 — First baseline on the 151-question set (retrieval half) (2026-08-12)
+
+The last end-to-end eval on record is 2026-07-24. Since then: corpus
+re-ingested, stale ColBERT cache removed (+5 hit@6), concise made default,
+partner scope switch replacing the heuristic. Nothing in the ledger described
+the current system.
+
+Generation is expensive and retrieval is free, so the halves were separated.
+Retrieval baseline on `questions_regression.json`:
+
+| stratum | hit@6 |
+|---|---|
+| **overall** | **126/148 (85.1%)** |
+| policy | 61/68 (90%) |
+| rules of assessment | 65/80 (81%) |
+| PGR | 28/31 (90%) |
+| **PGT** | **15/20 (75%)** |
+| departmental | 13/15 (87%) |
+
+**The per-stratum split is new information.** Every previous number was an
+aggregate over whichever set was to hand. PGT is the weakest class at 75% and
+was invisible before; RoA remains 9 points below policy, consistent with the
+sibling-document problem this project has documented since round 1.
+
+148 of 151 scored - three items lack a `source_url` and cannot be scored for
+retrieval.
+
+Ran with production UP, which is newly possible: the server is 2.16GB since the
+ColBERT index came out, where the old constraint was ~5GB per instance and
+`eval_session.sh` exists because two would not fit. Retrieval-only work no
+longer requires taking the site down.
+
+**The end-to-end half is NOT done.** 302 turns at ~4,100 input / ~1,000 output
+tokens is roughly $8 of Sonnet, then judged locally with phi4 afterwards -
+which is also methodologically better than one pass, since the project forbids
+same-family judging and a separate judging pass lets phi4 load without
+competing with a local generator for memory. Deferred pending a decision to
+spend it.
