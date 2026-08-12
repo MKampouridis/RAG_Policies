@@ -1634,7 +1634,9 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         else:
             degree_length = award_type = ""
 
+        _ts = _perf.time()
         dense = vector_query(retrieval_query, n_results=pool_size, where={"is_current": True})
+        _stage_timer("r_dense", _ts)
         bm25_hits = lexical.query(retrieval_query, n_results=pool_size, current_only=True)
         if WEIGHTED_FUSION_ENABLED:
             # one already-combined list, still handed to _rrf_fuse below
@@ -1701,12 +1703,16 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         # rather than left empty
         candidates = _exclude_partner_institutions(candidates)
 
+    _ts = _perf.time()
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
+    _stage_timer("r_rerank", _ts)
 
     if MULTI_ENTITY_RETRIEVAL:
         _entities = detect_departments(retrieval_query)
         if len(_entities) >= MULTI_ENTITY_MIN_ENTITIES:
+            _ts = _perf.time()
             results = _multi_entity_results(retrieval_query, _entities, results, pool_size)
+            _stage_timer("r_multientity", _ts)
             # The per-entity retrievals inside _multi_entity_results are FRESH
             # vector_query calls filtered only on is_current/department, so they
             # re-admit partner chunks that were excluded from `candidates`
@@ -1745,7 +1751,9 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
         # last, so neighbours are appended to the FINAL ordering rather than
         # competing in the rerank - the point is to add context, not to
         # re-rank on it
+        _ts = _perf.time()
         results = _adjacent_chunks(results)
+        _stage_timer("r_adjacent", _ts)
 
     _stage_timer("retrieve", _t0)
     return results, retrieval_query

@@ -5063,3 +5063,50 @@ investigation happened to A/B a flag - and the "is it worth an eval if it
 changes documents?" question was asked. On the speed evidence alone the right
 call looked like "leave it, it's a small win"; the eval turned it into a
 correctness fix.
+
+## Round 28 — Inside retrieve(), and a warmup gap the warmup was meant to close (2026-08-12)
+
+Timers added inside `retrieve()` (#56): `r_dense`, `r_bm25`, `r_rerank`,
+`r_adjacent`, `r_multientity`. Previously the stage was one 1.4s number with no
+attribution.
+
+### Warm steady state
+
+| stage | median |
+|---|---|
+| `r_dense` (embed + Chroma) | 0.18s |
+| **`r_rerank`** | **1.15s** |
+| `r_adjacent` | 0.02s |
+| **`retrieve` total** | **1.42s** |
+
+Reranking is now **82% of retrieval**. That is the direct cost of Round 27's
+cache removal - it was ~0.2s cached - and it remains the right trade: it bought
++5 hit@6 and removed ~3.5s of memory-pressure penalty. But the target has
+moved, and future latency work belongs here rather than on dense retrieval,
+which is 0.18s.
+
+### The first two requests after a restart still pay 6.4s
+
+| | requests 1-2 | requests 3-4 |
+|---|---|---|
+| `r_rerank` | **6.43s, 6.54s** | 1.19s, 1.13s |
+| `retrieve` | 9.66s, 9.88s | 1.43s, 1.41s |
+
+The startup warmup runs a full `retrieve()`, INCLUDING a rerank, so this should
+already have been paid. It was not. **Stated as a hypothesis, not a finding:**
+the warmup query reranks a pool whose passage count and text lengths differ
+from a real query's, and torch/MPS appears to re-warm per batch shape - so the
+first realistic rerank pays again. Unverified.
+
+Cheap test if it matters: warm with two or three queries of differing pool
+shape and see whether requests 1-2 flatten. Not done - it is ~8s once per
+restart, and restarts are rare now.
+
+### Method note
+
+The first pass at this reported `r_rerank` at 3.2s median, which was wrong: the
+in-process probe run and the server share `latency.jsonl`, so cold in-process
+rows were mixed into the "warm production" medians. Isolating the last three
+requests through the warm server split the bimodal distribution cleanly. A
+median over a contaminated window is exactly the kind of number this ledger has
+been burned by before.
