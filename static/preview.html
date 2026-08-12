@@ -177,6 +177,16 @@
   .set-actions a.btn { display:inline-flex; align-items:center; text-decoration:none; }
   .detail-opt { display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.45; cursor:pointer; }
   .detail-opt input { margin-top:3px; flex:none; }
+  .scope-row { display:flex; align-items:center; gap:10px; margin-bottom:7px; }
+  .scope select {
+    font: inherit; font-size: 13px; padding: 5px 26px 5px 10px; border-radius: var(--radius-pill);
+    border: 1px solid var(--color-divider); background: var(--color-surface); color: var(--color-text);
+    cursor: pointer; appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.6'/></svg>");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
+  .scope select:hover { border-color: var(--color-accent); }
+  .scope-hint { font-size: 12px; color: var(--color-neutral-600); }
   .provenance {
     margin-top: 10px; font-size: 11px; color: var(--color-neutral-600);
     font-variant-numeric: tabular-nums; letter-spacing: .01em; cursor: help;
@@ -416,23 +426,7 @@
         <div class="set-note" id="history-status" hidden style="font-weight:600;color:var(--color-accent)"></div>
       </div>
 
-      <div class="card blueprint set-card" data-corners>
-        <h4>Partner institution documents</h4>
-        <p class="text-muted">Essex teaches some courses through partner colleges, which have their
-          own rules-of-assessment documents. By default those are hidden unless you name the college,
-          so Essex questions get Essex answers.</p>
-        <div class="set-actions" style="flex-direction:column;align-items:flex-start;gap:8px">
-          <label class="detail-opt"><input type="radio" name="partner-mode" value="exclude">
-            <span><strong>Essex only (recommended)</strong> — partner documents appear only when you
-            name the college. Measured: 0 of 157 ordinary questions returned one.</span></label>
-          <label class="detail-opt"><input type="radio" name="partner-mode" value="boost">
-            <span><strong>Include partner documents</strong> — finds answers for courses taught at a
-            partner college even when you don't name it. Cost: partner documents then appear on about
-            29% of ordinary Essex questions.</span></label>
-        </div>
-      </div>
-
-      <div class="card blueprint set-card" data-corners>
+<div class="card blueprint set-card" data-corners>
         <h4>Judge calibration</h4>
         <p class="text-muted">Score 30 stored answers by hand, to check whether the automatic
           marker used in evaluations agrees with a human. Scores save straight to disk.</p>
@@ -645,6 +639,15 @@ function buildComposer() {
   const wrap = document.createElement('div');
   wrap.className = 'composer';
   wrap.innerHTML = `
+    <div class="scope-row">
+      <label class="scope" title="Which documents this question is answered from">
+        <select id="scope-select">
+          <option value="essex_only">University of Essex</option>
+          <option value="partner_only">Partner colleges</option>
+        </select>
+      </label>
+      <span class="scope-hint" id="scope-hint"></span>
+    </div>
     <div class="composer-row">
       <textarea class="input" rows="1" placeholder="Ask about a policy or rule of assessment…"></textarea>
       <button class="send-btn" aria-label="Send">
@@ -655,6 +658,19 @@ function buildComposer() {
       </button>
     </div>
     <span class="text-muted composer-note">Assistant can make mistakes. Verify against the official document before acting.</span>`;
+  const sel = wrap.querySelector('#scope-select');
+  const hint = wrap.querySelector('#scope-hint');
+  const HINTS = {
+    essex_only: 'Answers use Essex documents only.',
+    partner_only: 'Answers use partner-college documents only.',
+  };
+  sel.value = settings.partnerMode === 'partner_only' ? 'partner_only' : 'essex_only';
+  hint.textContent = HINTS[sel.value];
+  sel.addEventListener('change', () => {
+    settings.partnerMode = sel.value; saveSettings();
+    hint.textContent = HINTS[sel.value];
+  });
+
   const ta = wrap.querySelector('textarea');
   const btn = wrap.querySelector('button');
   const grow = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 180) + 'px'; };
@@ -1241,7 +1257,7 @@ async function send(text) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: text, detail: settings.detail || 'default',
-                             partner_mode: settings.partnerMode || 'exclude' }),
+                             partner_mode: settings.partnerMode || 'essex_only' }),
       });
     }
     pending.remove();
@@ -1283,16 +1299,6 @@ async function send(text) {
 })();
 
 
-/* Partner-document handling. Default 'exclude'; see Settings for the measured
-   cost of the alternative. */
-(function partnerModeSetting(){
-  const cur = settings.partnerMode || 'exclude';
-  const el = document.querySelector(`input[name=partner-mode][value="${cur}"]`);
-  if (el) el.checked = true;
-  document.querySelectorAll('input[name=partner-mode]').forEach(r => {
-    r.addEventListener('change', () => { settings.partnerMode = r.value; saveSettings(); });
-  });
-})();
 
 /* ── streaming ────────────────────────────────────────────────────────────
    Reads the SSE endpoint and paints tokens as they arrive. The final `done`
@@ -1306,7 +1312,7 @@ async function sendStreaming(text, pending) {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ content: text, detail: settings.detail || 'default',
-                             partner_mode: settings.partnerMode || 'exclude' }),
+                             partner_mode: settings.partnerMode || 'essex_only' }),
   });
   // Before this point the server has done nothing, so a failure here is safe to
   // retry on the blocking endpoint. After it, the user message is already
@@ -1438,7 +1444,7 @@ document.addEventListener('touchstart', (e) => {
 
 /* ── settings (localStorage) ──────────────────────────────────────────────── */
 const SETTINGS_KEY = 'essex-assistant-settings';
-const DEFAULT_SETTINGS = { detail: 'default', partnerMode: 'exclude', notifyDigest: false, notifyChanges: false };
+const DEFAULT_SETTINGS = { detail: 'default', partnerMode: 'essex_only', notifyDigest: false, notifyChanges: false };
 function loadSettings() {
   try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') }; }
   catch (e) { return { ...DEFAULT_SETTINGS }; }

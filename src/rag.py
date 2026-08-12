@@ -1002,6 +1002,25 @@ def _boost_home_institution(results: dict, places: int = 3) -> dict:
             "distances": [[distances[k] for k in keyed]]}
 
 
+def _only_partner_institutions(results: dict) -> dict:
+    """Keep ONLY partner-edition chunks. The mirror of
+    _exclude_partner_institutions, and it takes the same safeguard: if that
+    would empty the context, return the input unchanged. An empty context
+    produces a confident "I have no document on this", which is worse than an
+    Essex answer to someone who asked for a partner one."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    keep = [i for i, m in enumerate(metadatas) if _is_partner_institution(m)]
+    if not keep or len(keep) == len(documents):
+        return results
+    out = {"documents": [[documents[i] for i in keep]],
+           "metadatas": [[metadatas[i] for i in keep]]}
+    dists = results.get("distances")
+    if dists:
+        out["distances"] = [[dists[0][i] for i in keep]]
+    return out
+
+
 def _demote_partner_institutions(results: dict) -> dict:
     documents = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
@@ -1755,11 +1774,22 @@ def retrieve(question: str, history: list[dict], summary: str = "",
     global _LAST_CANDIDATE_POOL  # debug hook for the retrieval recall diagnostic (no behavior change)
     _LAST_CANDIDATE_POOL = candidates
 
-    if PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query, history):
+    # STRICT modes are a user's explicit choice, so they ignore the
+    # name-detection gate: "Essex only" means Essex only even when the question
+    # names a college, and "Partner only" means partner even when it does not.
+    # A switch the user can see should do what it says rather than negotiate
+    # with a heuristic.
+    _strict = partner_mode if partner_mode in ("essex_only", "partner_only") else None
+    if _strict == "essex_only":
+        candidates = _exclude_partner_institutions(candidates)
+    elif _strict == "partner_only":
+        candidates = _only_partner_institutions(candidates)
+    elif PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query, history):
         # before the rerank, so the freed slots are filled by Essex documents
         # rather than left empty
-        # per-request override (Settings), falling back to the deployment default
-        _mode = partner_mode if partner_mode in ("exclude", "cap1", "boost") else PARTNER_MODE
+        # per-request override, falling back to the deployment default
+        _mode = partner_mode if partner_mode in (
+            "exclude", "cap1", "boost", "essex_only", "partner_only") else PARTNER_MODE
         if _mode == "exclude":
             candidates = _exclude_partner_institutions(candidates)
         elif _mode == "cap1":

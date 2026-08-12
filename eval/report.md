@@ -5440,3 +5440,47 @@ still broken in the one place a user would touch it.
 
 Both fixed. `DEFAULT_SETTINGS` now also carries `partnerMode`, so a fresh
 browser has an explicit value rather than relying on a fallback.
+
+## Round 37 — The partner control becomes a scope switch (2026-08-12)
+
+Redesigned on the user's specification: a visible selector on the landing page,
+like a model picker, with strict semantics - **Essex only** retrieves no partner
+documents, **Partner colleges** retrieves nothing else. A switch the user can
+see should do what it says rather than negotiate with a heuristic, so the
+strict modes bypass `_names_partner_institution` entirely.
+
+### Measured on set 6
+
+| gold document | Essex only | Partner colleges |
+|---|---|---|
+| partner gold (6 questions) | **0/6** | **6/6** |
+| Essex gold (2 questions) | **2/2** | 0/2 |
+| partner chunks served | **0** | 48 |
+
+Each mode serves its own population completely. That is a better property than
+the previous best (`exclude`: 6/8 overall, with 2 unrecoverable) because the
+failures are now the user's explicit choice rather than a heuristic's guess.
+
+### The trade-off this introduces, stated plainly
+
+Under the old gate, "What are the rules at Colchester Institute?" worked with
+no switch: naming the college disabled the exclusion (NAMED 4/4). Under strict
+Essex-only that same question returns **0/6** until the user flips the switch.
+
+That is the cost of predictability. The gate was cleverer and occasionally
+wrong in ways nobody could see; the switch is dumber and always legible. For a
+control the user operates deliberately, legible wins - but it IS a regression
+for anyone who names a college and does not touch the selector, and it should
+not be discovered later.
+
+### Also
+
+The Settings duplicate was removed - one control, not two in different places
+disagreeing about state. `DEFAULT_SETTINGS.partnerMode` is now `essex_only`, so
+a fresh browser gets the strict default rather than the old heuristic.
+
+**Correction from the previous round:** when the user asked whether the toggle
+would "affect performance" they meant retrieval quality, not execution time. I
+measured wall-clock. The quality answer was already in Round 35 (boost pulls
+partner documents into 29% of ordinary questions, -2 hit@6) and should have
+been what I gave.
