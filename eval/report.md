@@ -5110,3 +5110,49 @@ rows were mixed into the "warm production" medians. Isolating the last three
 requests through the warm server split the bimodal distribution cleanly. A
 median over a contaminated window is exactly the kind of number this ledger has
 been burned by before.
+
+## Round 29 — Most residual misses are not retrieval failures (2026-08-12)
+
+`gold_multiplicity.py` on the main set (#82), as the review advised: before
+building anything for the misses, find out how many of them are FIXABLE.
+
+| | |
+|---|---|
+| actual hit@6 | **86.2%** |
+| achievable ceiling this corpus+metric allows | **84.3%** |
+
+Retrieval already scores ABOVE the exchangeability ceiling - it is not picking
+randomly among equally-valid documents, it favours the gold. There is no
+headroom of the kind the ceiling describes.
+
+### The 11 misses, by whether they COULD be fixed
+
+| class | n | meaning |
+|---|---|---|
+| **N=0** | **5** | the gold keyphrases are not jointly present in ANY current document |
+| N>6 (ambiguous) | 2 | many documents contain the same answer; strict single-gold hit@6 will usually call it a miss regardless |
+| N<=6 (tight) | 4 | genuinely reachable - a real retrieval target |
+
+**7 of 11 are metric or test-set artifacts, not retrieval failures.** Only 4
+are targets a better retriever could actually hit.
+
+### The N=0 class needs care before it is believed
+
+N=0 means the expected keyphrases do not co-occur in any current document. That
+is either a bad test item (keyphrases written from a superseded edition, or
+phrased differently from the source) OR keyphrase matching that is too strict -
+it is exact substring containment. **It is a measurement defect either way, but
+which one it is has not been established**, and the distinction decides whether
+the fix is rewriting test items or loosening the matcher.
+
+Two of the five N=0 items are `roa-ug-glossary.pdf`, which Round 27 has since
+FIXED - this analysis ran on a pre-fix results file. So the picture is already
+slightly better than the table shows.
+
+### What this settles
+
+All four reviews said stop optimising retrieval. This is the quantitative
+version of that advice: on the main set, at most **4 of 80 turns** are
+retrieval problems a better retriever could solve, and the measured ceiling is
+below current performance. Effort spent on rerankers, fusion or embeddings is
+competing for 5% of one set, most of which is already unreachable.
