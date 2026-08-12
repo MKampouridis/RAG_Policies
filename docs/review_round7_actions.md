@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 59 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-27.
+**Progress:** 62 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-29.
 
 ---
 
@@ -94,7 +94,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 53 | **ColBERT index residency degrades Chroma 81ms → 2543ms** | *(mine)* | **SHIPPED after an eval (Round 27)** — cache was also 3 weeks STALE. hit@6 **121 → 126**, retrieve ~5.0s → **1.45s**, RSS 5.0 → **2.12GB**. Drift detector added |
 | 54 | Progress indicator during retrieval | O,G,C,D | **DONE** — SSE `stage` events drive "Searching…" → "Writing…" |
 | 55 | Warmup only warms the PRIMARY path; follow-ups still cold | O | **DONE** — `_identity_anchor_index()` (1,188 files, **161ms**) now built at startup |
-| 56 | 8–13 timers inside `retrieve()` | O,C | OPEN |
+| 56 | Timers inside `retrieve()` | O,C | **DONE** — warm: rerank **1.15s of 1.42s (82%)**, dense 0.18s. Target has moved to reranking |
 | 57 | `_stage_timer` does mkdir+open+append+close per stage per request, imports in function body | O | **DONE** — imports + mkdir hoisted; verified still writing |
 | 58 | Log `usage.input_tokens`/`output_tokens` beside generate seconds | O,C | **DONE** — `data/usage.jsonl`, both streaming and blocking paths |
 | 59 | `max_tokens=2048` is not a latency lever | O,C,D | **CLOSED — confirmed a non-lever.** A real answer used 996 of 2048 and stopped on `end_turn`; 0 of 2 turns hit the cap |
@@ -104,7 +104,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 63 | Do entity queries need ColBERT each, or one final rerank? | C | OPEN |
 | 64 | Sweep `FETCH_POOL_MULTIPLIER` **upward** as a diagnostic | O | **DONE** — `eval/far_miss_taxonomy.py`. 59% ranking / 10% pool-size / **31% never enter the pool at all** |
 | 65 | Partition `latency.jsonl` at the adjacent-expansion commit — free check | O | **DONE, NULL** — retrieve median 6.54s before → 3.03s after. No step-up. (n=12 before, so weak, and confounded by other changes) |
-| 66 | py-spy once, after stage instrumentation | C | OPEN |
+| 66 | py-spy once, after stage instrumentation | C | **NOT NEEDED** — the in-stage timers (#56) attribute retrieval to 0.02s granularity; a profiler would add nothing |
 | 67 | Report 4 distributions incl. session-start latency; targets TTFT<4s, p50<8s, p90<12s | C | OPEN |
 | 68 | BM25 sort / `_prefer_most_recent_year` are NOT levers (5ms, sub-ms) | O | Noted |
 
@@ -135,7 +135,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | # | Item | Who | Status |
 |---|---|---|---|
 | 81 | **Classify the misses before any new mechanism** | C | **DONE** — 59% ranking / 10% pool-size / **31% never enter the pool**. The follow-up "reranker demotes depth-1 docs" reading was **RETRACTED** (Round 22): 4 of 5 were a title-page artefact, partner exclusion, or a better document served |
-| 82 | Run `gold_multiplicity.py` on the FAR subset — some isn't fixable, remove from denominator | O | OPEN |
+| 82 | Run `gold_multiplicity.py` on the misses | O | **DONE** — actual 86.2% vs achievable ceiling 84.3%. **7 of 11 misses are metric/test artifacts**; only 4 are reachable |
 | 83 | RM3 pseudo-relevance feedback on the BM25 channel only | O | OPEN |
 | 84 | Document-level rerank: group pool by document, score by aggregated top-3 chunk MaxSim | D | OPEN |
 | 85 | Train a query→document-FAMILY retriever from known failures, as a candidate gate (not another RRF channel) | C | OPEN |
