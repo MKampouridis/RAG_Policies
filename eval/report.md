@@ -5940,3 +5940,32 @@ agreement-with-reference. If bad references are common, every judge-scored
 comparison in this ledger is noisier than recorded - not by a constant offset,
 which cancels between arms, but randomly, which does not. The size of that
 problem is currently unknown and is worth 15 items of someone's time.
+
+## Round 47 — Single-chunk documents: checked, not a defect (2026-08-12)
+
+Noticed while reviewing references: one of the 15 random items showed a single
+source passage where the others showed four. A rules-of-assessment PDF indexed
+as ONE chunk is the shape of a text-extraction failure, and `clean_text` has
+destroyed policy content before (it once deleted repeated clauses as "page
+furniture"), so it was worth checking rather than assuming.
+
+**It is legitimate.** `mba-25.pdf` is 445 characters / 66 words and is a
+complete document: title, one rule ("students must complete their studies
+within 5 years due to the rules set by accrediting bodies"), "Approved by
+Senate", "End Document". MBA-by-modular-study genuinely has one variation rule.
+
+Widened the check: **35 of 1,172 documents have a single chunk**, against a
+median of 12 for PGT department-specific documents. Inspecting the shortest:
+
+| | |
+|---|---|
+| contain "End Document" / "Approved by Senate" | 9 |
+| say **"Page 1 of 1"** in their own text | several (Colchester Institute partnership docs) |
+| under 200 characters | 1 (`ebs-mba-17.pdf`, the older MBA modular edition) |
+
+The documents assert their own length. "Page 1 of 1" is the corpus telling us
+these are one-page documents, not that ingestion truncated them.
+
+No action. Recorded because "35 documents have one chunk" reads like a defect
+in isolation, and the next person to notice it should find this rather than
+re-investigate.
