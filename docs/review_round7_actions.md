@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 68 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-29.
+**Progress:** 71 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-29.
 
 ---
 
@@ -75,9 +75,9 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 39 | Periodic shadow eval (20 q) on production config | D | OPEN |
 | 40 | Human-calibrate the judge on ~30 questions | C | OPEN |
 | 41 | Repeats strategically (dev 1× → promising 2× → headline both arms) | C | OPEN |
-| 42 | Three shipping classes: A broad/statistical, B targeted, C UX-by-judgement | C | OPEN |
-| 43 | Tag each mechanism "wrong for anyone" vs "right for me" | O | OPEN |
-| 44 | Use feedback only to author test cases, never tune against the log | G | OPEN |
+| 42 | Three shipping classes | C | **DONE** — written into `CLAUDE.md` with the failures that motivated each |
+| 43 | Tag mechanisms "wrong for anyone" vs "right for me" | O | **DONE** — recorded as a corollary in `CLAUDE.md` |
+| 44 | Feedback authors test cases, never tunes directly | G | **DONE** — recorded in `CLAUDE.md` |
 | 45 | Eval harness should refuse to run without the deterministic env var | D | **DONE** — `run_eval.py` refuses; explicit override for cloud arms |
 | 46 | Config schemas (`.env.eval` / `.env.prod`) rather than a port-collision guard | G | OPEN |
 | 47 | Adjacent-chunk: shipped config ≠ tested config — "accepted low-risk", not validated | C | **DONE** — Round 15 restates it as a targeted decision on a named failure case, not a measured improvement |

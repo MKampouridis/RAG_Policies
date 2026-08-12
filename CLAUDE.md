@@ -46,6 +46,32 @@ Expect partial compliance and measure it like anything else: the rule cut plumbi
 from 4/4 to 2/4, not to zero — "the excerpts I can see" survives an explicit instruction not to say
 it. Report the residual rather than the headline.
 
+## Three kinds of change, three standards of proof
+
+Applying one bar to everything is why `+0.05, below the noise floor` got shipped
+with the words "confirmed no harm". External review (2026-08-11) proposed this split
+and it matches what the ledger already does implicitly:
+
+- **Broad** (embedder, reranker, fusion, chunking, pool size) — must show a
+  detectable aggregate improvement. `eval/compare.py` for paired diffs and a
+  bootstrap CI; a CI that straddles zero means *unresolved*, not *no effect*.
+- **Targeted** (partner exclusion, multi-entity, adjacent chunks) — needs a named
+  failure case, a mechanism that addresses it, a targeted probe, no regression on a
+  broad control, and a **quantified blast radius**. `_has_extraneous_family` had no
+  denominator and cost -8.8 points; adjacent-chunk expansion measured its ceiling
+  first (5% of turns) and narrowed from 97% to 81% touch. Report *turns changed*,
+  never a diluted mean.
+- **Wording/UX** (`USER_FACING_LANGUAGE`, detail level, source presentation) — judged
+  by reading whole answers. Trying to prove these statistically is how the plumbing
+  leak survived four metrics unchanged.
+
+Two corollaries. **Feedback authors test cases; it never tunes the pipeline directly** —
+a thumbs-down is a hypothesis, and four of this round's mechanisms came from replaying
+one, but each was then measured independently. And **tag each mechanism "wrong for
+anyone" vs "right for me"**: a false denial about a specified policy is wrong for
+everyone; preferring Essex documents over partner ones is a product choice for one
+audience, and set 6 measured exactly what that choice costs.
+
 ## Measuring changes
 
 - **Validate on the metric the change can actually move.** The contextualizer only runs on
