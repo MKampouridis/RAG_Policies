@@ -5484,3 +5484,54 @@ would "affect performance" they meant retrieval quality, not execution time. I
 measured wall-clock. The quality answer was already in Round 35 (boost pulls
 partner documents into 29% of ordinary questions, -2 hit@6) and should have
 been what I gave.
+
+## Round 38 — The scope switch on 217 measurements, not 8 (2026-08-12)
+
+Set 6 is 8 hand-written questions - enough to show a mechanism works, too few
+for a product decision the user operates directly. Two larger measurements were
+available without writing a single new question.
+
+### Essex side: 157 replayed queries that name no partner
+
+| mode | hit@6 | partner chunks served |
+|---|---|---|
+| default (heuristic) | 123/157 | 0 |
+| **essex_only** | **123/157** | **0** |
+
+**No regression.** The strict filter costs nothing on ordinary Essex questions,
+which is the risk that mattered.
+
+### Partner side: 60 partner documents, probed by their own titles
+
+A title probe is the easiest possible query for a document, so this is
+deliberately generous: if a mode cannot reach a document from its own title, no
+real user will reach it either.
+
+| mode | documents reachable |
+|---|---|
+| default (heuristic) | 41/60 (68.3%) |
+| essex_only | **0/60 (0%)** |
+| partner_only | **60/60 (100%)** |
+
+`partner_only` reaches every partner document. The heuristic reaches two thirds
+- so a third of the partner corpus was unreachable in the old design unless the
+user happened to phrase the question with the college's name.
+
+### The first run of this probe found the switch lying
+
+`essex_only` initially scored **25/60** - it was serving partner documents on
+nearly half the probes. Cause: `_exclude_partner_institutions` returns its
+input unchanged when every candidate would be dropped, on the reasoning that
+"an empty context is worse than a partner-sourced answer". That safeguard is
+right for the HEURISTIC, where a false negative from the gate should not leave
+the user with nothing. It is wrong for an explicit user choice: a control
+labelled "University of Essex" that quietly returns partner documents is worse
+than one that says it found nothing.
+
+Strict modes now use `_filter_by_institution` with no fallback. Re-measured on
+the same 60: **0/60**. The mode now does what its label says, and when nothing
+matches the user gets "the policies I can see don't cover this" - which is the
+truthful answer in that mode.
+
+That defect was invisible at set 6's scale: with 8 questions the fallback never
+triggered. It took 60 documents to expose it.

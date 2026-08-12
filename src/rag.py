@@ -1002,6 +1002,21 @@ def _boost_home_institution(results: dict, places: int = 3) -> dict:
             "distances": [[distances[k] for k in keyed]]}
 
 
+def _filter_by_institution(results: dict, partner: bool) -> dict:
+    """Hard filter for the user-facing scope switch. No fallback: if nothing
+    matches, the context is empty and the assistant says so."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    keep = [i for i, m in enumerate(metadatas)
+            if _is_partner_institution(m) == partner]
+    out = {"documents": [[documents[i] for i in keep]],
+           "metadatas": [[metadatas[i] for i in keep]]}
+    dists = results.get("distances")
+    if dists:
+        out["distances"] = [[dists[0][i] for i in keep]]
+    return out
+
+
 def _only_partner_institutions(results: dict) -> dict:
     """Keep ONLY partner-edition chunks. The mirror of
     _exclude_partner_institutions, and it takes the same safeguard: if that
@@ -1780,10 +1795,16 @@ def retrieve(question: str, history: list[dict], summary: str = "",
     # A switch the user can see should do what it says rather than negotiate
     # with a heuristic.
     _strict = partner_mode if partner_mode in ("essex_only", "partner_only") else None
-    if _strict == "essex_only":
-        candidates = _exclude_partner_institutions(candidates)
-    elif _strict == "partner_only":
-        candidates = _only_partner_institutions(candidates)
+    if _strict:
+        # STRICT means strict. The heuristic path keeps a safeguard - if every
+        # candidate would be dropped it returns them all, because a false
+        # negative from the gate should not leave the user with nothing. That
+        # safeguard is WRONG for an explicit user choice: measured on 60
+        # partner documents, "Essex only" served partner documents on 25 of
+        # them, which is the control silently doing the opposite of its label.
+        # With no fallback the answer becomes "the policies I can see don't
+        # cover this", which is the truthful response in that mode.
+        candidates = _filter_by_institution(candidates, partner=(_strict == "partner_only"))
     elif PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query, history):
         # before the rerank, so the freed slots are filled by Essex documents
         # rather than left empty
