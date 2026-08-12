@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 88 of 94 resolved. Remaining: judge calibration (#40, needs human scoring), the `rag.py` split (#77, ready but deferred), three unmotivated partner variants, and real users / the paper (#93, #94).
+**Progress:** 91 of 94 resolved. Remaining: judge calibration (#40, in progress — scoring page at /calibration), the `rag.py` split (#77, ready but deferred), and real users / the paper (#93, #94).
 
 ---
 
@@ -146,9 +146,9 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
 | # | Item | Who | Status |
 |---|---|---|---|
-| 88 | Partner: demote + cap at one slot | O | **OPEN, but now unmotivated** — #91 confirms the current behaviour is working as designed, not misfiring. Still the best softening option if the audience ever widens |
-| 89 | Partner: soft boost instead of a hard gate | G | **OPEN, unmotivated** — see #88/#91 |
-| 90 | Partner: expose a toggle | D | **OPEN, unmotivated** — see #88/#91. A toggle nobody needs is a setting to maintain |
+| 88 | Partner: demote + cap at one slot | O | **REJECTED — no benefit.** UNNAMED 0/2, unchanged. Demoting below every Essex candidate pushes the partner doc past rank 6, so "reachable at the bottom" isn't |
+| 89 | Partner: soft boost instead of a hard gate | G | **REJECTED — wrong trade.** Recovers 2/2 on set 6 but serves partner docs on **45 of 157 (29%)** ordinary Essex questions, plus −2 hit@6 |
+| 90 | Partner: expose a toggle | D | **NOT EXPOSED** — `RAG_PARTNER_MODE` already serves a partner-college user; a UI control whose non-default values measure worse is maintenance for a need nobody has had |
 | 91 | Re-measure set 6 after the gate fix | O | **DONE — hypothesis falsified.** Identical to Round 8r (NAMED 4/4, UNNAMED 0/2, HOME 2/2). None of the loss was gate error; the gate is right to not fire on a programme name |
 | 92 | Make the audience an explicit product policy | C | **DONE** — written into `CLAUDE.md` with the measured cost and the instruction to revisit if the audience widens |
 | 93 | Get 5–10 real users, prioritising diversity of question style over volume | O,G,C,D | OPEN |
