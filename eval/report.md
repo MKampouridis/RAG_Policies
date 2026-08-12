@@ -5341,3 +5341,59 @@ exits non-zero on any break), `retrieval_replay`, and `compare.py` between them
 would catch a botched move. But it is a large mechanical change with real
 regression risk, and it belongs in a session where the verification run can be
 watched rather than alongside twenty other items. Recorded as ready, not done.
+
+## Round 35 — The three partner softenings, measured: all rejected (2026-08-12)
+
+External review proposed three alternatives to dropping partner-edition
+documents when the query names no partner. Implemented all three behind
+`RAG_PARTNER_MODE` and measured them, rather than reasoning about them.
+
+### Set 6 (the eight partner questions)
+
+| group | exclude (current) | cap1 | boost |
+|---|---|---|---|
+| partner NAMED | 4/4 | 4/4 | 4/4 |
+| partner UNNAMED | 0/2 | **0/2** | **2/2** |
+| home control | 2/2 | 2/2 | 2/2 |
+| total | 6/8 | 6/8 | **8/8** |
+
+On set 6 alone, `boost` looks like a clean win and `cap1` looks pointless.
+
+### The control that decides it
+
+Set 6 cannot see the thing exclusion exists for. Across the 157 replayed
+queries that name NO partner - i.e. ordinary Essex questions - how often does a
+partner document reach the user?
+
+| mode | turns serving a partner doc | hit@6 |
+|---|---|---|
+| exclude | **0 of 157** | 123 |
+| boost | **45 of 157 (29%)** | 121 |
+
+**`boost` recovers 2 questions and reintroduces the original complaint on 29%
+of ordinary questions**, plus -2 hit@6. The complaint that motivated exclusion
+("answers need to focus on Essex programmes, not partners") was raised twice by
+the user and measured at 4/17 real complaints -> 0/17. Trading that for two
+partner-programme questions is the wrong direction for this audience.
+
+### Verdicts
+
+- **#88 `cap1` - REJECTED, no benefit.** Capping at one slot does not recover
+  the unnamed cases at all (0/2, unchanged). The reasoning was that a partner
+  document would stay "reachable at rank 6"; in practice, demoting it below
+  every Essex candidate pushes it past rank 6 entirely. The proposal's premise
+  was wrong.
+- **#89 `boost` - REJECTED, wrong trade.** Measurably better on set 6, and
+  measurably worse on the thing the mechanism was built for.
+- **#90 toggle - NOT EXPOSED.** The modes exist as `RAG_PARTNER_MODE`, so a
+  partner-college user can be served without a UI setting. Exposing a control
+  whose non-default values are measurably worse for the stated audience is a
+  setting to maintain, explain and support for a need nobody has yet had.
+
+Both mechanisms are kept in the code, off, with these numbers - the convention
+that stops them being re-proposed.
+
+**What this confirms.** Round 32 re-verified the exclusion was behaving as
+designed; this round tested whether a better design exists. Two candidates from
+external review, both measured, both worse. The Round 8r decision now rests on
+having tried the alternatives rather than on not having tried them.

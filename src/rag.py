@@ -946,6 +946,62 @@ def _exclude_partner_institutions(results: dict) -> dict:
     return out
 
 
+# How partner-edition documents are handled when the query names no partner.
+# "exclude" (default) drops them entirely - the behaviour the user's complaint
+# asked for, measured at 4/17 real complaints -> 0/17, and measured TWICE to
+# cost the inverse case: a question naming a partner PROGRAMME but not its
+# institution loses the document that answers it (set 6, Rounds 8r and 32).
+#
+#   exclude  - drop all partner chunks (current)
+#   cap1     - demote them below every Essex document AND keep at most one, so
+#              a partner answer stays reachable at the bottom
+#   boost    - no gate at all; Essex documents move up by PARTNER_BOOST places
+#
+# cap1 and boost are the review's softening proposals. Both change retrieval,
+# so both are off until measured.
+PARTNER_MODE = os.environ.get("RAG_PARTNER_MODE", "exclude")
+PARTNER_BOOST = int(os.environ.get("RAG_PARTNER_BOOST", "3"))
+
+
+def _cap_partner_institutions(results: dict, cap: int = 1) -> dict:
+    """Demote partner chunks below all Essex ones and keep at most `cap`.
+
+    The difference from exclusion is one slot: an Essex question still gets
+    Essex documents in every position that matters, while a question whose only
+    correct answer is a partner document can still find it at the bottom."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    distances = results.get("distances", [[None] * len(documents)])[0]
+    if not documents:
+        return results
+    essex = [i for i, m in enumerate(metadatas) if not _is_partner_institution(m)]
+    partner = [i for i, m in enumerate(metadatas) if _is_partner_institution(m)]
+    if not partner:
+        return results
+    order = essex + partner[:cap]
+    return {"documents": [[documents[k] for k in order]],
+            "metadatas": [[metadatas[k] for k in order]],
+            "distances": [[distances[k] for k in order]]}
+
+
+def _boost_home_institution(results: dict, places: int = 3) -> dict:
+    """Soft preference: move Essex documents up by `places` rather than gating
+    partners at all. Cannot guarantee Essex dominance - which is what the
+    original complaint asked for - so it trades certainty for recall."""
+    documents = results.get("documents", [[]])[0]
+    metadatas = results.get("metadatas", [[]])[0]
+    distances = results.get("distances", [[None] * len(documents)])[0]
+    if len(documents) < 2:
+        return results
+    keyed = sorted(range(len(documents)),
+                   key=lambda i: i + (places if _is_partner_institution(metadatas[i]) else 0))
+    if keyed == list(range(len(documents))):
+        return results
+    return {"documents": [[documents[k] for k in keyed]],
+            "metadatas": [[metadatas[k] for k in keyed]],
+            "distances": [[distances[k] for k in keyed]]}
+
+
 def _demote_partner_institutions(results: dict) -> dict:
     documents = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
@@ -1701,7 +1757,12 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     if PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query, history):
         # before the rerank, so the freed slots are filled by Essex documents
         # rather than left empty
-        candidates = _exclude_partner_institutions(candidates)
+        if PARTNER_MODE == "exclude":
+            candidates = _exclude_partner_institutions(candidates)
+        elif PARTNER_MODE == "cap1":
+            candidates = _cap_partner_institutions(candidates, cap=1)
+        elif PARTNER_MODE == "boost":
+            candidates = _boost_home_institution(candidates, places=PARTNER_BOOST)
 
     _ts = _perf.time()
     results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
