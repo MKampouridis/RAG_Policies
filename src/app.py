@@ -386,7 +386,35 @@ def api_staleness(payload: StalenessQuery):
 
 @app.post("/api/feedback")
 def api_feedback(fb: Feedback):
+    """Records a rating. The QUESTION and ANSWER are taken from the server's own
+    stored conversation, not from the client's copy.
+
+    This whole project's method is feedback replay: a thumbs-down is re-run
+    against live retrieval to diagnose it. That is only sound if the recorded
+    question and answer are what the system actually produced. A client-supplied
+    copy can drift - a stale tab, an edited field, a retry - and the resulting
+    diagnosis would be of something that never happened.
+
+    The client's values are kept as `client_*` rather than discarded, so a
+    mismatch is visible instead of silently overwritten.
+    """
     if fb.rating not in ("up", "down"):
         raise HTTPException(status_code=400, detail="rating must be 'up' or 'down'")
-    feedback_store.record_feedback(fb.model_dump())
+    record = fb.model_dump()
+    record["provenance"] = provenance()
+
+    if fb.conversation_id and memory.conversation_exists(fb.conversation_id):
+        msgs = memory.get_messages(fb.conversation_id)
+        last_user = next((m["content"] for m in reversed(msgs) if m["role"] == "user"), None)
+        last_assistant = next((m["content"] for m in reversed(msgs) if m["role"] == "assistant"), None)
+        if last_user is not None and last_assistant is not None:
+            if (last_user, last_assistant) != (fb.question, fb.answer):
+                record["client_question"] = fb.question
+                record["client_answer"] = fb.answer
+                record["client_server_mismatch"] = True
+            record["question"] = last_user
+            record["answer"] = last_assistant
+            record["source"] = "server"
+    record.setdefault("source", "client")   # no conversation_id: nothing to verify against
+    feedback_store.record_feedback(record)
     return {"ok": True}

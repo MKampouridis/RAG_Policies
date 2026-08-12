@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 62 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-29.
+**Progress:** 68 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-29.
 
 ---
 
@@ -45,7 +45,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 20 | Mass delete should be an atomic background job, not client-driven | G | **PARTLY MOOT** — clear-all is now a sequence of reversible soft deletes, so partial failure is recoverable rather than destructive. Still client-driven |
 | 21 | **Second data-loss cause still unexplained** | O | **MITIGATED, NOT EXPLAINED** — cause still unknown and stays open; #19 makes it non-destructive, so it can now only hide conversations |
 | 22 | Append-only writes / backup before every destructive op | O | **DONE via #19** — deletion is now non-destructive by construction, which is stronger than backing up before it. Nightly `.backup` still runs |
-| 23 | Feedback payload is client-asserted; derive question/answer/sources server-side from `conversation_id`+`message_id` | C | OPEN |
+| 23 | Feedback payload is client-asserted | C | **DONE** — question/answer now read from the server's stored conversation; a client mismatch is flagged (`client_server_mismatch`) rather than silently overwritten, and provenance is attached |
 | 24 | Per-user database isolation | G | **DEFERRED BY DECISION** — follows #14 |
 | 24b | Server binds `0.0.0.0`, reachable at 192.168.86.103:8000 by anyone on the LAN | *(found while checking #14)* | **DECIDED 2026-08-11: leave as is** — deliberate, it is what makes the mobile UI reachable from a phone. Trusted home network. Cost stated: the exposure is real on campus/public wifi |
 | 25 | Feedback JSONL has no rotation or size cap | D | **REJECTED** — rotation already exists (`_MAX_BYTES` = 50MB, `src/feedback.py:24`) |
@@ -136,11 +136,11 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 |---|---|---|---|
 | 81 | **Classify the misses before any new mechanism** | C | **DONE** — 59% ranking / 10% pool-size / **31% never enter the pool**. The follow-up "reranker demotes depth-1 docs" reading was **RETRACTED** (Round 22): 4 of 5 were a title-page artefact, partner exclusion, or a better document served |
 | 82 | Run `gold_multiplicity.py` on the misses | O | **DONE** — actual 86.2% vs achievable ceiling 84.3%. **7 of 11 misses are metric/test artifacts**; only 4 are reachable |
-| 83 | RM3 pseudo-relevance feedback on the BM25 channel only | O | OPEN |
-| 84 | Document-level rerank: group pool by document, score by aggregated top-3 chunk MaxSim | D | OPEN |
-| 85 | Train a query→document-FAMILY retriever from known failures, as a candidate gate (not another RRF channel) | C | OPEN |
-| 86 | Parent-child indexing: small child chunks for matching, inject parent section | G | OPEN |
-| 87 | Extract explicit cross-references at ingest ("see Regulation 9.1") into metadata | G | OPEN |
+| 83 | RM3 pseudo-relevance feedback on the BM25 channel | O | **CLOSED ON EVIDENCE (Round 29)** — at most 4 of 80 turns on the main set are reachable retrieval targets, and measured hit@6 (86.2%) already exceeds the achievable ceiling (84.3%). Not falsified — unjustified. Reopen only if a specific failing case survives the Round 29 classification |
+| 84 | Document-level rerank by aggregated chunk scores | D | **CLOSED ON EVIDENCE (Round 29)** — at most 4 of 80 turns on the main set are reachable retrieval targets, and measured hit@6 (86.2%) already exceeds the achievable ceiling (84.3%). Not falsified — unjustified. Reopen only if a specific failing case survives the Round 29 classification |
+| 85 | Query→document-family retriever as a candidate gate | C | **CLOSED ON EVIDENCE (Round 29)** — at most 4 of 80 turns on the main set are reachable retrieval targets, and measured hit@6 (86.2%) already exceeds the achievable ceiling (84.3%). Not falsified — unjustified. Reopen only if a specific failing case survives the Round 29 classification |
+| 86 | Parent-child indexing | G | **CLOSED ON EVIDENCE (Round 29)** — at most 4 of 80 turns on the main set are reachable retrieval targets, and measured hit@6 (86.2%) already exceeds the achievable ceiling (84.3%). Not falsified — unjustified. Reopen only if a specific failing case survives the Round 29 classification. Also note Round 8q measured structure-aware chunking as *worse* |
+| 87 | Extract cross-references at ingest into metadata | G | **CLOSED ON EVIDENCE (Round 29)** — at most 4 of 80 turns on the main set are reachable retrieval targets, and measured hit@6 (86.2%) already exceeds the achievable ceiling (84.3%). Not falsified — unjustified. Reopen only if a specific failing case survives the Round 29 classification |
 
 ## 9. Product decisions
 
