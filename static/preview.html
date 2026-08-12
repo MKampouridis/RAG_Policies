@@ -635,6 +635,24 @@ function relativeDate(ts) {
 }
 
 /* ── composer ─────────────────────────────────────────────────────────────── */
+/* ── settings (localStorage) ──────────────────────────────────────────────────
+   Declared HERE, above every use. buildComposer() is invoked at top level and
+   reads `settings` for the scope selector; with these declarations further down
+   the file that was a temporal-dead-zone ReferenceError, which threw during the
+   initial render and left the page completely blank. `let`/`const` do not hoist
+   like `function` does. */
+/* ── settings (localStorage) ──────────────────────────────────────────────── */
+const SETTINGS_KEY = 'essex-assistant-settings';
+const DEFAULT_SETTINGS = { detail: 'default', partnerMode: 'essex_only', notifyDigest: false, notifyChanges: false };
+function loadSettings() {
+  try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') }; }
+  catch (e) { return { ...DEFAULT_SETTINGS }; }
+}
+let settings = loadSettings();
+function saveSettings() {
+  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
+}
+
 function buildComposer() {
   const wrap = document.createElement('div');
   wrap.className = 'composer';
@@ -1442,17 +1460,6 @@ document.addEventListener('touchstart', (e) => {
   if (openSwipeItem && !openSwipeItem.contains(e.target)) closeSwipe(null);
 }, { passive: true });
 
-/* ── settings (localStorage) ──────────────────────────────────────────────── */
-const SETTINGS_KEY = 'essex-assistant-settings';
-const DEFAULT_SETTINGS = { detail: 'default', partnerMode: 'essex_only', notifyDigest: false, notifyChanges: false };
-function loadSettings() {
-  try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') }; }
-  catch (e) { return { ...DEFAULT_SETTINGS }; }
-}
-let settings = loadSettings();
-function saveSettings() {
-  try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); } catch (e) {}
-}
 function paintSettings() {
   for (const r of document.querySelectorAll('#detail-seg input')) r.checked = (r.value === settings.detail);
   document.getElementById('tg-digest').setAttribute('aria-pressed', settings.notifyDigest ? 'true' : 'false');

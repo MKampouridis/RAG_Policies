@@ -5535,3 +5535,44 @@ truthful answer in that mode.
 
 That defect was invisible at set 6's scale: with 8 questions the fallback never
 triggered. It took 60 documents to expose it.
+
+## Round 39 — I shipped a blank page (2026-08-12)
+
+The landing page rendered nothing after the scope-selector change. Cause: a
+temporal dead zone.
+
+`buildComposer()` is invoked at TOP LEVEL (`const chatComposer =
+buildComposer()`), and I added a line inside it reading `settings` for the
+selector's initial value. `settings` is declared with `let` **760 lines further
+down**. `let` and `const` do not hoist the way `function` does, so the read
+threw `ReferenceError: Cannot access 'settings' before initialization` - at top
+level, which aborts the entire script. Every subsequent line, including the
+whole render, never ran.
+
+Fixed by moving the settings block above its first use, with a comment saying
+why it lives there.
+
+### Why my checks did not catch it
+
+Everything I verified was true and none of it was the right check:
+
+| what I checked | result |
+|---|---|
+| CSS braces balanced | true |
+| element present in served HTML | true |
+| `partner_mode` reaching the server | true |
+| the modes returning correct documents | true, on 217 cases |
+
+I verified the *server* and the *markup*, and never that the page executes. A
+`curl` for a string proves the HTML contains it, not that the browser gets past
+line one. The 217-case measurement was real and the switch worked perfectly -
+through the API, which is the only path I exercised.
+
+The paren-count heuristic I reached for first was also a red herring: 676 vs
+679 came from parentheses inside strings and regexes, and pointed at a syntax
+error that did not exist. The actual fault was runtime, and the diff of what I
+had changed found it in one step.
+
+**The check that was missing** is the cheapest one available: load the page and
+confirm something rendered. Added to the restart sequence rather than left as
+an intention.
