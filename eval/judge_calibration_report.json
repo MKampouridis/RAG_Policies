@@ -1,0 +1,9 @@
+{
+ "n": 30,
+ "exact": 12,
+ "within1": 21,
+ "mean_diff": -0.5666666666666667,
+ "rank_corr": 0.4589543937708565,
+ "judge_higher": 6,
+ "judge_lower": 12
+}

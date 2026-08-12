@@ -1,0 +1,152 @@
+[
+ {
+  "id": 1,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 2,
+  "human_score": 3,
+  "note": "Answer don\u2019t mention condoning or 40 for both coursework and exam."
+ },
+ {
+  "id": 3,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 4,
+  "human_score": 4,
+  "note": "Didn\u2019t mention the year mark of 20."
+ },
+ {
+  "id": 5,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 6,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 7,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 8,
+  "human_score": 1,
+  "note": "It answers for partner institute."
+ },
+ {
+  "id": 9,
+  "human_score": 1,
+  "note": "Drop the question."
+ },
+ {
+  "id": 10,
+  "human_score": 1,
+  "note": ""
+ },
+ {
+  "id": 11,
+  "human_score": 5,
+  "note": "The reference text was wrong but the answer from the system was right!!"
+ },
+ {
+  "id": 12,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 13,
+  "human_score": 1,
+  "note": "Question is vague because it doesn\u2019t clarify if it\u2019s for PGT or PGR students. Let\u2019s drop it and ignore it."
+ },
+ {
+  "id": 14,
+  "human_score": 3,
+  "note": "It didn\u2019t mention condoning and min pass for both exam and coursework."
+ },
+ {
+  "id": 15,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 16,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 17,
+  "human_score": 1,
+  "note": "Said can\u2019t find answer but the reference provides one"
+ },
+ {
+  "id": 18,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 19,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 20,
+  "human_score": 3,
+  "note": "I think the answer was correct but it contradicts the referenced document."
+ },
+ {
+  "id": 21,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 22,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 23,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 24,
+  "human_score": 5,
+  "note": "Answer seems to be correct, although it doesn\u2019t match the referenced text"
+ },
+ {
+  "id": 25,
+  "human_score": 1,
+  "note": "Drop this question"
+ },
+ {
+  "id": 26,
+  "human_score": 1,
+  "note": "Referenced answer is correct. Assistant answer said doesn\u2019t know the answer."
+ },
+ {
+  "id": 27,
+  "human_score": 1,
+  "note": "Don\u2019t know if it\u2019s correct but it contradicts the reference"
+ },
+ {
+  "id": 28,
+  "human_score": 1,
+  "note": "Don\u2019t know if it\u2019s correct but it contradicts the reference"
+ },
+ {
+  "id": 29,
+  "human_score": 5,
+  "note": ""
+ },
+ {
+  "id": 30,
+  "human_score": 5,
+  "note": ""
+ }
+]

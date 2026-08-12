@@ -5652,3 +5652,83 @@ which is also methodologically better than one pass, since the project forbids
 same-family judging and a separate judging pass lets phi4 load without
 competing with a local generator for memory. Deferred pending a decision to
 spend it.
+
+## Round 42 — The judge, checked against a human for the first time (2026-08-12)
+
+30 stored answers scored by hand, blind to the model's scores, with the same
+rubric and the same information the judge was given (question, reference
+answer, actual answer). The judge here is the local `qwen2.5:14b` used for most
+of this ledger.
+
+| | |
+|---|---|
+| exact agreement | **12/30 (40%)** |
+| within 1 point | 21/30 (70%) |
+| mean difference | **-0.57** (judge scores LOWER) |
+| judge higher / lower | 6 / 12 |
+| **rank correlation** | **+0.46** |
+
+**The rank correlation is the number that matters.** A/B work does not need the
+judge's absolute values - a constant offset cancels between arms. It needs the
+judge to ORDER answers the way a person would. At +0.46 it only weakly does.
+
+### Where the disagreement lives
+
+| human score | n | judge's scores |
+|---|---|---|
+| 1 | 9 | 1x3, 2x5, 4x1 - broadly agrees |
+| 3 | 3 | 1x1, 3x2 |
+| 5 | **17** | **1x2, 2x1, 3x4, 4x4, 5x6** |
+
+Agreement is decent on BAD answers and poor on GOOD ones. Of 17 answers the
+human called perfect, the judge scored three of them 1 or 2.
+
+### The cause, from the human's own notes
+
+Three of the largest gaps carry the same explanation:
+
+> "The reference text was wrong but the answer from the system was right!!"
+> (human 5, judge 1)
+> "Answer seems to be correct, although it doesn't match the referenced text"
+> (human 5, judge 2)
+> "I think the answer was correct but it contradicts the referenced document."
+> (human 3, judge 1)
+
+**The judge measures agreement-with-reference, not correctness.** Where the
+stored reference answer is itself wrong or outdated, a CORRECT answer is
+scored 1. Seven of 14 notes mention the reference text.
+
+This is not a tuning problem. It is what the rubric asks for - "matches the
+reference answer's substance" - and it is the wrong question whenever the
+reference is unreliable. In a corpus that gets re-ingested and where documents
+are superseded, references go stale silently.
+
+### What this means for the ledger
+
+Judge-score deltas in past rounds are **partly a measure of reference quality**.
+A change that made answers more correct but less reference-matching would have
+been recorded as a regression. That cannot be undone retrospectively, and it
+is the honest caveat to attach to every mean-answer-score comparison here.
+
+It does NOT invalidate: hit@6, span coverage, department coverage, keyphrase
+coverage, or any of the deterministic string checks - none involve the judge.
+Round 29's ceiling analysis and Round 41's retrieval baseline stand untouched.
+
+### Limits of this measurement
+
+n=30. The human used the scale bimodally - 17 fives and 9 ones, with only 4 in
+between - which compresses the correlation estimate; a rater using the middle
+of the scale might correlate better. And one item was flagged as unanswerable
+("question is vague... let's drop it"), plus two more marked "drop the
+question" - so roughly 10% of the sampled items are bad tests rather than bad
+answers.
+
+### Actions this justifies
+
+1. **Audit the reference answers**, starting with the items flagged here. The
+   references, not the judge, are the weak link.
+2. **Do not spend $8 on 302 cloud turns yet.** The retrieval half of that
+   baseline is already banked and judge-free; the generation half would be
+   scored by an instrument now known to be weakly ordered.
+3. Prefer the deterministic checks (`cloud_smoke.py` rates, keyphrase coverage,
+   hit@6) over mean judge score for anything that has to be trusted.
