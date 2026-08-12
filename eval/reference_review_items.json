@@ -1,0 +1,101 @@
+[
+ {
+  "id": 11,
+  "gap": 4,
+  "human": 5,
+  "judge": 1,
+  "note": "The reference text was wrong but the answer from the system was right!!",
+  "question": "What happens if a student fails more than 15 non-core credits in Year One?",
+  "expected": "A student cannot fail any more credits in their Final Year, and carrying forward failed credits to following years is called condonement.",
+  "actual": "If a student fails more than 15 non-core credits in Year One, they must pass 120 credits in Year Two.\n\nSources:\n- [roa-ug-3yr-year-1-rules.pdf (2025-26)]\n- [roa-ug-3yr-year-2-rules.pdf (2024-25)]\n- [roa-ug-3yr-final-year-rules.pdf (2023-24)]",
+  "judge_just": "The assistant's answer is completely incorrect and introduces new facts not supported by the reference."
+ },
+ {
+  "id": 16,
+  "gap": 4,
+  "human": 5,
+  "judge": 1,
+  "note": "",
+  "question": "Does either lead to professional registration?",
+  "expected": "Yes. Successful completion of the HSC MSc Occupational Therapy leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). The SRES prescribing module is likewise tied to NMC/HCPC professional requirements.",
+  "actual": "Both do \u2014 with specific eligibility conditions:\n\n**MSci Nursing** (mscinursing_23-transfers-v4.pdf, Health and Social Care, 2024-25): Successful completion leads to eligibility to apply for registration with the Nursing and Midwifery Council (NMC) as a Registered Nurse Dual Award (Adult & Mental Health). However, to obtain a registerable degree, students must also be assessed as remaining of good health and character by the School's Professional Suitability Group/Examination Board \u2014 those who don't meet this criterion may instead be eligible for a non-registerable award.\n\n**MA Social Work** (ma_social_work_25.pdf, Health and Social Care, 2025-26): Eligibility for professional registration requires obtaining 135 credits at Masters level, passing all placements and all core module assignments, completing the required placement days, not being subject to a current Professional Suitability Group referral, having satisfactorily addressed any concluded/unfinished Fitness to Practise sanctions, and not being subject to an exclusion from direct service-user work on fitness-to-practise or conduct grounds.\n\n**MSc Physiotherapy (Pre-registration)** (msc-physiotherapy-25.pdf, SRES, 2025-26): Successful completion leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). Note that only the Postgraduate Diploma in Physiotherapy (Pre-registration) exit award leads to HCPC registration eligibility \u2014 the alternative exit award, Postgraduate Diploma in Health Studies, does not.\n\nBy contrast, the SRES modular programmes (MSc/PG Dip/PG Cert in Musculoskeletal Practice, Musculoskeletal Ultrasound Imaging, etc., in sres-modular-25.pdf) explicitly state that their **non-accredited** Postgraduate Certificate and Postgraduate Diploma awards (for students not eligible for the Masters) do **not** lead to eligibility to register with the HCPC. The excerpts don't clarify whether the full Masters awards on those specific programmes carry HCPC registration eligibility.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n\n_Note: this answer is based primarily on \"mscinursing_23-transfers-v4.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_just": "The assistant's answer contradicts the reference and introduces false facts about programs not mentioned in the question."
+ },
+ {
+  "id": 13,
+  "gap": 3,
+  "human": 1,
+  "judge": 4,
+  "note": "Question is vague because it doesn\u2019t clarify if it\u2019s for PGT or PGR students. Let\u2019s drop it and ignore it.",
+  "question": "What are the minimum supervision hours required per student according to this Code of Practice?",
+  "expected": "At least four hours per student.",
+  "actual": "According to the provided context, each student must have at least four hours of supervision available. This requirement is stated in both the 2025-26 Code of Practice and the 2020-21 version.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf]\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf]",
+  "judge_just": "The answer is correct but includes redundant information about the sources."
+ },
+ {
+  "id": 24,
+  "gap": 3,
+  "human": 5,
+  "judge": 2,
+  "note": "Answer seems to be correct, although it doesn\u2019t match the referenced text",
+  "question": "What should students do after signing the documentation regarding their understanding of the departmental arrangements and expectations?",
+  "expected": "Students should participate in an induction programme at the start of their period of study.",
+  "actual": "After signing the documentation, students should keep a record of their personal progress, including a copy of the agreed training needs, courses that need to be completed, and other relevant information. They are also expected to familiarize themselves with the University's policy on plagiarism and academic offences.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2023-24.pdf]\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2022-23.pdf]",
+  "judge_just": "The answer diverges from the correct response and introduces irrelevant information not related to the question."
+ },
+ {
+  "id": 18,
+  "gap": 2,
+  "human": 5,
+  "judge": 3,
+  "note": "",
+  "question": "What happens if a student fails to meet the requirements to progress from Year One to Year Two without any extenuating circumstances?",
+  "expected": "If a student does not meet the progression requirements in Year One and has no substantiated extenuating circumstances, they must withdraw from the University.",
+  "actual": "If a student does not meet the progression requirements from Year One to Year Two without any substantiated extenuating circumstances, they will not be permitted to proceed on an Integrated Masters programme. However, they can be considered for a transfer to an Honours Degree programme. The normal Rules of Assessment for progressing on a new programme will then apply.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf] (Title: five-year-integrated-masters-21-v7.pdf, Academic Year: 2025-2026)\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf] (Title: four-year-integrated-masters-22-v4.pdf, Academic Year: 2022-2023)\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/four_year_integrated_masters_21.pdf] (Title: four_year_integrated_masters_21.pdf, Academic Year: 2021-2022)",
+  "judge_just": "The assistant's answer includes additional information not present in the reference, such as the possibility of transferring to an Honours Degree programme, which is not mentioned in the ground-truth."
+ },
+ {
+  "id": 20,
+  "gap": 2,
+  "human": 3,
+  "judge": 1,
+  "note": "I think the answer was correct but it contradicts the referenced document.",
+  "question": "Which modules require students to achieve specific pass marks beyond the standard 50%?",
+  "expected": "For HS632 Preparation for Independent and Supplementary Prescribing V300 (NMC/HCPC) Pharmacology Examination, a student must achieve a pass mark of 80. For SE708 (and the alternative SE746) the MCQ exam pass mark is 70%.",
+  "actual": "# Modules with Non-Standard Pass Mark Requirements\n\nBased on the provided context, the following modules require pass marks higher than the standard 50%:\n\n## Speech and Language Therapy (Health and Social Care, 2025-26)\n\n- **HS831 Linguistics and Phonetics exam**: Students must achieve a pass mark of **at least 74**. This raw grade is then transformed using the formula: Transformed grade = 1.92 x [raw grade \u2013 74] + 50, to align it proportionally with the standard 50 pass mark used in other modules.\n\n- **HS832 Linguistics and Phonetics exam**: Students must achieve a pass mark of **at least 70**. (The context excerpt cuts off, but indicates a similar transformation formula applies.)\n\n## Context Notes\n\nThe context provided does not contain information about other programmes or departments that might have non-standard pass marks. The integrated masters and partner institution documents in the provided context all reference standard pass marks (40 for Years 1-4, 50 for Final Year, or 35-40 minimum for specified/standard modules at partner institutions).\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf\n\n_Note: this answer is based primarily on \"speechtherapy_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_just": "The assistant's answer contradicts the reference and introduces false facts about modules with non-standard pass marks for Speech and Language Therapy."
+ },
+ {
+  "id": 21,
+  "gap": 2,
+  "human": 5,
+  "judge": 3,
+  "note": "",
+  "question": "What happens if a student withdraws from their course during the academic year according to this policy?",
+  "expected": "Fee liability following withdrawal is detailed in section Fee liability following withdrawal of the document.",
+  "actual": "If a student officially registers and chooses to withdraw permanently after the course start date has been reached but within 28 days, they are liable for 10% of the annual fee (subject to arrangements agreed with the sponsor where applicable). This is detailed in sections 5.9.3 and 5.9.4 of the 2023-24 policy.\n\nFor further details on specific circumstances or additional information, refer to the full policy document available at [source_url: https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf] (Policy 2023-24, Page 5).",
+  "judge_just": "The assistant provided specific details about the fee liability for withdrawal within a certain timeframe, which is not accurate according to the reference answer. The reference only mentions that the fee liability following withdrawal is detailed in section Fee liability following withdrawal."
+ },
+ {
+  "id": 22,
+  "gap": 2,
+  "human": 5,
+  "judge": 3,
+  "note": "",
+  "question": "What does 'dual-career athlete' mean in the context of this policy?",
+  "expected": "A dual-career athlete is defined as any student who is in receipt of a University of Essex Sports Scholarship, receiving benefits in kind; or any TASS (Sport England funded) student athletes studying on University of Essex courses.",
+  "actual": "I wasn't able to find information in the retrieved policy/rules-of-assessment excerpts that directly and confidently answers this question. You may want to check the source document(s) below directly, or rephrase your question with more specific details (e.g. programme, department, or academic year).",
+  "judge_just": "The answer is partially correct but lacks the definition provided in the reference."
+ },
+ {
+  "id": 23,
+  "gap": 2,
+  "human": 5,
+  "judge": 3,
+  "note": "",
+  "question": "What are the compulsory reassessment opportunities at the end of Year One according to the document?",
+  "expected": "Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.",
+  "actual": "According to the document [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ecce-portobello-year-1.pdf] (title: ecce-portobello-year-1.pdf), during the Final Stage, you will be offered compulsory reassessment in all failed Final Stage credits before the new study year begins.\n\nSpecifically, if you do not meet the requirements to pass and complete your degree but achieve a Year Mark of 20 or above, you may be offered reassessment.",
+  "judge_just": "The answer is partially correct as it provides additional details not asked in the question and misses mentioning the specific period at the end of Year One for compulsory reassessment."
+ }
+]

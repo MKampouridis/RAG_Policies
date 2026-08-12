@@ -141,6 +141,27 @@ def classic():
     return FileResponse(STATIC_DIR / "index.html")
 
 
+@app.get("/reference-review")
+def reference_review_page():
+    """Second-stage review: for the answers where the human and the judge
+    disagreed most, is the REFERENCE right? Round 42 found the judge scores
+    agreement-with-reference, so a suspect reference is the likeliest
+    explanation for a large gap."""
+    page = STATIC_DIR / "reference_review.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="reference review page not built")
+    return FileResponse(page)
+
+
+@app.post("/api/reference-review")
+def api_reference_review(verdicts: list[dict]):
+    out = Path("eval/reference_review_verdicts.json")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(verdicts, indent=1))
+    done = sum(1 for v in verdicts if v.get("verdict"))
+    return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
+
+
 @app.get("/calibration")
 def calibration_page():
     """Judge-calibration scoring page (eval tool, not part of the product).
