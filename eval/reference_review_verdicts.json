@@ -1,0 +1,47 @@
+[
+ {
+  "n": 1,
+  "verdict": "wrong",
+  "note": ""
+ },
+ {
+  "n": 2,
+  "verdict": "unclear",
+  "note": ""
+ },
+ {
+  "n": 3,
+  "verdict": "bad_question",
+  "note": ""
+ },
+ {
+  "n": 4,
+  "verdict": "unclear",
+  "note": ""
+ },
+ {
+  "n": 5,
+  "verdict": "unclear",
+  "note": ""
+ },
+ {
+  "n": 6,
+  "verdict": "unclear",
+  "note": ""
+ },
+ {
+  "n": 7,
+  "verdict": "unclear",
+  "note": ""
+ },
+ {
+  "n": 8,
+  "verdict": "unclear",
+  "note": ""
+ },
+ {
+  "n": 9,
+  "verdict": "unclear",
+  "note": ""
+ }
+]

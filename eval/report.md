@@ -5792,3 +5792,46 @@ same manual labour as the calibration itself. The cheap version: re-check only
 the references for items where a human and the judge disagree by 2 or more,
 since that gap is the signal that a reference is suspect. That is ~5 items per
 30 scored, not 151.
+
+## Round 44 — The reference review was unanswerable as built (2026-08-12)
+
+9 items where human and judge differed by 2+, reviewed for whether the
+REFERENCE is right rather than the answer.
+
+| verdict | n |
+|---|---|
+| **can't tell without the source** | **7 (78%)** |
+| wrong even at the time | 1 |
+| the QUESTION is the problem | 1 |
+
+**That is a design failure, not an inconclusive result.** The page showed the
+question, the reference and the assistant's answer - and not the document the
+reference was supposedly drawn from. Asking "is this reference correct?" while
+withholding the source makes the question unanswerable, and 7 of 9 people
+correctly said so rather than guessing.
+
+Rebuilt with the relevant source text on each card: the passage nearest the
+question AND the passage nearest the reference, so the reviewer sees what each
+was derived from. 9 of 9 items now carry source text; earlier verdicts are
+pre-selected so only the 7 need revisiting.
+
+### What the two decided items already establish
+
+- **One reference is WRONG** - the item the human had annotated "the reference
+  text was wrong but the answer from the system was right". Judge scored the
+  answer 1, human scored it 5. Confirmed: the judge penalised a correct answer
+  for disagreeing with a bad reference. That is Round 42's mechanism, now with
+  a named instance.
+- **One QUESTION is bad** ("minimum supervision hours" - vague between PGT and
+  PGR). Human 1, judge 4: the judge rewarded an answer to an unanswerable
+  question.
+
+Two failure modes, opposite directions, both invisible to any automatic metric.
+
+### A bug found while attaching the passages
+
+`passages_for_documents` returns `excerpt`; the code asked for `passage`. It
+failed silently - 0 of 9 items got text, with no error - because a missing dict
+key returns None and the loop skipped every one. Caught only by checking the
+count rather than trusting the run. The same shape of mistake as reading
+`loadSettings().detailLevel` when the key is `detail`.
