@@ -1279,6 +1279,7 @@ async function send(text) {
       });
     }
     pending.remove();
+    drip.reset();
     if (streamedEl) { streamedEl.remove(); streamedEl = null; }
     renderAssistant(result.answer, result.sources, {
       question: text,
@@ -1317,6 +1318,58 @@ async function send(text) {
 })();
 
 
+
+
+/* ── smooth output ───────────────────────────────────────────────────────────
+   The generator does not arrive smoothly. Measured on a real answer: 9 events,
+   a median of 154 characters each, 614ms apart - a whole paragraph appears,
+   then nothing for two-thirds of a second. Appending each chunk straight to the
+   DOM reproduces that stutter exactly.
+
+   This buffers arrivals and releases them at a steady rate, decoupling display
+   from network timing. The rate ADAPTS: it speeds up when the buffer grows, so
+   the answer still finishes when the answer finishes rather than seconds
+   later. */
+const drip = (function () {
+  let buf = '', shown = '', el = null, raf = null, last = 0;
+  const BASE = 220;            // chars/sec, close to the measured arrival rate
+
+  function frame(now) {
+    if (!last) last = now;
+    const dt = Math.min((now - last) / 1000, 0.1);   // ignore tab-away jumps
+    last = now;
+    if (buf.length) {
+      const rate = Math.max(BASE, buf.length * 3);   // never lag far behind
+      const take = Math.max(1, Math.round(rate * dt));
+      shown += buf.slice(0, take);
+      buf = buf.slice(take);
+      if (el) el.textContent = shown;
+      const nearBottom =
+        messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight < 120;
+      if (nearBottom) messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+    raf = buf.length ? requestAnimationFrame(frame) : null;
+    if (!buf.length) last = 0;
+  }
+
+  return {
+    attach(node) { el = node; buf = ''; shown = ''; },
+    push(text) {
+      buf += text;
+      if (el && !raf) { last = 0; raf = requestAnimationFrame(frame); }
+    },
+    /* Stream ended: stop animating and show the rest at once. renderAssistant
+       re-renders the final answer as markdown anyway, so dripping the tail out
+       would only delay it. */
+    finish() {
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
+      if (el && buf.length) { shown += buf; el.textContent = shown; }
+      buf = '';
+    },
+    reset() { this.finish(); el = null; shown = ''; },
+  };
+})();
 
 /* ── streaming ────────────────────────────────────────────────────────────
    Reads the SSE endpoint and paints tokens as they arrive. The final `done`
@@ -1368,9 +1421,9 @@ async function sendStreaming(text, pending) {
           streamedEl = document.createElement('div');
           streamedEl.className = 'msg-assistant';
           messagesEl.appendChild(streamedEl);
+          drip.attach(streamedEl);
         }
-        streamedEl.textContent += parsed;
-        messagesEl.scrollTop = messagesEl.scrollHeight;
+        drip.push(parsed);
       } else if (event === 'done') {
         done = parsed;
       } else if (event === 'error') {
@@ -1378,6 +1431,7 @@ async function sendStreaming(text, pending) {
       }
     }
   }
+  drip.finish();
   if (failed) { const e = new Error(failed); e.committed = true; throw e; }
   if (!done) { const e = new Error('stream ended without a result'); e.committed = true; throw e; }
   return done;

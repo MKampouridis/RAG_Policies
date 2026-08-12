@@ -5576,3 +5576,40 @@ had changed found it in one step.
 **The check that was missing** is the cheapest one available: load the page and
 confirm something rendered. Added to the restart sequence rather than left as
 an intention.
+
+## Round 40 — Streaming looked jerky because it IS jerky (2026-08-12)
+
+Reported as "the streaming effect isn't very smooth". Measured the arrival
+pattern before touching the rendering:
+
+| | |
+|---|---|
+| token events per answer | **9** |
+| characters per event | median **154** (min 6, max 203) |
+| gap between events | median **614ms** |
+| total | 1,243 chars |
+
+So a whole paragraph lands at once and nothing happens for two-thirds of a
+second. The renderer was appending each chunk straight to the DOM, which
+reproduces that stutter exactly. It was not a rendering bug - the text really
+does arrive in blocks, and the UI was faithfully showing that.
+
+**Fix: decouple display from network timing.** Arrivals go into a buffer and a
+`requestAnimationFrame` loop releases characters at a steady ~220 chars/sec -
+close to the measured average arrival rate, so the text flows continuously
+instead of in paragraph-sized jumps.
+
+The rate ADAPTS (`max(BASE, buffer.length * 3)`): if a large chunk arrives the
+drip speeds up, so the answer still finishes when the answer finishes rather
+than trailing seconds behind. On `done` the remainder is flushed immediately -
+`renderAssistant` re-renders the final markdown anyway, so dripping the tail
+would only delay it.
+
+Auto-scroll only follows when the user is already near the bottom, so reading
+back through an answer is not yanked around by incoming text.
+
+**What is verified and what is not.** Verified: the page executes (checked
+explicitly this time, after Round 39 shipped a blank page), streaming works end
+to end, first token 3.46s warm, the answer stores correctly. NOT verified:
+whether it actually *looks* smoother - that needs a human watching it, and no
+measurement I can run substitutes for that.
