@@ -1,0 +1,604 @@
+<!doctype html><meta charset="utf-8"><title>Judge calibration — 30 answers</title>
+<style>
+:root{--v:#622567;--lime:#bed600;--bg:#faf9fb;--card:#fff;--line:#e5e1e8;--muted:#6b6472}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#1a1620;font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:10;background:var(--v);color:#fff;padding:14px 20px;border-bottom:4px solid var(--lime)}
+header h1{margin:0;font-size:17px;font-weight:700}
+header p{margin:4px 0 0;font-size:12.5px;opacity:.9}
+.bar{margin-top:9px;height:6px;background:rgba(255,255,255,.25);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--lime);transition:width .2s}
+main{max-width:860px;margin:0 auto;padding:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:18px}
+.card.done{border-color:var(--lime);box-shadow:0 0 0 2px rgba(190,214,0,.25)}
+.hdr{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px}
+.state.done{color:#2e7d32;font-weight:600}
+h2{margin:0 0 14px;font-size:16.5px;line-height:1.4}
+.block{margin-bottom:12px}
+h3{margin:0 0 5px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.ref,.ans{white-space:pre-wrap;border-radius:7px;padding:11px 13px;font-size:14px}
+.ref{background:#f3f0f6;border-left:3px solid var(--v)}
+.ans{background:#fbfbfc;border:1px solid var(--line);max-height:340px;overflow:auto}
+.scoring{display:flex;flex-direction:column;gap:5px;margin:14px 0 10px}
+.opt{display:flex;align-items:flex-start;gap:9px;padding:7px 9px;border:1px solid var(--line);border-radius:7px;cursor:pointer}
+.opt:hover{background:#f7f4f9}
+.opt input{margin-top:2px}
+.opt:has(input:checked){background:#f3f0f6;border-color:var(--v)}
+.num{font-weight:700;color:var(--v);min-width:14px}
+.lbl{font-size:13.5px;color:#3a3340}
+.note{width:100%;border:1px solid var(--line);border-radius:7px;padding:8px 10px;font:inherit;font-size:13.5px;resize:vertical}
+footer{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:13px 20px;text-align:center}
+button{background:var(--v);color:#fff;border:0;border-radius:7px;padding:11px 22px;font:inherit;font-weight:600;cursor:pointer}
+button:disabled{background:#bbb;cursor:not-allowed}
+#msg{font-size:12.5px;color:var(--muted);margin-top:7px}
+</style>
+<header>
+  <h1>Judge calibration — score these 30 answers</h1>
+  <p>Same rubric and the same information the automatic marker was given. Its scores are deliberately hidden so they cannot influence yours.</p>
+  <div class="bar"><i id="prog"></i></div>
+</header>
+<main>
+<section class="card" id="card1" data-id="1">
+  <div class="hdr"><span class="idx">1 of 30</span>
+    <span class="state" id="state1">unscored</span></div>
+  <h2>A PGR student sponsored on a Student visa wants to intermit for two terms. What are the consequences?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">The University is required to withdraw sponsorship from a student who intermits, and the Home Office will curtail their immigration permission. The student will have to leave the UK while intermitting, and must stop any work immediately because the condition allowing work alongside study no longer applies. Before returning they can request further immigration sponsorship and, if eligible, apply for a new Student visa. Retrospective intermission is not possible for sponsored students.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If a PGR student sponsored on a Student visa intermits for two terms, the key consequences are:
+
+- **Loss of sponsorship**: The University must withdraw sponsorship, since it can only sponsor a student for a Student visa while they are fully registered and actively engaged in study.
+- **Visa curtailment**: The Home Office will curtail (cut short) the student&#x27;s immigration permission once the University reports the intermission.
+- **Must leave the UK**: The student will have to leave the UK for the duration of the intermission period.
+- **Must stop working**: If the student has been working under the conditions of their visa, they must stop immediately, since the work permission tied to being a registered student no longer applies.
+- **No retrospective intermission**: This route is not available to sponsored students, so the request and its immigration consequences must be handled prospectively, not after the fact.
+- **Re-entry process**: Before returning to study in the UK, the student would need to request further immigration sponsorship from the University and, if eligible, apply for a new Student visa to re-enter.
+- **Notification**: When the University reports the change to the Home Office, its International Services Team will notify the student by email and provide immigration advice.
+
+Note that a two-term intermission for non-medical reasons is within the permitted maximum (up to 3 terms for non-medical intermission before a student would be required to withdraw and seek readmission later), so the length itself would not automatically trigger withdrawal from the programme — but the visa consequences above would still apply regardless of term length, since any intermission (not just a short, unsponsored absence) triggers the loss of sponsorship.
+
+Source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q1" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q1" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q1" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q1" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q1" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note1" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card2" data-id="2">
+  <div class="hdr"><span class="idx">2 of 30</span>
+    <span class="state" id="state2">unscored</span></div>
+  <h2>What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">If a student fails with a module aggregate mark of exactly 40, this may be condoned provided the overall weighted average for all taught modules is 50. The student must still achieve at least 40 in both the coursework and exam elements.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Based on the provided context, if a student fails a module with an aggregate mark of exactly 40, which is just at the pass threshold:
+
+- The Module Aggregate Mark will be capped at 40 (as mentioned in multiple documents).
+
+Sources:
+- roa-ug-uoe-online-level-one-two-three.pdf
+- roa-ug-incoming-essex-abroad-rules.pdf
+- modular_25.pdf</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q2" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q2" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q2" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q2" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q2" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note2" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card3" data-id="3">
+  <div class="hdr"><span class="idx">3 of 30</span>
+    <span class="state" id="state3">unscored</span></div>
+  <h2>They still owe some fees - does that matter?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Yes. All registration fees and debts must be paid before the thesis can be accepted for submission.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Yes, it matters. All registration fees and debts must be paid before a thesis can be accepted for submission — so if the student still owes fees, they won&#x27;t be able to submit their thesis for examination until the debt is cleared.
+
+Sources: https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q3" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q3" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q3" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q3" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q3" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note3" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card4" data-id="4">
+  <div class="hdr"><span class="idx">4 of 30</span>
+    <span class="state" id="state4">unscored</span></div>
+  <h2>What happens if a student fails up to 60 credits in the Foundation Year?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">If a student fails up to 60 credits but has a Year Mark of 20 or above, they will be offered compulsory reassessment before the start of the next Year. Their Module Mark(s) will be capped at 40.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If you fail up to 60 credits in the Foundation Year at the University of Essex, you will be offered compulsory reassessment before the start of the next year.
+
+Sources:
+- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf]</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q4" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q4" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q4" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q4" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q4" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note4" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card5" data-id="5">
+  <div class="hdr"><span class="idx">5 of 30</span>
+    <span class="state" id="state5">unscored</span></div>
+  <h2>Are there membership rules for that RSPB?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Yes. Where the RSPB is considering a recommendation of discontinuation or downgrading, or a change of status to MPhil at confirmation, its membership must include at least two members who were not on the student&#x27;s last Supervisory Panel. Smaller departments may co-opt a supervisor from another department in a cognate discipline.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Yes. The Code of Practice for Postgraduate Research Degrees sets out membership rules for the RSPB:
+
+- The RSPB is established by each department and chaired by the **Postgraduate Research Director or Head of Department**.
+- It must include **at least two other experienced supervisors**.
+- The Chair must **not** be a partner or close relative of the student&#x27;s supervisor (main, joint or secondary), nor have any professional or personal relationship with the student that could create a conflict of interest.
+- Where the RSPB is considering a **recommendation of discontinuation or downgrading**, or a **confirmation decision to change a student&#x27;s status to MPhil**, the RSPB membership must include **at least two members who were not on the student&#x27;s last Supervisory Panel**.
+- Smaller departments that struggle to meet this requirement may **co-opt a supervisor from another department** in a cognate discipline to serve on the RSPB.
+
+This applies generally across departments — no separate rules specific to CSEE or History are given.
+
+Source: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q5" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q5" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q5" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q5" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q5" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note5" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card6" data-id="6">
+  <div class="hdr"><span class="idx">6 of 30</span>
+    <span class="state" id="state6">unscored</span></div>
+  <h2>What happens if a student fails to comply with the University&#x27;s Professional Clinical Appearance Code of Practice during their placement?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Students who fail to comply may face disciplinary action and could be required to rectify any breaches.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">According to the policy, if students do not follow the University&#x27;s Code of Conduct, or local policies in place at partner organisations, they may be considered to be in breach of the University of Essex Code of Conduct and may lead to:
+
+* Being referred for investigation by the Conduct Team
+* Being referred to the Professional Suitability Group as per Fitness to Practise procedures (Sources: https://www.essex.ac.uk/-/media/documents/about/governance/professional-clinical-appearance-code-of-practice.pdf)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q6" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q6" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q6" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q6" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q6" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note6" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card7" data-id="7">
+  <div class="hdr"><span class="idx">7 of 30</span>
+    <span class="state" id="state7">unscored</span></div>
+  <h2>What is the frequency of review for departmental arrangements related to Professional Doctorates, and when are changes necessary?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Departmental arrangements will be reviewed every three years or sooner if the department wishes to make any major changes to the arrangements or if any changes to University policies, procedures or regulations require it.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">The departmental documentation and its arrangements should be reviewed every three years or sooner if there are any major changes needed, or if there are changes in University policies, procedures, or regulations that require it. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf], [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf]</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q7" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q7" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q7" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q7" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q7" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note7" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card8" data-id="8">
+  <div class="hdr"><span class="idx">8 of 30</span>
+    <span class="state" id="state8">unscored</span></div>
+  <h2>What are the compulsory reassessment opportunities at the end of Year One according to the document?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Based on the provided context, there is no specific mention of compulsory reassessment opportunities at the end of Year One for the given academic years. The rules generally state that if a student has failed any module(s) after completing all assessments but has achieved marks of 20 or above in all other modules, they must take reassessment during the next Term or Summer Break before progressing to the next Stage.
+
+Sources:
+- [iep-portobello-year-2.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf)
+- [iep-portobello-year-3.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q8" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q8" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q8" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q8" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q8" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note8" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card9" data-id="9">
+  <div class="hdr"><span class="idx">9 of 30</span>
+    <span class="state" id="state9">unscored</span></div>
+  <h2>Who is responsible for discussing these details with new research students during their induction?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">The Postgraduate Research Director should discuss these details during the induction or within the first three weeks of term.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">The responsibility for discussing referencing and citation expectations with new research students during induction varies slightly depending on the academic year.
+
+*   **2018-19:** The Graduate Director is responsible ([https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf)).
+*   **2020-21:** The Graduate Director is responsible ([https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf)).
+*   **2025-26:** The Postgraduate Research Director is responsible ([https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf)).
+
+Sources:
+*   [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf)
+*   [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf)
+*   [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q9" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q9" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q9" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q9" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q9" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note9" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card10" data-id="10">
+  <div class="hdr"><span class="idx">10 of 30</span>
+    <span class="state" id="state10">unscored</span></div>
+  <h2>What does the term &#x27;Capped Mark&#x27; refer to in the University of Essex Undergraduate Rules of Assessment?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">A capped mark is a maximum mark that can be awarded for an assessment, and if achieved, no further marks can be gained from re-assessments or supplementary examinations.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">The provided context does not contain a definition or direct reference to the term &#x27;Capped Mark&#x27;. The rules mention &quot;Uncapped Year Mark&quot; in relation to eligibility for a Term Abroad if reassessment was undertaken during Year One, but there is no information about what constitutes a &#x27;Capped Mark&#x27;.
+
+Sources:
+- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf] (Academic Year 2025-26)
+- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf] (Academic Year 2025-26)
+- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-variations.pdf] (Academic Year 2023-2024)
+- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf] (Academic Year 2024-2025)
+- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf] (Academic Year 2024-2025)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q10" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q10" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q10" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q10" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q10" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note10" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card11" data-id="11">
+  <div class="hdr"><span class="idx">11 of 30</span>
+    <span class="state" id="state11">unscored</span></div>
+  <h2>What happens if a student fails more than 15 non-core credits in Year One?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">A student cannot fail any more credits in their Final Year, and carrying forward failed credits to following years is called condonement.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If a student fails more than 15 non-core credits in Year One, they must pass 120 credits in Year Two.
+
+Sources:
+- [roa-ug-3yr-year-1-rules.pdf (2025-26)]
+- [roa-ug-3yr-year-2-rules.pdf (2024-25)]
+- [roa-ug-3yr-final-year-rules.pdf (2023-24)]</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q11" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q11" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q11" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q11" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q11" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note11" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card12" data-id="12">
+  <div class="hdr"><span class="idx">12 of 30</span>
+    <span class="state" id="state12">unscored</span></div>
+  <h2>What does the Fitness to Study policy address in terms of student behavior?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">The Fitness to Study policy addresses concerns over students&#x27; health or mental health difficulties that impact their studies and life at university, leading to problematic behavior or disruption to other students.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">The Fitness to Study policy addresses situations where a student&#x27;s health, mental health, or behavior is causing concern. It covers instances where a student’s behavior within accommodation is disruptive to other students or staff. The policy provides a coordinated and managed response and can lead to actions such as suspension or exclusion from the university if necessary.
+
+Sources:
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf
+- Page 1, paragraph 1.3; Pages 4-5, sections 2.1 and 7.1-7.3</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q12" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q12" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q12" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q12" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q12" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note12" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card13" data-id="13">
+  <div class="hdr"><span class="idx">13 of 30</span>
+    <span class="state" id="state13">unscored</span></div>
+  <h2>What are the minimum supervision hours required per student according to this Code of Practice?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">At least four hours per student.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">According to the provided context, each student must have at least four hours of supervision available. This requirement is stated in both the 2025-26 Code of Practice and the 2020-21 version.
+
+Sources:
+- [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf]
+- [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf]</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q13" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q13" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q13" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q13" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q13" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note13" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card14" data-id="14">
+  <div class="hdr"><span class="idx">14 of 30</span>
+    <span class="state" id="state14">unscored</span></div>
+  <h2>What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">If a student fails with a module aggregate mark of exactly 40, this may be condoned provided the overall weighted average for all taught modules is 50. The student must still achieve at least 40 in both the coursework and exam elements.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Based on the provided context, if a student fails with a module aggregate mark of exactly 40 in the taught core modules, they will be capped at 40. This cap applies regardless of whether the failure is above or below 20 marks.
+
+Sources:
+- [roa-ug-uoe-online-level-one-two-three.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf)
+- [roa-ug-incoming-essex-abroad-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q14" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q14" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q14" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q14" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q14" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note14" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card15" data-id="15">
+  <div class="hdr"><span class="idx">15 of 30</span>
+    <span class="state" id="state15">unscored</span></div>
+  <h2>What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Students are permitted to progress to Year 2 or Year 3 trailing a maximum of 30 credits.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Students may carry forward up to **30 credits** when progressing to the next year (Year 2 or Year 3) in either the MSc Periodontology or MSc Advanced Periodontal Practice programmes【source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf】.</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q15" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q15" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q15" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q15" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q15" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note15" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card16" data-id="16">
+  <div class="hdr"><span class="idx">16 of 30</span>
+    <span class="state" id="state16">unscored</span></div>
+  <h2>Does either lead to professional registration?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Yes. Successful completion of the HSC MSc Occupational Therapy leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). The SRES prescribing module is likewise tied to NMC/HCPC professional requirements.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Both do — with specific eligibility conditions:
+
+**MSci Nursing** (mscinursing_23-transfers-v4.pdf, Health and Social Care, 2024-25): Successful completion leads to eligibility to apply for registration with the Nursing and Midwifery Council (NMC) as a Registered Nurse Dual Award (Adult &amp; Mental Health). However, to obtain a registerable degree, students must also be assessed as remaining of good health and character by the School&#x27;s Professional Suitability Group/Examination Board — those who don&#x27;t meet this criterion may instead be eligible for a non-registerable award.
+
+**MA Social Work** (ma_social_work_25.pdf, Health and Social Care, 2025-26): Eligibility for professional registration requires obtaining 135 credits at Masters level, passing all placements and all core module assignments, completing the required placement days, not being subject to a current Professional Suitability Group referral, having satisfactorily addressed any concluded/unfinished Fitness to Practise sanctions, and not being subject to an exclusion from direct service-user work on fitness-to-practise or conduct grounds.
+
+**MSc Physiotherapy (Pre-registration)** (msc-physiotherapy-25.pdf, SRES, 2025-26): Successful completion leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). Note that only the Postgraduate Diploma in Physiotherapy (Pre-registration) exit award leads to HCPC registration eligibility — the alternative exit award, Postgraduate Diploma in Health Studies, does not.
+
+By contrast, the SRES modular programmes (MSc/PG Dip/PG Cert in Musculoskeletal Practice, Musculoskeletal Ultrasound Imaging, etc., in sres-modular-25.pdf) explicitly state that their **non-accredited** Postgraduate Certificate and Postgraduate Diploma awards (for students not eligible for the Masters) do **not** lead to eligibility to register with the HCPC. The excerpts don&#x27;t clarify whether the full Masters awards on those specific programmes carry HCPC registration eligibility.
+
+**Sources:**
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf
+
+_Note: this answer is based primarily on &quot;mscinursing_23-transfers-v4.pdf&quot;. Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn&#x27;t the right one._</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q16" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q16" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q16" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q16" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q16" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note16" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card17" data-id="17">
+  <div class="hdr"><span class="idx">17 of 30</span>
+    <span class="state" id="state17">unscored</span></div>
+  <h2>What does the Fitness to Study policy address in terms of student behavior?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">The Fitness to Study policy addresses concerns over students&#x27; health or mental health difficulties that impact their studies and life at university, leading to problematic behavior or disruption to other students.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">I wasn&#x27;t able to find information in the retrieved policy/rules-of-assessment excerpts that directly and confidently answers this question. You may want to check the source document(s) below directly, or rephrase your question with more specific details (e.g. programme, department, or academic year).</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q17" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q17" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q17" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q17" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q17" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note17" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card18" data-id="18">
+  <div class="hdr"><span class="idx">18 of 30</span>
+    <span class="state" id="state18">unscored</span></div>
+  <h2>What happens if a student fails to meet the requirements to progress from Year One to Year Two without any extenuating circumstances?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">If a student does not meet the progression requirements in Year One and has no substantiated extenuating circumstances, they must withdraw from the University.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If a student does not meet the progression requirements from Year One to Year Two without any substantiated extenuating circumstances, they will not be permitted to proceed on an Integrated Masters programme. However, they can be considered for a transfer to an Honours Degree programme. The normal Rules of Assessment for progressing on a new programme will then apply.
+
+Sources:
+- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf] (Title: five-year-integrated-masters-21-v7.pdf, Academic Year: 2025-2026)
+- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf] (Title: four-year-integrated-masters-22-v4.pdf, Academic Year: 2022-2023)
+- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/four_year_integrated_masters_21.pdf] (Title: four_year_integrated_masters_21.pdf, Academic Year: 2021-2022)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q18" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q18" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q18" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q18" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q18" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note18" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card19" data-id="19">
+  <div class="hdr"><span class="idx">19 of 30</span>
+    <span class="state" id="state19">unscored</span></div>
+  <h2>How long do students have to complete their MBA studies at the University of Essex?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Students must complete their studies within 5 years.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Students must complete their MBA studies within 5 years, as per the rules set by accrediting bodies. This information can be found in the document titled &quot;mba-25.pdf&quot; from the University of Essex&#x27;s academic section (source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf).</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q19" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q19" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q19" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q19" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q19" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note19" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card20" data-id="20">
+  <div class="hdr"><span class="idx">20 of 30</span>
+    <span class="state" id="state20">unscored</span></div>
+  <h2>Which modules require students to achieve specific pass marks beyond the standard 50%?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">For HS632 Preparation for Independent and Supplementary Prescribing V300 (NMC/HCPC) Pharmacology Examination, a student must achieve a pass mark of 80. For SE708 (and the alternative SE746) the MCQ exam pass mark is 70%.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans"># Modules with Non-Standard Pass Mark Requirements
+
+Based on the provided context, the following modules require pass marks higher than the standard 50%:
+
+## Speech and Language Therapy (Health and Social Care, 2025-26)
+
+- **HS831 Linguistics and Phonetics exam**: Students must achieve a pass mark of **at least 74**. This raw grade is then transformed using the formula: Transformed grade = 1.92 x [raw grade – 74] + 50, to align it proportionally with the standard 50 pass mark used in other modules.
+
+- **HS832 Linguistics and Phonetics exam**: Students must achieve a pass mark of **at least 70**. (The context excerpt cuts off, but indicates a similar transformation formula applies.)
+
+## Context Notes
+
+The context provided does not contain information about other programmes or departments that might have non-standard pass marks. The integrated masters and partner institution documents in the provided context all reference standard pass marks (40 for Years 1-4, 50 for Final Year, or 35-40 minimum for specified/standard modules at partner institutions).
+
+**Sources:**
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf
+
+_Note: this answer is based primarily on &quot;speechtherapy_25.pdf&quot;. Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn&#x27;t the right one._</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q20" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q20" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q20" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q20" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q20" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note20" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card21" data-id="21">
+  <div class="hdr"><span class="idx">21 of 30</span>
+    <span class="state" id="state21">unscored</span></div>
+  <h2>What happens if a student withdraws from their course during the academic year according to this policy?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Fee liability following withdrawal is detailed in section Fee liability following withdrawal of the document.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If a student officially registers and chooses to withdraw permanently after the course start date has been reached but within 28 days, they are liable for 10% of the annual fee (subject to arrangements agreed with the sponsor where applicable). This is detailed in sections 5.9.3 and 5.9.4 of the 2023-24 policy.
+
+For further details on specific circumstances or additional information, refer to the full policy document available at [source_url: https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf] (Policy 2023-24, Page 5).</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q21" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q21" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q21" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q21" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q21" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note21" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card22" data-id="22">
+  <div class="hdr"><span class="idx">22 of 30</span>
+    <span class="state" id="state22">unscored</span></div>
+  <h2>What does &#x27;dual-career athlete&#x27; mean in the context of this policy?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">A dual-career athlete is defined as any student who is in receipt of a University of Essex Sports Scholarship, receiving benefits in kind; or any TASS (Sport England funded) student athletes studying on University of Essex courses.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">I wasn&#x27;t able to find information in the retrieved policy/rules-of-assessment excerpts that directly and confidently answers this question. You may want to check the source document(s) below directly, or rephrase your question with more specific details (e.g. programme, department, or academic year).</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q22" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q22" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q22" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q22" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q22" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note22" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card23" data-id="23">
+  <div class="hdr"><span class="idx">23 of 30</span>
+    <span class="state" id="state23">unscored</span></div>
+  <h2>What are the compulsory reassessment opportunities at the end of Year One according to the document?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">According to the document [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ecce-portobello-year-1.pdf] (title: ecce-portobello-year-1.pdf), during the Final Stage, you will be offered compulsory reassessment in all failed Final Stage credits before the new study year begins.
+
+Specifically, if you do not meet the requirements to pass and complete your degree but achieve a Year Mark of 20 or above, you may be offered reassessment.</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q23" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q23" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q23" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q23" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q23" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note23" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card24" data-id="24">
+  <div class="hdr"><span class="idx">24 of 30</span>
+    <span class="state" id="state24">unscored</span></div>
+  <h2>What should students do after signing the documentation regarding their understanding of the departmental arrangements and expectations?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Students should participate in an induction programme at the start of their period of study.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">After signing the documentation, students should keep a record of their personal progress, including a copy of the agreed training needs, courses that need to be completed, and other relevant information. They are also expected to familiarize themselves with the University&#x27;s policy on plagiarism and academic offences.
+
+Sources:
+- [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2023-24.pdf]
+- [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2022-23.pdf]</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q24" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q24" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q24" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q24" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q24" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note24" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card25" data-id="25">
+  <div class="hdr"><span class="idx">25 of 30</span>
+    <span class="state" id="state25">unscored</span></div>
+  <h2>What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Students will have the opportunity to undertake a re-assessment of their work during the subsequent academic year in most cases.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">The Four‑Year Honours Degree Rules of Assessment include a section titled **“Reassessment Opportunities at the End of the Year”** for Year One (see the contents pages for the 2023‑24, 2024‑25, 2025‑26 and 2022‑23 documents). However, the excerpts you provided only show the heading and do not contain the detailed description of what those reassessment opportunities are.  
+
+**Sources**  
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf (contents page)  
+- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf (contents page)  
+
+*The specific reassessment options at the end of Year One are not included in the provided excerpts.*
+
+_Note: this answer is based primarily on &quot;roa-ug-4yr-year-3-rules.pdf&quot;. Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn&#x27;t the right one._</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q25" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q25" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q25" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q25" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q25" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note25" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card26" data-id="26">
+  <div class="hdr"><span class="idx">26 of 30</span>
+    <span class="state" id="state26">unscored</span></div>
+  <h2>What does the term &#x27;Capped Mark&#x27; refer to in the University of Essex Undergraduate Rules of Assessment?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">A capped mark is a maximum mark that can be awarded for an assessment, and if achieved, no further marks can be gained from re-assessments or supplementary examinations.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">The provided context does not include a definition or mention of &quot;Capped Mark.&quot; Therefore, based on the given information:
+
+There is no reference to &#x27;Capped Mark&#x27; in the provided University of Essex undergraduate rules of assessment documents. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf], [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf], [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/phais---yufe-term.pdf]</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q26" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q26" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q26" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q26" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q26" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note26" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card27" data-id="27">
+  <div class="hdr"><span class="idx">27 of 30</span>
+    <span class="state" id="state27">unscored</span></div>
+  <h2>What happens if during Year One, a student undertakes reassessment for Joint courses involving Modern Language/Language Studies?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">If during Year One, the student undertakes reassessment, the Uncapped Year Mark will be used to determine eligibility for a Term Abroad.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If a student fails up to 60 credits during Year One in a joint course involving Modern Language/Language Studies, they will be offered compulsory reassessment before the start of the next year. If they fail more than 60 credits, they may be offered a full-time repeat year for uncapped Module Marks, a part-time repeat year for up to 105 credits for uncapped Module Marks, or reassessment in the following Year without attending the University for uncapped Module Marks. Reassessment in more than 60 credits before the start of the next academic year may be offered where the Board determines that it would be beneficial to the student.
+
+Sources:
+*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf)
+
+_Note: this answer is based primarily on &quot;roa-ug-3yr-year-1-variations.pdf&quot;. Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn&#x27;t the right one._</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q27" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q27" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q27" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q27" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q27" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note27" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card28" data-id="28">
+  <div class="hdr"><span class="idx">28 of 30</span>
+    <span class="state" id="state28">unscored</span></div>
+  <h2>What happens if a student does not complete their MBA within the given timeframe?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">The document does not specify what happens in such cases, but it implies that failure to meet this requirement could affect awarding of the degree.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">If an MBA student does not complete their studies within 5 years, they will be required to leave the University due to rules set by accrediting bodies.
+
+Source: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf
+
+_Note: this answer is based primarily on &quot;mba-25.pdf&quot;. Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn&#x27;t the right one._</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q28" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q28" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q28" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q28" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q28" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note28" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card29" data-id="29">
+  <div class="hdr"><span class="idx">29 of 30</span>
+    <span class="state" id="state29">unscored</span></div>
+  <h2>What are the roles and responsibilities of Student Representatives according to this policy?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Student Representatives are expected to engage proactively, provide feedback through SVGs and mid-term module feedback, and be part of the first tier of the representation system.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans"># Roles and Responsibilities of Student Representatives
+
+According to the Student Voice Policy (2025-26), Student Representatives have the following key roles and responsibilities:
+
+## Core Responsibilities:
+
+**Preparation and Attendance:**
+- Attend all mandatory training before being recognised as a Student Rep (A1.3)
+- Attend all meetings expected of their role, either in person or remotely (4.4)
+- Ensure they are appropriately prepared for meetings and have gathered relevant student feedback (4.3)
+- If unable to attend, notify key contacts and arrange for another Student Rep to take their place where appropriate (4.5)
+
+**Representation and Feedback:**
+- Represent students within their department and across the University
+- Provide feedback on both positive activity and actions taken in response to issues raised
+- Gather and communicate student views, including from part-time and distance learning students where appropriate (A3.4.2)
+
+**Accountability:**
+- Act in accordance with the Code of Conduct and adhere to guiding principles set out in the policy (2.8)
+- Be accountable to the students they represent and the Students&#x27; Union as a whole (2.8)
+
+## Broader Purpose:
+
+Student Representatives facilitate changes around the University and promote student voice. Their work helps develop skills including minute-taking, liaising, advocacy, communication, and leadership, while enhancing and tailoring students&#x27; experiences.
+
+**Source:** https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/student-voice-policy.pdf</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q29" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q29" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q29" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q29" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q29" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note29" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section>
+<section class="card" id="card30" data-id="30">
+  <div class="hdr"><span class="idx">30 of 30</span>
+    <span class="state" id="state30">unscored</span></div>
+  <h2>What happens if a student&#x27;s PaR project requires changes to the approved research output and assessment timeline?</h2>
+  <div class="block"><h3>Reference answer</h3><div class="ref">Any such changes would need to be approved by the Research Student Progress Board and must take into account feasibility and the impact on the student’s timely completion.</div></div>
+  <div class="block"><h3>The assistant's answer</h3><div class="ans">Any deviation from the approved research output and assessment timeline would need to be approved by the Research Student Progress Board, taking into account feasibility and the impact of the change on the student’s timely completion. [https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf]
+
+---
+Sources:
+*   [https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf)</div></div>
+  <div class="scoring"><label class="opt"><input type="radio" name="q30" value="5"><span class="num">5</span><span class="lbl">fully correct and complete, matches the reference answer&#x27;s substance</span></label><label class="opt"><input type="radio" name="q30" value="4"><span class="num">4</span><span class="lbl">mostly correct, minor omission or imprecision</span></label><label class="opt"><input type="radio" name="q30" value="3"><span class="num">3</span><span class="lbl">partially correct, missing significant substance or a minor inaccuracy</span></label><label class="opt"><input type="radio" name="q30" value="2"><span class="num">2</span><span class="lbl">largely incorrect or mostly missing the point, but not a hallucination</span></label><label class="opt"><input type="radio" name="q30" value="1"><span class="num">1</span><span class="lbl">incorrect, contradicts the reference, or hallucinates facts</span></label></div>
+  <textarea class="note" id="note30" rows="2"
+     placeholder="Optional: why? (most useful where you disagree with a machine would say)"></textarea>
+</section></main>
+<footer>
+  <button id="save" disabled>Save my scores (0 of 30)</button>
+  <textarea id="out" rows="7" style="display:none;width:100%;max-width:820px;margin:10px auto 0;font:12px ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:7px;padding:9px"></textarea>
+  <div id="msg">Answers are kept in this browser as you go, so you can stop and come back.</div>
+</footer>
+<script>
+const N=30, KEY='judge-calibration-v1';
+
+/* localStorage THROWS on file:// in Safari and inside sandboxed frames. The
+   first version accessed it unguarded on line 3, so the exception killed the
+   whole script and nothing worked at all. Everything below degrades: if
+   storage is unavailable you simply lose resume-after-reload, not the page. */
+let store=null;
+try { localStorage.setItem('__t','1'); localStorage.removeItem('__t'); store=localStorage; } catch(e) { store=null; }
+function load(){ try { return JSON.parse((store&&store.getItem(KEY))||'{}'); } catch(e){ return {}; } }
+function persist(o){ try { store&&store.setItem(KEY,JSON.stringify(o)); } catch(e){} }
+const saved=load();
+
+function collect(){
+  const out=[];
+  for(let i=1;i<=N;i++){
+    const v=document.querySelector('input[name=q'+i+']:checked');
+    const n=document.getElementById('note'+i);
+    out.push({id:i, human_score:v?parseInt(v.value):null, note:(n&&n.value||'').trim()});
+  }
+  return out;
+}
+
+function refresh(){
+  let n=0;
+  for(let i=1;i<=N;i++){
+    const v=document.querySelector('input[name=q'+i+']:checked');
+    const card=document.getElementById('card'+i), st=document.getElementById('state'+i);
+    if(v){ n++; card.classList.add('done'); st.textContent='scored '+v.value; st.classList.add('done'); }
+    else { card.classList.remove('done'); st.textContent='unscored'; st.classList.remove('done'); }
+  }
+  document.getElementById('prog').style.width=(n/N*100)+'%';
+  const b=document.getElementById('save');
+  b.textContent='Show / save my scores ('+n+' of '+N+')';
+  b.disabled = n===0;
+  return n;
+}
+
+for(const k in saved){
+  const v=saved[k];
+  if(k.indexOf('note')===0){ const el=document.getElementById(k); if(el) el.value=v; }
+  else { const el=document.querySelector('input[name='+k+'][value="'+v+'"]'); if(el) el.checked=true; }
+}
+
+document.addEventListener('change',function(e){
+  if(e.target && e.target.type==='radio'){ saved[e.target.name]=e.target.value; persist(saved); refresh(); }
+});
+document.addEventListener('input',function(e){
+  if(e.target && e.target.classList && e.target.classList.contains('note')){
+    saved[e.target.id]=e.target.value; persist(saved);
+  }
+});
+
+document.getElementById('save').onclick=function(){
+  const payload=collect();
+  /* Served over http:// so this can just save to disk. Falls back to the
+     download + visible text if the server is not reachable - the page must
+     still be usable opened as a plain file. */
+  fetch('/api/calibration',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)})
+    .then(r=>r.json())
+    .then(j=>{document.getElementById('msg').textContent =
+        'Saved to '+j.path+' — '+j.scored+' of '+j.total+' scored. Tell Claude when you are done.';})
+    .catch(()=>fallbackSave(payload));
+  return;
+};
+
+function fallbackSave(payload){
+  const data=JSON.stringify(payload,null,1);
+  /* Always show the text. A download can be blocked by the browser or by a
+     sandboxed frame, and a button that silently does nothing is worse than no
+     button - partial scores must always be recoverable by copy-paste. */
+  const box=document.getElementById('out');
+  box.value=data; box.style.display='block'; box.select();
+  let note='Scores below — select all and copy, then paste them to Claude.';
+  try{
+    const blob=new Blob([data],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download='judge_calibration_scores.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    note='Downloaded as judge_calibration_scores.json. If nothing appeared, copy the text below instead.';
+  }catch(e){}
+  document.getElementById('msg').textContent=note;
+};
+
+refresh();
+if(!store){
+  document.getElementById('msg').textContent =
+    'Note: this browser will not let the page remember progress between reloads, so score in one sitting (or press Save periodically and keep the text).';
+}
+</script>

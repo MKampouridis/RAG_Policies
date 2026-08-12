@@ -1,0 +1,242 @@
+[
+ {
+  "question": "A PGR student sponsored on a Student visa wants to intermit for two terms. What are the consequences?",
+  "expected": "The University is required to withdraw sponsorship from a student who intermits, and the Home Office will curtail their immigration permission. The student will have to leave the UK while intermitting, and must stop any work immediately because the condition allowing work alongside study no longer applies. Before returning they can request further immigration sponsorship and, if eligible, apply for a new Student visa. Retrospective intermission is not possible for sponsored students.",
+  "actual": "If a PGR student sponsored on a Student visa intermits for two terms, the key consequences are:\n\n- **Loss of sponsorship**: The University must withdraw sponsorship, since it can only sponsor a student for a Student visa while they are fully registered and actively engaged in study.\n- **Visa curtailment**: The Home Office will curtail (cut short) the student's immigration permission once the University reports the intermission.\n- **Must leave the UK**: The student will have to leave the UK for the duration of the intermission period.\n- **Must stop working**: If the student has been working under the conditions of their visa, they must stop immediately, since the work permission tied to being a registered student no longer applies.\n- **No retrospective intermission**: This route is not available to sponsored students, so the request and its immigration consequences must be handled prospectively, not after the fact.\n- **Re-entry process**: Before returning to study in the UK, the student would need to request further immigration sponsorship from the University and, if eligible, apply for a new Student visa to re-enter.\n- **Notification**: When the University reports the change to the Home Office, its International Services Team will notify the student by email and provide immigration advice.\n\nNote that a two-term intermission for non-medical reasons is within the permitted maximum (up to 3 terms for non-medical intermission before a student would be required to withdraw and seek readmission later), so the length itself would not automatically trigger withdrawal from the programme \u2014 but the visa consequences above would still apply regardless of term length, since any intermission (not just a short, unsponsored absence) triggers the loss of sponsorship.\n\nSource: https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+  "judge_score": 5,
+  "judge_just": "The assistant's answer is fully correct and comprehensive, matching the reference answer's substance.",
+  "id": 1
+ },
+ {
+  "question": "What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules?",
+  "expected": "If a student fails with a module aggregate mark of exactly 40, this may be condoned provided the overall weighted average for all taught modules is 50. The student must still achieve at least 40 in both the coursework and exam elements.",
+  "actual": "Based on the provided context, if a student fails a module with an aggregate mark of exactly 40, which is just at the pass threshold:\n\n- The Module Aggregate Mark will be capped at 40 (as mentioned in multiple documents).\n\nSources:\n- roa-ug-uoe-online-level-one-two-three.pdf\n- roa-ug-incoming-essex-abroad-rules.pdf\n- modular_25.pdf",
+  "judge_score": 3,
+  "judge_just": "The answer omits the condition about overall weighted average and the requirement for at least 40 in both coursework and exam elements.",
+  "id": 2
+ },
+ {
+  "question": "They still owe some fees - does that matter?",
+  "expected": "Yes. All registration fees and debts must be paid before the thesis can be accepted for submission.",
+  "actual": "Yes, it matters. All registration fees and debts must be paid before a thesis can be accepted for submission \u2014 so if the student still owes fees, they won't be able to submit their thesis for examination until the debt is cleared.\n\nSources: https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+  "judge_score": 5,
+  "judge_just": "The assistant's answer fully matches the reference and accurately restates the policy without adding or omitting key details.",
+  "id": 3
+ },
+ {
+  "question": "What happens if a student fails up to 60 credits in the Foundation Year?",
+  "expected": "If a student fails up to 60 credits but has a Year Mark of 20 or above, they will be offered compulsory reassessment before the start of the next Year. Their Module Mark(s) will be capped at 40.",
+  "actual": "If you fail up to 60 credits in the Foundation Year at the University of Essex, you will be offered compulsory reassessment before the start of the next year.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf]",
+  "judge_score": 4,
+  "judge_just": "The assistant omitted the condition that a Year Mark of 20 or above must be met for reassessment to be offered.",
+  "id": 4
+ },
+ {
+  "question": "Are there membership rules for that RSPB?",
+  "expected": "Yes. Where the RSPB is considering a recommendation of discontinuation or downgrading, or a change of status to MPhil at confirmation, its membership must include at least two members who were not on the student's last Supervisory Panel. Smaller departments may co-opt a supervisor from another department in a cognate discipline.",
+  "actual": "Yes. The Code of Practice for Postgraduate Research Degrees sets out membership rules for the RSPB:\n\n- The RSPB is established by each department and chaired by the **Postgraduate Research Director or Head of Department**.\n- It must include **at least two other experienced supervisors**.\n- The Chair must **not** be a partner or close relative of the student's supervisor (main, joint or secondary), nor have any professional or personal relationship with the student that could create a conflict of interest.\n- Where the RSPB is considering a **recommendation of discontinuation or downgrading**, or a **confirmation decision to change a student's status to MPhil**, the RSPB membership must include **at least two members who were not on the student's last Supervisory Panel**.\n- Smaller departments that struggle to meet this requirement may **co-opt a supervisor from another department** in a cognate discipline to serve on the RSPB.\n\nThis applies generally across departments \u2014 no separate rules specific to CSEE or History are given.\n\nSource: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "judge_score": 5,
+  "judge_just": "The assistant's answer is fully correct and complete, matching the reference answer's substance and providing additional relevant details from the University of Essex policy document.",
+  "id": 5
+ },
+ {
+  "question": "What happens if a student fails to comply with the University's Professional Clinical Appearance Code of Practice during their placement?",
+  "expected": "Students who fail to comply may face disciplinary action and could be required to rectify any breaches.",
+  "actual": "According to the policy, if students do not follow the University's Code of Conduct, or local policies in place at partner organisations, they may be considered to be in breach of the University of Essex Code of Conduct and may lead to:\n\n* Being referred for investigation by the Conduct Team\n* Being referred to the Professional Suitability Group as per Fitness to Practise procedures (Sources: https://www.essex.ac.uk/-/media/documents/about/governance/professional-clinical-appearance-code-of-practice.pdf)",
+  "judge_score": 4,
+  "judge_just": "The answer is mostly correct but slightly misinterprets the specific policy mentioned (Code of Conduct instead of Professional Clinical Appearance Code of Practice).",
+  "id": 6
+ },
+ {
+  "question": "What is the frequency of review for departmental arrangements related to Professional Doctorates, and when are changes necessary?",
+  "expected": "Departmental arrangements will be reviewed every three years or sooner if the department wishes to make any major changes to the arrangements or if any changes to University policies, procedures or regulations require it.",
+  "actual": "The departmental documentation and its arrangements should be reviewed every three years or sooner if there are any major changes needed, or if there are changes in University policies, procedures, or regulations that require it. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf], [source_url: https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf]",
+  "judge_score": 5,
+  "judge_just": "The assistant's answer accurately reflects the reference answer and includes relevant details about the frequency of review and when changes are necessary.",
+  "id": 7
+ },
+ {
+  "question": "What are the compulsory reassessment opportunities at the end of Year One according to the document?",
+  "expected": "Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.",
+  "actual": "Based on the provided context, there is no specific mention of compulsory reassessment opportunities at the end of Year One for the given academic years. The rules generally state that if a student has failed any module(s) after completing all assessments but has achieved marks of 20 or above in all other modules, they must take reassessment during the next Term or Summer Break before progressing to the next Stage.\n\nSources:\n- [iep-portobello-year-2.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-2.pdf)\n- [iep-portobello-year-3.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/iep-portobello-year-3.pdf)",
+  "judge_score": 2,
+  "judge_just": "The answer does not directly address the specific question about Year One and instead provides general information about reassessment opportunities.",
+  "id": 8
+ },
+ {
+  "question": "Who is responsible for discussing these details with new research students during their induction?",
+  "expected": "The Postgraduate Research Director should discuss these details during the induction or within the first three weeks of term.",
+  "actual": "The responsibility for discussing referencing and citation expectations with new research students during induction varies slightly depending on the academic year.\n\n*   **2018-19:** The Graduate Director is responsible ([https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf)).\n*   **2020-21:** The Graduate Director is responsible ([https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf)).\n*   **2025-26:** The Postgraduate Research Director is responsible ([https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf)).\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research-degrees-2018-19.pdf)\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf)\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf)",
+  "judge_score": 2,
+  "judge_just": "The answer provides outdated and future details instead of the current policy as requested.",
+  "id": 9
+ },
+ {
+  "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+  "expected": "A capped mark is a maximum mark that can be awarded for an assessment, and if achieved, no further marks can be gained from re-assessments or supplementary examinations.",
+  "actual": "The provided context does not contain a definition or direct reference to the term 'Capped Mark'. The rules mention \"Uncapped Year Mark\" in relation to eligibility for a Term Abroad if reassessment was undertaken during Year One, but there is no information about what constitutes a 'Capped Mark'.\n\nSources:\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf] (Academic Year 2025-26)\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf] (Academic Year 2025-26)\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-final-year-variations.pdf] (Academic Year 2023-2024)\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-2-variations.pdf] (Academic Year 2024-2025)\n- [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf] (Academic Year 2024-2025)",
+  "judge_score": 1,
+  "judge_just": "The assistant's answer contradicts the reference, as it does not provide the correct definition of 'Capped Mark'.",
+  "id": 10
+ },
+ {
+  "question": "What happens if a student fails more than 15 non-core credits in Year One?",
+  "expected": "A student cannot fail any more credits in their Final Year, and carrying forward failed credits to following years is called condonement.",
+  "actual": "If a student fails more than 15 non-core credits in Year One, they must pass 120 credits in Year Two.\n\nSources:\n- [roa-ug-3yr-year-1-rules.pdf (2025-26)]\n- [roa-ug-3yr-year-2-rules.pdf (2024-25)]\n- [roa-ug-3yr-final-year-rules.pdf (2023-24)]",
+  "judge_score": 1,
+  "judge_just": "The assistant's answer is completely incorrect and introduces new facts not supported by the reference.",
+  "id": 11
+ },
+ {
+  "question": "What does the Fitness to Study policy address in terms of student behavior?",
+  "expected": "The Fitness to Study policy addresses concerns over students' health or mental health difficulties that impact their studies and life at university, leading to problematic behavior or disruption to other students.",
+  "actual": "The Fitness to Study policy addresses situations where a student's health, mental health, or behavior is causing concern. It covers instances where a student\u2019s behavior within accommodation is disruptive to other students or staff. The policy provides a coordinated and managed response and can lead to actions such as suspension or exclusion from the university if necessary.\n\nSources:\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf\n- Page 1, paragraph 1.3; Pages 4-5, sections 2.1 and 7.1-7.3",
+  "judge_score": 4,
+  "judge_just": "The answer is mostly correct but omits the explicit mention of health or mental health difficulties impacting studies.",
+  "id": 12
+ },
+ {
+  "question": "What are the minimum supervision hours required per student according to this Code of Practice?",
+  "expected": "At least four hours per student.",
+  "actual": "According to the provided context, each student must have at least four hours of supervision available. This requirement is stated in both the 2025-26 Code of Practice and the 2020-21 version.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf]\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-postgraduate-research-2020-21.pdf]",
+  "judge_score": 4,
+  "judge_just": "The answer is correct but includes redundant information about the sources.",
+  "id": 13
+ },
+ {
+  "question": "What happens if a student fails with a module aggregate mark of exactly 40 in the taught core modules?",
+  "expected": "If a student fails with a module aggregate mark of exactly 40, this may be condoned provided the overall weighted average for all taught modules is 50. The student must still achieve at least 40 in both the coursework and exam elements.",
+  "actual": "Based on the provided context, if a student fails with a module aggregate mark of exactly 40 in the taught core modules, they will be capped at 40. This cap applies regardless of whether the failure is above or below 20 marks.\n\nSources:\n- [roa-ug-uoe-online-level-one-two-three.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-uoe-online-level-one-two-three.pdf)\n- [roa-ug-incoming-essex-abroad-rules.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-incoming-essex-abroad-rules.pdf)",
+  "judge_score": 3,
+  "judge_just": "The answer is partially correct but lacks the crucial information about condoning marks of exactly 40 if the overall weighted average for all taught modules is 50.",
+  "id": 14
+ },
+ {
+  "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or MSc Advanced Periodontal Practice programs?",
+  "expected": "Students are permitted to progress to Year 2 or Year 3 trailing a maximum of 30 credits.",
+  "actual": "Students may carry forward up to **30 credits** when progressing to the next year (Year\u202f2 or Year\u202f3) in either the MSc Periodontology or MSc Advanced Periodontal Practice programmes\u3010source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf\u3011.",
+  "judge_score": 5,
+  "judge_just": "The answer is fully correct and complete, matching the reference answer's substance.",
+  "id": 15
+ },
+ {
+  "question": "Does either lead to professional registration?",
+  "expected": "Yes. Successful completion of the HSC MSc Occupational Therapy leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). The SRES prescribing module is likewise tied to NMC/HCPC professional requirements.",
+  "actual": "Both do \u2014 with specific eligibility conditions:\n\n**MSci Nursing** (mscinursing_23-transfers-v4.pdf, Health and Social Care, 2024-25): Successful completion leads to eligibility to apply for registration with the Nursing and Midwifery Council (NMC) as a Registered Nurse Dual Award (Adult & Mental Health). However, to obtain a registerable degree, students must also be assessed as remaining of good health and character by the School's Professional Suitability Group/Examination Board \u2014 those who don't meet this criterion may instead be eligible for a non-registerable award.\n\n**MA Social Work** (ma_social_work_25.pdf, Health and Social Care, 2025-26): Eligibility for professional registration requires obtaining 135 credits at Masters level, passing all placements and all core module assignments, completing the required placement days, not being subject to a current Professional Suitability Group referral, having satisfactorily addressed any concluded/unfinished Fitness to Practise sanctions, and not being subject to an exclusion from direct service-user work on fitness-to-practise or conduct grounds.\n\n**MSc Physiotherapy (Pre-registration)** (msc-physiotherapy-25.pdf, SRES, 2025-26): Successful completion leads to eligibility to apply for registration with the Health and Care Professions Council (HCPC). Note that only the Postgraduate Diploma in Physiotherapy (Pre-registration) exit award leads to HCPC registration eligibility \u2014 the alternative exit award, Postgraduate Diploma in Health Studies, does not.\n\nBy contrast, the SRES modular programmes (MSc/PG Dip/PG Cert in Musculoskeletal Practice, Musculoskeletal Ultrasound Imaging, etc., in sres-modular-25.pdf) explicitly state that their **non-accredited** Postgraduate Certificate and Postgraduate Diploma awards (for students not eligible for the Masters) do **not** lead to eligibility to register with the HCPC. The excerpts don't clarify whether the full Masters awards on those specific programmes carry HCPC registration eligibility.\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mscinursing_23-transfers-v4.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf\n\n_Note: this answer is based primarily on \"mscinursing_23-transfers-v4.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_score": 1,
+  "judge_just": "The assistant's answer contradicts the reference and introduces false facts about programs not mentioned in the question.",
+  "id": 16
+ },
+ {
+  "question": "What does the Fitness to Study policy address in terms of student behavior?",
+  "expected": "The Fitness to Study policy addresses concerns over students' health or mental health difficulties that impact their studies and life at university, leading to problematic behavior or disruption to other students.",
+  "actual": "I wasn't able to find information in the retrieved policy/rules-of-assessment excerpts that directly and confidently answers this question. You may want to check the source document(s) below directly, or rephrase your question with more specific details (e.g. programme, department, or academic year).",
+  "judge_score": 2,
+  "judge_just": "The answer is partially correct as it acknowledges the lack of direct information but does not provide a substantive response regarding what the policy actually addresses.",
+  "id": 17
+ },
+ {
+  "question": "What happens if a student fails to meet the requirements to progress from Year One to Year Two without any extenuating circumstances?",
+  "expected": "If a student does not meet the progression requirements in Year One and has no substantiated extenuating circumstances, they must withdraw from the University.",
+  "actual": "If a student does not meet the progression requirements from Year One to Year Two without any substantiated extenuating circumstances, they will not be permitted to proceed on an Integrated Masters programme. However, they can be considered for a transfer to an Honours Degree programme. The normal Rules of Assessment for progressing on a new programme will then apply.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf] (Title: five-year-integrated-masters-21-v7.pdf, Academic Year: 2025-2026)\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-26/masters-taught-courses/four-year-integrated-masters-22-v4.pdf] (Title: four-year-integrated-masters-22-v4.pdf, Academic Year: 2022-2023)\n- [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/masters-taught-courses/four_year_integrated_masters_21.pdf] (Title: four_year_integrated_masters_21.pdf, Academic Year: 2021-2022)",
+  "judge_score": 3,
+  "judge_just": "The assistant's answer includes additional information not present in the reference, such as the possibility of transferring to an Honours Degree programme, which is not mentioned in the ground-truth.",
+  "id": 18
+ },
+ {
+  "question": "How long do students have to complete their MBA studies at the University of Essex?",
+  "expected": "Students must complete their studies within 5 years.",
+  "actual": "Students must complete their MBA studies within 5 years, as per the rules set by accrediting bodies. This information can be found in the document titled \"mba-25.pdf\" from the University of Essex's academic section (source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf).",
+  "judge_score": 4,
+  "judge_just": "The answer is mostly correct but includes unnecessary details about the source document.",
+  "id": 19
+ },
+ {
+  "question": "Which modules require students to achieve specific pass marks beyond the standard 50%?",
+  "expected": "For HS632 Preparation for Independent and Supplementary Prescribing V300 (NMC/HCPC) Pharmacology Examination, a student must achieve a pass mark of 80. For SE708 (and the alternative SE746) the MCQ exam pass mark is 70%.",
+  "actual": "# Modules with Non-Standard Pass Mark Requirements\n\nBased on the provided context, the following modules require pass marks higher than the standard 50%:\n\n## Speech and Language Therapy (Health and Social Care, 2025-26)\n\n- **HS831 Linguistics and Phonetics exam**: Students must achieve a pass mark of **at least 74**. This raw grade is then transformed using the formula: Transformed grade = 1.92 x [raw grade \u2013 74] + 50, to align it proportionally with the standard 50 pass mark used in other modules.\n\n- **HS832 Linguistics and Phonetics exam**: Students must achieve a pass mark of **at least 70**. (The context excerpt cuts off, but indicates a similar transformation formula applies.)\n\n## Context Notes\n\nThe context provided does not contain information about other programmes or departments that might have non-standard pass marks. The integrated masters and partner institution documents in the provided context all reference standard pass marks (40 for Years 1-4, 50 for Final Year, or 35-40 minimum for specified/standard modules at partner institutions).\n\n**Sources:**\n- https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf\n\n_Note: this answer is based primarily on \"speechtherapy_25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_score": 1,
+  "judge_just": "The assistant's answer contradicts the reference and introduces false facts about modules with non-standard pass marks for Speech and Language Therapy.",
+  "id": 20
+ },
+ {
+  "question": "What happens if a student withdraws from their course during the academic year according to this policy?",
+  "expected": "Fee liability following withdrawal is detailed in section Fee liability following withdrawal of the document.",
+  "actual": "If a student officially registers and chooses to withdraw permanently after the course start date has been reached but within 28 days, they are liable for 10% of the annual fee (subject to arrangements agreed with the sponsor where applicable). This is detailed in sections 5.9.3 and 5.9.4 of the 2023-24 policy.\n\nFor further details on specific circumstances or additional information, refer to the full policy document available at [source_url: https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf] (Policy 2023-24, Page 5).",
+  "judge_score": 3,
+  "judge_just": "The assistant provided specific details about the fee liability for withdrawal within a certain timeframe, which is not accurate according to the reference answer. The reference only mentions that the fee liability following withdrawal is detailed in section Fee liability following withdrawal.",
+  "id": 21
+ },
+ {
+  "question": "What does 'dual-career athlete' mean in the context of this policy?",
+  "expected": "A dual-career athlete is defined as any student who is in receipt of a University of Essex Sports Scholarship, receiving benefits in kind; or any TASS (Sport England funded) student athletes studying on University of Essex courses.",
+  "actual": "I wasn't able to find information in the retrieved policy/rules-of-assessment excerpts that directly and confidently answers this question. You may want to check the source document(s) below directly, or rephrase your question with more specific details (e.g. programme, department, or academic year).",
+  "judge_score": 3,
+  "judge_just": "The answer is partially correct but lacks the definition provided in the reference.",
+  "id": 22
+ },
+ {
+  "question": "What are the compulsory reassessment opportunities at the end of Year One according to the document?",
+  "expected": "Compulsory reassessment opportunities at the end of Year One are provided after students have completed their assessments and before the resit assessment period.",
+  "actual": "According to the document [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/ecce-portobello-year-1.pdf] (title: ecce-portobello-year-1.pdf), during the Final Stage, you will be offered compulsory reassessment in all failed Final Stage credits before the new study year begins.\n\nSpecifically, if you do not meet the requirements to pass and complete your degree but achieve a Year Mark of 20 or above, you may be offered reassessment.",
+  "judge_score": 3,
+  "judge_just": "The answer is partially correct as it provides additional details not asked in the question and misses mentioning the specific period at the end of Year One for compulsory reassessment.",
+  "id": 23
+ },
+ {
+  "question": "What should students do after signing the documentation regarding their understanding of the departmental arrangements and expectations?",
+  "expected": "Students should participate in an induction programme at the start of their period of study.",
+  "actual": "After signing the documentation, students should keep a record of their personal progress, including a copy of the agreed training needs, courses that need to be completed, and other relevant information. They are also expected to familiarize themselves with the University's policy on plagiarism and academic offences.\n\nSources:\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2023-24.pdf]\n- [https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2022-23.pdf]",
+  "judge_score": 2,
+  "judge_just": "The answer diverges from the correct response and introduces irrelevant information not related to the question.",
+  "id": 24
+ },
+ {
+  "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree program?",
+  "expected": "Students will have the opportunity to undertake a re-assessment of their work during the subsequent academic year in most cases.",
+  "actual": "The Four\u2011Year Honours Degree Rules of Assessment include a section titled **\u201cReassessment Opportunities at the End of the Year\u201d** for Year\u202fOne (see the contents pages for the 2023\u201124, 2024\u201125, 2025\u201126 and 2022\u201123 documents). However, the excerpts you provided only show the heading and do not contain the detailed description of what those reassessment opportunities are.  \n\n**Sources**  \n-\u202fhttps://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-rules.pdf (contents page)  \n-\u202fhttps://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf (contents page)  \n\n*The specific reassessment options at the end of Year\u202fOne are not included in the provided excerpts.*\n\n_Note: this answer is based primarily on \"roa-ug-4yr-year-3-rules.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_score": 2,
+  "judge_just": "The answer provides accurate information about where to find reassessment opportunities but does not directly state what those opportunities are as per the reference answer.",
+  "id": 25
+ },
+ {
+  "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+  "expected": "A capped mark is a maximum mark that can be awarded for an assessment, and if achieved, no further marks can be gained from re-assessments or supplementary examinations.",
+  "actual": "The provided context does not include a definition or mention of \"Capped Mark.\" Therefore, based on the given information:\n\nThere is no reference to 'Capped Mark' in the provided University of Essex undergraduate rules of assessment documents. Sources: [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf], [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/sak-principles-,-a-,-framework.pdf], [source_url: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/phais---yufe-term.pdf]",
+  "judge_score": 1,
+  "judge_just": "The assistant contradicts the reference by not providing the correct definition and instead states that there is no information on 'Capped Mark'.",
+  "id": 26
+ },
+ {
+  "question": "What happens if during Year One, a student undertakes reassessment for Joint courses involving Modern Language/Language Studies?",
+  "expected": "If during Year One, the student undertakes reassessment, the Uncapped Year Mark will be used to determine eligibility for a Term Abroad.",
+  "actual": "If a student fails up to 60 credits during Year One in a joint course involving Modern Language/Language Studies, they will be offered compulsory reassessment before the start of the next year. If they fail more than 60 credits, they may be offered a full-time repeat year for uncapped Module Marks, a part-time repeat year for up to 105 credits for uncapped Module Marks, or reassessment in the following Year without attending the University for uncapped Module Marks. Reassessment in more than 60 credits before the start of the next academic year may be offered where the Board determines that it would be beneficial to the student.\n\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf](https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/phais---yufe-full-year.pdf)\n\n_Note: this answer is based primarily on \"roa-ug-3yr-year-1-variations.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_score": 2,
+  "judge_just": "The answer provides detailed information not asked for and includes specifics about credit failures that are not mentioned in the reference answer.",
+  "id": 27
+ },
+ {
+  "question": "What happens if a student does not complete their MBA within the given timeframe?",
+  "expected": "The document does not specify what happens in such cases, but it implies that failure to meet this requirement could affect awarding of the degree.",
+  "actual": "If an MBA student does not complete their studies within 5 years, they will be required to leave the University due to rules set by accrediting bodies.\n\nSource: https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf\n\n_Note: this answer is based primarily on \"mba-25.pdf\". Your question could also relate to other documents (rules often differ by programme, department, or academic year) - tell me which programme or year you mean if this isn't the right one._",
+  "judge_score": 1,
+  "judge_just": "The assistant's answer contradicts the reference and provides a false fact not supported by the given source.",
+  "id": 28
+ },
+ {
+  "question": "What are the roles and responsibilities of Student Representatives according to this policy?",
+  "expected": "Student Representatives are expected to engage proactively, provide feedback through SVGs and mid-term module feedback, and be part of the first tier of the representation system.",
+  "actual": "# Roles and Responsibilities of Student Representatives\n\nAccording to the Student Voice Policy (2025-26), Student Representatives have the following key roles and responsibilities:\n\n## Core Responsibilities:\n\n**Preparation and Attendance:**\n- Attend all mandatory training before being recognised as a Student Rep (A1.3)\n- Attend all meetings expected of their role, either in person or remotely (4.4)\n- Ensure they are appropriately prepared for meetings and have gathered relevant student feedback (4.3)\n- If unable to attend, notify key contacts and arrange for another Student Rep to take their place where appropriate (4.5)\n\n**Representation and Feedback:**\n- Represent students within their department and across the University\n- Provide feedback on both positive activity and actions taken in response to issues raised\n- Gather and communicate student views, including from part-time and distance learning students where appropriate (A3.4.2)\n\n**Accountability:**\n- Act in accordance with the Code of Conduct and adhere to guiding principles set out in the policy (2.8)\n- Be accountable to the students they represent and the Students' Union as a whole (2.8)\n\n## Broader Purpose:\n\nStudent Representatives facilitate changes around the University and promote student voice. Their work helps develop skills including minute-taking, liaising, advocacy, communication, and leadership, while enhancing and tailoring students' experiences.\n\n**Source:** https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/student-voice-policy.pdf",
+  "judge_score": 4,
+  "judge_just": "The answer is detailed but includes minor details not in the reference and lacks direct alignment with the specific roles mentioned.",
+  "id": 29
+ },
+ {
+  "question": "What happens if a student's PaR project requires changes to the approved research output and assessment timeline?",
+  "expected": "Any such changes would need to be approved by the Research Student Progress Board and must take into account feasibility and the impact on the student\u2019s timely completion.",
+  "actual": "Any deviation from the approved research output and assessment timeline would need to be approved by the Research Student Progress Board, taking into account feasibility and the impact of the change on the student\u2019s timely completion. [https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf]\n\n---\nSources:\n*   [https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf](https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf)",
+  "judge_score": 5,
+  "judge_just": "The assistant's answer is fully correct and matches the reference answer's substance.",
+  "id": 30
+ }
+]

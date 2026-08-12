@@ -135,6 +135,33 @@ def classic():
     return FileResponse(STATIC_DIR / "index.html")
 
 
+@app.get("/calibration")
+def calibration_page():
+    """Judge-calibration scoring page (eval tool, not part of the product).
+
+    Served over HTTP rather than opened as a file because `localStorage` throws
+    on file:// in Safari, which silently killed the page's whole script. Over
+    http:// it works, so progress survives a reload.
+    """
+    page = STATIC_DIR / "judge_calibration.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="calibration page not built")
+    return FileResponse(page)
+
+
+@app.post("/api/calibration")
+def api_calibration(scores: list[dict]):
+    """Save human scores straight to disk, so there is no download or
+    copy-paste step to fail. Overwrites: the page always posts the full set,
+    including unscored items as null, so a partial pass is still a complete
+    record of what was decided so far."""
+    out = Path("eval/judge_calibration_scores.json")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(scores, indent=1))
+    done = sum(1 for s in scores if s.get("human_score") is not None)
+    return {"ok": True, "scored": done, "total": len(scores), "path": str(out)}
+
+
 @app.post("/api/sources")
 def api_sources(payload: SourceLookup):
     """Document metadata + a matching passage for the cited URLs, for the source
