@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 57 of 94 resolved (43 done, 7 rejected/null/falsified-with-evidence, 3 deferred-by-decision, 4 closed/mitigated). Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-26.
+**Progress:** 59 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-27.
 
 ---
 
@@ -91,7 +91,7 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 50 | ColBERT query encode is 0.76s → check device/dtype/`torch.compile` | O,G,C,D | **MOOT** — actually **19ms** warm; my 0.76s was the first-encode warmup, double-counted |
 | 51 | `pylate-rs` / WARP / PLAID / ONNX-INT8 backends | G,C | **MOOT** — rerank is only 0.20–0.25s total |
 | 52 | pylate `get_documents_embeddings` does a full `pickle.load` per call | O | **DONE** — 127.5ms → **3.0ms**; embeddings verified identical across 30 docs |
-| 53 | **ColBERT index residency degrades Chroma 81ms → 2543ms** — cache off: retrieve 5.34→1.40s, RSS 5.0→2.1GB | *(mine)* | **CONFIRMED, NOT SHIPPED** — changes retrieval on 2/5 probes; needs an eval |
+| 53 | **ColBERT index residency degrades Chroma 81ms → 2543ms** | *(mine)* | **SHIPPED after an eval (Round 27)** — cache was also 3 weeks STALE. hit@6 **121 → 126**, retrieve ~5.0s → **1.45s**, RSS 5.0 → **2.12GB**. Drift detector added |
 | 54 | Progress indicator during retrieval | O,G,C,D | **DONE** — SSE `stage` events drive "Searching…" → "Writing…" |
 | 55 | Warmup only warms the PRIMARY path; follow-ups still cold | O | **DONE** — `_identity_anchor_index()` (1,188 files, **161ms**) now built at startup |
 | 56 | 8–13 timers inside `retrieve()` | O,C | OPEN |

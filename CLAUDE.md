@@ -105,7 +105,11 @@ it after any ingest or cleaning change. Re-embedding does **not** fix cleaning b
 `reembed.py` runs the same `clean_text`.
 
 After `run_ingest.py`: re-run `python audit_family_aliases.py` and review new rename-split aliases
-in `src/docid.py`.
+in `src/docid.py`, and run `python eval/colbert_index_drift.py`. Ingest updates Chroma and leaves
+the ColBERT index alone, so the reranker's embedding cache silently describes the OLD text - it was
+three weeks stale before anyone noticed, cost 5 turns of hit@6, and was found only because a
+latency experiment happened to A/B the flag (Round 27). The cache now defaults OFF; the drift
+check exists so re-enabling it is a decision made on evidence.
 
 ## Conventions
 
