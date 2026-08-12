@@ -89,6 +89,12 @@ class NewMessage(BaseModel):
     # than stored server-side - there is no user account to store it against.
     # Unknown values fall back to default in rag.system_prompt_for().
     detail: str = "default"
+    # Partner-institution handling, chosen in Settings. "exclude" (default)
+    # keeps Essex answers free of partner documents - measured at 0 of 157
+    # ordinary queries serving one. "boost" recovers questions that name a
+    # partner COURSE without its college, at the cost of partner documents
+    # appearing on 29% of ordinary questions (Round 35).
+    partner_mode: str = "exclude"
 
 
 class Feedback(BaseModel):
@@ -273,7 +279,8 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
 
     history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
     answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(
-        payload.content, history_for_prompt, summary, detail=payload.detail
+        payload.content, history_for_prompt, summary, detail=payload.detail,
+        partner_mode=payload.partner_mode,
     )
 
     memory.add_message(conversation_id, "assistant", answer_text,
@@ -336,6 +343,7 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage):
             q.put(("stage", "retrieving"))
             result = rag_answer(
                 payload.content, history_for_prompt, summary, detail=payload.detail,
+                partner_mode=payload.partner_mode,
                 on_token=lambda t: q.put(("token", t)),
             )
             answer_text, sources, retrieval_query, ranked_top_urls = result

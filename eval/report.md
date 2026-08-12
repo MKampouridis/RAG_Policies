@@ -5397,3 +5397,46 @@ that stops them being re-proposed.
 designed; this round tested whether a better design exists. Two candidates from
 external review, both measured, both worse. The Round 8r decision now rests on
 having tried the alternatives rather than on not having tried them.
+
+## Round 36 — The partner toggle, and a Settings control that never worked (2026-08-12)
+
+Built the toggle (#90) after the "will it affect performance?" question, which
+turned out to be the right question to ask and the wrong answer from me.
+
+**Performance: no cost, measured.** exclude 1.789s vs boost 1.714s mean over
+four warm queries - indistinguishable. My assumption that keeping more
+candidates would slow the rerank was WRONG: the rerank pool is capped at
+`RERANK_POOL_SIZE` (30) regardless, so filtering earlier removes candidates
+that were never going to be encoded. Performance was not a reason to withhold
+the toggle, and I had implied it might be.
+
+`partner_mode` now travels with the message like `detail` does, defaulting to
+`exclude`. The Settings control states the measured cost of each option rather
+than describing them neutrally - "0 of 157 ordinary questions returned one" vs
+"partner documents appear on about 29% of ordinary Essex questions" - because
+the whole point of Round 35 is that the alternative is worse in a specific,
+quantified way.
+
+Verified end-to-end on the question that motivated it, "Which rules of
+assessment apply to the BA (Hons) 3D Design & Craft course?":
+
+| mode | top sources |
+|---|---|
+| exclude | `roa-ug-ehs-hons-stage-two-final-rules`, `year-2-variations-ug`, ... |
+| boost | **`roa-ug-colchester-institute-year-1/2/3`** |
+
+### A pre-existing bug found on the way in
+
+The send path read `loadSettings().detailLevel`. The setting is stored as
+**`detail`**. So it was always `undefined`, always fell through to `'default'`,
+and **choosing "Detailed" in Settings has never reached the server** - in
+either the streaming or blocking path.
+
+The backend was correct throughout, and every direct-API measurement of detail
+levels (Rounds 10 and 20) was real. It was only the browser control that was
+inert - which is exactly the class of defect the user asked about in the first
+place ("does the concise/detailed option work?"), fixed on the backend, and
+still broken in the one place a user would touch it.
+
+Both fixed. `DEFAULT_SETTINGS` now also carries `partnerMode`, so a fresh
+browser has an explicit value rather than relying on a fallback.

@@ -175,6 +175,8 @@
     font-size: 13px; font-weight: 600; text-align: center;
   }
   .set-actions a.btn { display:inline-flex; align-items:center; text-decoration:none; }
+  .detail-opt { display:flex; gap:9px; align-items:flex-start; font-size:13.5px; line-height:1.45; cursor:pointer; }
+  .detail-opt input { margin-top:3px; flex:none; }
   .provenance {
     margin-top: 10px; font-size: 11px; color: var(--color-neutral-600);
     font-variant-numeric: tabular-nums; letter-spacing: .01em; cursor: help;
@@ -412,6 +414,22 @@
           <button class="btn btn-secondary danger" id="clear-history">Clear all history</button>
         </div>
         <div class="set-note" id="history-status" hidden style="font-weight:600;color:var(--color-accent)"></div>
+      </div>
+
+      <div class="card blueprint set-card" data-corners>
+        <h4>Partner institution documents</h4>
+        <p class="text-muted">Essex teaches some courses through partner colleges, which have their
+          own rules-of-assessment documents. By default those are hidden unless you name the college,
+          so Essex questions get Essex answers.</p>
+        <div class="set-actions" style="flex-direction:column;align-items:flex-start;gap:8px">
+          <label class="detail-opt"><input type="radio" name="partner-mode" value="exclude">
+            <span><strong>Essex only (recommended)</strong> — partner documents appear only when you
+            name the college. Measured: 0 of 157 ordinary questions returned one.</span></label>
+          <label class="detail-opt"><input type="radio" name="partner-mode" value="boost">
+            <span><strong>Include partner documents</strong> — finds answers for courses taught at a
+            partner college even when you don't name it. Cost: partner documents then appear on about
+            29% of ordinary Essex questions.</span></label>
+        </div>
       </div>
 
       <div class="card blueprint set-card" data-corners>
@@ -1222,7 +1240,8 @@ async function send(text) {
       result = await fetchJSON(`/api/conversations/${activeConversationId}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
+        body: JSON.stringify({ content: text, detail: settings.detail || 'default',
+                             partner_mode: settings.partnerMode || 'exclude' }),
       });
     }
     pending.remove();
@@ -1263,6 +1282,18 @@ async function send(text) {
   } catch (e) { /* a missing endpoint must never break the page */ }
 })();
 
+
+/* Partner-document handling. Default 'exclude'; see Settings for the measured
+   cost of the alternative. */
+(function partnerModeSetting(){
+  const cur = settings.partnerMode || 'exclude';
+  const el = document.querySelector(`input[name=partner-mode][value="${cur}"]`);
+  if (el) el.checked = true;
+  document.querySelectorAll('input[name=partner-mode]').forEach(r => {
+    r.addEventListener('change', () => { settings.partnerMode = r.value; saveSettings(); });
+  });
+})();
+
 /* ── streaming ────────────────────────────────────────────────────────────
    Reads the SSE endpoint and paints tokens as they arrive. The final `done`
    event carries the same JSON the blocking endpoint returns, so the caller
@@ -1274,7 +1305,8 @@ async function sendStreaming(text, pending) {
   const res = await fetch(`/api/conversations/${activeConversationId}/messages/stream`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ content: text, detail: loadSettings().detailLevel || 'default' }),
+    body: JSON.stringify({ content: text, detail: settings.detail || 'default',
+                             partner_mode: settings.partnerMode || 'exclude' }),
   });
   // Before this point the server has done nothing, so a failure here is safe to
   // retry on the blocking endpoint. After it, the user message is already
@@ -1406,7 +1438,7 @@ document.addEventListener('touchstart', (e) => {
 
 /* ── settings (localStorage) ──────────────────────────────────────────────── */
 const SETTINGS_KEY = 'essex-assistant-settings';
-const DEFAULT_SETTINGS = { detail: 'concise', notifyDigest: false, notifyChanges: false };
+const DEFAULT_SETTINGS = { detail: 'default', partnerMode: 'exclude', notifyDigest: false, notifyChanges: false };
 function loadSettings() {
   try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}') }; }
   catch (e) { return { ...DEFAULT_SETTINGS }; }

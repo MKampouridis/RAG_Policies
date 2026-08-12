@@ -1632,7 +1632,8 @@ def _adjacent_chunks(results: dict) -> dict:
     return out
 
 
-def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dict, str]:
+def retrieve(question: str, history: list[dict], summary: str = "",
+             partner_mode: str | None = None) -> tuple[dict, str]:
     """The full retrieval path used by answer() - query contextualization
     plus recency preference - exposed separately so eval/scoring code can
     measure exactly what production retrieves, not a simplified stand-in.
@@ -1757,11 +1758,13 @@ def retrieve(question: str, history: list[dict], summary: str = "") -> tuple[dic
     if PARTNER_EXCLUDE_WHEN_UNNAMED and not _names_partner_institution(retrieval_query, history):
         # before the rerank, so the freed slots are filled by Essex documents
         # rather than left empty
-        if PARTNER_MODE == "exclude":
+        # per-request override (Settings), falling back to the deployment default
+        _mode = partner_mode if partner_mode in ("exclude", "cap1", "boost") else PARTNER_MODE
+        if _mode == "exclude":
             candidates = _exclude_partner_institutions(candidates)
-        elif PARTNER_MODE == "cap1":
+        elif _mode == "cap1":
             candidates = _cap_partner_institutions(candidates, cap=1)
-        elif PARTNER_MODE == "boost":
+        elif _mode == "boost":
             candidates = _boost_home_institution(candidates, places=PARTNER_BOOST)
 
     _ts = _perf.time()
@@ -2082,7 +2085,7 @@ def generate_title(question: str) -> str:
 
 
 def answer(question: str, history: list[dict], summary: str = "", detail: str = "default",
-           on_token=None) -> tuple[str, list[str], str, list[str]]:
+           on_token=None, partner_mode: str | None = None) -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
 
     The last two are the exact retrieval this call actually used, not a
@@ -2098,7 +2101,7 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     retrieval_query/ranked_top_urls lets callers score exactly what happened,
     with a single retrieve() invocation per turn."""
     _ta = _perf.time()
-    results, retrieval_query = retrieve(question, history, summary)
+    results, retrieval_query = retrieve(question, history, summary, partner_mode=partner_mode)
     results = _apply_chunk_order(results)
     metadatas = results.get("metadatas", [[]])[0]
     ranked_top_urls = [m.get("source_url") for m in metadatas]
