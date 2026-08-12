@@ -4991,3 +4991,75 @@ Worth noting how this was found - not by testing streaming, but by working
 through a reviewer's item about mid-stream failure leaving a conversation
 inconsistent. The reviewer was describing the pre-existing code; the same
 reasoning applied to code I had written that afternoon.
+
+## Round 27 — The ColBERT embedding cache was STALE, and it cost 5 turns (2026-08-12)
+
+Investigated as a latency change; it turned out to be a correctness defect.
+
+### The eval, paired per turn
+
+`retrieval_replay`, 160 turns, deterministic, matched on (file, gold, turn) -
+not on totals, because two arms can score the same number with different turns
+hitting.
+
+| | |
+|---|---|
+| cache ON (previous default) | 121/160 |
+| cache OFF | **126/160** |
+| gained | **6** |
+| lost | **1** |
+| identical rank | 144/160 - so **16 turns moved**, not 5 |
+
+### Why: the cache was three weeks stale
+
+| | |
+|---|---|
+| ColBERT embeddings built | **2026-07-21** |
+| corpus re-ingested | **2026-08-11** |
+| chunks in ColBERT index | 20,477 |
+| chunks in Chroma | **21,709** |
+| drift | **1,232 chunks** |
+
+`run_ingest.py` and `reembed.py` update Chroma and leave the ColBERT index
+alone. So the reranker was scoring chunks using embeddings of text that had
+since been replaced - including documents Round 9 flagged as having changed.
+Nothing in the pipeline detected it.
+
+### It also explains Round 22
+
+Three of the six newly-passing turns are documents Round 22 recorded as "gold
+sat in the pool's top 6 yet was absent from the final top 6" - including
+`roa-ug-glossary.pdf`, which Round 22 called **the one genuine reranker
+failure**. It was not a reranker failure. The reranker was being handed stale
+vectors.
+
+Round 22's retraction stands (four of five were artefacts). The fifth now has
+an explanation too, and it is not the reranker.
+
+### Adopted, and it wins on every axis measured
+
+`RAG_COLBERT_CACHE` now defaults to **0**:
+
+| | ON | OFF |
+|---|---|---|
+| hit@6 | 121/160 | **126/160** |
+| warm retrieve | ~5.0s | **~1.4s** |
+| server RSS | ~5.0GB | **~2.1GB** |
+
+Turning it off also stops `_load()` pulling the 3.7GB Voyager index resident,
+which Round 13 measured as degrading Chroma's filtered query 81ms -> 2543ms.
+
+`eval/colbert_index_drift.py` now detects the condition; it belongs in the
+post-ingest sequence beside `audit_family_aliases.py` and
+`stale_index_audit.py`. Rebuilding the index would be the alternative fix, but
+the cache saves ~0.2s of encoding and costs the memory pressure above, so off
+is the better default even when fresh.
+
+### The lesson
+
+This sat in production for three weeks, degrading retrieval, while every ledger
+number was measured on top of it. It was found only because a LATENCY
+investigation happened to A/B a flag - and the "is it worth an eval if it
+changes documents?" question was asked. On the speed evidence alone the right
+call looked like "leave it, it's a small win"; the eval turned it into a
+correctness fix.

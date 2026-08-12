@@ -78,7 +78,29 @@ IDENTITY_ENRICHED_RERANK_ENABLED = False
 # text - reranking the experimental index on the production index's vectors
 # and quietly invalidating any comparison. Set RAG_COLBERT_CACHE=0 on BOTH
 # arms of a chunking comparison so each encodes its own text.
-USE_CACHED_COLBERT_EMBEDDINGS = os.environ.get("RAG_COLBERT_CACHE", "1") == "1"
+# DEFAULT FLIPPED TO OFF, 2026-08-12, on a measured retrieval improvement.
+#
+# The cache reuses ColBERT token embeddings precomputed by
+# build_colbert_index.py. Those were built 2026-07-21; the corpus was
+# re-ingested 2026-08-11. The index holds 20,477 chunks against Chroma's
+# 21,709, and the overlapping ones were embedded from text that has since
+# changed - so the reranker was scoring some chunks by their SUPERSEDED
+# wording. Nothing detected the drift: run_ingest.py and reembed.py update
+# Chroma and leave the ColBERT index alone.
+#
+# Measured (retrieval_replay, 160 turns, deterministic, paired per turn):
+#   cache ON  121/160     cache OFF  126/160     +6 gained, -1 lost
+# Three of the six gains are documents Round 22 had recorded as "the reranker
+# demoted a top-of-pool document" - that anomaly was stale embeddings, not a
+# reranker defect.
+#
+# Turning it off also stops _load() pulling the 3.7GB Voyager index into a 16GB
+# machine, which Round 13 measured as degrading Chroma's filtered query from
+# 81ms to 2543ms. So this is faster, lighter AND more accurate.
+#
+# Set RAG_COLBERT_CACHE=1 to re-enable after rebuilding the index; the
+# staleness check below will tell you whether it is safe.
+USE_CACHED_COLBERT_EMBEDDINGS = os.environ.get("RAG_COLBERT_CACHE", "0") == "1"
 
 _cross_encoder = None
 
