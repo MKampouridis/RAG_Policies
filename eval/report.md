@@ -5732,3 +5732,63 @@ answers.
    scored by an instrument now known to be weakly ordered.
 3. Prefer the deterministic checks (`cloud_smoke.py` rates, keyphrase coverage,
    hit@6) over mean judge score for anything that has to be trusted.
+
+## Round 43 — Auditing the references, and what the audit cannot see (2026-08-12)
+
+Round 42 identified the reference answers as the weak link: the judge scores
+agreement-with-reference, and three of the largest human/judge gaps were the
+human saying the reference was WRONG. Round 29 independently found gold
+keyphrases absent from any current document. Both point the same way.
+
+`eval/reference_audit.py` checks whether each item's reference is supported by
+its own gold document.
+
+| set | supported | partial | unsupported |
+|---|---|---|---|
+| regression (151) | 116 (77%) | 30 (20%) | **2 (1%)** |
+| main (40) | 29 (72%) | 10 (25%) | 1 |
+| holdout (40) | 28 (70%) | 12 (30%) | 0 |
+| set 3 (23) | 20 (87%) | 0 | 0 |
+| RoA-only (20) | 17 (85%) | 3 | 0 |
+| policy-only (20) | 12 (60%) | 7 (35%) | 1 |
+| PGR interpretive (10) | 10 (100%) | 0 | 0 |
+| sibling (20) | 20 (100%) | 0 | 0 |
+
+**Outright unsupported references are rare - 2 in 151, 4 across everything.**
+The references are in better shape than Round 42 implied.
+
+### But this audit does not measure what the human flagged
+
+**5 of the 7 items where the human wrote about the reference are not in the
+regression set at all** - they came from older question files feeding the
+results archive. And of the 2 that ARE, both scored PARTIAL, including one the
+human explicitly called correct ("Referenced answer is correct").
+
+So the proxy - "are the reference's salient terms present in its gold
+document?" - is not the same question as "is the reference RIGHT". A reference
+can quote its source faithfully and still describe a superseded rule; that is
+precisely the failure the human found, and keyphrase presence cannot detect it.
+
+**The audit is worth keeping** as a cheap check for one specific defect, and it
+found four real instances. It is NOT the reference-quality measurement Round 42
+called for, and recording it as such would be the kind of substitution this
+ledger exists to prevent.
+
+### Two flaws in the audit itself, both found by running it
+
+1. It first read `colbert_docs.json` - the ColBERT cache, a 20,477-chunk
+   snapshot from 2026-07-21 against Chroma's 21,709, and whose index directory
+   was deleted this morning. Auditing references against a stale copy of the
+   corpus is the exact error this audit exists to detect. Rewritten to read the
+   live Chroma index. The numbers happened to be identical, which is luck, not
+   vindication.
+2. Loading pylate recreated an empty `data/colbert_index/` directory as a side
+   effect. Removed.
+
+### What would actually answer Round 42
+
+Human judgement on whether each reference matches CURRENT policy - which is the
+same manual labour as the calibration itself. The cheap version: re-check only
+the references for items where a human and the judge disagree by 2 or more,
+since that gap is the signal that a reference is suspect. That is ~5 items per
+30 scored, not 151.
