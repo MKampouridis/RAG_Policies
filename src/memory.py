@@ -2,6 +2,7 @@
 restarts and are resumable from either machine that points at the same
 data/chat.db."""
 
+import json
 import sqlite3
 import threading
 import time
@@ -79,6 +80,15 @@ def _connect() -> sqlite3.Connection:
             conn.execute("ALTER TABLE conversations ADD COLUMN deleted_at REAL DEFAULT NULL")
         except sqlite3.OperationalError:
             pass  # column already exists
+        # Per-message provenance (2026-08-12): which corpus version, code
+        # revision and models produced THIS answer. Stored at write time rather
+        # than derived later, because none of it is reconstructable after the
+        # fact - the corpus changes under you. For a policy tool this is the
+        # difference between "the rule was updated" and "the tool was wrong".
+        try:
+            conn.execute("ALTER TABLE messages ADD COLUMN meta TEXT DEFAULT NULL")
+        except sqlite3.OperationalError:
+            pass  # column already exists
         _migrated = True
     return conn
 
@@ -116,11 +126,13 @@ def list_conversations() -> list[dict]:
     return [dict(r) for r in rows]
 
 
-def add_message(conversation_id: str, role: str, content: str) -> None:
+def add_message(conversation_id: str, role: str, content: str, meta: dict | None = None) -> None:
     with _connect() as conn:
         conn.execute(
-            "INSERT INTO messages (conversation_id, role, content, created_at) VALUES (?, ?, ?, ?)",
-            (conversation_id, role, content, time.time()),
+            "INSERT INTO messages (conversation_id, role, content, created_at, meta)"
+            " VALUES (?, ?, ?, ?, ?)",
+            (conversation_id, role, content, time.time(),
+             json.dumps(meta) if meta else None),
         )
 
 
@@ -175,7 +187,8 @@ def purge_deleted(older_than_seconds: float = 30 * 24 * 3600) -> int:
 def get_messages(conversation_id: str) -> list[dict]:
     with _connect() as conn:
         rows = conn.execute(
-            "SELECT role, content, created_at FROM messages WHERE conversation_id = ? ORDER BY id ASC",
+            "SELECT role, content, created_at, meta FROM messages"
+            " WHERE conversation_id = ? ORDER BY id ASC",
             (conversation_id,),
         ).fetchall()
     return [dict(r) for r in rows]

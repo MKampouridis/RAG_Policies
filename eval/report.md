@@ -5156,3 +5156,40 @@ version of that advice: on the main set, at most **4 of 80 turns** are
 retrieval problems a better retriever could solve, and the measured ceiling is
 below current performance. Effort spent on rerankers, fusion or embeddings is
 competing for 5% of one set, most of which is already unreachable.
+
+## Round 30 — Provenance stored per answer, a canary set, and the multi-entity cost (2026-08-12)
+
+**Per-message provenance (#26, #27, #28).** `messages.meta` (additive migration,
+same pattern as `deleted_at`) now stores corpus version, code revision,
+generator, contextualizer and cited sources WITH each assistant message.
+`eval/audit_answer.py` reads them back and compares the cited documents against
+the current manifest, so the question a policy tool actually gets - "was this
+right when it was given, and is it still right?" - is answerable for the first
+time. Answers written before today correctly report "no provenance recorded"
+rather than guessing.
+
+**Canary set (#36).** 118 turns whose gold sits at rank <=3 in the reference
+replay - chosen by rule, not by hand, so it cannot be gamed and regenerates
+after any deliberate re-baseline. Distinct from the regression set: a turn
+scraping in at rank 6 flips on noise and cries wolf; a turn at rank 1-3 turning
+into a miss is a real alarm. `eval/check_canary.py` exits 1 if any break.
+Baseline run: **118 checked, 0 broken.**
+
+**Multi-entity latency (#63).** Now that reranking is 82% of retrieval, the
+per-entity reranks matter:
+
+| question | rerank calls | rerank total | retrieve |
+|---|---|---|---|
+| single entity | 1 | 1.11s | 1.32s |
+| three entities | **4** | **3.32s** | **4.15s** |
+
+A three-department question costs **3x** the retrieval latency of an ordinary
+one, because each entity gets its own rerank over its own filtered pool (41,
+31, 3 and 16 candidates).
+
+**Not changed.** The obvious fix - one final rerank instead of per-entity ones -
+would remove the mechanism that took department coverage from 1/6 to 5/6, since
+the point is choosing the best chunks WITHIN each entity's slice. The
+promising variant is batching the four encodes into one, which preserves the
+mechanism and exploits transformer batching, but it means restructuring
+`rerank()` to accept multiple pools. Recorded as measured and unbuilt.

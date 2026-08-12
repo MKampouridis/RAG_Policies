@@ -249,7 +249,8 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         payload.content, history_for_prompt, summary, detail=payload.detail
     )
 
-    memory.add_message(conversation_id, "assistant", answer_text)
+    memory.add_message(conversation_id, "assistant", answer_text,
+                       meta={"provenance": provenance(), "sources": sources})
 
     if is_first_message:
         # after the response, never before: a title is cosmetic and must not
@@ -314,7 +315,8 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage):
             # Store from the RETURNED text, never from the concatenated tokens:
             # a provider that ignores on_token still returns a complete answer,
             # and what is stored must equal what answer() produced either way.
-            memory.add_message(conversation_id, "assistant", answer_text)
+            memory.add_message(conversation_id, "assistant", answer_text,
+                               meta={"provenance": provenance(), "sources": sources})
             if is_first_message:
                 _retitle(conversation_id, payload.content)
             q.put(("done", {
