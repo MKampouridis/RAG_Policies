@@ -141,6 +141,25 @@ def classic():
     return FileResponse(STATIC_DIR / "index.html")
 
 
+@app.get("/reference-random")
+def reference_random_page():
+    """RANDOM sample of references, to estimate how common bad ones are. The
+    /reference-review set was chosen for maximum human/judge disagreement, so
+    its 78%-wrong rate says nothing about the corpus. This one can."""
+    page = STATIC_DIR / "reference_random.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="page not built")
+    return FileResponse(page)
+
+
+@app.post("/api/reference-random")
+def api_reference_random(verdicts: list[dict]):
+    out = Path("eval/reference_random_verdicts.json")
+    out.write_text(json.dumps(verdicts, indent=1))
+    done = sum(1 for v in verdicts if v.get("verdict"))
+    return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
+
+
 @app.get("/reference-review")
 def reference_review_page():
     """Second-stage review: for the answers where the human and the judge

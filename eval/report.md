@@ -5895,3 +5895,48 @@ rank correlation of +0.46.
 **Not yet fixed.** Rewriting 8 references means reading 8 source documents
 properly, and doing it hastily would replace known-bad references with
 unverified ones. Recorded, with their locations, as the next concrete task.
+
+## Round 46 — RETRACTION: "bad references are rare" was unsupported (2026-08-12)
+
+Round 45 claimed bad references are rare overall, citing the keyword audit's
+2-in-151. Challenged with "how can you be certain this doesn't generalise?" -
+and the claim does not survive.
+
+**Tested whether the keyword audit detects the references the human judged
+wrong. It caught 0.** The one item it could evaluate scored PARTIAL - a pass.
+The other six it cannot see at all, because it only checks primary questions
+and those are follow-ups.
+
+So the audit was used to bound a failure mode it demonstrably cannot detect -
+which Round 43 had ALREADY said in writing ("keyphrase presence cannot detect a
+reference that quotes its source faithfully while describing a superseded
+rule"). The bound was then quoted anyway, two rounds later, as if it were
+evidence.
+
+### What is actually known
+
+| | |
+|---|---|
+| 9 items selected for maximum human/judge disagreement | **7 wrong** |
+| the general rate | **UNKNOWN** |
+
+The keyword audit contributes nothing to the second row. There is no evidence
+the problem is rare and none that it is widespread.
+
+### The experiment that would answer it
+
+15 items drawn at RANDOM from the regression set - not selected for
+disagreement, and excluding the 9 already reviewed, so it is independent. Same
+review format, with source passages attached (3 per item this time, since the
+previous round's "the answer is in the next chunk" note showed 2 was too few).
+Served at `/reference-random`.
+
+15 is enough to distinguish "rare" from "common": if the true rate were 10%,
+seeing 0 or 1 defect would be typical; if it were 50%, seeing 7-8 would be. It
+will not pin down a precise figure, and is not meant to.
+
+**Why this matters beyond the references.** Round 42 found the judge scores
+agreement-with-reference. If bad references are common, every judge-scored
+comparison in this ledger is noisier than recorded - not by a constant offset,
+which cancels between arms, but randomly, which does not. The size of that
+problem is currently unknown and is worth 15 items of someone's time.
