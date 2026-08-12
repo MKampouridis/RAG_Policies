@@ -5193,3 +5193,47 @@ the point is choosing the best chunks WITHIN each entity's slice. The
 promising variant is batching the four encodes into one, which preserves the
 mechanism and exploits transformer batching, but it means restructuring
 `rerank()` to accept multiple pools. Recorded as measured and unbuilt.
+
+## Round 31 — Batched multi-pool reranking: correct, and not worth it (2026-08-12)
+
+Round 30 measured multi-entity questions at 4 rerank calls / 3.32s against 1 /
+1.11s, and proposed batching the encodes as "the variant worth building". Built
+it, measured it, and the reasoning behind the proposal was wrong.
+
+### How often it would matter, checked first
+
+| population | triggers multi-entity |
+|---|---|
+| real user questions in live conversations | 6 of 45 (**13.3%**) |
+| rated feedback | 2 of 35 (5.7%) |
+| the 151-question regression set | 10 of 151 (6.6%) |
+
+~1 in 10. Worth optimising if the saving is large; not worth a new code path if
+it is not.
+
+### The result
+
+| | |
+|---|---|
+| per-pool (4 rerank calls) | 5.15s |
+| batched (1 encode pass) | **4.57s** |
+| saving | **0.58s (11%)** |
+| output identical | **yes** |
+
+**The premise was wrong.** The proposal assumed transformer batching would make
+one encode of N passages much cheaper than four encodes of N/4. ColBERT's cost
+is per-PASSAGE compute, not per-call overhead, so batching recovers only the
+call overhead - 11%, not the large factor implied.
+
+11% of a stage, on ~10% of questions, is ~1% of overall latency, in exchange
+for a second path through core retrieval. **Not adopted.**
+
+`rerank_many()` is kept, unused, with the measurement in its docstring, and the
+equivalence test recorded as the thing to re-run if per-entity reranking ever
+becomes dominant. The idea is correct and safe - output was verified identical
+across four pools - it just does not pay for itself today.
+
+Worth noting the sequence: the frequency check came BEFORE the build, and the
+equivalence check came before any adoption decision. The build still happened
+on a wrong premise, but neither check let the wrong premise turn into a shipped
+mechanism.

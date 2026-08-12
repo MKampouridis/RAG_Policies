@@ -168,6 +168,73 @@ def _rerank_cross_encoder(query: str, pool_docs: list[str], pool_metas: list[dic
     return sorted(range(len(pool_docs)), key=lambda i: scores[i], reverse=True)[:top_n]
 
 
+def rerank_many(query: str, pools: list[dict], top_n: int) -> list[dict]:
+    """Rerank several candidate pools with ONE ColBERT encode pass.
+
+    Multi-entity retrieval reranks each named department's pool separately. On
+    a three-department question that is four encode calls - measured at 3.32s
+    against 1.11s for an ordinary single-pool question, i.e. 3x the retrieval
+    latency, on ~1 in 10 real questions (Round 30/31).
+
+    MEASURED, AND NOT ADOPTED (Round 31). The hypothesis was that transformers
+    batch well, so one encode of N passages would cost far less than four
+    encodes of N/4. It does not: on four realistic pools,
+
+        per-pool (4 calls)  5.15s
+        batched (1 encode)  4.57s      -> 11%, not the large win expected
+
+    ColBERT's cost is per-PASSAGE compute, not per-call overhead, so batching
+    saves only the call overhead. Output was verified IDENTICAL, so the idea is
+    sound and safe - it simply is not worth a second code path through the core
+    retrieval for ~11% of a stage on ~1 in 10 questions (~1% overall).
+
+    Kept, unused, with the measurement, so it is not re-proposed. Wire it into
+    _multi_entity_results if per-entity reranking ever becomes the dominant
+    cost - the equivalence test above is the thing to re-run first.
+
+    Falls back to per-pool reranking on any error.
+    """
+    if BACKEND != "colbert" or len(pools) < 2:
+        return [rerank(query, p, top_n) for p in pools]
+    try:
+        from pylate import rank
+        from src import colbert_index
+
+        model = colbert_index.get_model()
+        q_emb = model.encode([query], is_query=True)
+
+        spans, all_passages, kept = [], [], []
+        for pool in pools:
+            docs = pool.get("documents", [[]])[0][:RERANK_POOL_SIZE]
+            metas = pool.get("metadatas", [[]])[0][:RERANK_POOL_SIZE]
+            passages = _passages(docs, metas)
+            spans.append((len(all_passages), len(passages)))
+            all_passages.extend(passages)
+            kept.append((docs, metas))
+        if not all_passages:
+            return [rerank(query, p, top_n) for p in pools]
+
+        embeddings = model.encode(all_passages, is_query=False)   # ONE pass
+
+        out = []
+        for (start, count), (docs, metas) in zip(spans, kept):
+            if not count:
+                out.append({"documents": [[]], "metadatas": [[]]})
+                continue
+            d_emb = list(embeddings[start:start + count])
+            ranked = rank.rerank(
+                documents_ids=[list(range(count))],
+                queries_embeddings=q_emb,
+                documents_embeddings=[d_emb],
+            )
+            order = [r["id"] for r in ranked[0][:top_n]]
+            out.append({"documents": [[docs[i] for i in order]],
+                        "metadatas": [[metas[i] for i in order]]})
+        return out
+    except Exception:
+        return [rerank(query, p, top_n) for p in pools]
+
+
 def _rerank_colbert(query: str, pool_docs: list[str], pool_metas: list[dict], top_n: int) -> list[int]:
     from pylate import rank
     from src import colbert_index
