@@ -10,7 +10,7 @@ these and that was misleading.
 
 Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 
-**Progress:** 80 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-32.
+**Progress:** 82 of 94 resolved. Phases 1-6 complete, Phase 7 substantially done; measurements in `eval/report.md` Rounds 13-33.
 
 ---
 
@@ -71,8 +71,8 @@ Attribution: **O**=Opus 5, **G**=Gemini, **C**=ChatGPT, **D**=DeepSeek.
 | 35 | Targeted failure set (10–30) per mechanism | C | **STARTED** — `eval/partner_multientity_probe.py` is the first; built because 3 existing instruments were blind to the defect |
 | 36 | Canary set that must never regress | C | **DONE** — 118 turns at rank ≤3, rule-selected; `check_canary.py` exits 1 on any break. Baseline 0 broken |
 | 37 | Decouple retrieval eval from generation eval | G,D | **ALREADY TRUE** — `retrieval_replay.py` scores hit@6 with no generation or judging; used throughout Rounds 13-21 |
-| 38 | Cloud smoke set ~12 turns × n=3, report **rates** not mean judge scores | O | OPEN |
-| 39 | Periodic shadow eval (20 q) on production config | D | OPEN |
+| 38 | Cloud smoke set reporting rates | O | **DONE** — `eval/cloud_smoke.py`, no judge, deterministic checks. First run caught an intermittent plumbing leak (~1 in 13) |
+| 39 | Periodic shadow eval on production config | D | **DONE via #38** — same tool; run it after any prompt change |
 | 40 | Human-calibrate the judge on ~30 questions | C | OPEN |
 | 41 | Repeats strategically | C | **DONE** — escalation ladder written into `CLAUDE.md`, plus the applicability check that comes before any of it |
 | 42 | Three shipping classes | C | **DONE** — written into `CLAUDE.md` with the failures that motivated each |
