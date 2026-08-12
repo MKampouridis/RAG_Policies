@@ -5835,3 +5835,63 @@ failed silently - 0 of 9 items got text, with no error - because a missing dict
 key returns None and the loop skipped every one. Caught only by checking the
 count rather than trusting the run. The same shape of mistake as reading
 `loadSettings().detailLevel` when the key is `detail`.
+
+## Round 45 — 7 of 9 contested references are WRONG (2026-08-12)
+
+The 9 items where human and judge disagreed by 2+, re-reviewed with the source
+passages shown:
+
+| verdict | n |
+|---|---|
+| **WRONG — the source does not say this** | **7 (78%)** |
+| the QUESTION is the problem | 1 |
+| reference correct & current | 1 |
+
+Human notes confirm the direction: *"The source gives the right answer"*, *"The
+source says many more on this"*. In the one item judged correct, the human still
+found a discrepancy (note says HS62, answer says HS632).
+
+### The synthesis with Round 43, which looked contradictory
+
+| measurement | result |
+|---|---|
+| keyword audit, 151 items (Round 43) | 2 unsupported (1%) |
+| human review, 9 CONTESTED items | 7 wrong (78%) |
+
+Both are true and they are not in conflict. **Bad references are rare overall
+and dominate the disagreement cases.** That makes human/judge disagreement a
+cheap DETECTOR for bad test items - 9 items reviewed found 8 defects, where
+auditing all 151 by keyword found 2.
+
+That is a reusable method, and it inverts the obvious approach: rather than
+auditing every reference, score a sample by hand and inspect only where the
+judge and the human diverge.
+
+### The sampling caveat, which is not small
+
+These 9 were SELECTED for maximum disagreement. 78% cannot be extrapolated to
+the corpus - the keyword audit says the general rate is far lower. The claim
+supported here is narrow: *among items where the judge and a human disagree by
+2+, the reference is usually at fault*.
+
+One further limit, from the human's own note: *"The correct answer is in the
+next chunk, which doesn't appear here."* The page showed 2 passages per item.
+So some "wrong" verdicts may be "the passages shown do not support this" rather
+than "the document does not". The direction of that bias inflates the 78%.
+
+### What it costs the ledger
+
+**All 8 defective items are in the 151-question regression set**, and most are
+also in `questions.json` (the main 40) and the topic-split sets. So the main
+set - the most-replayed set in this project's history - contains at least 6
+items whose reference answers are wrong.
+
+Every judge-scored comparison ever run on the main set has included them. The
+effect is not a bias in one direction: a wrong reference penalises a correct
+answer and rewards an answer that repeats the same error, so it adds noise
+rather than a constant offset - which is exactly what Round 42 measured as a
+rank correlation of +0.46.
+
+**Not yet fixed.** Rewriting 8 references means reading 8 source documents
+properly, and doing it hastily would replace known-bad references with
+unverified ones. Recorded, with their locations, as the next concrete task.

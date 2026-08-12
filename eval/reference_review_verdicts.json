@@ -6,42 +6,42 @@
  },
  {
   "n": 2,
-  "verdict": "unclear",
+  "verdict": "wrong",
   "note": ""
  },
  {
   "n": 3,
+  "verdict": "wrong",
+  "note": "The correct answer is in the next chunk, which doesn\u2019t appear here."
+ },
+ {
+  "n": 4,
   "verdict": "bad_question",
   "note": ""
  },
  {
-  "n": 4,
-  "verdict": "unclear",
-  "note": ""
- },
- {
   "n": 5,
-  "verdict": "unclear",
-  "note": ""
+  "verdict": "wrong",
+  "note": "The source says many more on this."
  },
  {
   "n": 6,
-  "verdict": "unclear",
-  "note": ""
+  "verdict": "current",
+  "note": "Minor thing: note says HS62, while the answer says HS632."
  },
  {
   "n": 7,
-  "verdict": "unclear",
+  "verdict": "wrong",
   "note": ""
  },
  {
   "n": 8,
-  "verdict": "unclear",
-  "note": ""
+  "verdict": "wrong",
+  "note": "The source gives the right answer."
  },
  {
   "n": 9,
-  "verdict": "unclear",
+  "verdict": "wrong",
   "note": ""
  }
 ]
