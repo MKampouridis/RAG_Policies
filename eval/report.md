@@ -5969,3 +5969,60 @@ these are one-page documents, not that ingestion truncated them.
 No action. Recorded because "35 documents have one chunk" reads like a defect
 in isolation, and the next person to notice it should find this rather than
 re-investigate.
+
+## Round 48 — The random sample answers it: bad references are rare (2026-08-12)
+
+Round 46 retracted "bad references are rare" as unsupported and built the
+experiment that could settle it: 15 references drawn at RANDOM from the
+regression set, excluding the 9 already reviewed, with up to 4 source passages
+and a link to the original document.
+
+| sample | wrong |
+|---|---|
+| **random (n=15)** | **0 (0%)** |
+| contested, selected for max human/judge disagreement (n=9) | 7 (78%) |
+
+### What 0 of 15 supports, and what it does not
+
+| if the true rate were | probability of seeing 0 in 15 |
+|---|---|
+| 5% | 46% |
+| 10% | 21% |
+| **20%** | **3.5%** |
+| 50% | ~0% |
+
+So a rate of 20% or higher is effectively ruled out (95% upper bound ~20% by
+the rule of three), and rates of 5-10% remain entirely consistent with this
+evidence. **The claim supported is "not common", not "zero".** 15 items cannot
+distinguish 0% from 8%, and it was never going to.
+
+### The contrast is the finding
+
+0% at random against 78% among contested items is a 
+difference no sampling accident explains. **Human/judge disagreement is a
+strong detector of defective test items** - reviewing 9 selected items found 8
+defects; auditing 151 items by keyword found 2, none of which were the ones the
+human caught.
+
+That is the reusable method, and it inverts the obvious approach: do not audit
+every reference. Score a sample by hand, and inspect only where the judge and
+the human diverge.
+
+### What it means for the ledger
+
+Better than Round 45 implied. The judge-scored comparisons are not broadly
+built on corrupt references; the corruption is concentrated in a small number
+of items, which happen to be the ones that drive disagreement - and therefore
+the ones most likely to have swung close A/B calls.
+
+Two honest notes from the human's own annotations, both on items marked
+correct: one reference lists 7 of the policy's 10 risks ("still good enough,
+but not perfect"), and on another the reference was verified as correct despite
+the shown passages not containing it. So "correct" here means "not wrong",
+which is the right bar for this question but not a claim of completeness.
+
+**Round 42's finding survives intact**: the judge scores
+agreement-with-reference and correlates only +0.46 with a human. That is now
+known NOT to be mostly caused by bad references, since bad references are rare.
+The judge is simply a weak instrument on its own terms, which is a cleaner and
+more general conclusion than "the test data was broken".

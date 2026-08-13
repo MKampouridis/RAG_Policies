@@ -1,0 +1,77 @@
+[
+ {
+  "n": 1,
+  "verdict": "current",
+  "note": "The policy states 10 risks, here only 7 were listed. Still good enough, but not perfect. I think 1 or 2 chunks might have not been retrieved that would bring this to 10/10."
+ },
+ {
+  "n": 2,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 3,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 4,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 5,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 6,
+  "verdict": "current",
+  "note": "The reference answer is correct. However, I couldn\u2019t find it in the chunks provided here. But I couldn\u2019t actually find it in the linked pdf document."
+ },
+ {
+  "n": 7,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 8,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 9,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 10,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 11,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 12,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 13,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 14,
+  "verdict": "current",
+  "note": ""
+ },
+ {
+  "n": 15,
+  "verdict": "current",
+  "note": ""
+ }
+]
