@@ -20,6 +20,11 @@ from src.rag import GENERATED_TITLES, generate_title
 
 app = FastAPI(title="Essex Policies & Rules of Assessment Assistant")
 
+# Research/eval pages live in their own router so a tester-facing deployment
+# can leave them unmounted. Mounted here today: pure move, no behaviour change.
+from src.research_routes import router as _research_router  # noqa: E402
+app.include_router(_research_router)
+
 # Every retrieval dependency is lazily initialised on first use, so the FIRST
 # request after a restart pays ~21s that later requests do not (Round 11:
 # torch/ColBERT first-encode ~8s, ColBERT model load ~4s, BM25 index build
@@ -178,68 +183,6 @@ def classic():
     return FileResponse(STATIC_DIR / "index.html")
 
 
-@app.get("/reference-fix")
-def reference_fix_page():
-    """Correct the reference answers judged wrong. These sit in the main
-    40-question set, so every judge-scored comparison on it has included them."""
-    page = STATIC_DIR / "reference_fix.html"
-    if not page.is_file():
-        raise HTTPException(status_code=404, detail="page not built")
-    return FileResponse(page)
-
-
-@app.post("/api/reference-fix")
-def api_reference_fix(fixes: list[dict]):
-    """Saves the corrections. Deliberately does NOT write them into the question
-    files - applying edits to eval data is a separate, reviewable step, and an
-    endpoint that rewrites the test sets from a browser is how test data gets
-    quietly changed."""
-    out = Path("eval/reference_fixes.json")
-    out.write_text(json.dumps(fixes, indent=1))
-    acted = sum(1 for f in fixes if f.get("action") in ("rewrite", "drop"))
-    return {"ok": True, "done": acted, "total": len(fixes), "path": str(out)}
-
-
-@app.get("/reference-random")
-def reference_random_page():
-    """RANDOM sample of references, to estimate how common bad ones are. The
-    /reference-review set was chosen for maximum human/judge disagreement, so
-    its 78%-wrong rate says nothing about the corpus. This one can."""
-    page = STATIC_DIR / "reference_random.html"
-    if not page.is_file():
-        raise HTTPException(status_code=404, detail="page not built")
-    return FileResponse(page)
-
-
-@app.post("/api/reference-random")
-def api_reference_random(verdicts: list[dict]):
-    out = Path("eval/reference_random_verdicts.json")
-    out.write_text(json.dumps(verdicts, indent=1))
-    done = sum(1 for v in verdicts if v.get("verdict"))
-    return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
-
-
-@app.get("/reference-review")
-def reference_review_page():
-    """Second-stage review: for the answers where the human and the judge
-    disagreed most, is the REFERENCE right? Round 42 found the judge scores
-    agreement-with-reference, so a suspect reference is the likeliest
-    explanation for a large gap."""
-    page = STATIC_DIR / "reference_review.html"
-    if not page.is_file():
-        raise HTTPException(status_code=404, detail="reference review page not built")
-    return FileResponse(page)
-
-
-@app.post("/api/reference-review")
-def api_reference_review(verdicts: list[dict]):
-    out = Path("eval/reference_review_verdicts.json")
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(verdicts, indent=1))
-    done = sum(1 for v in verdicts if v.get("verdict"))
-    return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
-
-
 @app.get("/guide")
 def guide_page():
     """What testers should know before they start: what it is, what it is not,
@@ -270,33 +213,6 @@ def api_feedback_list(limit: int = 200):
     rows = feedback_store.load_feedback()
     rows = sorted(rows, key=lambda r: r.get("timestamp") or "", reverse=True)
     return rows[:limit]
-
-
-@app.get("/calibration")
-def calibration_page():
-    """Judge-calibration scoring page (eval tool, not part of the product).
-
-    Served over HTTP rather than opened as a file because `localStorage` throws
-    on file:// in Safari, which silently killed the page's whole script. Over
-    http:// it works, so progress survives a reload.
-    """
-    page = STATIC_DIR / "judge_calibration.html"
-    if not page.is_file():
-        raise HTTPException(status_code=404, detail="calibration page not built")
-    return FileResponse(page)
-
-
-@app.post("/api/calibration")
-def api_calibration(scores: list[dict]):
-    """Save human scores straight to disk, so there is no download or
-    copy-paste step to fail. Overwrites: the page always posts the full set,
-    including unscored items as null, so a partial pass is still a complete
-    record of what was decided so far."""
-    out = Path("eval/judge_calibration_scores.json")
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(scores, indent=1))
-    done = sum(1 for s in scores if s.get("human_score") is not None)
-    return {"ok": True, "scored": done, "total": len(scores), "path": str(out)}
 
 
 @app.post("/api/sources")
