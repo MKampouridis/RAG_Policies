@@ -1,0 +1,82 @@
+<!doctype html><meta charset="utf-8"><title>Feedback</title>
+<style>
+:root{--v:#622567;--lime:#bed600;--bg:#faf9fb;--line:#e5e1e8;--muted:#6b6472}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#1a1620;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{position:sticky;top:0;z-index:9;background:var(--v);color:#fff;padding:14px 20px;border-bottom:4px solid var(--lime)}
+header h1{margin:0;font-size:17px}
+.stats{display:flex;gap:18px;margin-top:8px;font-size:13px;opacity:.94;flex-wrap:wrap}
+main{max-width:900px;margin:0 auto;padding:20px}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filters button{font:inherit;font-size:13px;padding:6px 13px;border:1px solid var(--line);
+  background:#fff;border-radius:999px;cursor:pointer}
+.filters button.on{background:var(--v);color:#fff;border-color:var(--v)}
+.item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin-bottom:13px}
+.item.down{border-left:4px solid #b3261e}
+.item.up{border-left:4px solid #2e7d32}
+.meta{display:flex;gap:12px;font-size:12px;color:var(--muted);margin-bottom:7px;flex-wrap:wrap}
+.who{font-weight:700;color:var(--v)}
+.q{font-weight:600;margin:0 0 8px;font-size:15px}
+.comment{background:#fffbe6;border-left:3px solid #e0c200;border-radius:6px;padding:8px 11px;font-size:13.5px;margin:8px 0}
+.tags span{display:inline-block;background:#f1edf4;border-radius:999px;padding:2px 9px;font-size:11.5px;margin-right:5px}
+details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
+.a{white-space:pre-wrap;background:#fbfbfc;border:1px solid var(--line);border-radius:7px;
+  padding:10px 12px;font-size:13.5px;margin-top:7px;max-height:300px;overflow:auto}
+.srcs{font-size:12px;color:var(--muted);margin-top:7px;word-break:break-all}
+.empty{color:var(--muted);text-align:center;padding:40px}
+</style>
+<header>
+  <h1>Feedback</h1>
+  <div class="stats" id="stats">loading…</div>
+</header>
+<main>
+  <div class="filters">
+    <button data-f="down" class="on">Thumbs down</button>
+    <button data-f="up">Thumbs up</button>
+    <button data-f="all">All</button>
+  </div>
+  <div id="list"><div class="empty">loading…</div></div>
+</main>
+<script>
+let rows = [], filter = 'down';
+function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+function when(ts){ if(!ts) return ''; try{ return new Date(ts).toLocaleString(); }catch(e){ return ts; } }
+function render(){
+  const shown = filter==='all' ? rows : rows.filter(r => r.rating===filter);
+  const el = document.getElementById('list');
+  if(!shown.length){ el.innerHTML='<div class="empty">Nothing here yet.</div>'; return; }
+  el.innerHTML = shown.map(r => `
+    <div class="item ${esc(r.rating)}">
+      <div class="meta">
+        <span class="who">${esc(r.owner || 'unknown')}</span>
+        <span>${esc(when(r.timestamp))}</span>
+        <span>${r.rating==='down'?'▼ down':'▲ up'}</span>
+        ${r.provenance ? `<span>${esc(r.provenance.generator||'')} · corpus ${esc((r.provenance.corpus_version||'').slice(0,7))}</span>` : ''}
+        ${r.source==='server' ? '' : '<span title="recorded from the client copy">client-recorded</span>'}
+      </div>
+      <p class="q">${esc(r.question)}</p>
+      ${r.comment ? `<div class="comment">${esc(r.comment)}</div>` : ''}
+      ${(r.tags&&r.tags.length) ? `<div class="tags">${r.tags.map(t=>`<span>${esc(t)}</span>`).join('')}</div>` : ''}
+      <details><summary>Answer and sources</summary>
+        <div class="a">${esc(r.answer)}</div>
+        ${r.retrieval_query && r.retrieval_query!==r.question ? `<div class="srcs"><b>Searched for:</b> ${esc(r.retrieval_query)}</div>`:''}
+        <div class="srcs"><b>Sources:</b> ${(r.sources||[]).map(s=>esc(s.split('/').pop())).join(', ')||'none'}</div>
+      </details>
+    </div>`).join('');
+}
+document.querySelectorAll('.filters button').forEach(b=>{
+  b.onclick=()=>{ filter=b.dataset.f;
+    document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
+    render(); };
+});
+fetch('/api/feedback').then(r=>r.json()).then(d=>{
+  rows=d;
+  const up=rows.filter(r=>r.rating==='up').length, down=rows.filter(r=>r.rating==='down').length;
+  const people=new Set(rows.map(r=>r.owner).filter(Boolean));
+  document.getElementById('stats').innerHTML =
+    `<span><b>${rows.length}</b> ratings</span><span><b>${down}</b> down</span>`+
+    `<span><b>${up}</b> up</span><span><b>${people.size}</b> ${people.size===1?'person':'people'}</span>`+
+    `<span><b>${rows.filter(r=>r.comment).length}</b> with comments</span>`;
+  render();
+}).catch(e=>{ document.getElementById('list').innerHTML='<div class="empty">Could not load feedback: '+esc(e)+'</div>'; });
+</script>

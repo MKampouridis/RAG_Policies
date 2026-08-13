@@ -439,6 +439,7 @@
         <p class="text-muted">Score 30 stored answers by hand, to check whether the automatic
           marker used in evaluations agrees with a human. Scores save straight to disk.</p>
         <div class="set-actions">
+          <a class="btn btn-secondary" href="/feedback">See all feedback</a>
           <a class="btn btn-secondary" href="/calibration">Open scoring page</a>
           <a class="btn btn-secondary" href="/reference-review">Review references (9)</a>
           <a class="btn btn-secondary" href="/reference-random">Check 15 random references</a>
@@ -1324,7 +1325,14 @@ async function send(text) {
     }
   } catch (err) {
     pending.remove();
-    renderAssistant('Error: ' + err.message, null, null);
+    drip.reset();
+    if (streamedEl) { streamedEl.remove(); streamedEl = null; }
+    // err.message is already a sentence written for a reader (see
+    // _friendly_error in src/app.py). Only strip a JSON wrapper if one
+    // survived, rather than showing the user a payload.
+    let msg = (err && err.message) || 'Something went wrong.';
+    try { const j = JSON.parse(msg); msg = j.detail || j.message || msg; } catch (e) {}
+    renderAssistant(msg, null, null);
   } finally {
     setSending(false);
   }

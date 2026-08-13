@@ -294,18 +294,35 @@ USER_FACING_LANGUAGE = os.environ.get("RAG_USER_FACING_LANGUAGE", "1") == "1"
 # leak. Those stay the prompt rule's job, and the residual stays measured.
 SCRUB_PLUMBING_LANGUAGE = os.environ.get("RAG_SCRUB_PLUMBING", "1") == "1"
 
+# Replacements use a SINGULAR subject ("the guidance I can see") on purpose.
+# An earlier version substituted the plural "the policies I can see", which
+# forced verb agreement fixes - "the context does not cover" became "the
+# policies I can see does not cover" - and patching that with a verb-rewriting
+# table produced sentences worse than the leak it replaced ("the policies I can
+# see access to does not cover this"). A singular phrase needs no agreement
+# work at all, so the whole class of bug disappears.
 _PLUMBING_SUBS = [
-    (r"\bthe (?:provided |supplied )?context (?:does not|doesn't) contain\b",
-     "the policies I can see don't cover"),
-    (r"\bthe (?:provided |supplied )?context (?:does not|doesn't) (?:mention|specify|include)\b",
-     "the policies I can see don't cover"),
-    (r"\b(?:the |these |those )?(?:provided |supplied )?excerpts? (?:I can see|provided|you(?:'ve| have) provided)\b",
-     "the policies I can see"),
-    (r"\bthe (?:provided |supplied )excerpts?\b", "the policies I can see"),
-    (r"\bthe context (?:you(?:'ve| have) provided|provided)\b", "the policies I can see"),
+    # whole-phrase forms first, so nothing is left stranded
+    (r"\bthe (?:provided |supplied )?context (?:that )?(?:I have |I was )?"
+     r"(?:access to|available to me|given|provided to me|I can see)\b",
+     "the guidance I can see"),
+    # PLURAL source -> PLURAL replacement, so agreement survives in both
+    # directions. "the excerpts ... do not mention" must not become "the
+    # guidance ... do not mention".
+    (r"\b(?:the |these |those )?(?:provided |supplied )?excerpts (?:I can see|provided|"
+     r"you(?:'ve| have) provided)\b", "the policies I can see"),
+    (r"\bthe (?:provided |supplied )excerpts\b", "the policies I can see"),
     (r"\bthe documents (?:you(?:'ve| have) provided|provided)\b", "the policies I can see"),
-    (r"\bin the (?:provided |supplied )?context\b", "in the policies I can see"),
-    (r"\bbased on the (?:provided |supplied )?context\b", "based on the policies I can see"),
+    # singular "excerpt" keeps the singular replacement
+    (r"\bthe (?:provided |supplied )?excerpt (?:I can see|provided)\b",
+     "the guidance I can see"),
+    (r"\baccording to the (?:provided |supplied )?context\b",
+     "according to the guidance I can see"),
+    (r"\bbased on the (?:provided |supplied )?context\b",
+     "based on the guidance I can see"),
+    (r"\bin the (?:provided |supplied )?context\b", "in the guidance I can see"),
+    # catch-all last
+    (r"\bthe (?:provided |supplied )?context\b", "the guidance I can see"),
 ]
 _PLUMBING_RES = [(re.compile(pat, re.I), rep) for pat, rep in _PLUMBING_SUBS]
 
@@ -325,6 +342,7 @@ def _scrub_plumbing(text: str) -> str:
     for rx, rep in _PLUMBING_RES:
         _current_rep[0] = rep
         text = rx.sub(_sub, text)
+
     return text
 
 

@@ -114,6 +114,34 @@ class SourceLookup(BaseModel):
     question: str | None = None
 
 
+# Failures users can act on. The raw exception is an API error object -
+# "anthropic generator HTTP 404: {"type":"error"...}" was going straight into
+# the chat, which is the debug-log-as-user-surface failure CLAUDE.md names,
+# surviving in the one path nobody read. The detail is still logged; only the
+# user-facing sentence changes.
+def _friendly_error(exc: Exception) -> str:
+    text = f"{type(exc).__name__}: {exc}"
+    low = text.lower()
+    if "429" in text or "rate" in low and "limit" in low:
+        return ("The assistant is being rate-limited right now. Wait a few seconds "
+                "and ask again - your question was not lost.")
+    if "529" in text or "overloaded" in low:
+        return ("The assistant's model is overloaded at the moment. This usually "
+                "clears within a minute; please try again.")
+    if "timeout" in low or "timed out" in low:
+        return ("That took too long and was stopped. Long or very broad questions "
+                "are the usual cause - try asking something more specific.")
+    if "connection" in low or "network" in low or "dns" in low or "resolve" in low:
+        return ("I could not reach the language model - this machine may have lost "
+                "its network connection. The policy documents are local, so this is "
+                "not a problem with the documents themselves.")
+    if "401" in text or "403" in text or "api_key" in low or "authentication" in low:
+        return ("The assistant is not configured with a valid API key, so it cannot "
+                "write an answer. This needs an administrator, not a retry.")
+    return ("Something went wrong while writing the answer. It has been logged. "
+            "Please try again, and mention this if it keeps happening.")
+
+
 def _owner(x_user: str | None) -> str:
     """Who is asking. A name the browser sends, not a credential - see the
     OWNER note in src/memory.py. Blank falls back to the legacy owner so a
@@ -210,6 +238,27 @@ def api_reference_review(verdicts: list[dict]):
     out.write_text(json.dumps(verdicts, indent=1))
     done = sum(1 for v in verdicts if v.get("verdict"))
     return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
+
+
+@app.get("/feedback")
+def feedback_page():
+    """Read the ratings. Feedback has been write-only: 38 records in a JSONL
+    file readable by running a script in a terminal. Once real users are on
+    this, their feedback IS the evaluation - and a signal nobody looks at is
+    not a signal."""
+    page = STATIC_DIR / "feedback.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="page not built")
+    return FileResponse(page)
+
+
+@app.get("/api/feedback")
+def api_feedback_list(limit: int = 200):
+    """Newest first. Read-only; returns what was recorded, including the
+    server-derived question/answer and the provenance of the answer rated."""
+    rows = feedback_store.load_feedback()
+    rows = sorted(rows, key=lambda r: r.get("timestamp") or "", reverse=True)
+    return rows[:limit]
 
 
 @app.get("/calibration")
@@ -350,10 +399,14 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         memory.update_title(conversation_id, payload.content[:60])
 
     history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
-    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(
-        payload.content, history_for_prompt, summary, detail=payload.detail,
-        partner_mode=payload.partner_mode,
-    )
+    try:
+        answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(
+            payload.content, history_for_prompt, summary, detail=payload.detail,
+            partner_mode=payload.partner_mode,
+        )
+    except Exception as exc:  # noqa: BLE001
+        print(f"[answer] {type(exc).__name__}: {exc}", flush=True)
+        raise HTTPException(status_code=503, detail=_friendly_error(exc))
 
     memory.add_message(conversation_id, "assistant", answer_text,
                        meta={"provenance": provenance(), "sources": sources})
@@ -436,7 +489,8 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage,
                 "provenance": provenance(),
             }))
         except Exception as exc:  # noqa: BLE001 - must reach the client as an event
-            q.put(("error", str(exc)))
+            print(f"[answer-stream] {type(exc).__name__}: {exc}", flush=True)
+            q.put(("error", _friendly_error(exc)))
         finally:
             q.put(("__end__", None))
 

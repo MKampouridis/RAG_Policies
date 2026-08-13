@@ -6078,3 +6078,43 @@ a handful of simultaneous users, at roughly £35/month of API spend for a
 conversation to every caller; conversations have no owner. That was DEFERRED BY
 DECISION on 2026-08-11 with the explicit condition "revisit before any
 colleague uses it". That condition is now met.
+
+## Round 50 — Three things a trial needs, and a scrubber that had to be rebuilt (2026-08-12)
+
+**Human error messages (#1).** A cloud failure was putting
+`Error: anthropic generator HTTP 404: {"type":"error"...}` straight into the
+chat - the debug-log-as-user-surface failure `CLAUDE.md` names, surviving in the
+one path nobody read. Six cases now map to sentences a person can act on (rate
+limit, overloaded, timeout, network, bad key, unknown), each saying whether to
+retry. The real exception is still logged.
+
+**Feedback is readable (#2).** It has been write-only: 38 records in a JSONL
+file reachable by running a terminal script. `/feedback` lists them newest
+first, filtered to thumbs-down by default, with the comment, tags, sources,
+retrieval query, provenance and now the person's name. Once real users arrive
+their feedback IS the evaluation, and a signal nobody looks at is not a signal.
+
+**The plumbing scrubber, widened - after two failed attempts.**
+
+The observed leak was "The context", which the narrow scrubber missed. Widening
+it broke twice:
+
+1. Plural replacement ("the policies I can see") forced verb agreement:
+   *"the context does not cover"* became *"the policies I can see **does** not
+   cover"*. Patching that with a verb-rewriting table then produced *"the
+   policies I can see access to does not cover this"* - a worse sentence than
+   the leak.
+2. Rebuilt with a SINGULAR replacement ("the guidance I can see"), which needs
+   no agreement work at all - and immediately broke the reverse case, since
+   *"the excerpts ... do not mention"* became *"the guidance ... do not
+   mention"*.
+
+Fixed by matching plurality on both sides: singular sources take the singular
+phrase, plural sources take the plural one. All eight test phrasings are now
+grammatical, and "in context of their programme" is correctly left alone.
+
+**The general lesson**: this is grammar by regular expression, and it has a
+ceiling. Two of three attempts produced output worse than the defect. It works
+here because the phrasings are few and known; it should not be extended
+further without the same case-by-case checking, and the prompt rule remains the
+primary mechanism.
