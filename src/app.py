@@ -240,6 +240,17 @@ def api_reference_review(verdicts: list[dict]):
     return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
 
 
+@app.get("/guide")
+def guide_page():
+    """What testers should know before they start: what it is, what it is not,
+    the Essex/Partner switch, and what makes feedback useful. Most unusable
+    trial feedback comes from people not knowing what they were testing."""
+    page = STATIC_DIR / "guide.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="guide not built")
+    return FileResponse(page)
+
+
 @app.get("/feedback")
 def feedback_page():
     """Read the ratings. Feedback has been write-only: 38 records in a JSONL
