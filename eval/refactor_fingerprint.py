@@ -28,6 +28,20 @@ def capture(label: str) -> int:
     from src import rag
     rows = json.loads(pathlib.Path("eval/retrieval_replay_cache_off.json").read_text())
     out = []
+    # A FOLLOW-UP, so the contextualiser is exercised. Without this the
+    # fingerprint is blind to the whole query-rewriting path - which is exactly
+    # how step 3 of the split passed 160/160 while the follow-up path was
+    # raising NameError on a missing import.
+    FOLLOWUP_HISTORY = [
+        {"role": "user", "content": "What are the pass marks for a PGT Merit?"},
+        {"role": "assistant", "content": "A Merit requires an overall average of 60."},
+    ]
+    out.append({"query": "__followup__: What about a Distinction?",
+                "retrieval_query": None, "chunks": None})
+    _res, _rq = rag.retrieve("What about a Distinction?", FOLLOWUP_HISTORY)
+    out[-1]["retrieval_query"] = _rq
+    out[-1]["chunks"] = [[m.get("source_url"), m.get("chunk_index")]
+                         for m in _res.get("metadatas", [[]])[0]]
     for i, r in enumerate(rows, 1):
         q = r.get("query") or ""
         res, rq = rag.retrieve(q, [])
