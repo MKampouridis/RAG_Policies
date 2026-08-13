@@ -238,6 +238,13 @@ from src.institutions import (  # noqa: F401
     _prefer_home_institution)
 
 
+# Ambiguity threshold: how few distinct document families in the top results
+# count as "the answer may differ by programme". Belongs here with the
+# disclosure logic that uses it - it was swept into fusion.py by a slice that
+# happened to span it, which broke every answer until the NameError surfaced.
+AMBIGUITY_FAMILY_COUNT_THRESHOLD = 1
+
+
 # List fusion lives in src/fusion.py (split out 2026-08-13).
 from src.fusion import (RRF_K, _dedup_by_chunk, _dense_as_hits,  # noqa: F401
                         _normalize, _rrf_fuse, _weighted_dense_bm25)

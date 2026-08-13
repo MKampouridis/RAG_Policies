@@ -158,29 +158,11 @@ def _owner(x_user: str | None) -> str:
 
 @app.get("/")
 def index():
-    """The redesigned UI is now the default (2026-08-11). The previous one is
-    still served at /classic rather than deleted: it is the interface that has
-    actually been used daily, and a one-word URL change is a faster way back
-    than a git checkout if something here turns out to be wrong."""
+    """The single UI. The previous interface lived at /classic until
+    2026-08-13, when it was removed - two front-ends on one backend is a tax
+    that compounds, and it had been diverging since the day it was demoted. It
+    remains in git history if anyone ever wants it back."""
     return FileResponse(STATIC_DIR / "preview.html")
-
-
-@app.get("/classic")
-def classic():
-    """The previous UI, kept as a short-term fallback while the new page is
-    unproven in daily use.
-
-    NOT a peer: the detail-level control, the staleness marker and the source
-    modal exist only on the page at /. Falling back here means losing features,
-    not switching to an equivalent - which is why this is temporary. Two
-    front-ends on one backend is a tax that compounds, and this one has been
-    diverging since 2026-08-11. Delete it once a normal working week has passed
-    without anyone reaching for it.
-
-    The landing-page drafts that lived at /drafts were removed the same day:
-    the design review ended when draft 6 was built. They remain in git history.
-    """
-    return FileResponse(STATIC_DIR / "index.html")
 
 
 @app.get("/guide")

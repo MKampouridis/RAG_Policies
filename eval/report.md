@@ -6118,3 +6118,50 @@ ceiling. Two of three attempts produced output worse than the defect. It works
 here because the phrasings are few and known; it should not be extended
 further without the same case-by-case checking, and the prompt rule remains the
 primary mechanism.
+
+## Round 51 — Four refactors, two self-inflicted breaks, both caught (2026-08-13)
+
+Pure moves throughout: no new functionality, no logic changes. Verified against
+a byte-exact fingerprint of what retrieval returns for 161 queries.
+
+| step | result |
+|---|---|
+| (a) research/eval routes -> `src/research_routes.py` | app.py 596 -> 494; all 11 routes still 200 |
+| (b) `preview.html` -> HTML + `app.css` + `app.js` | 1667 -> 156 lines; CSS and JS verified byte-identical by hash |
+| (c1) answer prompt -> `src/prompts.py` | rag.py 1625 -> 1367 |
+| (c2) list fusion -> `src/fusion.py` | rag.py 1367 -> 1262 |
+| (d) `/classic` and `static/index.html` removed | 981 lines gone; route now 404 |
+
+**`rag.py`: 2,237 -> 1,270 lines (-43%)**, across six modules that each do one
+thing.
+
+### Two breaks, both introduced by the moves
+
+1. **`_document_family` import left behind** (step 3, earlier round). Every
+   FOLLOW-UP question raised NameError. The fingerprint passed 160/160 because
+   all its queries used empty history and never reached the contextualiser.
+   Caught by testing that path deliberately; the fingerprint now includes a
+   follow-up turn.
+2. **`AMBIGUITY_FAMILY_COUNT_THRESHOLD` swept into `fusion.py`** by a slice
+   that happened to span it. It is an ambiguity concept, not a fusion one, and
+   its absence broke EVERY answer - both paths returned 503.
+
+The second is the more instructive. The fingerprint passed, and the canary
+passed 118/118, because **both test RETRIEVAL and the constant is used after
+retrieval, during answer assembly**. Two independent safety nets, both green,
+on a system that could not answer a single question.
+
+It surfaced only from an end-to-end request through the live server - and it
+surfaced as a readable sentence rather than a stack trace, because the friendly
+error handling added hours earlier was doing its job.
+
+### What this says about the verification
+
+The fingerprint is a good instrument for what it covers and covers less than it
+appears to. It exercises `retrieve()`. It does not exercise `answer()`, the
+disclosure logic, prompt assembly or generation. A "pure move" verified only by
+retrieval output is verified only for retrieval.
+
+**The end-to-end request is the check that caught the serious break, and it is
+the cheapest one available.** Everything else - fingerprint, canary, route
+sweep - passed while the product was completely broken.

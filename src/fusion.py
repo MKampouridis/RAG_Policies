@@ -115,6 +115,3 @@ def _dedup_by_chunk(results: dict) -> dict:
         kept_dists.append(dist)
 
     return {"documents": [kept_docs], "metadatas": [kept_metas], "distances": [kept_dists]}
-
-
-AMBIGUITY_FAMILY_COUNT_THRESHOLD = 1
