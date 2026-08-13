@@ -139,8 +139,28 @@ comparison would have produced a small difference and been read as confirmation.
   by 24 points. `phi4` is the neutral cross-family judge; `JUDGE_PROVIDER=anthropic` gives a
   frontier judge. Never mix judges within one comparison — the judge alone moves the threshold
   metric by ~9 points.
-- **Stop the production server during evals** (`launchctl unload ~/Library/LaunchAgents/com.mkampo.ragpolicies.plist`
-  — a plain `kill` respawns it). Each server instance costs ~5GB on a 16GB machine.
+- **RAM, as of 2026-08-12** — production is far lighter than it was, because generation
+  and query rewriting moved to the cloud and the ColBERT embedding cache was removed:
+
+  | | resident |
+  |---|---|
+  | server, idle | **0.8GB** |
+  | server, after a request | 1.1GB |
+  | server, after sustained use | ~2.2GB |
+  | Ollama (`nomic-embed-text`, on demand, unloads after ~4 min) | 0.4GB |
+  | **production total** | **~1.5-2.6GB** |
+
+  The old figure in these notes was ~5GB per instance, and ~13GB for the three local
+  models; both predate the cloud move. Two consequences: retrieval-only eval work no
+  longer needs production stopped, and the machine is no longer the constraint it was.
+
+  **Local EVAL is a different profile.** `gemma3:12b` (8.1GB) and a judge (`phi4` 9.1GB
+  or `qwen2.5:14b` 9.0GB) will not both fit in 16GB — run generation and judging as
+  SEPARATE passes (`eval/rejudge.py` re-scores a stored results file), or the models
+  evict each other every turn.
+- **Stop the production server during LOCAL-GENERATION evals**
+  (`launchctl unload ~/Library/LaunchAgents/com.mkampo.ragpolicies.plist` — a plain
+  `kill` respawns it), since those load an 8GB+ model.
 - Runs over ~45 minutes should be launched **detached** (`nohup`), since harness-tracked background
   tasks get killed around 60–80 minutes. Results are written incrementally and `run_eval.py`
   resumes; `RAG_EVAL_NO_RESUME=1` forces a clean run after any system change.
