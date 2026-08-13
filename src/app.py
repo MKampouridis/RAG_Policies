@@ -7,7 +7,7 @@ import threading
 import time
 from pathlib import Path
 
-from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -112,6 +112,15 @@ class Feedback(BaseModel):
 class SourceLookup(BaseModel):
     urls: list[str]
     question: str | None = None
+
+
+def _owner(x_user: str | None) -> str:
+    """Who is asking. A name the browser sends, not a credential - see the
+    OWNER note in src/memory.py. Blank falls back to the legacy owner so a
+    client that never set one still sees a coherent history rather than an
+    empty app."""
+    name = (x_user or "").strip()[:60]
+    return name or memory.OWNER_LEGACY
 
 
 @app.get("/")
@@ -287,27 +296,27 @@ def provenance() -> dict:
 
 
 @app.get("/api/conversations")
-def api_list_conversations():
-    return memory.list_conversations()
+def api_list_conversations(x_user: str | None = Header(default=None)):
+    return memory.list_conversations(owner=_owner(x_user))
 
 
 @app.post("/api/conversations")
-def api_create_conversation(payload: NewConversation):
+def api_create_conversation(payload: NewConversation, x_user: str | None = Header(default=None)):
     title = payload.title or "New conversation"
-    conv_id = memory.create_conversation(title)
+    conv_id = memory.create_conversation(title, owner=_owner(x_user))
     return {"id": conv_id, "title": title}
 
 
 @app.get("/api/conversations/{conversation_id}/messages")
-def api_get_messages(conversation_id: str):
-    if not memory.conversation_exists(conversation_id):
+def api_get_messages(conversation_id: str, x_user: str | None = Header(default=None)):
+    if not memory.conversation_exists(conversation_id, owner=_owner(x_user)):
         raise HTTPException(status_code=404, detail="conversation not found")
     return memory.get_messages(conversation_id)
 
 
 @app.delete("/api/conversations/{conversation_id}")
-def api_delete_conversation(conversation_id: str):
-    if not memory.conversation_exists(conversation_id):
+def api_delete_conversation(conversation_id: str, x_user: str | None = Header(default=None)):
+    if not memory.conversation_exists(conversation_id, owner=_owner(x_user)):
         raise HTTPException(status_code=404, detail="conversation not found")
     memory.delete_conversation(conversation_id)
     return {"ok": True}
@@ -326,10 +335,11 @@ def _retitle(conversation_id: str, question: str) -> None:
 
 
 @app.post("/api/conversations/{conversation_id}/messages")
-def api_post_message(conversation_id: str, payload: NewMessage, background: BackgroundTasks):
+def api_post_message(conversation_id: str, payload: NewMessage, background: BackgroundTasks,
+                     x_user: str | None = Header(default=None)):
     if not payload.content.strip():
         raise HTTPException(status_code=400, detail="content must not be empty")
-    if not memory.conversation_exists(conversation_id):
+    if not memory.conversation_exists(conversation_id, owner=_owner(x_user)):
         raise HTTPException(status_code=404, detail="conversation not found")
 
     summary, history = memory.get_conversation_context(conversation_id)
@@ -373,7 +383,8 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
 
 
 @app.post("/api/conversations/{conversation_id}/messages/stream")
-def api_post_message_stream(conversation_id: str, payload: NewMessage):
+def api_post_message_stream(conversation_id: str, payload: NewMessage,
+                            x_user: str | None = Header(default=None)):
     """Server-sent-events variant of the endpoint above. Same work, same
     storage, same response fields - the only difference is that answer text
     reaches the client as it is generated rather than after it is complete.
@@ -388,7 +399,7 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage):
     """
     if not payload.content.strip():
         raise HTTPException(status_code=400, detail="content must not be empty")
-    if not memory.conversation_exists(conversation_id):
+    if not memory.conversation_exists(conversation_id, owner=_owner(x_user)):
         raise HTTPException(status_code=404, detail="conversation not found")
 
     summary, history = memory.get_conversation_context(conversation_id)
@@ -484,7 +495,7 @@ def api_staleness(payload: StalenessQuery):
 
 
 @app.post("/api/feedback")
-def api_feedback(fb: Feedback):
+def api_feedback(fb: Feedback, x_user: str | None = Header(default=None)):
     """Records a rating. The QUESTION and ANSWER are taken from the server's own
     stored conversation, not from the client's copy.
 
@@ -501,6 +512,7 @@ def api_feedback(fb: Feedback):
         raise HTTPException(status_code=400, detail="rating must be 'up' or 'down'")
     record = fb.model_dump()
     record["provenance"] = provenance()
+    record["owner"] = _owner(x_user)
 
     if fb.conversation_id and memory.conversation_exists(fb.conversation_id):
         msgs = memory.get_messages(fb.conversation_id)

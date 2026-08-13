@@ -11,6 +11,9 @@ from pathlib import Path
 
 DB_PATH = "data/chat.db"
 
+# Conversations that predate the owner column belong to this name.
+OWNER_LEGACY = "Michael"
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS conversations (
     id TEXT PRIMARY KEY,
@@ -89,25 +92,45 @@ def _connect() -> sqlite3.Connection:
             conn.execute("ALTER TABLE messages ADD COLUMN meta TEXT DEFAULT NULL")
         except sqlite3.OperationalError:
             pass  # column already exists
+        # Owner (2026-08-12). A name typed on first visit, so a handful of trial
+        # users get separate histories instead of one shared pile.
+        #
+        # THIS IS SEPARATION, NOT SECURITY. Anyone can type anyone's name; it
+        # prevents accidental mixing, not deliberate access. Stated here because
+        # a column called `owner` invites the opposite assumption.
+        #
+        # Rows created before this default to OWNER_LEGACY rather than NULL, so
+        # existing conversations belong to someone rather than being invisible
+        # to every filtered query.
+        try:
+            conn.execute("ALTER TABLE conversations ADD COLUMN owner TEXT DEFAULT NULL")
+            conn.execute("UPDATE conversations SET owner = ? WHERE owner IS NULL",
+                         (OWNER_LEGACY,))
+        except sqlite3.OperationalError:
+            pass  # column already exists
         _migrated = True
     return conn
 
 
-def conversation_exists(conversation_id: str) -> bool:
+def conversation_exists(conversation_id: str, owner: str | None = None) -> bool:
     with _connect() as conn:
-        row = conn.execute(
-            "SELECT 1 FROM conversations WHERE id = ? AND deleted_at IS NULL",
-            (conversation_id,)
-        ).fetchone()
+        if owner is None:
+            row = conn.execute(
+                "SELECT 1 FROM conversations WHERE id = ? AND deleted_at IS NULL",
+                (conversation_id,)).fetchone()
+        else:
+            row = conn.execute(
+                "SELECT 1 FROM conversations WHERE id = ? AND deleted_at IS NULL AND owner = ?",
+                (conversation_id, owner)).fetchone()
     return row is not None
 
 
-def create_conversation(title: str) -> str:
+def create_conversation(title: str, owner: str | None = None) -> str:
     conv_id = str(uuid.uuid4())
     with _connect() as conn:
         conn.execute(
-            "INSERT INTO conversations (id, title, created_at) VALUES (?, ?, ?)",
-            (conv_id, title, time.time()),
+            "INSERT INTO conversations (id, title, created_at, owner) VALUES (?, ?, ?, ?)",
+            (conv_id, title, time.time(), owner),
         )
     return conv_id
 
@@ -117,12 +140,19 @@ def update_title(conversation_id: str, title: str) -> None:
         conn.execute("UPDATE conversations SET title = ? WHERE id = ?", (title, conversation_id))
 
 
-def list_conversations() -> list[dict]:
+def list_conversations(owner: str | None = None) -> list[dict]:
+    """Owner=None returns everything - used by scripts and the eval harness.
+    The API always passes one, so a browser sees only its own."""
     with _connect() as conn:
-        rows = conn.execute(
-            "SELECT id, title, created_at FROM conversations"
-            " WHERE deleted_at IS NULL ORDER BY created_at DESC"
-        ).fetchall()
+        if owner is None:
+            rows = conn.execute(
+                "SELECT id, title, created_at, owner FROM conversations"
+                " WHERE deleted_at IS NULL ORDER BY created_at DESC").fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT id, title, created_at, owner FROM conversations"
+                " WHERE deleted_at IS NULL AND owner = ? ORDER BY created_at DESC",
+                (owner,)).fetchall()
     return [dict(r) for r in rows]
 
 
