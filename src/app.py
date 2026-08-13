@@ -141,6 +141,28 @@ def classic():
     return FileResponse(STATIC_DIR / "index.html")
 
 
+@app.get("/reference-fix")
+def reference_fix_page():
+    """Correct the reference answers judged wrong. These sit in the main
+    40-question set, so every judge-scored comparison on it has included them."""
+    page = STATIC_DIR / "reference_fix.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="page not built")
+    return FileResponse(page)
+
+
+@app.post("/api/reference-fix")
+def api_reference_fix(fixes: list[dict]):
+    """Saves the corrections. Deliberately does NOT write them into the question
+    files - applying edits to eval data is a separate, reviewable step, and an
+    endpoint that rewrites the test sets from a browser is how test data gets
+    quietly changed."""
+    out = Path("eval/reference_fixes.json")
+    out.write_text(json.dumps(fixes, indent=1))
+    acted = sum(1 for f in fixes if f.get("action") in ("rewrite", "drop"))
+    return {"ok": True, "done": acted, "total": len(fixes), "path": str(out)}
+
+
 @app.get("/reference-random")
 def reference_random_page():
     """RANDOM sample of references, to estimate how common bad ones are. The
