@@ -6026,3 +6026,55 @@ agreement-with-reference and correlates only +0.46 with a human. That is now
 known NOT to be mostly caused by bad references, since bad references are rare.
 The judge is simply a weak instrument on its own terms, which is a cleaner and
 more general conclusion than "the test data was broken".
+
+## Round 49 — What a multi-user deployment actually needs (2026-08-12)
+
+Measured rather than estimated, ahead of hosting it for trial users.
+
+### Concurrency
+
+| simultaneous questions | slowest response | vs serial |
+|---|---|---|
+| 1 (baseline) | 13.0s | — |
+| 2 | 10.3s | 0.8x |
+| 4 | 14.7s | 1.1x |
+| **8** | **23.3s** | **1.8x** |
+
+Degradation is graceful to 4 and real at 8. **The contended resource is
+RETRIEVAL, not generation:** under 8-way load `r_rerank` rose from 1.15s to
+**9.32s** while `generate` stayed ~7s. Generation is network wait and scales;
+ColBERT reranking is local compute behind one model and does not.
+
+### Memory is NOT the constraint
+
+**1.32GB under 8-way load**, 68% of the machine free. The models are shared, not
+per-user, so RAM is roughly flat in user count. Any small VPS covers it.
+
+### No GPU required
+
+| rerank 30 passages | |
+|---|---|
+| Apple GPU (MPS) | 0.27s |
+| **CPU** | **0.29s** |
+
+Essentially identical. The assumption that a GPU-less Linux server would be
+much slower is **wrong** - ColBERT reranking at this pool size is not
+GPU-bound. A plain CPU instance is fine, and more CORES would directly relieve
+the concurrency bottleneck above.
+
+### Cost
+
+Measured token usage: median 4,225 in / 471 out = **$0.0197 per question**
+(Sonnet 5). Ten users asking ten questions a day is **~$2/day, ~$43/month**.
+The embedding model stays local and free.
+
+### What this means
+
+Hardware is not the problem: ~2-3GB RAM, no GPU, 2-4 cores comfortably serves
+a handful of simultaneous users, at roughly £35/month of API spend for a
+10-person trial.
+
+**The blocker is auth, and it is now due.** `/api/conversations` returns every
+conversation to every caller; conversations have no owner. That was DEFERRED BY
+DECISION on 2026-08-11 with the explicit condition "revisit before any
+colleague uses it". That condition is now met.
