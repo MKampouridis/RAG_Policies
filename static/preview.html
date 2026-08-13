@@ -688,7 +688,6 @@ function buildComposer() {
   wrap.className = 'composer';
   wrap.innerHTML = `
     <div class="scope-row">
-      <a class="guide-link" href="/guide" target="_blank">How to use this</a>
       <label class="scope" title="Which documents this question is answered from">
         <select id="scope-select">
           <option value="essex_only">University of Essex</option>
@@ -696,6 +695,7 @@ function buildComposer() {
         </select>
       </label>
       <span class="scope-hint" id="scope-hint"></span>
+      <a class="guide-link" href="/guide" target="_blank">How to use this</a>
     </div>
     <div class="composer-row">
       <textarea class="input" rows="1" placeholder="Ask about a policy or rule of assessment…"></textarea>
