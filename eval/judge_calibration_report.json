@@ -3,7 +3,7 @@
  "exact": 12,
  "within1": 21,
  "mean_diff": -0.5666666666666667,
- "rank_corr": 0.4589543937708565,
+ "rank_corr": 0.5603645588530429,
  "judge_higher": 6,
  "judge_lower": 12
 }

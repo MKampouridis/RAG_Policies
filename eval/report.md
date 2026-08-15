@@ -6165,3 +6165,101 @@ retrieval output is verified only for retrieval.
 **The end-to-end request is the check that caught the serious break, and it is
 the cheapest one available.** Everything else - fingerprint, canary, route
 sweep - passed while the product was completely broken.
+
+## Round 52 — Round-8 review: three of my numbers were wrong (2026-08-15)
+
+External review checked the analysis code rather than the conclusions. Three
+findings, all verified here before accepting.
+
+### 1. The rank correlation was a bug, not a measurement
+
+`judge_calibration_report.py` ranked by ordinal position from a plain sort, with
+**no tie handling**. The data is almost all ties - the human used 4 distinct
+levels across 30 items - so tied scores took arbitrary distinct ranks decided by
+row order in the JSON file.
+
+| | |
+|---|---|
+| reported | +0.459 |
+| **tie-corrected (correct)** | **+0.560** |
+| Pearson on raw scores | +0.568 |
+| my statistic under row shuffling | **+0.395 to +0.743** |
+
+The headline number moved 0.35 on row order alone, and the figure I published
+sat near the bottom of its own range. Fixed with average ranks. **Round 42's
++0.46 is retracted; the value is +0.56.**
+
+The reviewer's point about the CI stands and I had not computed one: at n=30 the
+interval spans weak to strong, so the honest statement is that this sample
+cannot distinguish those.
+
+**Also unreported by me and found by the reviewer:** the 30 items were sampled
+**6 per judge band**, so "40% exact agreement" and "-0.57 mean difference"
+describe a synthetic uniform-judge population, not this eval set. That was a
+deliberate design choice for coverage and I failed to state it.
+
+### 2. "hit@6 is unaffected" - PARTLY WRONG
+
+I claimed the deterministic metrics were untouched because they never involve
+the judge. The reviewer argued the gold `source_url` shares provenance with the
+defective references.
+
+Checked both ways:
+
+- **For the 8 defective items: 0 of 8** gold URLs point at a superseded
+  document. All 8 are `is_current`. The specific mechanism proposed does not
+  hold for them.
+- **Across the 151-question set: 9 of 148** gold URLs point at documents that
+  are NOT current - `academic-offences-procedure-2024-25.pdf`,
+  `procedures-fitness-to-practise-2024-25.pdf`,
+  `code-practice-professional-doctorates-2024-25.pdf` and six more.
+
+So the claim was wrong as a general statement even though the proposed
+mechanism missed on the specific items. **9 test items grade retrieval against
+superseded editions**, which means returning the CURRENT document scores as a
+miss. That is a real defect in the deterministic metrics I had been treating as
+the trustworthy ones.
+
+### 3. The "achievable ceiling" is a random baseline
+
+`gold_multiplicity.py` computes `mean(min(1, 6/N))`. That is the probability the
+specific gold lands in 6 draws taken **uniformly at random** from N equally
+valid documents - the expected score of random selection, not an upper bound.
+
+The tell was in my own report: **86.2% measured against an 84.3% "ceiling".**
+Exceeding a ceiling means it is not one. A retriever that prefers the gold over
+its siblings beats exchangeability, and beating it is the entire point of the
+sibling work.
+
+**So closing five retrieval proposals on that argument was not valid as
+stated.** The independent 59/10/31 decomposition - 31% of misses never enter the
+candidate pool at any size tested - IS a sound basis for closing reranker-shaped
+work, and should have been the argument. Parent-child chunking changes what is
+indexed and could move items out of that 31%, so closing it was the weakest of
+the five.
+
+### 4. A one-second check would have caught the 503
+
+`pyflakes src/*.py` on the broken commit, verified here:
+
+```
+rag.py:888:47: undefined name 'AMBIGUITY_FAMILY_COUNT_THRESHOLD'
+rag.py:1204:72: undefined name 'AMBIGUITY_FAMILY_COUNT_THRESHOLD'
+rag.py:1208:75: undefined name 'AMBIGUITY_FAMILY_COUNT_THRESHOLD'
+rag.py:1250:71: undefined name 'AMBIGUITY_FAMILY_COUNT_THRESHOLD'
+```
+
+Four hits, instantly, against a structural failure that two behavioural nets
+costing minutes each both missed. The current code has 0 undefined names and 29
+other pyflakes messages.
+
+### The pattern worth naming
+
+The reviewer put it better than I would: **the numbers I did not check are the
+ones I was not suspicious of.** I audited the judge ferociously and took my own
+statistics on trust - the correlation function, the ceiling definition, and the
+provenance claim were all mine and all unexamined.
+
+**One reviewer claim that is NOT correct:** that the six-module refactor is
+absent from the public repository. `origin/main` has `src/rag.py` at 1,270
+lines, matching local. That review appears to have read a stale view.

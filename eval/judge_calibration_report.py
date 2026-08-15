@@ -43,12 +43,28 @@ def main() -> int:
     print(f"  judge HIGHER on      {sum(1 for d in diffs if d > 0)}")
     print(f"  judge LOWER on       {sum(1 for d in diffs if d < 0)}")
 
-    # rank correlation - what A/B work actually relies on
+    # Rank correlation - what A/B work actually relies on.
+    #
+    # TIE HANDLING IS NOT OPTIONAL HERE. The first version assigned ordinal
+    # positions from a plain sort, so tied scores got arbitrary distinct ranks
+    # decided by row order in the JSON file. On this data - which is almost all
+    # ties, the human using 4 distinct levels across 30 items - that statistic
+    # moved between +0.395 and +0.743 depending on row order alone, and the
+    # reported +0.46 was near the bottom of its own range. Average ranks for
+    # tied values is the standard correction and makes the statistic
+    # well-defined. (External review, round 8.)
     def rank(v):
-        order = sorted(range(len(v)), key=lambda i: v[i])
-        r = [0] * len(v)
-        for pos, i in enumerate(order):
-            r[i] = pos
+        idx = sorted(range(len(v)), key=lambda i: v[i])
+        r = [0.0] * len(v)
+        i = 0
+        while i < len(idx):
+            j = i
+            while j + 1 < len(idx) and v[idx[j + 1]] == v[idx[i]]:
+                j += 1
+            avg = (i + j) / 2 + 1
+            for k in range(i, j + 1):
+                r[idx[k]] = avg
+            i = j + 1
         return r
     h = [p[1] for p in pairs]
     j = [p[2] for p in pairs]
