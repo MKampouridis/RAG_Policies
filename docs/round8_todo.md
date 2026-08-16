@@ -15,27 +15,27 @@ second annotator. The ordering below follows that.
 
 | # | Item | Why | Est |
 |---|---|---|---|
-| 1 | **Authentication** [3/3] | `_owner()` trusts a header the user types. Anyone can read anyone's history by sending a different name. For "what happens if I fail my resit", that is not a v2 item. Shared password + the existing name separation is enough for a trial | 1–2h |
-| 2 | **Research routes truncate data with no auth** | `research_routes.py` does `write_text()` — full replace, no auth, no backup. A POST of `[]` erases the 30 blind human judgements the paper depends on. Write timestamped + symlink latest, or copy-before-write | 30m |
-| 3 | **Streaming has no completion check** | `llm.py` returns `"".join(parts)` when the stream ends, so a dropped connection stores a **silently truncated answer**, indistinguishable from a complete one. Observe `message_stop`; flag or raise if absent. On a policy tool, an answer ending mid-sentence at "students may appeal if" is worse than an error | 45m |
-| 4 | **Push `owner` into the SQL** | `delete_conversation`, `restore_conversation` and `list_deleted_conversations` have no owner in their WHERE clauses — the invariant lives in the caller. `list_deleted_conversations` has no owner parameter at all, so a recovery UI would show everyone's deleted conversations | 30m |
+| 1 | ~~**Authentication**~~ **DONE** [3/3] | `_owner()` trusts a header the user types. Anyone can read anyone's history by sending a different name. For "what happens if I fail my resit", that is not a v2 item. Shared password + the existing name separation is enough for a trial | 1–2h |
+| 2 | ~~**Research routes truncate data with no auth**~~ **DONE** — both remaining `write_text` calls are inside `_save_versioned` (timestamped copy + pointer), verified | `research_routes.py` does `write_text()` — full replace, no auth, no backup. A POST of `[]` erases the 30 blind human judgements the paper depends on. Write timestamped + symlink latest, or copy-before-write | 30m |
+| 3 | ~~**Streaming has no completion check**~~ **DONE** — `saw_stop` in `llm.py` | `llm.py` returns `"".join(parts)` when the stream ends, so a dropped connection stores a **silently truncated answer**, indistinguishable from a complete one. Observe `message_stop`; flag or raise if absent. On a policy tool, an answer ending mid-sentence at "students may appeal if" is worse than an error | 45m |
+| 4 | ~~**Push `owner` into the SQL**~~ **DONE** | `delete_conversation`, `restore_conversation` and `list_deleted_conversations` have no owner in their WHERE clauses — the invariant lives in the caller. `list_deleted_conversations` has no owner parameter at all, so a recovery UI would show everyone's deleted conversations | 30m |
 
 ## P1 — Benchmark provenance (do as one job, not 8 edits)
 
 | # | Item | Why | Est |
 |---|---|---|---|
-| 5 | **Re-derive the eval set against the current corpus** [3/3] | The test set is a **stale cache of the corpus** — same bug class as the ColBERT index. Verified: **9 of 148 gold URLs point at NON-current documents**, so retrieval is scored a miss for returning the current edition. Patching 8 known-bad items leaves 143 with unverified provenance | 1–2d |
-| 6 | **Stamp `corpus_version` into `questions.json`** | And check it in the post-ingest sequence. Converts "someone remembers to look" into "fails closed" | 1h |
-| 7 | **Record correction provenance** | For each fixed reference: old text, new text, source URL, passage, why it was wrong, who, when. This becomes part of the benchmark's published provenance | with #5 |
-| 8 | **Fix the 8 defective references** | Now a subset of #5 rather than its own task. Page already built at `/reference-fix` | with #5 |
+| 5 | **Re-derive the eval set** — **PARTIALLY DONE, needs you** [3/3] | The test set is a **stale cache of the corpus** — same bug class as the ColBERT index. Verified: **9 of 148 gold URLs point at NON-current documents**, so retrieval is scored a miss for returning the current edition. Patching 8 known-bad items leaves 143 with unverified provenance | 1–2d |
+| 6 | ~~**Stamp `corpus_version` into `questions.json`**~~ **DONE** — verified stamped and matching the live corpus | And check it in the post-ingest sequence. Converts "someone remembers to look" into "fails closed" | 1h |
+| 7 | ~~**Record correction provenance**~~ **DONE** — `eval/provenance_corrections.json`, 10 corrections with old/new URL, reason, who, and keyphrases verified | For each fixed reference: old text, new text, source URL, passage, why it was wrong, who, when. This becomes part of the benchmark's published provenance | with #5 |
+| 8 | ~~**Fix the 8 defective references**~~ **subsumed into #5** | Now a subset of #5 rather than its own task. Page already built at `/reference-fix` | with #5 |
 
 ## P2 — Stale-artifact hygiene (the general class)
 
 | # | Item | Why | Est |
 |---|---|---|---|
-| 9 | **Provenance stamp on every derived artifact, checked at read, failing closed** [3/3] | The rule the ColBERT incident implies. Counts and mtimes are proxies; hashes are the thing. `lexical.py` and `doc_index.py` already invalidate against `read_corpus_version()` — ColBERT never did | 2–3h |
-| 10 | **The drift check compares counts only** | A document edited in place with the same chunk count passes it. The last re-ingest was *5 new and ~20 changed* — the changed ones are exactly what a count check cannot see | 30m |
-| 11 | Audit the other unstamped artifacts | SPLADE, pseudo-query and ensemble indexes (off but live), `data/doc_identity/*.json` (never invalidated when its document changes), the process-lifetime caches | 1h |
+| 9 | ~~**Provenance stamp on every derived artifact**~~ **DONE** [3/3] — `src/provenance.py` | The rule the ColBERT incident implies. Counts and mtimes are proxies; hashes are the thing. `lexical.py` and `doc_index.py` already invalidate against `read_corpus_version()` — ColBERT never did | 2–3h |
+| 10 | ~~**The drift check compares counts only**~~ **DONE** — `colbert_index_drift.py` now checks the provenance stamp and fails closed on mismatch; the count is kept only to localise. **Caveat: it currently reaches nothing** — the ColBERT index is not built (cache defaults OFF), so the check exits 0 without testing anything. It will bite on the next rebuild | A document edited in place with the same chunk count passes it. The last re-ingest was *5 new and ~20 changed* — the changed ones are exactly what a count check cannot see | 30m |
+| 11 | ~~Audit the other unstamped artifacts~~ **AUDITED, not all fixed** — `eval/artifact_provenance_audit.py` found `data/colbert_index/`, `data/splade_matrix.npz` and `data/doc_identity/` (1,188 files) unprotected. All three are OFF-by-default paths, so they are recorded rather than stamped | SPLADE, pseudo-query and ensemble indexes (off but live), `data/doc_identity/*.json` (never invalidated when its document changes), the process-lifetime caches | 1h |
 
 ## P3 — Verification that covers what it claims to
 
@@ -60,6 +60,13 @@ second annotator. The ordering below follows that.
 | 23 | Compute a proper CI, and the binary analysis | n=30 gives roughly [+0.26, +0.80] — spans weak to strong. Also report AUC for the high/low discrimination, which is where the judge is actually usable | 1h |
 
 **Venue:** an evaluation/resources venue, not negative results. ChatGPT named JUDGe 2026 and EvalEval as strong fits and cited a **29 August 2026** deadline — *unverified, check the actual CFP before planning around it.*
+
+## Reopened by round 56
+
+| # | Item | Why |
+|---|---|---|
+| 33 | **Parent-child chunking — REOPENED, unmeasured** | Closed in round 7 on the ceiling argument, which round 56 falsified. Unlike the other four it changes what is **indexed**, so the 31%-never-enter-the-pool finding does not cover it — those items could move. It was the weakest of the five closures and it is now back on the list with no measurement either way |
+| 34 | **The keyphrase sets are unreliable** | Round 56: the gold document fails its own keyphrase conjunction in **44% of turns** (35/80), mean 50% present. Every keyphrase-derived number inherits this — N, the ceiling, keyphrase coverage, and the TEXT_DRIFT/PARTIAL_DRIFT verdicts in the benchmark audit. Bigger than #5's remaining 6 items and it should probably absorb them |
 
 ## P5 — Then, and only then
 
