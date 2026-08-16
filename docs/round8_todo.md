@@ -41,10 +41,10 @@ second annotator. The ordering below follows that.
 
 | # | Item | Why | Est |
 |---|---|---|---|
-| 12 | **Verification ladder, cheapest first** [3/3] | `pyflakes src/*.py` → `import src.app` → one live POST → fingerprint. Verified: pyflakes flags all four uses of the missing constant **in one second**, against two behavioural nets costing minutes that both passed | 1h |
-| 13 | **A golden-request test** | One real POST asserting status, non-empty answer, non-empty sources, message persisted. This is the check that caught the 503, and the cheapest one available | 1h |
-| 14 | **A browser smoke test** | Launch the page, wait for a known element, assert no console errors, submit a question, assert text appears. HTML/CSS validation is useless against the blank-page class — that bug passed every static check I ran | 2h |
-| 15 | Write the coverage rule into `CLAUDE.md` | *A safety net's coverage is what it executes, not how many cases it runs.* Before trusting a net, state which code path it does **not** reach | 15m |
+| 12 | ~~**Verification ladder, cheapest first**~~ [3/3] **DONE** | `verify.py`: pyflakes → import → JS parses → no top-level dead zone → live POST. `--static` skips the server. Each step tested against the bug it claims to catch | done |
+| 13 | ~~**A golden-request test**~~ **DONE** | Step 5 of `verify.py`: creates a conversation, POSTs a real question, asserts 200 + non-empty answer + non-empty sources, deletes it in a `finally`. Live: 1,174 chars, 4 sources |  done |
+| 14 | **A browser smoke test** — **BLOCKED, partially covered** | No JS runtime available (node/deno/bun/esbuild all absent) and **Chrome headless times out in both `--headless=new` and `--headless=old`**, so the real thing cannot be built here. *Partially* covered instead by `verify.py` step 4, a static top-level dead-zone check — **verified to catch the actual blank-page bug** by running it against the pre-fix file, and verified not to fire on the working one. Uncovered: runtime errors that are not top-level dead zones | blocked |
+| 15 | ~~Write the coverage rule into `CLAUDE.md`~~ **DONE** | Own section, with both failures as evidence, the `verify.py` command, and an explicit statement of what it does **not** cover | done |
 
 ## P4 — The paper (start the slow part now)
 

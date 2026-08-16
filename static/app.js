@@ -925,7 +925,7 @@ async function sendStreaming(text, pending) {
       }
       if (!data) continue;
       let parsed;
-      try { parsed = JSON.parse(data); } catch { continue; }
+      try { parsed = JSON.parse(data); } catch (e) { continue; }
       if (event === 'stage') {
         // The ~1-3s search happens before any token exists, so streaming
         // cannot fill it. Naming the phase is the only honest thing to show.

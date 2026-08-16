@@ -72,6 +72,31 @@ anyone" vs "right for me"**: a false denial about a specified policy is wrong fo
 everyone; preferring Essex documents over partner ones is a product choice for one
 audience, and set 6 measured exactly what that choice costs.
 
+## A safety net's coverage is what it EXECUTES, not how many cases it runs
+
+Before trusting a check, state which code path it does **not** reach.
+
+A refactor left a constant undefined and **every answer returned 503**. The 161-query
+retrieval fingerprint passed. The 118-turn canary passed. Both exercise *retrieval*; the constant
+is used during *answer assembly* — so two green safety nets, costing minutes, coexisted with a
+system that could not answer a single question. `pyflakes` finds it in one second. Separately, a
+`const` used 760 lines before its declaration aborted the whole client script and blanked the page;
+every check run that day — CSS balanced, element present in the HTML, correct documents on 217
+cases — was true, and none tested whether the page *executes*.
+
+161 queries and 118 turns *sound* thorough. Both exercised one path. Breadth of cases is not
+breadth of coverage.
+
+**Run `python verify.py`** (add `--static` for no server) before believing a change is safe:
+pyflakes → `import src.app` → JS parses → no top-level use-before-declaration → one live POST.
+Cheapest and broadest first; the fingerprint is expensive and narrow, so it runs separately.
+
+Each step was tested against the bug it claims to catch — the dead-zone check was written twice,
+because the first version passed the actual broken file (it skipped function bodies, and the bug
+reached `settings` through a top-level *call*). **A check you have not run against a known failure
+is a check with unknown coverage.** Not covered: runtime errors other than top-level dead zones —
+a browser smoke test would be needed, and Chrome headless does not run in this environment.
+
 ## Measuring changes
 
 - **Validate on the metric the change can actually move.** The contextualizer only runs on
