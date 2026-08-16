@@ -90,7 +90,11 @@ def _load_locked() -> None:
         index_folder=INDEX_FOLDER, index_name=INDEX_NAME, override=False, ef_search=EF_SEARCH
     )
     _retriever = retrieve.ColBERT(index=_index)
-    cached = json.loads(DOCS_PATH.read_text())
+    # A mismatch is refused rather than warned about: this exact artifact went
+    # three weeks stale and silently degraded retrieval. Unstamped files are
+    # accepted (they predate stamping) but a stamp that DISAGREES stops us.
+    from src.provenance import read_stamped
+    cached = read_stamped(DOCS_PATH, required=False)
     _ids = cached["ids"]
     _documents = cached["documents"]
     _metadatas = cached["metadatas"]

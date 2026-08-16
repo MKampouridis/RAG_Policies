@@ -22,6 +22,19 @@ def main() -> int:
     n_index = len(ci._ids)
     n_chroma = ingest._get_collection().count()
     drift = n_chroma - n_index
+
+    # COUNTS ARE A PROXY AND THIS ONE HAS ALREADY FAILED. A document edited in
+    # place with the same chunk count passes a count check, and the last
+    # re-ingest was 5 new documents and ~20 CHANGED. The stamp is the real
+    # check; the count is kept because it localises WHERE the drift is.
+    from src.provenance import describe
+    from pathlib import Path
+    prov = describe(Path("data/colbert_docs.json"))
+    print(f"  provenance stamp: "
+          f"{'absent (predates stamping)' if not prov['stamped'] else prov['corpus_version'][:12]}")
+    if prov["stamped"] and not prov["matches"]:
+        print("  STAMP MISMATCH - built from a different corpus. Rebuild before use.")
+        return 1
     print(f"  ColBERT index : {n_index} chunks")
     print(f"  Chroma        : {n_chroma} chunks")
     print(f"  drift         : {drift:+d}")

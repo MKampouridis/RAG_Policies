@@ -6384,3 +6384,58 @@ anything reading `.get("question")` still sees 151.
   *better* than before and not *proven correct*.
 - Only `questions_regression.json` is stamped. The older sets it was merged from
   are not.
+
+## Round 55 — Provenance stamps: fixing the class, not the third instance (2026-08-16)
+
+Round-8 P2. Two incidents three weeks apart were the same bug: the ColBERT
+embedding cache (stale, cost 5 turns of hit@6) and the eval set (9 items
+grading against superseded documents). Both were derived from the corpus with
+nothing recording which version they came from.
+
+**The rule, now in `src/provenance.py`:** every derived artifact records the
+version of what it was built from, that record is checked when the artifact is
+READ, and a mismatch **fails closed**. A warning in a log nobody reads is how
+three weeks passed.
+
+Applied:
+
+| | |
+|---|---|
+| `build_colbert_index.py` | stamps its output |
+| `colbert_index.py` | refuses a mismatched stamp on load; unstamped files still accepted, since they predate stamping |
+| `colbert_index_drift.py` | now checks the STAMP, not just chunk counts |
+| `questions_regression.json` | stamped (Round 54) |
+
+**Why counts were never enough**, and this project has the receipt: the old
+drift check compared chunk COUNTS, so a document edited in place with the same
+number of chunks passed it - and the last re-ingest was 5 new documents and
+**~20 changed**, which is exactly what a count cannot see.
+
+### The audit that lists what is still exposed
+
+`eval/artifact_provenance_audit.py`:
+
+| artifact | state |
+|---|---|
+| `questions_regression.json` | STAMPED, matches |
+| `data/colbert_index/` | **UNPROTECTED** |
+| `data/splade_matrix.npz` | **UNPROTECTED** |
+| `data/doc_identity/` (1,188 files) | **UNPROTECTED** |
+| BM25 index, doc_index | rebuild on `read_corpus_version()` |
+| `_identity_anchor_index()`, variance map | process-lifetime caches, **no invalidation** |
+
+`doc_identity` is the one worth watching: 1,188 per-document extractions, never
+invalidated when their document changes.
+
+The process-lifetime caches are lower risk because they die with the server -
+but a long-running production process IS three weeks, so "lower" is not "zero".
+
+### The audit immediately caught my own inconsistency
+
+It reported `questions_regression.json` as UNSTAMPED minutes after I stamped it.
+Two stamp formats had appeared - a dict wrapper for artifacts owned end to end,
+and an in-list row for files that must stay JSON lists so their consumers keep
+working - and the checker knew only the first. One checker, two formats,
+quietly disagreeing. `describe()` now understands both.
+
+Verified afterwards: production answers normally, 30 conversations intact.

@@ -26,6 +26,7 @@ interruption - matches build_splade_index.py's mode.
 """
 
 import json
+from pathlib import Path
 import time
 
 from pylate import indexes, models
@@ -75,7 +76,14 @@ def run() -> None:
             eta = (n - end) / rate if rate else 0
             print(f"  [{end}/{n}] {elapsed:.0f}s elapsed, ~{eta:.0f}s remaining", flush=True)
 
-    with open(DOCS_PATH, "w") as f:
+    # Stamped with the corpus it was built from. Unstamped, this file went
+    # three weeks out of date without anything noticing (Round 27).
+    from src.provenance import write_stamped
+    write_stamped(Path(DOCS_PATH), {"ids": ids, "documents": documents,
+                                    "metadatas": metadatas},
+                  note="ColBERT chunk snapshot")
+    if False:  # legacy unstamped writer, kept for reference
+        with open(DOCS_PATH, "w") as f:
         json.dump({"ids": ids, "documents": documents, "metadatas": metadatas}, f, ensure_ascii=False)
 
     print(f"Done. Wrote Voyager index to {INDEX_FOLDER}/{INDEX_NAME} and {DOCS_PATH}")
