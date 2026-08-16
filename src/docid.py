@@ -150,6 +150,30 @@ def document_family(source_url: str) -> str:
     return _FAMILY_ALIASES.get(key, key)
 
 
+def top_family_count(metadatas: list[dict]) -> int:
+    """Among the reranked top-N results, how many chunks share the same
+    document family as the #1 result. A low count means the pool is
+    fragmented across many different documents with no single one
+    dominating - the best-validated proxy found during Stage B
+    pre-validation (eval/report.md) for "this query is ambiguous across
+    genuinely different documents" (per arXiv 2603.24580's finding that
+    genuine ambiguity needs surfacing, not more retrieval tuning). It is an
+    imperfect signal (56% recall on known misses at 14% false-positive rate
+    on known hits, measured on `stage1_rerank`) - not strong enough to have
+    justified building this unprompted, but the least-bad option available.
+
+    Lives HERE, beside `document_family`, because it was defined identically
+    and independently in both `rag.py` and `rerank.py`, both live and both
+    reachable in one request. Two copies of a threshold input is a silent
+    divergence waiting for the next edit to one of them. It cannot live in
+    `rag.py` - `rag` imports `rerank`, so shared code has to sit below both.
+    """
+    if not metadatas:
+        return 0
+    top = document_family(metadatas[0].get("source_url", ""))
+    return sum(1 for m in metadatas if document_family(m.get("source_url", "")) == top)
+
+
 def normalize_year(raw: str | None) -> str:
     """LLM-extracted academic_year values are messy ('2025-2026',
     '2025-26 onwards', '2025-26, 2024-25, ...'). Canonicalize to '2025-26'

@@ -2,7 +2,6 @@
 assemble a prompt with retrieved context + conversation history, and
 generate an answer via the local chat model."""
 
-import datetime as _dt
 import json
 import os
 import re
@@ -16,6 +15,7 @@ from src import pseudo_query as _pseudo_query
 from src import rerank as _rerank
 from src import splade as _splade
 from src.docid import document_family as _document_family
+from src.docid import top_family_count as _top_family_count
 from src.docid import extract_award_type, extract_degree_length, normalize_year
 from src.ingest import query as vector_query
 from src.entities import detect_departments, department_filter_values
@@ -176,6 +176,26 @@ from src.prompts import (  # noqa: F401
     USER_FACING_LANGUAGE, _scrub_plumbing, system_prompt_for)
 
 
+# Re-exports. The 2026-08-13 refactor moved these into single-purpose modules
+# (prompts, contextualize, institutions, fusion, instrumentation) but external
+# callers still do `from src.rag import SYSTEM_PROMPT` / `_rrf_fuse` /
+# `_is_partner_institution`, and eval scripts depend on that surface. Deleting
+# the imports to silence pyflakes would break them.
+#
+# Declared via __all__ rather than `# noqa: F401` because PYFLAKES DOES NOT
+# HONOUR noqa - that is flake8. The noqa comments were already there and all
+# 29 messages were reported anyway, which is what made the one tool that would
+# have caught the 503 too noisy to read. __all__ silences them and, unlike a
+# comment, states the intent in something the language itself understands.
+__all__ = [
+    "CONTEXTUALIZE_SYSTEM_PROMPT", "DETAIL_LEVELS", "INLINE_CITATIONS", "MULTI_ENTITY_COVERAGE",
+    "RRF_K", "SYSTEM_PROMPT", "USER_FACING_LANGUAGE", "_PARTNER_NAME_RE",
+    "_PARTNER_NAME_TOKENS", "_TIMING_PATH", "_aliases", "_anchor_from_history",
+    "_content_words", "_has_extraneous_family", "_identity_anchor_index", "_is_faithful_rewrite",
+    "_is_partner_institution", "_log_rewrite_reject", "_normalize", "_only_partner_institutions",
+]
+
+
 def _mentioned_year(text: str) -> str:
     """Returns the canonical academic year mentioned in the text ('2025-26'),
     or '' if none."""
@@ -250,21 +270,6 @@ from src.fusion import (RRF_K, _dedup_by_chunk, _dense_as_hits,  # noqa: F401
                         _normalize, _rrf_fuse, _weighted_dense_bm25)
 
 
-def _top_family_count(metadatas: list[dict]) -> int:
-    """Among the reranked top-N results, how many chunks share the same
-    document family as the #1 result. A low count means the pool is
-    fragmented across many different documents with no single one
-    dominating - the best-validated proxy found during Stage B
-    pre-validation (eval/report.md) for "this query is ambiguous across
-    genuinely different documents" (per arXiv 2603.24580's finding that
-    genuine ambiguity needs surfacing, not more retrieval tuning). It is an
-    imperfect signal (56% recall on known misses at 14% false-positive rate
-    on known hits, measured on `stage1_rerank`) - not strong enough to have
-    justified building this unprompted, but the least-bad option available."""
-    if not metadatas:
-        return 0
-    top_family = _document_family(metadatas[0].get("source_url", ""))
-    return sum(1 for m in metadatas if _document_family(m.get("source_url", "")) == top_family)
 
 
 def _distinct_family_count(metadatas: list[dict], top_n: int = 6) -> int:

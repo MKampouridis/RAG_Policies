@@ -14,7 +14,6 @@ anchor index that a later round found the startup warmup was failing to warm.
 """
 
 import json
-import os
 import re
 
 from src.docid import document_family as _document_family

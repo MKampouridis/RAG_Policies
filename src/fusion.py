@@ -85,7 +85,16 @@ def _rrf_fuse(*ranked_lists: list[tuple]) -> dict:
             entries.setdefault(id_, (doc, meta))
 
     ordered = sorted(scores, key=lambda i: scores[i], reverse=True)
+    # `ids` is carried forward so this output has the SAME shape as the Chroma
+    # result `_dense_as_hits` expects. It did not, and the two functions sit in
+    # one small module: feeding a fused dict back into `_dense_as_hits` hit its
+    # `.get("ids", [[]])` default and returned an EMPTY list rather than raising.
+    # No live path does that today - all five call sites pass fresh Chroma
+    # results - so this closes a trap, it does not fix an observed defect.
+    # Purely additive: every existing consumer reads documents/metadatas/
+    # distances and is unaffected.
     return {
+        "ids": [[i for i in ordered]],
         "documents": [[entries[i][0] for i in ordered]],
         "metadatas": [[entries[i][1] for i in ordered]],
         "distances": [[None] * len(ordered)],
@@ -102,16 +111,23 @@ def _dedup_by_chunk(results: dict) -> dict:
     documents = results.get("documents", [[]])[0]
     metadatas = results.get("metadatas", [[]])[0]
     distances = results.get("distances", [[None] * len(documents)])[0]
+    # Carried through for the same reason `_rrf_fuse` now emits it: so a dict
+    # travelling this pipeline keeps one shape end to end. Defaulted by length
+    # rather than assumed present, because this is also called on dicts built
+    # elsewhere that have no ids.
+    ids = results.get("ids", [[None] * len(documents)])[0]
 
     seen: set[tuple] = set()
-    kept_docs, kept_metas, kept_dists = [], [], []
-    for doc, meta, dist in zip(documents, metadatas, distances):
+    kept_ids, kept_docs, kept_metas, kept_dists = [], [], [], []
+    for id_, doc, meta, dist in zip(ids, documents, metadatas, distances):
         key = (meta.get("source_url"), meta.get("chunk_index"))
         if key in seen:
             continue
         seen.add(key)
+        kept_ids.append(id_)
         kept_docs.append(doc)
         kept_metas.append(meta)
         kept_dists.append(dist)
 
-    return {"documents": [kept_docs], "metadatas": [kept_metas], "distances": [kept_dists]}
+    return {"ids": [kept_ids], "documents": [kept_docs],
+            "metadatas": [kept_metas], "distances": [kept_dists]}

@@ -67,18 +67,18 @@ second annotator. The ordering below follows that.
 |---|---|---|
 | 24 | **5–10 real users** [3/3] | After #1–4. All three reviewers rate this highest-value once auth is done. Deployment is already measured as adequate: 1.8× at 8 users, 1.32GB, ~$43/month |
 | 25 | **Run the 302-turn baseline once** | As a release-candidate snapshot, after #5 — before the corrections it would precisely measure a corrupt instrument. Free locally in two passes |
-| 26 | Partition the ceiling analysis | Apply the exchangeability bound only to turns with **no** disambiguating entity; elsewhere the bound is 1.0. Then re-state the residual honestly |
-| 27 | Re-close the retrieval proposals on the right argument | The 31%-never-enter-pool finding, not the ceiling. Note this does **not** retire parent-child chunking, which changes what is indexed |
+| 26 | ~~Partition the ceiling analysis~~ **DONE — and it falsified the ceiling** | `eval/ceiling_partition.py`. Partitioning moves it 84.3% → 90.1% on **5 of 80 turns**. But the run exposed that **the gold document fails its own keyphrase conjunction in 44% of turns** (35/80, mean 50% of keyphrases present). N cannot count "documents holding the answer" when ground truth is uncounted 44% of the time, so **neither ceiling is a bound** and the apparent +5.1 headroom is as untrustworthy as the -0.7 it replaced. Fixing N = fixing keyphrases = items 5–8, not retrieval |
+| 27 | ~~Re-close the retrieval proposals on the right argument~~ **DONE** | RM3, document-level rerank, family retriever, cross-reference extraction: closed on the **59/10/31 decomposition**, measured directly and independent of N. **Parent-child chunking is NOT retired** — it changes what is *indexed* and could move items out of that 31%; it returns to the open list, unmeasured |
 
 ## Smaller code items
 
 | # | Item |
 |---|---|
-| 28 | `_stage_note` writes before the directory exists; only `_stage_timer` does the mkdir. Instrumentation that fails invisibly is how the latency picture went wrong before |
-| 29 | `_top_family_count` defined identically in `rag.py` and `rerank.py`, both live — the next edit to one is a silent divergence |
-| 30 | `_rrf_fuse` drops `ids` while `_dense_as_hits` produces them — two functions in one small module disagreeing about shape |
-| 31 | Clear the 29 pyflakes messages (unused imports, bogus `global` declarations). They are noise in the one tool that would have saved the 503 |
-| 32 | Move the falsified-mechanism rationale to `eval/report.md` / decision records and drop dead paths from production modules |
+| 28 | ~~`_stage_note` writes before the directory exists~~ **DONE** — reproduced first (a note written before any timer was lost silently, both swallow exceptions by design), then routed both writers through one `_write` with a shared directory guard |
+| 29 | ~~`_top_family_count` defined identically in two live modules~~ **DONE** — moved to `docid.py` beside `document_family`; it cannot live in `rag.py` because `rag` imports `rerank`. Both now resolve to the same function object (asserted) |
+| 30 | ~~`_rrf_fuse` drops `ids` while `_dense_as_hits` reads them~~ **DONE** — feeding a fused dict back in hit a `.get("ids", [[]])` default and returned an **empty list rather than raising**. No live path does that today, so this closes a trap rather than fixing an observed defect. `_dedup_by_chunk` carries ids through too |
+| 31 | ~~Clear the 29 pyflakes messages~~ **DONE — 31 → 0** | Most were deliberate re-exports external callers depend on; deleting them would have broken `eval/`. They already had `# noqa: F401`, which **pyflakes does not honour** (that is flake8) — which is exactly why they survived. Declared via `__all__`, which pyflakes does honour. Four dead imports and one no-op `global` removed |
+| 32 | **DECLINED, with reasons** — move falsified-mechanism rationale out and drop dead paths | There are **21 flag-gated mechanisms defaulting to False**, each carrying the falsification that put it there. `CLAUDE.md` names this as the project's convention ("New retrieval/prompt mechanisms default to `False`... each with its falsification recorded"), and the project's stated value is that *the record of what didn't work is worth more than the code*. Separating a mechanism from the reason it failed makes the next person likelier to rebuild it. The reviewer's underlying concern was module bloat, and that was already addressed by the refactor (`rag.py` 2,237 → 1,270). Deleting live-but-off code paths would also risk behaviour change for zero measured benefit. **Done instead:** asserted all 21 flags still evaluate to `False` at runtime — a flag silently flipping ON is the failure actually worth guarding against, and nothing was checking it |
 
 ---
 

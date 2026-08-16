@@ -20,7 +20,6 @@ process, not twice.
 """
 
 import itertools
-import json
 import threading
 from pathlib import Path
 
@@ -73,7 +72,6 @@ def get_model():
 
 
 def _load() -> None:
-    global _index, _retriever, _ids, _documents, _metadatas, _id_to_pos, _meta_key_to_pos
     if _index is not None:
         return
     with _load_lock:

@@ -13,7 +13,7 @@ ColBERT experiment (see eval/EXPERIMENTS.md) doesn't pan out.
 """
 
 import os
-from src.docid import document_family as _document_family
+from src.docid import top_family_count as _top_family_count
 
 BACKEND = "colbert"  # "cross_encoder" (production) | "colbert" (experiment)
 
@@ -105,11 +105,6 @@ USE_CACHED_COLBERT_EMBEDDINGS = os.environ.get("RAG_COLBERT_CACHE", "0") == "1"
 _cross_encoder = None
 
 
-def _top_family_count(pool_metas: list[dict]) -> int:
-    if not pool_metas:
-        return 0
-    top_family = _document_family(pool_metas[0].get("source_url", ""))
-    return sum(1 for m in pool_metas if _document_family(m.get("source_url", "")) == top_family)
 
 
 def _get_cross_encoder():

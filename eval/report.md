@@ -6439,3 +6439,103 @@ working - and the checker knew only the first. One checker, two formats,
 quietly disagreeing. `describe()` now understands both.
 
 Verified afterwards: production answers normally, 30 conversations intact.
+
+## Round 56 — The verification ladder, and the ceiling fails a validity check (2026-08-16)
+
+Round-8 items 12–15 (verification), 26–27 (the ceiling), 28–31 (small code).
+
+### The ladder exists now, and building it went wrong twice
+
+`verify.py`: pyflakes → `import src.app` → JS parses → no top-level dead zone →
+one live POST. Cheapest and broadest first. `--static` skips the server.
+
+Both failures were caught by the same discipline, which is the point worth
+keeping: **each step was run against the bug it claims to catch.**
+
+- The top-level dead-zone check (step 4) **passed the actual broken file** on its
+  first version. It skipped function bodies — right in general, wrong here,
+  because the blank-page bug reached `settings` through a top-level *call* into a
+  function whose body read it. Rewritten to follow module-scope calls.
+- Its second version then false-positived on the *working* page, flagging
+  `menuBtn`: it was following calls inside click handlers, which run long after
+  the script finishes. Deferred calls are not dead-zone reads.
+
+Verified in both directions: catches the real pre-fix file, silent on the current
+one. **A check you have not run against a known failure is a check with unknown
+coverage.**
+
+Step 5 also hit a transient upstream 503 mid-testing and passed on immediate
+retry with identical code. It now retries once and *reports* having needed it —
+silent retry would file a real outage under "flaky".
+
+**Item 14 (browser smoke test) is BLOCKED, not done.** No JS runtime is available
+(node/deno/bun/esbuild all absent) and Chrome headless times out in both
+`--headless=new` and `--headless=old`. Step 4 covers the one class that actually
+bit; other runtime errors remain uncovered and `CLAUDE.md` says so.
+
+### The exchangeability ceiling fails a validity check (item 26)
+
+Round 52 retracted the ceiling as "a random baseline, not an upper bound". It is
+worse than that, and the reason is measurable.
+
+Item 26 asked for the bound to be partitioned: apply `min(1, 6/N)` only where the
+question names no disambiguating entity, and 1.0 elsewhere. Implemented in
+`eval/ceiling_partition.py`. It does move the number — **84.3% → 90.1%, on 5 of
+80 turns** (reported as turns, not a diluted mean; only 12% of turns name an
+entity the detectors can see).
+
+But the run surfaced 29 of 80 turns with **N=0**. The first instinct was to call
+those broken items and exclude them; that was checked before being written down,
+and it was wrong — their gold documents are all current and most already contain
+most of their keyphrases. So the obvious validity check finally got run, the one
+that should have preceded everything built on N:
+
+| | |
+|---|---|
+| turns with keyphrases | 80 |
+| gold document not current | 0 |
+| **gold document fails its OWN keyphrase conjunction** | **35 (44%)** |
+| ...mean keyphrases actually present in those | 50% |
+
+N counts documents containing *all* a turn's keyphrases, as a proxy for
+"documents that hold the answer". The known-correct document fails that test in
+44% of turns. **A measure that cannot score ground truth cannot bound
+retrieval** — which independently explains the anomaly recorded earlier as
+success: measured hit@6 sitting *above* its own ceiling.
+
+Partitioning does not rescue it. Both arms are computed from the same N, so the
+resulting +5.1 points of apparent headroom is no more trustworthy than the
+-0.7 it replaced. Fixing N means fixing keyphrases, which is the benchmark
+provenance job (items 5–8), not a retrieval job.
+
+### The five proposals, re-closed on the right argument (item 27)
+
+RM3, document-level rerank, family retriever, cross-reference extraction:
+**closed on the 59/10/31 decomposition — 31% of misses never enter the candidate
+pool at any size tested** — which is measured directly and does not depend on N.
+Reranker-shaped work cannot reach those misses by construction.
+
+**Parent-child chunking is NOT retired.** It changes what is *indexed*, so it
+could move items out of that 31%. Closing it was the weakest of the five and the
+31% argument does not cover it. It returns to the open list, unmeasured.
+
+### Small code items (28–31)
+
+- **28** `_stage_note` wrote without the mkdir that only `_stage_timer` did, so a
+  note written first was lost — silently, since both swallow exceptions by
+  design. Reproduced before fixing. Both now go through one `_write`.
+- **29** `_top_family_count` was defined identically in `rag.py` and `rerank.py`,
+  both live in one request. Moved to `docid.py` beside `document_family` (it
+  cannot live in `rag.py` — `rag` imports `rerank`). Both now resolve to the same
+  function object.
+- **30** `_rrf_fuse` emitted no `ids` while `_dense_as_hits` reads them, so
+  feeding a fused dict back in hit a `.get("ids", [[]])` default and returned an
+  **empty list rather than raising**. No live path does that today — this closes
+  a trap, it does not fix an observed defect.
+- **31** 31 pyflakes messages → **0**. Most were deliberate re-exports from the
+  refactor that external callers depend on; deleting them would have broken
+  `eval/`. They already carried `# noqa: F401`, which **pyflakes does not honour**
+  — that is flake8, and it is why 29 messages survived. Declared via `__all__`
+  instead, which pyflakes does honour and which states the intent in something
+  the language understands. Four genuinely-dead imports and one no-op `global`
+  removed.
