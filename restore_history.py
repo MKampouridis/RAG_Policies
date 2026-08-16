@@ -21,7 +21,8 @@ def main() -> int:
     args = sys.argv[1:]
     if args and args[0] == "--purge":
         days = float(args[1]) if len(args) > 1 else 30.0
-        n = memory.purge_deleted(older_than_seconds=days * 24 * 3600)
+        n = memory.purge_deleted(older_than_seconds=days * 24 * 3600,
+                             i_understand_this_is_permanent=(days <= 0))
         print(f"permanently removed {n} conversation(s) deleted more than {days:g} days ago")
         return 0
 

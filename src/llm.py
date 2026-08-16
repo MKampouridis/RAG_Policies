@@ -216,6 +216,13 @@ def _anthropic_generate_stream(payload: dict, headers: dict, on_token) -> str:
                     f"anthropic generator HTTP {resp.status_code}: {resp.text[:500]}"
                 )
             parts: list[str] = []
+            # A stream that ends WITHOUT message_stop was cut short - a dropped
+            # connection, a proxy timeout. Returning what arrived stores a
+            # silently truncated answer that is indistinguishable from a
+            # complete one. On a policy assistant an answer ending at "students
+            # may appeal if" is worse than an error, because the reader cannot
+            # tell it is incomplete.
+            saw_stop = False
             for line in resp.iter_lines(decode_unicode=True):
                 if not line or not line.startswith("data:"):
                     continue
@@ -233,11 +240,17 @@ def _anthropic_generate_stream(payload: dict, headers: dict, on_token) -> str:
                         on_token(delta["text"])
                 elif kind == "error":
                     raise RuntimeError(f"anthropic stream error: {evt.get('error')}")
+                elif kind == "message_stop":
+                    saw_stop = True
                 elif kind == "message_delta":
                     _log_usage({"usage": evt.get("usage") or {},
                                 "stop_reason": (evt.get("delta") or {}).get("stop_reason")})
                     if (evt.get("delta") or {}).get("stop_reason") == "refusal":
                         return "I can't answer that from the provided documents."
+            if not saw_stop:
+                raise RuntimeError(
+                    "the answer stream ended before it was complete "
+                    f"({len(''.join(parts))} characters received)")
             return "".join(parts)
     raise RuntimeError("anthropic generator rate-limited/overloaded after retries")
 

@@ -166,43 +166,76 @@ def add_message(conversation_id: str, role: str, content: str, meta: dict | None
         )
 
 
-def delete_conversation(conversation_id: str) -> None:
+def delete_conversation(conversation_id: str, owner: str | None = None) -> None:
     """Soft delete: the conversation disappears from every read path but the
     rows remain. See the migration note in _connect() for why - two total
     losses, one cause still unexplained, and both recoveries depended on freed
     pages happening not to have been reused yet."""
     with _connect() as conn:
-        conn.execute(
-            "UPDATE conversations SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL",
-            (time.time(), conversation_id),
-        )
+        # Owner in the SQL, not only in the caller. The route layer checks
+        # ownership today, so this is defence in depth - but the invariant
+        # belonged in one place rather than in every caller's memory.
+        if owner is None:
+            conn.execute(
+                "UPDATE conversations SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL",
+                (time.time(), conversation_id))
+        else:
+            conn.execute(
+                "UPDATE conversations SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL"
+                " AND owner = ?", (time.time(), conversation_id, owner))
 
 
-def restore_conversation(conversation_id: str) -> bool:
+def restore_conversation(conversation_id: str, owner: str | None = None) -> bool:
     """Undo a soft delete. Returns whether a deleted row was actually found."""
     with _connect() as conn:
-        cur = conn.execute(
-            "UPDATE conversations SET deleted_at = NULL WHERE id = ? AND deleted_at IS NOT NULL",
-            (conversation_id,),
-        )
+        if owner is None:
+            cur = conn.execute(
+                "UPDATE conversations SET deleted_at = NULL WHERE id = ?"
+                " AND deleted_at IS NOT NULL", (conversation_id,))
+        else:
+            cur = conn.execute(
+                "UPDATE conversations SET deleted_at = NULL WHERE id = ?"
+                " AND deleted_at IS NOT NULL AND owner = ?", (conversation_id, owner))
         return cur.rowcount > 0
 
 
-def list_deleted_conversations() -> list[dict]:
+def list_deleted_conversations(owner: str | None = None) -> list[dict]:
     """What a soft delete is hiding - the recovery path that used to require a
     forensic page carver."""
     with _connect() as conn:
-        rows = conn.execute(
-            "SELECT id, title, created_at, deleted_at FROM conversations"
-            " WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC"
-        ).fetchall()
+        # Without an owner filter a recovery UI would show everyone's
+        # deleted conversations. None still means "everything", for the
+        # command-line recovery tool.
+        if owner is None:
+            rows = conn.execute(
+                "SELECT id, title, created_at, deleted_at, owner FROM conversations"
+                " WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC").fetchall()
+        else:
+            rows = conn.execute(
+                "SELECT id, title, created_at, deleted_at, owner FROM conversations"
+                " WHERE deleted_at IS NOT NULL AND owner = ? ORDER BY deleted_at DESC",
+                (owner,)).fetchall()
     return [dict(r) for r in rows]
 
 
-def purge_deleted(older_than_seconds: float = 30 * 24 * 3600) -> int:
+def purge_deleted(older_than_seconds: float = 30 * 24 * 3600,
+                  i_understand_this_is_permanent: bool = False) -> int:
     """Permanently remove conversations soft-deleted longer ago than the
-    window. NOT called from any endpoint - deliberately a manual operation, so
-    nothing automatic can ever destroy history again."""
+    window. NOT called from any endpoint - deliberately manual, so nothing
+    automatic can destroy history.
+
+    A window of 0 or less means "purge EVERYTHING soft-deleted" and now
+    requires `i_understand_this_is_permanent=True`. That guard exists because
+    the author called `purge_deleted(older_than_seconds=-1)` as throwaway
+    cleanup inside a test and permanently removed 61 conversations - all of
+    them test data, by luck rather than design. The soft-delete work was done
+    precisely so that deletion stops being one careless call away.
+    """
+    if older_than_seconds <= 0 and not i_understand_this_is_permanent:
+        raise ValueError(
+            "purge_deleted with a window <= 0 removes EVERY soft-deleted "
+            "conversation permanently. Pass i_understand_this_is_permanent=True "
+            "if that is genuinely intended.")
     cutoff = time.time() - older_than_seconds
     with _connect() as conn:
         ids = [r[0] for r in conn.execute(

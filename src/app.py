@@ -1,14 +1,18 @@
 """FastAPI app: conversation + chat endpoints, serves the single-page UI."""
 
+import hashlib
+import hmac
 import json
 import os
 import queue
 import threading
 import time
 from pathlib import Path
+from urllib.parse import parse_qs
 
-from fastapi import BackgroundTasks, FastAPI, Header, HTTPException
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi import BackgroundTasks, FastAPI, Header, HTTPException, Request
+from fastapi.responses import (FileResponse, HTMLResponse, JSONResponse,
+                               RedirectResponse, StreamingResponse)
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -24,6 +28,76 @@ app = FastAPI(title="Essex Policies & Rules of Assessment Assistant")
 # can leave them unmounted. Mounted here today: pure move, no behaviour change.
 from src.research_routes import router as _research_router  # noqa: E402
 app.include_router(_research_router)
+
+# ── access control ───────────────────────────────────────────────────────────
+# One shared password for the whole site, checked on every request. NOT user
+# accounts: the per-person separation is still the name in X-User, which is a
+# label rather than a credential. This closes the different hole - that anyone
+# who can reach the server reads everything - which matters the moment this is
+# reachable by more than one person.
+#
+# Set RAG_ACCESS_PASSWORD to enable. Unset (the default) leaves the server open,
+# which is correct for a single-user machine and is why this is opt-in rather
+# than a hardcoded secret nobody can change.
+ACCESS_PASSWORD = os.environ.get("RAG_ACCESS_PASSWORD", "")
+_OPEN_PATHS = ("/login", "/static/", "/favicon")
+
+
+@app.middleware("http")
+async def require_password(request, call_next):
+    if not ACCESS_PASSWORD:
+        return await call_next(request)
+    path = request.url.path
+    if any(path.startswith(p) for p in _OPEN_PATHS):
+        return await call_next(request)
+    # constant-time compare so the cookie cannot be guessed a character at a time
+    cookie = request.cookies.get("rag_access", "")
+    if hmac.compare_digest(cookie, _access_token()):
+        return await call_next(request)
+    if path.startswith("/api/"):
+        return JSONResponse({"detail": "not authorised"}, status_code=401)
+    return RedirectResponse("/login", status_code=302)
+
+
+def _access_token() -> str:
+    """Derived from the password, so the cookie never contains it."""
+    return hashlib.sha256(("rag-access:" + ACCESS_PASSWORD).encode()).hexdigest()
+
+
+@app.get("/login")
+def login_page():
+    return HTMLResponse(
+        '<!doctype html><meta charset="utf-8"><title>Sign in</title>'
+        '<style>body{font:16px/1.5 -apple-system,sans-serif;background:#faf9fb;'
+        'display:flex;align-items:center;justify-content:center;height:100vh;margin:0}'
+        'form{background:#fff;border:1px solid #e5e1e8;border-radius:10px;padding:26px 28px;'
+        'max-width:340px}h1{margin:0 0 6px;font-size:18px;color:#622567}'
+        'p{margin:0 0 16px;font-size:13.5px;color:#6b6472}'
+        'input{width:100%;padding:9px 11px;border:1px solid #e5e1e8;border-radius:7px;'
+        'font:inherit;margin-bottom:11px}button{width:100%;background:#622567;color:#fff;'
+        'border:0;border-radius:7px;padding:10px;font:inherit;font-weight:600;cursor:pointer}'
+        '</style><form method="post" action="/login">'
+        '<h1>Essex Policy Assistant</h1>'
+        '<p>Enter the shared password you were given.</p>'
+        '<input type="password" name="password" autofocus placeholder="Password">'
+        '<button type="submit">Continue</button></form>')
+
+
+@app.post("/login")
+async def login_submit(request: Request):
+    # Parsed by hand rather than with request.form(), which needs
+    # python-multipart - a dependency this project does not have and does not
+    # need for one field. A urlencoded body is two lines to parse.
+    raw = (await request.body()).decode("utf-8", "replace")
+    submitted = parse_qs(raw).get("password", [""])[0]
+    if hmac.compare_digest(submitted, ACCESS_PASSWORD):
+        r = RedirectResponse("/", status_code=302)
+        # session cookie: no expiry, so it dies with the browser
+        r.set_cookie("rag_access", _access_token(), httponly=True, samesite="lax")
+        return r
+    return RedirectResponse("/login", status_code=302)
+
+
 
 # Every retrieval dependency is lazily initialised on first use, so the FIRST
 # request after a restart pays ~21s that later requests do not (Round 11:
@@ -276,7 +350,7 @@ def api_get_messages(conversation_id: str, x_user: str | None = Header(default=N
 def api_delete_conversation(conversation_id: str, x_user: str | None = Header(default=None)):
     if not memory.conversation_exists(conversation_id, owner=_owner(x_user)):
         raise HTTPException(status_code=404, detail="conversation not found")
-    memory.delete_conversation(conversation_id)
+    memory.delete_conversation(conversation_id, owner=_owner(x_user))
     return {"ok": True}
 
 

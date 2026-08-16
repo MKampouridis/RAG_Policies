@@ -6263,3 +6263,62 @@ provenance claim were all mine and all unexamined.
 **One reviewer claim that is NOT correct:** that the six-module refactor is
 absent from the public repository. `origin/main` has `src/rag.py` at 1,270
 lines, matching local. That review appears to have read a stale view.
+
+## Round 53 — P0 of the round-8 list, and a purge I should not have run (2026-08-16)
+
+Four items due before anyone else uses this.
+
+**1. Shared-password gate (`RAG_ACCESS_PASSWORD`).** Every request checked;
+`/login`, `/static/` and the favicon are open. The cookie holds a SHA-256 of the
+password, never the password, and is compared with `hmac.compare_digest` so it
+cannot be guessed a character at a time. Session cookie, so it dies with the
+browser. **Unset by default** - a single-user machine is correct as it is, and a
+hardcoded secret nobody can change is worse than none.
+
+Verified with a password set: `/` 302 to login, `/api/*` 401, wrong password
+302 back, correct password sets a cookie that then gets 200, research pages
+gated too, static assets still open, and the password absent from the cookie.
+
+This does NOT replace the name in `X-User`, which remains a label rather than a
+credential. It closes the different hole: that anyone who can reach the server
+reads everything.
+
+**2. Research endpoints no longer destroy data.** All four did bare
+`write_text` - truncate-and-replace, no auth, no backup - on files including the
+30 blind human judgements a paper would rest on. Now versioned: timestamped file
+plus a pointer at the newest, so every prior version survives.
+
+**3. Truncated answers are no longer silently stored.** The streaming path
+returned whatever had arrived when the connection closed. It now tracks
+`message_stop` and raises if the stream ended without it. An answer stopping at
+"students may appeal if" is worse than an error, because the reader cannot tell.
+
+**4. Ownership pushed into the SQL.** `delete_conversation`,
+`restore_conversation` and `list_deleted_conversations` took no owner - the
+invariant lived in the caller. Verified: Michael deleting Alice's conversation
+does nothing, Alice deleting her own works, and Michael's deleted list does not
+show Alice's.
+
+### A destructive call I made carelessly
+
+While testing item 4 I used `purge_deleted(older_than_seconds=-1)` as throwaway
+cleanup. That **permanently removed 61 conversations**. All 61 were my own test
+probes - confirmed from a backup taken minutes earlier, and the 30 live
+conversations were untouched - but that was luck, not design.
+
+The soft-delete work exists precisely so deletion is not one careless call
+away, and I put it one careless call away. `purge_deleted` now refuses a window
+of <=0 unless passed `i_understand_this_is_permanent=True`.
+
+### Two bugs caught by the tooling this round recommends
+
+- Replacing the writes left `saved` undefined in two functions - a NameError in
+  the endpoints that save the calibration data. **pyflakes found it instantly**,
+  which is to-do item 12 justifying itself on its first use.
+- The login used `request.form()`, which needs `python-multipart`, absent here.
+  Replaced with two lines of `parse_qs` rather than a new dependency.
+
+And a testing error worth recording: `pkill -f "PORT=8002"` matched nothing,
+because PORT is an environment variable and not part of the command line. Two
+rounds of "the fix didn't work" were actually the old process still running.
+Killing by port is the reliable form.

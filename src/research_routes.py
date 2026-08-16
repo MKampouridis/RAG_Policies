@@ -13,6 +13,7 @@ Mounted by src/app.py today, so nothing changes until someone chooses not to.
 """
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException
@@ -21,6 +22,28 @@ from fastapi.responses import FileResponse
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 
 router = APIRouter()
+
+def _save_versioned(path: Path, payload) -> dict:
+    """Write research data WITHOUT destroying what is already there.
+
+    These files hold human annotation - 30 blind judgements that took real
+    effort and are the ground truth a paper would rest on. Every one of these
+    endpoints used to do a bare `write_text`: full truncate-and-replace, no
+    auth, no backup. A POST of `[]` erased them, and this project has already
+    lost its conversation history twice.
+
+    Each save goes to a timestamped file and `path` is repointed at it, so
+    every prior version survives and the newest is always where readers expect.
+    """
+    path.parent.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+    versioned = path.with_name(f"{path.stem}.{stamp}{path.suffix}")
+    versioned.write_text(json.dumps(payload, indent=1))
+    path.write_text(json.dumps(payload, indent=1))
+    kept = sorted(path.parent.glob(f"{path.stem}.*{path.suffix}"))
+    return {"path": str(path), "version": str(versioned), "versions_kept": len(kept)}
+
+
 
 @router.get("/reference-fix")
 def reference_fix_page():
@@ -38,10 +61,9 @@ def api_reference_fix(fixes: list[dict]):
     files - applying edits to eval data is a separate, reviewable step, and an
     endpoint that rewrites the test sets from a browser is how test data gets
     quietly changed."""
-    out = Path("eval/reference_fixes.json")
-    out.write_text(json.dumps(fixes, indent=1))
+    saved = _save_versioned(Path("eval/reference_fixes.json"), fixes)
     acted = sum(1 for f in fixes if f.get("action") in ("rewrite", "drop"))
-    return {"ok": True, "done": acted, "total": len(fixes), "path": str(out)}
+    return {"ok": True, "done": acted, "total": len(fixes), **saved}
 
 
 @router.get("/reference-random")
@@ -57,10 +79,9 @@ def reference_random_page():
 
 @router.post("/api/reference-random")
 def api_reference_random(verdicts: list[dict]):
-    out = Path("eval/reference_random_verdicts.json")
-    out.write_text(json.dumps(verdicts, indent=1))
+    saved = _save_versioned(Path("eval/reference_random_verdicts.json"), verdicts)
     done = sum(1 for v in verdicts if v.get("verdict"))
-    return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
+    return {"ok": True, "done": done, "total": len(verdicts), **saved}
 
 
 @router.get("/reference-review")
@@ -77,11 +98,9 @@ def reference_review_page():
 
 @router.post("/api/reference-review")
 def api_reference_review(verdicts: list[dict]):
-    out = Path("eval/reference_review_verdicts.json")
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(verdicts, indent=1))
+    saved = _save_versioned(Path("eval/reference_review_verdicts.json"), verdicts)
     done = sum(1 for v in verdicts if v.get("verdict"))
-    return {"ok": True, "done": done, "total": len(verdicts), "path": str(out)}
+    return {"ok": True, "done": done, "total": len(verdicts), **saved}
 
 
 @router.get("/calibration")
@@ -104,8 +123,6 @@ def api_calibration(scores: list[dict]):
     copy-paste step to fail. Overwrites: the page always posts the full set,
     including unscored items as null, so a partial pass is still a complete
     record of what was decided so far."""
-    out = Path("eval/judge_calibration_scores.json")
-    out.parent.mkdir(parents=True, exist_ok=True)
-    out.write_text(json.dumps(scores, indent=1))
+    saved = _save_versioned(Path("eval/judge_calibration_scores.json"), scores)
     done = sum(1 for s in scores if s.get("human_score") is not None)
-    return {"ok": True, "scored": done, "total": len(scores), "path": str(out)}
+    return {"ok": True, "scored": done, "total": len(scores), **saved}
