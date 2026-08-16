@@ -1,0 +1,1013 @@
+[
+ {
+  "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing pol",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What constitutes plagiarism according to this document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are some examples of concerns and complaints that could be raised under this procedure?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-concerns-complaints-procedure.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What are the core values that the University of Essex promotes regarding academic freedom and freedom of speec",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/cop-freedom-of-speech.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What are the fundamental commitments that the University of Essex promotes as core values under this Code of P",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/speaker-code-of-practice.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the frequency of review for departmental arrangements related to Professional Doctorates, and when are",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "3 of 4 key terms found",
+  "missing": [
+   "changes to arrangements"
+  ]
+ },
+ {
+  "question": "What should new research students be given during their induction to ensure they understand University policie",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What must postgraduate research students do regarding the Code of Good Research Practice at an early stage?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/postgraduate-research-integrity-and-research-misconduct-policy.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the scope of the Fitness to Practise Procedure at the University of Essex?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What is the purpose of providing healthcare students with clinical uniform free of charge before they start th",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/professional-clinical-appearance-code-of-practice.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are the roles and responsibilities of Student Representatives according to this policy?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/student-voice-policy.pdf",
+  "verdict": "TEXT_DRIFT",
+  "detail": "0 of 3 key terms found",
+  "missing": [
+   "engaging proactively",
+   "feedback through SVGs",
+   "first tier of the representation system"
+  ]
+ },
+ {
+  "question": "How many student suicides were reported from 2000-1 to 2016-17 according to the Office for National Statistics",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-suicide-prevention-and-response.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "2000-1 to 2016-17"
+  ]
+ },
+ {
+  "question": "What are the conditions under which a student can apply for academic flexibility according to the policy?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-flexibility-policy-for-taught-students-sport.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "3 of 4 key terms found",
+  "missing": [
+   "training or competing at regional or national level"
+  ]
+ },
+ {
+  "question": "What are some risks that could affect the delivery of education at University of Essex according to the Studen",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/ofs/student-protection-plan.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "1 of 6 key terms found",
+  "missing": [
+   "financial insolvency",
+   "IT infrastructure issues",
+   "staff shortages",
+   "building capacity limitations",
+   "loss of qualifications"
+  ]
+ },
+ {
+  "question": "What are the five principles that underpin the Student Engagement Policy at the University of Essex?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "7 of 9 key terms found",
+  "missing": [
+   "driven by support and advice to succeed",
+   "visibility and shared understanding"
+  ]
+ },
+ {
+  "question": "What does the Fitness to Study policy address in terms of student behavior?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "impact on their studies and life at University"
+  ]
+ },
+ {
+  "question": "What types of prior learning can be recognized under the RPL policy at the University of Essex?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/rpl_policy.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What are the responsibilities of the Academic Registrar in managing fee liability for students?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are the payment terms for self-funded International fee-paying students who started their course in acade",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+  "verdict": "OK",
+  "detail": "6 of 6 key terms found"
+ },
+ {
+  "question": "What are the minimum supervision hours required per student according to this Code of Practice?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "1 of 2 key terms found",
+  "missing": [
+   "minimum supervision hours"
+  ]
+ },
+ {
+  "question": "What does the term 'Capped Mark' refer to in the University of Essex Undergraduate Rules of Assessment?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/glossary/roa-ug-glossary.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 4 key terms found",
+  "missing": [
+   "re-assessments",
+   "supplementary examinations"
+  ]
+ },
+ {
+  "question": "What does the University of Essex Rules of Assessment cover regarding the final award?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/principle-and-framework/ug-principles-and-framework.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the requirement for passing Year One in the three-year honors degree program according to the rules?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What are the reassessment opportunities at the end of Year One for students under the Four-Year Honours Degree",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-rules.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "subsequent academic year"
+  ]
+ },
+ {
+  "question": "What are the requirements to pass the Foundation Year at University of Essex?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-rules.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What are the minimum credits and marks required to progress from Year One to Year Two in an Integrated Masters",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-4yr-year-1.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What is the minimum number of credits a student must pass at Level 6 to be eligible for an award in the Gradua",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-cert-year-1.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What are the conditions for a student to proceed to the final year if they have passed fewer than 120 credits ",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-diploma-higher-education-year-1.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What is the minimum pass mark for all modules in the East 15 Acting School's Masters degree programs according",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the minimum overall weighted average required for a student to pass with Merit?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction i",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-physiotherapy-25.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What is the maximum number of credits that can be carried forward for progression in the MSc Periodontology or",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules of the MSc Human Resource Management program according to these rules?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "How long do students have to complete their MBA studies at the University of Essex?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What are the learning outcomes related to assessment as per the rules of assessment document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the minimum overall weighted average required to pass a Master\u2019s degree with Merit?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/masters-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the minimum pass mark for taught modules under Model A's rules of assessment?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-roa-model-a-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the timeframe for completing academic appeal proceedings and internal review procedures?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-appeals-procedure-undergraduate-and-postgraduate-taught.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What are the general principles for reassessment according to the rules of assessment document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-aegean-omiros-4yr-non-standard-year-1.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "apply throughout all years"
+  ]
+ },
+ {
+  "question": "What are the responsibilities of a Professional Doctorate Director within the Departmental arrangements for pr",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2024-25.pdf",
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
+ },
+ {
+  "question": "What actions can be considered as academic offences according to the document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What are the additional responsibilities placed upon students enrolled on courses requiring practical professi",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the responsibility of the Course Lead in relation to Professional Doctorate students at the Tavistock ",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What must a student provide if their appeal outcome requires continued registration at the University?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What happens if an undergraduate student applying for a Student Loans Company (SLC) funding refuses their appl",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2020-21/payment-liability-policy.pdf",
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
+ },
+ {
+  "question": "What are the consequences of failing to adhere to the Professional Code of Conduct in a module?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east-15-prof-code-conduct-22-v2.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "3 of 4 key terms found",
+  "missing": [
+   "failing to adhere"
+  ]
+ },
+ {
+  "question": "What are the principles that guide content development and management at the University of Essex Library & Cul",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/content-development-management-policy.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What are the five principles underlying the Student Engagement Policy at the University of Essex?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy-2024-25.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "4 of 8 key terms found",
+  "missing": [
+   "underpinning the policy",
+   "driven by support and advice to succeed",
+   "personalized interventions",
+   "parity of experience for all students"
+  ]
+ },
+ {
+  "question": "What criteria must candidates applying for a postgraduate research degree involving practice as research demon",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "experienced supervisor"
+  ]
+ },
+ {
+  "question": "What are the main considerations when determining the most suitable viva format according to the document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are the payment terms for self-funded International fee-paying students starting their course in academic",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+  "verdict": "OK",
+  "detail": "6 of 6 key terms found"
+ },
+ {
+  "question": "What are the conditions for postgraduate research students to apply for GTA or GLA positions?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/graduate-teachers-employment-guidance.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "4 of 5 key terms found",
+  "missing": [
+   "hours worked"
+  ]
+ },
+ {
+  "question": "Which specific referencing styles and versions can be used by departments and schools at the University of Ess",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/referencing-code-of-practice.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "3 of 4 key terms found",
+  "missing": [
+   "optional for postgraduate research"
+  ]
+ },
+ {
+  "question": "What should students do if they wish to raise a complaint related to the provision of continuity for their cou",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/compensation-and-refund-policy.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "How many members of staff must be nominated by a department if they have more than 149 postgraduate research s",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 4 key terms found",
+  "missing": [
+   "must be nominated",
+   "postgraduate research students"
+  ]
+ },
+ {
+  "question": "What does QAA define dual awards as in the policy document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/dual-joint-research.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "How long can a Postgraduate Research Degree (PGR) student request compassionate leave under this policy?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What do Masters of Philosophy wear for academic dress?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-dress.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "3 of 5 key terms found",
+  "missing": [
+   "Master's of Philosophy",
+   "lined with white"
+  ]
+ },
+ {
+  "question": "What happens if a student's work is sponsored by a commercial organization?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/guidelines-ownership-ipr-students.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in an Essex Abroad cours",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
+ },
+ {
+  "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad under the Essex Abroad r",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
+ },
+ {
+  "question": "What is the minimum Year Mark required for a student to be eligible for a Term Abroad in Joint courses involvi",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-variations.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules of the Graduate Diploma according to these rules?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/graduate-qualifications/ug-grad-dip-year-1.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are the specific requirements for a student to achieve a Distinction in Year One under the rules stated i",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-integrated-masters-5yr-year-1.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What are the requirements for a student to achieve a Distinction in Year One of the Integrated Masters program",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/roa-ug-mlang-year-1.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the maximum number of non-core credits that can be failed in Year One and still pass to the Final Year",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/other-ug-awards/roa-ug-foundation-degrees-year1.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the requirement for passing Year One according to the rules of assessment?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What is the maximum number of non-core credits that can be condoned across a three-year Honours Degree at Esse",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-skku-year-1.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "maximum number"
+  ]
+ },
+ {
+  "question": "What are the consequences for students who fail to complete the required placement hours in EG124, EG226, or E",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-ehs-year-1-variations.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What is the minimum pass mark for modules in Year Four of the MSci Nursing programme?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/integrated-masters/mscinursing_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark required for the HS831 linguistics and phonetics exam, and how is it adjusted to reflect",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What are the criteria for a student to receive credit from taught modules under these rules?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What are the credit limits for condonable non-core modules at each level?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mres-gov-25.pdf",
+  "verdict": "OK",
+  "detail": "5 of 5 key terms found"
+ },
+ {
+  "question": "What are the criteria for a student to be eligible for an award of a pass in the Graduate Certificate program?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What are the progression requirements for students in Essex Business School's Integrated PhD program under Mod",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/other-pgt-awards/integrated-phd-variations-model-a-25.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "3 of 4 key terms found",
+  "missing": [
+   "pass all taught core modules with a mark of 60 or more"
+  ]
+ },
+ {
+  "question": "What criteria must be met to achieve a pass, merit, and distinction in the Masters degrees under these rules?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-1-january-starts-rules-of-assessment---jan-26.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What must be ensured by Heads of Department regarding student progress monitoring, as per the document?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "monitoring students' progress and attendance"
+  ]
+ },
+ {
+  "question": "What is the expected time frame for the return of assessed work according to the University's policy?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/assessment-feedback-policy.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the submission deadline for candidates first registered from October 2018 onwards?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "How long does a research degree viva last, and what happens if it runs long?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "In which circumstances will the Faculty Dean Postgraduate appoint an Independent Chair for a viva?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "Who must a department designate to lead each professional doctorate at Essex, and who are they responsible to?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "For Tavistock and Portman professional doctorates, who is designated to lead each programme and who are they r",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Can a viva be waived for a professional doctorate, and who decides?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "A student has failed a core taught module with a mark of 45. Can that failure be condoned?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Both examiners have read the thesis and think the candidate is likely to be referred. They would rather not ho",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "We would like a visiting academic to supervise one of our PGR students. Is that permitted?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "Can a professional doctorate student's standard period of study be shortened, and whose approval is needed?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "A referred thesis has come back and the examiners recommend a pass. Do we still need to hold a second viva?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "A Supervisory Panel wants to discontinue a student. Can the Panel make that decision itself?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Can the student's main supervisor chair their Supervisory Panel?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "A supervisor has asked to sit in on their student's viva. Is that allowed, and who decides?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Our PGR student is sponsored under a Student visa. Can their supervision meetings be held over Zoom?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "If a student is granted an extension, does that affect how much completion time they have left?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "A student resubmits an assessment for a module they had already passed overall. Can their module mark go up?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "Does an exit award have to carry the same title as the main programme?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/credit-framework/pgt-credit-framework-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Our department has 160 PGR students. How many Independent Chair nominations do we have to put forward?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "For a Tavistock professional doctorate, who can decide to permit a student to enter their completion period?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "A candidate keeps failing to respond about viva arrangements and we cannot get one scheduled. What is the posi",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the process for switching from a full-time PhD to a part-time PhD, and vice versa?",
+  "source_url": null,
+  "verdict": "NO_GOLD",
+  "detail": "item has no gold document"
+ },
+ {
+  "question": "How much is the PGR tuition fee for a part-time professional doctorate this year?",
+  "source_url": null,
+  "verdict": "NO_GOLD",
+  "detail": "item has no gold document"
+ },
+ {
+  "question": "Which members of staff are currently on the approved pool of Independent Chairs?",
+  "source_url": null,
+  "verdict": "NO_GOLD",
+  "detail": "item has no gold document"
+ },
+ {
+  "question": "What are the pass marks for the Project Demonstration Oral and written Dissertation element in the MSc Applica",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-non-accredited-full-time-msc-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for the MSc Applications of Artificial Intelligence programme in the Project Demonstrati",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-non-accredited-part-time-msc-25.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What is the pass mark for the MSc Artificial Intelligence in Finance programme on the Project Demonstration Or",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ccfea-non-accredited-full-time-msc-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for core modules on the MSc Applications of Artificial Intelligence programme?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules on the MSc Artificial Intelligence (T/F) programme at CSEE?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for the MSc Artificial Intelligence and its Applications programme in the Project Demons",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for core modules on the MFA Theatre Directing programme?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-mfa-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules of the MSc Human Resource Management (Full and Part-Time) programme?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-human-resource-management-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "How long do students have to complete their MBA studies according to the University of Essex's rules for Maste",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the maximum period within which students must complete their Masters of Business Administration Degree",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What are the minimum overall weighted average marks required for Pass with Merit and Distinction on the MRes D",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mres-gov-25.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "What is the pass mark for HS831 linguistics and phonetics exam on the MSc Speech and Language Therapy (Pre-reg",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/speechtherapy_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules in the MSc Occupational Therapy (Pre-registration) programme at the Univ",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules on the MSc Advanced Clinical Practice (ACP)/PG Dip/PG Cert Health Care P",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the minimum pass mark for core modules on the PG Cert Psychological Wellbeing Practice and PG Cert Spe",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pgcertpwp_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules of the Graduate Certificate: Psychological Wellbeing Practice and Gradua",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/gradcertpwp_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the pass mark for core modules on the Postgraduate Diploma Periodontology programme?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/pg_dip_periodontology_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for all modules of the MSc Periodontology and MSc Advanced Periodontal Practice programm",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the minimum pass mark required for all modules on the MA Social Work programme at the University of Es",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/ma_social_work_25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "What is the pass mark for modules in Year Four of the MSci Nursing programme at Health and Social Care?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscinursing_25-transfers.pdf",
+  "verdict": "OK",
+  "detail": "4 of 4 key terms found"
+ },
+ {
+  "question": "One of our PGR students has been bereaved. What leave can they take, and what happens if they need longer than",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-on-compassional-leave-for-research-degree-students.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "A PGR student sponsored on a Student visa wants to intermit for two terms. What are the consequences?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Our student intends to submit their thesis at the end of their completion period. What do they need to do in a",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "ready for submission"
+  ]
+ },
+ {
+  "question": "If the RSPB recommends a one-term extension to a student's standard period, how does that affect their complet",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "end of the standard period of study"
+  ]
+ },
+ {
+  "question": "A first-year PGR student is asking for three terms of leave. Is that possible, and is there a shorter option?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/pgr-intermission-absence.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "automatically be extended"
+  ]
+ },
+ {
+  "question": "A thesis was referred and the student has now resubmitted. Do we need an Independent Chair for the second viva",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/independent-chairs-policy.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "1 of 3 key terms found",
+  "missing": [
+   "normally be granted",
+   "exceptional circumstances"
+  ]
+ },
+ {
+  "question": "A Tavistock professional doctorate student needs an extension to their standard period. Who recommends it and ",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "We want a visiting academic to supervise a research student. Could they instead act as Independent Chair at a ",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "permanent member of staff"
+  ]
+ },
+ {
+  "question": "Our internal examiner has never examined a research degree before. What does that mean for how the viva is run",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-vivas.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "2 of 3 key terms found",
+  "missing": [
+   "no experience in research degree examining"
+  ]
+ },
+ {
+  "question": "How should a professional doctorate candidate submit their thesis, and what happens next in the examination pr",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/thesis-submission-deposit.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Do MSAS and CSEE Masters students face the same dissertation requirements?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Is the pass mark and condonement rule the same for SRES and East 15 Masters students?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "How are placements and practice-based modules assessed in HSC and SRES programmes?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "1 of 2 key terms found",
+  "missing": [
+   "pass all module assignments"
+  ]
+ },
+ {
+  "question": "For HSC and Psychology Masters programmes, what is the pass mark and how is progression handled?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/msc-ot_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "Which of MSAS, Psychology and CSEE have programme-specific dissertation rules that differ from the standard Ma",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscs-in-school-maths-statistics-actuarial-science-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "How do the East 15 and Edge Hotel School rules of assessment differ in structure?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/east15-25.pdf",
+  "verdict": "TEXT_DRIFT",
+  "detail": "0 of 2 key terms found",
+  "missing": [
+   "accelerated delivery",
+   "maximum periods of study"
+  ]
+ },
+ {
+  "question": "For SRES, HSC and CSEE Masters programmes, what is the maximum period allowed to complete studies by credit ac",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/sres-modular-25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "Which Masters programmes in CSEE, MSAS and SRES lead to a professional or accredited outcome?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+  "verdict": "PARTIAL_DRIFT",
+  "detail": "1 of 2 key terms found",
+  "missing": [
+   "V300"
+  ]
+ },
+ {
+  "question": "For CSEE and Psychology Masters students, how many credits of non-core failure can be condoned in total?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/modular_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "For PGR students in CSEE and History, who can decide to discontinue a student?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-postgraduate-research.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "For the SKKU BSc Economics link agreement, what is required to pass Year One?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-skku-year-1.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Which undergraduate courses do the Colchester Institute rules of assessment cover?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-colchester-institute-year-1.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "At Laksamana College of Business, how does a student achieve a Distinction in Year One?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-laksamana-year-1.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What are the rules of assessment for the MSc Periodontology Science and Practice run with Alexandria?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/partner-institutions/msc-periodontology-science-(alexandria)-25.pdf",
+  "verdict": "OK",
+  "detail": "3 of 3 key terms found"
+ },
+ {
+  "question": "Under the BSc Economics link agreement, how many credits are needed to pass Year One and at what level?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-skku-year-1.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "Which rules of assessment apply to the BA (Hons) 3D Design & Craft course?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/partner-institutions/roa-ug-colchester-institute-year-1.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "For a three-year Essex honours degree, what is required to pass Year One?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-rules.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ },
+ {
+  "question": "What is the pass mark and condonement rule for the Essex MSc Periodontology?",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mscperiodontology_25.pdf",
+  "verdict": "OK",
+  "detail": "2 of 2 key terms found"
+ }
+]

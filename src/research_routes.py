@@ -66,6 +66,23 @@ def api_reference_fix(fixes: list[dict]):
     return {"ok": True, "done": acted, "total": len(fixes), **saved}
 
 
+@router.get("/provenance-review")
+def provenance_review_page():
+    """Repoint test items whose gold document Essex has superseded. Those items
+    score correct retrieval as a miss, so they are worse than useless."""
+    page = STATIC_DIR / "provenance_review.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="page not built")
+    return FileResponse(page)
+
+
+@router.post("/api/provenance-review")
+def api_provenance_review(choices: list[dict]):
+    saved = _save_versioned(Path("eval/provenance_review_choices.json"), choices)
+    done = sum(1 for c in choices if c.get("choice"))
+    return {"ok": True, "done": done, "total": len(choices), **saved}
+
+
 @router.get("/reference-random")
 def reference_random_page():
     """RANDOM sample of references, to estimate how common bad ones are. The

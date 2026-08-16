@@ -6322,3 +6322,65 @@ And a testing error worth recording: `pkill -f "PORT=8002"` matched nothing,
 because PORT is an environment variable and not part of the command line. Two
 rounds of "the fix didn't work" were actually the old process still running.
 Killing by port is the reliable form.
+
+## Round 54 — The eval set was a stale cache of the corpus (2026-08-16)
+
+Round-8 P1: re-derive the benchmark's provenance rather than patch 8 items.
+
+### The drift, measured before touching anything
+
+| verdict | n | share |
+|---|---|---|
+| **NOT_CURRENT** - gold document superseded | **9** | 6% |
+| TEXT_DRIFT - no key term left in the gold document | 2 | 1% |
+| PARTIAL_DRIFT - some key terms missing | 28 | 19% |
+| OK | 109 | 72% |
+
+**NOT_CURRENT is the serious class**: retrieval returning the CURRENT edition
+scores as a MISS, so the test punishes the system for being right.
+
+### It explains a loose end from Round 16
+
+Round 16 recorded an unattributed **-1** on the replay and declined to bisect
+it. Both lost turns had gold `roa-ug-3yr-year-1-variations.pdf` - **superseded**.
+Retrieval was returning the current document and being marked wrong. The round-8
+reviewer predicted exactly this mechanism; they guessed the wrong items, and the
+mechanism was real.
+
+### 5 of 9 were mechanical
+
+For each superseded gold, the successor was found by filename stem, then
+**every keyphrase was verified present in the successor** before repointing.
+Five passed that bar and were repointed automatically across 3 question files,
+each carrying a `_provenance_fix` record: old URL, new URL, reason, keyphrases
+verified, when, by what.
+
+Re-audited: **9 -> 4 NOT_CURRENT**.
+
+### The remaining 6 need judgement, and have a page
+
+4 NOT_CURRENT plus 2 TEXT_DRIFT, at `/provenance-review`, each showing the
+expected answer, its key terms, the superseded document, and up to 3 candidate
+replacements **with passages from each** - plus "keep it" and "drop the
+question" options. The human task is 6 items, not 151.
+
+### It cannot go stale silently again
+
+`questions_regression.json` now carries a `corpus_version` stamp, and
+`eval/check_benchmark_stamp.py` exits 1 when the corpus has moved under it. Added
+to the post-ingest sequence in `CLAUDE.md` beside the alias audit, the stale
+index audit and the ColBERT drift check.
+
+Verified the stamp is invisible to consumers: the file has 152 entries and
+anything reading `.get("question")` still sees 151.
+
+### Honest limits
+
+- **PARTIAL_DRIFT (28) is not triaged.** Exact-substring matching on keyphrases
+  flags rewording as readily as error. Reported, deliberately not acted on.
+- The 5 automatic repoints were verified by keyphrase presence, which is the
+  same weak instrument the round-8 review showed cannot detect a reference that
+  quotes its source faithfully while describing a superseded rule. They are
+  *better* than before and not *proven correct*.
+- Only `questions_regression.json` is stamped. The older sets it was merged from
+  are not.

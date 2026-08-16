@@ -1,5 +1,10 @@
 [
  {
+  "_stamp": true,
+  "corpus_version": "1f4a00b491584434bfc3023c4c54da7f",
+  "note": "This eval set was verified against this corpus version. If the corpus version differs, gold documents may have been superseded - re-run eval/benchmark_provenance_audit.py."
+ },
+ {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
   "source_title": "policy-whistleblowing.pdf",
   "doc_type": "policy",
@@ -1133,7 +1138,7 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure-2024-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
   "source_title": "academic-offences-procedure-2024-25.pdf",
   "doc_type": "policy",
   "department": null,
@@ -1158,10 +1163,18 @@
    "src:holdout",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_provenance_fix": {
+   "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure-2024-25.pdf",
+   "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+   "reason": "gold document superseded; all keyphrases verified present in the successor",
+   "keyphrases_verified": "5/5",
+   "applied": "2026-08-16T05:35:14",
+   "applied_by": "benchmark provenance audit, round-8 to-do item 5"
+  }
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise-2024-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
   "source_title": "procedures-fitness-to-practise-2024-25.pdf",
   "doc_type": "policy",
   "department": null,
@@ -1184,7 +1197,15 @@
    "src:holdout",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_provenance_fix": {
+   "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise-2024-25.pdf",
+   "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
+   "reason": "gold document superseded; all keyphrases verified present in the successor",
+   "keyphrases_verified": "3/3",
+   "applied": "2026-08-16T05:35:14",
+   "applied_by": "benchmark provenance audit, round-8 to-do item 5"
+  }
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-professional-doctorates-tavistock.pdf",
@@ -1216,7 +1237,7 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students-2023-24.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
   "source_title": "progress-appeals-procedures-research-degree-students-2023-24.pdf",
   "doc_type": "policy",
   "department": null,
@@ -1241,7 +1262,15 @@
    "src:holdout",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_provenance_fix": {
+   "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students-2023-24.pdf",
+   "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+   "reason": "gold document superseded; all keyphrases verified present in the successor",
+   "keyphrases_verified": "3/3",
+   "applied": "2026-08-16T05:35:14",
+   "applied_by": "benchmark provenance audit, round-8 to-do item 5"
+  }
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2020-21/payment-liability-policy.pdf",
@@ -1418,7 +1447,7 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2024-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
   "source_title": "student-debt-policy-2024-25.pdf",
   "doc_type": "policy",
   "department": null,
@@ -1446,7 +1475,15 @@
    "src:holdout",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_provenance_fix": {
+   "old_source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2024-25.pdf",
+   "new_source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+   "reason": "gold document superseded; all keyphrases verified present in the successor",
+   "keyphrases_verified": "6/6",
+   "applied": "2026-08-16T05:35:14",
+   "applied_by": "benchmark provenance audit, round-8 to-do item 5"
+  }
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/graduate-teachers-employment-guidance.pdf",
@@ -3125,7 +3162,7 @@
    "Senate",
    "approved"
   ],
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mba_24.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
   "source_title": "mba_24.pdf",
   "doc_type": "rules_of_assessment",
   "_source": "sibling",
@@ -3134,7 +3171,15 @@
    "doc:rules_of_assessment",
    "has_followup",
    "pgt"
-  ]
+  ],
+  "_provenance_fix": {
+   "old_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mba_24.pdf",
+   "new_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+   "reason": "gold document superseded; all keyphrases verified present in the successor",
+   "keyphrases_verified": "2/2",
+   "applied": "2026-08-16T05:35:14",
+   "applied_by": "benchmark provenance audit, round-8 to-do item 5"
+  }
  },
  {
   "question": "What are the minimum overall weighted average marks required for Pass with Merit and Distinction on the MRes Degree in the Department of Government?",

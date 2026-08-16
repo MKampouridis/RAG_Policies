@@ -1,0 +1,102 @@
+[
+ {
+  "file": "questions_regression.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure-2024-25.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "5/5",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What actions can be considered as academic offences according to the document?"
+ },
+ {
+  "file": "questions_regression.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise-2024-25.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "3/3",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What are the additional responsibilities placed upon students enrolled on courses requirin"
+ },
+ {
+  "file": "questions_regression.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students-2023-24.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "3/3",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What must a student provide if their appeal outcome requires continued registration at the"
+ },
+ {
+  "file": "questions_regression.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2024-25.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "6/6",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What are the payment terms for self-funded International fee-paying students starting thei"
+ },
+ {
+  "file": "questions_regression.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mba_24.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "2/2",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What is the maximum period within which students must complete their Masters of Business A"
+ },
+ {
+  "file": "questions_set2.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure-2024-25.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "5/5",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What actions can be considered as academic offences according to the document?"
+ },
+ {
+  "file": "questions_set2.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise-2024-25.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/procedures-fitness-to-practise.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "3/3",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What are the additional responsibilities placed upon students enrolled on courses requirin"
+ },
+ {
+  "file": "questions_set2.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students-2023-24.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-research-degree-students.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "3/3",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What must a student provide if their appeal outcome requires continued registration at the"
+ },
+ {
+  "file": "questions_set2.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2024-25.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "6/6",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What are the payment terms for self-funded International fee-paying students starting thei"
+ },
+ {
+  "file": "questions_set3_sibling.json",
+  "old_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/mba_24.pdf",
+  "new_source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/mba-25.pdf",
+  "reason": "gold document superseded; all keyphrases verified present in the successor",
+  "keyphrases_verified": "2/2",
+  "applied": "2026-08-16T05:35:14",
+  "applied_by": "benchmark provenance audit, round-8 to-do item 5",
+  "question": "What is the maximum period within which students must complete their Masters of Business A"
+ }
+]
