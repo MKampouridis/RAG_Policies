@@ -781,9 +781,23 @@ ADJACENT_FROM_TOP_N = 1         # only expand around the rank-1 chunk
 # justifying it ON needs a generation eval (keyphrase coverage / judge), which
 # has not been run. See eval/report.md "Round 34e".
 DOC_COMPLETION_ENABLED = os.environ.get("RAG_DOC_COMPLETION", "1") == "1"
-DOC_COMPLETION_MAX_DOC_CHUNKS = 12   # only complete documents at most this big
+# Sized to the corpus, not guessed (corrected 2026-08-28 after shipping 12).
+# The 80 current milestone documents run 5-16 chunks, median 10, so a cap of 12
+# silently excluded 12 of them (15%) - and excluded exactly the WRONG ones: the
+# two largest, lw-phd-milestones{,-sustainable-transitions}, are 13 chunks and
+# carry the most codes in the corpus (21 and 19). A cap that drops the
+# documents most in need of completion is worse than no cap.
+DOC_COMPLETION_MAX_DOC_CHUNKS = 16   # covers all 80; the largest is 16
 DOC_COMPLETION_MIN_SLOTS = 2         # ...that already hold this many of the six
-DOC_COMPLETION_MAX_ADDED = 12        # hard cap on appended chunks, all documents
+DOC_COMPLETION_MAX_ADDED = 16        # hard cap on appended chunks, all documents
+# Complete ONE document, not every qualifying one (2026-08-28, after a probe).
+# "List all the milestones for a Law PhD student" put BOTH lw-phd-milestones
+# and its -sustainable-transitions variant over the slot threshold, so both were
+# completed: 23 chunks of near-identical content, and the answer cited 3 of 19
+# codes - far worse than the 15/16 this mechanism was built to fix. Near-
+# duplicate documents in one context do not add information, they add confusion.
+# Same narrowing _adjacent_chunks made when top-3 expansion beat itself.
+DOC_COMPLETION_MAX_DOCS = 1
 
 # Scope gate (user's call, and it is the reason this ships ON). Restricting
 # completion to ONE document class rather than every small dominant document
@@ -848,7 +862,7 @@ def _complete_small_documents(results: dict) -> dict:
     add_docs, add_metas = [], []
     # deterministic order: densest-in-the-ranking document first, then by URL,
     # so the same query yields the same context on every run
-    for url in sorted(candidates, key=lambda u: (-slots[u], u)):
+    for url in sorted(candidates, key=lambda u: (-slots[u], u))[:DOC_COMPLETION_MAX_DOCS]:
         chunks = by_url.get(url, [])
         if not chunks or len(chunks) > DOC_COMPLETION_MAX_DOC_CHUNKS:
             continue

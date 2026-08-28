@@ -6887,3 +6887,55 @@ problem and the untried lever is a verification pass - the codes present in the
 context are known exactly, so an answer can be checked against them and a
 second pass asked for the missing ones. That is a new mechanism, it costs a
 round trip on every enumerative turn, and it is unmeasured.
+
+### Round 34g: it was never a CSEE fix - CSEE was the easy case (2026-08-28)
+
+Asked whether the milestone work was CSEE-specific. Checking it produced three
+corrections, two of them to claims already recorded above.
+
+**Scope: the mechanism was never CSEE-only.** All **80** current milestone
+documents use the same code format, across all 21 department prefixes, 4-21
+codes each. The completion gate keys on `/pgre/milestones-`, so every
+department was already covered.
+
+**Correction 1 - the size cap excluded exactly the wrong documents.** Shipped
+with `MAX_DOC_CHUNKS = 12`, a number picked before the milestone set was
+measured. The 80 documents run 5-16 chunks, so 12 of them (15%) were silently
+skipped - including the two largest, `lw-phd-milestones{,-sustainable-
+transitions}`, which carry the MOST codes in the corpus (21 and 19). A cap that
+drops the documents most in need of completion is worse than no cap. Raised to
+16, which covers all 80.
+
+**Correction 2 - the ground truth was wrong, and the user spotted it.**
+Milestone documents also carry COMPLETION milestones (`C1.1`), which the
+`M\d+\.\d+` pattern never matched. C-codes appear in **52 of 80** documents.
+`ce-phd-2025-26.pdf` has 16 M-codes and one C-code, so its true total is **17**.
+Every "16/16 complete" recorded above was measured against a set that omitted
+the completion milestone - the runs may have been 16/17. Corrected to `[MC]`.
+
+**Correction 3 - completing several documents made things worse than the
+original defect.** "List all the milestones for a Law PhD student" put BOTH
+`lw-phd-milestones` and its `-sustainable-transitions` variant over the slot
+threshold, so both were completed: 23 chunks of near-identical content, and the
+answer cited **3 of 19** codes - far worse than the 15/16 this mechanism exists
+to fix. Near-duplicate documents in one context do not add information, they add
+confusion. Narrowed to the single densest document (`MAX_DOCS = 1`), the same
+narrowing `_adjacent_chunks` made when top-3 expansion lost to top-1.
+
+**Where four departments now stand** (one run each, M and C codes):
+
+| document | cited |
+|---|---|
+| ce-phd (CSEE) | **17/17** |
+| sc-phd-mono (Sociology) | 15/17 |
+| ps-phd (Psychology) | 13/15 - misses **C1.1** |
+| lw-phd (Law) | 14/20 |
+
+CSEE is the BEST case, not a representative one: at 9 chunks it is among the
+smallest milestone documents, and it is the only one measured before this
+round. The larger the document, the worse the enumeration - Law, the largest,
+is worst. Reporting "15/16 on CSEE" as the state of the feature overstated it.
+
+Retrieval is complete in all four cases; the codes are in the context and the
+generator omits them. That is the case for the verification pass - and it must
+count `C` codes, not just `M`.
