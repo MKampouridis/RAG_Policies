@@ -1440,6 +1440,61 @@ def generate_title(question: str) -> str:
     return out
 
 
+# Enumeration repair (2026-08-28). The generator drops items from coded lists
+# even when every item is in front of it - measured across four departments
+# with retrieval verified complete each time: CSEE 17/17, Sociology 15/17,
+# Psychology 13/15, Law 14/20. Persuasion was tried first and BACKFIRED
+# (_ENUMERATION_RULE: 3/4 complete -> 2/4, and failures grew from one code to
+# five), so this does not ask the model to behave. It checks.
+#
+# The check is arithmetic: the codes present in the context are known exactly,
+# so the codes present in the answer can be subtracted from them. Anything left
+# over was dropped. One retry naming the missing codes, then stop.
+#
+# WHY IT NEEDS A GATE. "What does milestone M2.1 require?" is correctly
+# answered by citing one code, and demanding all seventeen would be wrong. The
+# gate is structural rather than a regex over question wording: repair only
+# when the answer already cites ENUMERATION_MIN_CITED codes, i.e. it is visibly
+# attempting a list and fell short. One- and two-code answers are left alone.
+#
+# STREAMING. The retry does not stream; the corrected text is returned and the
+# client re-renders from the returned text, so a streaming user can see the
+# short answer replaced by the complete one. Same trade-off _scrub_plumbing
+# already documents, and the same reason: correctness of the stored text wins.
+ENUMERATION_REPAIR_ENABLED = os.environ.get("RAG_ENUMERATION_REPAIR", "1") == "1"
+# [MC]: M milestones AND C completion milestones. C-codes appear in 52 of the
+# 80 current milestone documents and an M-only pattern silently ignored them -
+# every "16/16" measured before this was really out of 17.
+ENUMERATION_CODE_RE = re.compile(r"\b[MC]\d+\.\d+\b")
+ENUMERATION_MIN_CITED = 3
+ENUMERATION_SCOPE = os.environ.get("RAG_ENUMERATION_SCOPE", "/pgre/milestones-")
+
+
+def _missing_enumeration_codes(context: str, answer_text: str, metadatas: list[dict]) -> list[str]:
+    """Codes present in the retrieved context but absent from the answer, or []
+    when repair does not apply. Empty for a question about one specific
+    milestone - see ENUMERATION_MIN_CITED."""
+    if not any(ENUMERATION_SCOPE in (m.get("source_url") or "") for m in metadatas):
+        return []
+    in_ctx = set(ENUMERATION_CODE_RE.findall(context))
+    in_ans = set(ENUMERATION_CODE_RE.findall(answer_text))
+    if len(in_ans) < ENUMERATION_MIN_CITED:
+        return []
+    return sorted(in_ctx - in_ans)
+
+
+def _repair_prompt(missing: list[str]) -> str:
+    """The retry turn. Names the codes and asks for the WHOLE answer again -
+    appending them as a postscript would read as an afterthought, and the point
+    is an answer the reader can trust as a list."""
+    names = ", ".join(missing)
+    return (
+        f"That answer left out {names}. Write the full answer again, covering every "
+        f"milestone in the same style and order as before, including {names}. "
+        "Do not mention this correction or that anything was missing."
+    )
+
+
 def answer(question: str, history: list[dict], summary: str = "", detail: str = "default",
            on_token=None, partner_mode: str | None = None) -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
@@ -1507,6 +1562,32 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     # split. The client re-renders from the returned text, so what the user ends
     # up with is scrubbed; a leaked phrase can flicker mid-stream.
     response_text = _scrub_plumbing(response_text)
+
+    if ENUMERATION_REPAIR_ENABLED:
+        _missing = _missing_enumeration_codes(context, response_text, metadatas)
+        if _missing:
+            _tr = _perf.time()
+            _repair = messages + [
+                {"role": "assistant", "content": response_text},
+                {"role": "user", "content": _repair_prompt(_missing)},
+            ]
+            try:
+                # no on_token: the retry is not streamed, the client re-renders
+                # from the returned text (see ENUMERATION_REPAIR_ENABLED)
+                _retried = _scrub_plumbing(generate(messages=_repair))
+            except Exception:
+                _retried = ""          # a failed repair must never cost the answer
+            if _retried and not _missing_enumeration_codes(context, _retried, metadatas):
+                response_text = _retried
+            elif _retried:
+                # one retry only, then be honest rather than silently short -
+                # an incomplete list that looks complete is the actual defect
+                _still = _missing_enumeration_codes(context, _retried, metadatas)
+                response_text = _retried + (
+                    f"\n\n_This list may be incomplete: the milestone document also "
+                    f"defines {', '.join(_still)}._"
+                )
+            _stage_timer("enumeration_repair", _tr)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         # variance gate: skip the "rules differ by programme" caveat when the

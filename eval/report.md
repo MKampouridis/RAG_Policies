@@ -6939,3 +6939,51 @@ is worst. Reporting "15/16 on CSEE" as the state of the feature overstated it.
 Retrieval is complete in all four cases; the codes are in the context and the
 generator omits them. That is the case for the verification pass - and it must
 count `C` codes, not just `M`.
+
+### Round 34h: enumeration repair - check the answer, don't ask the model nicely (2026-08-28)
+
+Persuasion had already been tried and had backfired (34f: telling the model not
+to omit items took completeness from 3/4 runs to 2/4 and grew failures from one
+code to five). This does not ask. It checks.
+
+**Mechanism.** The codes in the retrieved context are known exactly, so the
+codes in the answer can be subtracted from them; anything left over was
+dropped. One retry naming the missing codes and asking for the whole answer
+again - not an appended postscript, which reads as an afterthought. Then stop.
+
+**The gate is structural, not linguistic.** "What does milestone M2.1 require?"
+is correctly answered by citing one code, and demanding all seventeen would be
+wrong. Repair fires only when the answer already cites >= 3 codes - i.e. it is
+visibly attempting a list and fell short. One- and two-code answers are
+untouched. Scoped to milestone documents, like completion.
+
+**Result, four departments, M and C codes, paired arms:**
+
+| document | repair OFF | repair ON |
+|---|---|---|
+| ce-phd (CSEE) | 17/17 | 17/17 |
+| lw-phd (Law) | 19/20 | **20/20** |
+| sc-phd-mono (Sociology) | 16/17 | **17/17** |
+| ps-phd (Psychology) | 12/15 | **15/15** |
+| complete | **1/4** | **4/4** |
+
+Across two ON runs: 7 of 8 cases fully repaired, 1 flagged. Note the OFF column
+differs from 34g's on the same questions (Law 14/20 -> 19/20) - cloud
+generation variance, which is exactly why single runs are not trusted here.
+
+**A measurement artefact caught in my own instrument.** The fallback note NAMES
+the codes it could not cover, so counting codes in the final text credited the
+note itself rather than any description of the milestone. First ON run scored
+Psychology 15/15 while simultaneously flagging it incomplete - a contradiction
+that only surfaced because both were printed. Scoring now strips the note
+before counting.
+
+**When repair fails, the answer says so.** One retry, then a line naming the
+milestones it has not covered. An incomplete list that looks complete is the
+actual defect; a visible gap is recoverable by the reader.
+
+**Cost, stated plainly.** Repair fired on 3 of 4 enumerative milestone queries,
+each adding a full generation call (~20-30s). It is gated to milestone
+documents and to answers already citing >= 3 codes, so it cannot fire on
+ordinary questions - but on the questions it does fire on, it roughly doubles
+generation time. That is the price of a list that can be trusted.
