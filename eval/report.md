@@ -6623,3 +6623,53 @@ those are fixed will understate hit@6.
 **Not measured:** no eval was run on the +20% corpus. Whether 4,300 new chunks
 help PGR questions or dilute the pool for everything else is **open**, and the
 stale benchmark has to be fixed before that number would mean anything.
+
+### Round 34b: three user-reported failures, all reproduced (2026-08-28)
+
+Feedback from real use, the day the PGRE archive landed. Treated as hypotheses
+and reproduced before touching anything.
+
+**"Compare 2025/26 CSEE milestones with 2020/21" -> "I don't have 2020/21".**
+Root cause is one line: `_mentioned_year` uses `.search()`, so a query naming
+two years yields ONE. Retrieval returned six 2025-26 documents and zero
+2020/21 - the pool was filtered to one year before ranking ever ran, so the
+answer was truthful about a pool that had been made wrong upstream. The
+follow-up form ("now compare them to the most recent ones") is the mirror
+image: the contextualizer rewrote it correctly naming both years, then
+first-match picked `2020-21` and returned only 2020 documents.
+
+Invisible until today. With one edition per family a second year in a query was
+almost always incidental; nine years of milestones made comparison a real
+question. Historical traffic contains **1 multi-year turn in 80**, and that one
+is a statistic ("2000-1 to 2016-17"), not an edition request - so no existing
+eval set could have caught this, and none will score the fix. Recorded as the
+same blind spot as the multi-entity partner leak (0 of 160 turns, Round 16).
+
+Fixed by building one pool PER mentioned year and fusing them with the current
+pool. Year pools are ordered first so RRF tie-breaking is byte-identical to
+before for one-year queries; the no-year branch is untouched. Verified: the
+comparison query now retrieves both editions, and single-year/no-year probes
+return what they did before. Shipped ON rather than flag-gated - it is a fix to
+the existing year branch, not a new mechanism, and it cannot change any query
+naming fewer than two years.
+
+**Still broken after that fix, and worth stating plainly:** the comparison
+answer is better (it has both documents, it no longer denies having 2020/21)
+but still incomplete. Two remaining causes, both measured:
+
+- **Chunk budget.** `N_RESULTS = 6`, and `ce-phd-2025-26.pdf` is 9 chunks. A
+  complete milestone list cannot fit in the context even when the right
+  document wins every slot - and a comparison needs two such documents. This
+  is the user's first complaint ("lists some but not all") and it is the widest
+  of the three: **41% of stored turns are enumerative** (list/all/every/what
+  are the). Fixing it means pool size or parent-child chunking, both Broad
+  changes needing an aggregate result, not a targeted probe.
+- **The department rename breaks lexical matching.** The literal token "CSEE"
+  appears in `csee-phd-2020.pdf` (department field, filename, body) and
+  **nowhere** in `ce-phd-2025-26.pdf`, which spells out "School of Computer
+  Science and Electronic Engineering". So a user typing the acronym gets the
+  archived edition on exact-term match, and cannot distinguish the right
+  current document from other departments' near-identical milestone files -
+  3 of 6 slots went to `ec`/`hr`/`lw`/`se`. Same rename that broke `is_current`
+  (Round 34), now breaking retrieval. A department acronym<->full-name alias,
+  applied query-side, would need no re-embed; it is unbuilt and unmeasured.

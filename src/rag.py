@@ -197,10 +197,41 @@ __all__ = [
 
 
 def _mentioned_year(text: str) -> str:
-    """Returns the canonical academic year mentioned in the text ('2025-26'),
-    or '' if none."""
+    """Returns the FIRST canonical academic year mentioned in the text
+    ('2025-26'), or '' if none. Prefer _mentioned_years() in retrieval - see
+    its docstring for why first-match-only is a defect there."""
     m = YEAR_MENTION_RE.search(text)
     return normalize_year(m.group(1)) if m else ""
+
+
+def _mentioned_years(text: str) -> list[str]:
+    """Every canonical academic year mentioned, in order of appearance, without
+    duplicates.
+
+    `_mentioned_year` uses `.search()` and so sees only the first. That was
+    invisible while the corpus held one edition per family, and became a
+    reported defect the day nine years of PGRE milestones arrived
+    (2026-08-28). Three user-reported failures, all reproduced:
+
+      "Compare the 2025/26 CSEE PhD milestones with the 2020/21 ones"
+          -> extracted '2025-26' only; retrieval returned six 2025-26
+             documents and ZERO 2020/21, so the answer said it had no access
+             to 2020/21 - while both editions sat in the index.
+      "Now compare them to the most recent ones" (after a 2020/21 turn)
+          -> the contextualizer rewrote it correctly naming both years, then
+             the first-match rule picked '2020-21' and returned only 2020
+             documents, so the answer could not find the CURRENT ones.
+
+    Symmetric, and neither is a retrieval-quality problem: the pool was
+    filtered to one year before ranking ever ran. A comparison question is
+    unanswerable when half of what it compares is excluded by construction.
+    """
+    seen: list[str] = []
+    for m in YEAR_MENTION_RE.finditer(text):
+        year = normalize_year(m.group(1))
+        if year and year not in seen:
+            seen.append(year)
+    return seen
 
 
 def _chunk_year(meta: dict) -> str:
@@ -735,37 +766,46 @@ def retrieve(question: str, history: list[dict], summary: str = "",
 
     pool_size = N_RESULTS * FETCH_POOL_MULTIPLIER
 
-    asked_year = _mentioned_year(retrieval_query)
-    if asked_year:
-        # a year is mentioned - but it may be an edition request ("rules for
-        # 2021-22") or purely incidental (a cohort start year, a statistic
-        # quoted from a document). Treat the year as a soft preference: fuse
-        # the year-labeled pool with the default current pool, so edition
-        # requests surface that year's documents while incidental mentions
-        # can't exclude the current document that actually holds the answer.
+    asked_years = _mentioned_years(retrieval_query)
+    if asked_years:
+        # one or more years are mentioned - but they may be edition requests
+        # ("rules for 2021-22") or purely incidental (a cohort start year, a
+        # statistic quoted from a document). Treat them as a soft preference:
+        # fuse a pool PER MENTIONED YEAR with the default current pool, so
+        # edition requests surface those years' documents while incidental
+        # mentions can't exclude the current document that actually holds the
+        # answer. One pool per year is what makes "compare 2025/26 with
+        # 2020/21" answerable at all - see _mentioned_years().
         # No recency dedupe here - year-labeled docs are intentionally old.
-        year_dense = vector_query(retrieval_query, n_results=pool_size,
-                                  where={"academic_year_norm": asked_year})
-        year_bm25 = lexical.query(retrieval_query, n_results=pool_size, year=asked_year)
+        # year pools first, then the current pool - preserving the original
+        # single-year list order so RRF tie-breaking (which follows insertion
+        # order) is byte-identical to before for one-year queries.
+        ranked_lists = []
+        for asked_year in asked_years:
+            year_dense = vector_query(retrieval_query, n_results=pool_size,
+                                      where={"academic_year_norm": asked_year})
+            ranked_lists.append(_dense_as_hits(year_dense))
+            ranked_lists.append(lexical.query(retrieval_query, n_results=pool_size, year=asked_year))
         cur_dense = vector_query(retrieval_query, n_results=pool_size, where={"is_current": True})
         cur_bm25 = lexical.query(retrieval_query, n_results=pool_size, current_only=True)
-        ranked_lists = [
-            _dense_as_hits(year_dense), year_bm25,
-            _dense_as_hits(cur_dense), cur_bm25,
-        ]
+        ranked_lists.append(_dense_as_hits(cur_dense))
+        ranked_lists.append(cur_bm25)
         if SPLADE_ENABLED:
-            ranked_lists.append(_splade.query(retrieval_query, n_results=pool_size, year=asked_year))
+            for asked_year in asked_years:
+                ranked_lists.append(_splade.query(retrieval_query, n_results=pool_size, year=asked_year))
             ranked_lists.append(_splade.query(retrieval_query, n_results=pool_size, current_only=True))
         if EMBEDDING_ENSEMBLE_ENABLED:
-            ranked_lists.append(_ensemble.query(retrieval_query, n_results=pool_size,
-                                                 where={"academic_year_norm": asked_year}))
+            for asked_year in asked_years:
+                ranked_lists.append(_ensemble.query(retrieval_query, n_results=pool_size,
+                                                     where={"academic_year_norm": asked_year}))
             ranked_lists.append(_ensemble.query(retrieval_query, n_results=pool_size,
                                                  where={"is_current": True}))
         if PSEUDO_QUERY_ENABLED:
             ranked_lists.append(_pseudo_query.query(retrieval_query, n_results=pool_size,
                                                      where={"is_current": True}))
         if COLBERT_FIRST_STAGE_ENABLED:
-            ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, year=asked_year))
+            for asked_year in asked_years:
+                ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, year=asked_year))
             ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, current_only=True))
         candidates = _dedup_by_chunk(_rrf_fuse(*ranked_lists))
     else:
