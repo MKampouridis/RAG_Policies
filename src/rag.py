@@ -234,6 +234,69 @@ def _mentioned_years(text: str) -> list[str]:
     return seen
 
 
+# Department acronym -> the wording the CURRENT documents actually use.
+#
+# Essex renamed its departments and re-coded its filenames between editions, so
+# the acronym a user types can be present in every ARCHIVED edition and absent
+# from the current one. Reported case (2026-08-28): "CSEE" appears in
+# `csee-phd-2020.pdf` (department field, filename, body text) and NOWHERE in
+# `ce-phd-2025-26.pdf`, which spells out "School of Computer Science and
+# Electronic Engineering" - so an exact-term match hands every slot to the
+# superseded edition, and the right current document cannot be told apart from
+# other departments' near-identical milestone files.
+#
+# Derived from the corpus, not guessed: each entry was checked to appear in 0
+# of the 80 current milestone documents while present in archived ones. Terms
+# that DO survive into the current wording are deliberately absent from this
+# map - iser (3), sres (4), hsc (4), psychology (4), sociology (10), economics
+# (3), government (5), history (7), philosophy (3), maths (1), law (4), art
+# history (4) all still match and need no help. `msas` is the exception to the
+# rule: it appears NOWHERE in the corpus, current or archived, yet users type
+# it (seen in stored traffic), so it would otherwise match nothing at all.
+#
+# 17% of stored user turns contain one of these acronyms, CSEE dominating.
+# Env-gated so both arms can be replayed on the SAME corpus - the corpus moved
+# 20% the day this was written, so a comparison against any stored baseline
+# would measure the ingest, not this. Default set from that measurement; see
+# eval/report.md "Round 34c".
+DEPARTMENT_ALIAS_ENABLED = os.environ.get("RAG_DEPARTMENT_ALIAS", "1") == "1"
+DEPARTMENT_ALIASES = {
+    "csee": "School of Computer Science and Electronic Engineering",
+    "ebs": "Essex Business School",
+    "lifts": "Literature, Film and Theatre Studies",
+    "spah": "Philosophical, Historical, and Interdisciplinary Studies",
+    "pps": "Psychosocial and Psychoanalytic Studies",
+    "langling": "Language and Linguistics",
+    "msas": "School of Mathematics, Statistics and Actuarial Sciences",
+}
+_DEPARTMENT_ALIAS_RE = re.compile(
+    r"\b(" + "|".join(sorted(DEPARTMENT_ALIASES, key=len, reverse=True)) + r")\b", re.I
+)
+
+
+def _alias_expanded_query(text: str) -> str:
+    """`text` plus the full department name for any acronym it uses, or '' when
+    nothing applies.
+
+    An expansion already spelled out in the query is not repeated - "CSEE
+    (Computer Science and Electronic Engineering)" needs no help and doubling
+    the phrase would just skew the embedding.
+
+    Used ADDITIVELY: the caller retrieves an EXTRA pool with this query and
+    fuses it alongside the original, rather than replacing the query. The
+    original pools are therefore bit-identical to what they were, and this can
+    only add candidates for the reranker to judge - it cannot displace a result
+    that the unexpanded query would have found.
+    """
+    if not DEPARTMENT_ALIAS_ENABLED:
+        return ""
+    found = {m.group(1).lower() for m in _DEPARTMENT_ALIAS_RE.finditer(text)}
+    lowered = text.lower()
+    additions = [DEPARTMENT_ALIASES[a] for a in sorted(found)
+                 if DEPARTMENT_ALIASES[a].lower() not in lowered]
+    return f"{text} {' '.join(additions)}" if additions else ""
+
+
 def _chunk_year(meta: dict) -> str:
     """Canonical academic year for a chunk: the backfilled academic_year_norm
     metadata when present, otherwise normalized on the fly."""
@@ -807,6 +870,11 @@ def retrieve(question: str, history: list[dict], summary: str = "",
             for asked_year in asked_years:
                 ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, year=asked_year))
             ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, current_only=True))
+        _aliased = _alias_expanded_query(retrieval_query)
+        if _aliased:
+            ranked_lists.append(_dense_as_hits(
+                vector_query(_aliased, n_results=pool_size, where={"is_current": True})))
+            ranked_lists.append(lexical.query(_aliased, n_results=pool_size, current_only=True))
         candidates = _dedup_by_chunk(_rrf_fuse(*ranked_lists))
     else:
         # default case: pre-filter the historical archive out of both pools
@@ -880,6 +948,13 @@ def retrieve(question: str, history: list[dict], summary: str = "",
                 ranked_lists.append(_dense_as_hits(routed_dense))
         if COLBERT_FIRST_STAGE_ENABLED:
             ranked_lists.append(_colbert_index.query(retrieval_query, n_results=pool_size, current_only=True))
+        _aliased = _alias_expanded_query(retrieval_query)
+        if _aliased:
+            # extra pool only - see _alias_expanded_query on why this is
+            # additive rather than a query rewrite
+            ranked_lists.append(_dense_as_hits(
+                vector_query(_aliased, n_results=pool_size, where={"is_current": True})))
+            ranked_lists.append(lexical.query(_aliased, n_results=pool_size, current_only=True))
         candidates = _prefer_most_recent_year(_dedup_by_chunk(_rrf_fuse(*ranked_lists)))
 
     global _LAST_CANDIDATE_POOL  # debug hook for the retrieval recall diagnostic (no behavior change)

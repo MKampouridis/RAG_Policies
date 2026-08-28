@@ -6673,3 +6673,57 @@ but still incomplete. Two remaining causes, both measured:
   3 of 6 slots went to `ec`/`hr`/`lw`/`se`. Same rename that broke `is_current`
   (Round 34), now breaking retrieval. A department acronym<->full-name alias,
   applied query-side, would need no re-embed; it is unbuilt and unmeasured.
+
+### Round 34c: department acronym aliases - and the hypothesis they were built on, falsified (2026-08-28)
+
+Follow-up to 34b's second cause. Asked to check whether departments beyond CSEE
+need the same treatment.
+
+**The audit.** For each acronym, counted documents containing it among the 80
+CURRENT PGRE milestone documents vs the 497 archived. Six are absent from every
+current document while present in archived ones - `csee` (15), `spah` (14),
+`lifts` (11), `ebs` (6), `pps` (6), `langling` (5). Everything else survives the
+rename and needs no help: `iser`, `sres`, `hsc`, `psychology`, `sociology`,
+`economics`, `government`, `history`, `philosophy`, `maths`, `law`,
+`art history` all still match. `msas` is a seventh entry on different grounds -
+it appears NOWHERE in the corpus, current or archived, yet users type it (found
+in stored traffic), so it matched nothing at all. 17% of stored user turns
+contain one of the seven, CSEE dominating.
+
+**First correction.** An earlier claim that "CSEE appears nowhere in current
+documents" was wrong at corpus scale: it appears in 10 current documents. It is
+absent from `ce-phd-2025-26.pdf` specifically. Scope matters - the audit above
+is scoped to the milestone set, where the defect actually lives.
+
+**Second correction, and the bigger one: the motivating mechanism does not
+exist on ordinary queries.** The stated rationale was that the acronym hands
+slots to the ARCHIVED edition. A 12-question targeted probe (one per acronym,
+gold = that department's current milestone document) scored **11/12 with the
+alias OFF**. Dense retrieval resolves these acronyms unaided, because the
+default pool is already filtered to `is_current` - the archived edition cannot
+compete for a slot it is excluded from. The slot-stealing was real only in the
+multi-year comparison case of 34b, where archived documents legitimately enter
+the pool. Ordinary single-year queries were never broken this way.
+
+**What it does do, measured on the metric it can move.** hit@6 is flat in both
+directions - 115/160 broad, 11/12 targeted, identical arms. hit@6 asks only
+whether the document appears at all, and the change is about how much of it
+appears. Counting gold-document chunks among the six slots: **25/83 -> 29/83,
+5 probes improved, 0 regressed**, with wrong-department dilution falling
+(`ll-phd-monograph` 1 other-department slot -> 0, `curating` 1 -> 0). That is
+directly the "lists some but not all" complaint: more of the right document
+reaching the generator.
+
+**Blast radius.** The mechanism fired on **0 of 160** broad-control turns, so
+that control proves inertness, not safety-under-load - stated plainly rather
+than reported as a clean pass. Implemented additively: an EXTRA pool retrieved
+with the expanded query and fused alongside the original, so the original pools
+are bit-identical and no result the unexpanded query would have found can be
+displaced from the pool. Env-gated (`RAG_DEPARTMENT_ALIAS`) so both arms are
+replayable on one corpus - necessary here, since the corpus moved 20% the same
+day and any stored baseline would measure the ingest instead.
+
+Default ON: it cannot touch a query without one of the seven acronyms, it
+regressed nothing measured, and it improves concentration on 17% of real turns.
+Not eval-justified in the usual sense, and that is worth naming - no scored set
+contains an applicable case, which is why the probe had to be built by hand.
