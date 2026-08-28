@@ -1,7 +1,7 @@
 [
  {
   "_stamp": true,
-  "corpus_version": "1f4a00b491584434bfc3023c4c54da7f",
+  "corpus_version": "025a75bb5150471eab0e60e49eea7308",
   "note": "This eval set was verified against this corpus version. If the corpus version differs, gold documents may have been superseded - re-run eval/benchmark_provenance_audit.py."
  },
  {
@@ -388,8 +388,8 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy.pdf",
-  "source_title": "student-engagement-policy.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy-2026-27.pdf",
+  "source_title": "student-engagement-policy-2026-27.pdf",
   "doc_type": "policy",
   "department": null,
   "academic_year": "2025-26",
@@ -419,7 +419,8 @@
    "src:main",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "student-engagement-policy.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/fitness-to-study.pdf",
@@ -478,8 +479,8 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf",
-  "source_title": "tuition-fee-payment-and-liability-policy-2025-26.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/tuition-fee-payment-and-liability-policy-2026-27.pdf",
+  "source_title": "tuition-fee-payment-and-liability-policy-2026-27.pdf",
   "doc_type": "policy",
   "department": null,
   "academic_year": "2025-26",
@@ -501,11 +502,12 @@
    "src:main",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "tuition-fee-payment-and-liability-policy-2025-26.pdf"
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
-  "source_title": "student-debt-policy-2025-26.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/student-debt-policy-2026-27.pdf",
+  "source_title": "student-debt-policy-2026-27.pdf",
   "doc_type": "policy",
   "department": null,
   "academic_year": "2025-26",
@@ -531,7 +533,8 @@
    "src:main",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "student-debt-policy-2025-26.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-of-practice-supervision-masters-dissertations.pdf",
@@ -1107,8 +1110,8 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates-2024-25.pdf",
-  "source_title": "code-practice-professional-doctorates-2024-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/code-practice-professional-doctorates.pdf",
+  "source_title": "code-practice-professional-doctorates.pdf",
   "doc_type": "policy",
   "department": null,
   "academic_year": "2024-25",
@@ -1135,7 +1138,8 @@
    "doc:policy",
    "has_followup",
    "pgr"
-  ]
+  ],
+  "_repointed_from": "code-practice-professional-doctorates-2024-25.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
@@ -1273,7 +1277,7 @@
   }
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2020-21/payment-liability-policy.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/payment-liability-policy.pdf",
   "source_title": "payment-liability-policy.pdf",
   "doc_type": "policy",
   "department": null,
@@ -1297,11 +1301,12 @@
    "src:holdout",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "payment-liability-policy.pdf"
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east-15-prof-code-conduct-22-v2.pdf",
-  "source_title": "east-15-prof-code-conduct-22-v2.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/roa-ug-e15-code-of-conduct.pdf",
+  "source_title": "roa-ug-e15-code-of-conduct.pdf",
   "doc_type": "policy",
   "department": "East 15 Acting School",
   "academic_year": "2024-25",
@@ -1327,7 +1332,8 @@
    "doc:policy",
    "has_followup",
    "departmental"
-  ]
+  ],
+  "_repointed_from": "east-15-prof-code-conduct-22-v2.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/content-development-management-policy.pdf",
@@ -1358,8 +1364,8 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy-2024-25.pdf",
-  "source_title": "student-engagement-policy-2024-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy-2026-27.pdf",
+  "source_title": "student-engagement-policy-2026-27.pdf",
   "doc_type": "policy",
   "department": null,
   "academic_year": "2025-26",
@@ -1388,7 +1394,8 @@
    "src:holdout",
    "doc:policy",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "student-engagement-policy-2024-25.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-postgraduate-research-practice-as-research.pdf",
@@ -1447,8 +1454,8 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
-  "source_title": "student-debt-policy-2024-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/student-debt-policy-2026-27.pdf",
+  "source_title": "student-debt-policy-2026-27.pdf",
   "doc_type": "policy",
   "department": null,
   "academic_year": "2024-25",
@@ -1483,7 +1490,8 @@
    "keyphrases_verified": "6/6",
    "applied": "2026-08-16T05:35:14",
    "applied_by": "benchmark provenance audit, round-8 to-do item 5"
-  }
+  },
+  "_repointed_from": "student-debt-policy-2025-26.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/graduate-teachers-employment-guidance.pdf",
@@ -1708,8 +1716,8 @@
   ]
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/3-year-honours-degrees/roa-ug-3yr-year-1-variations.pdf",
-  "source_title": "roa-ug-3yr-year-1-variations.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/variations/year-1-variations-ug.pdf",
+  "source_title": "year-1-variations-ug.pdf",
   "doc_type": "rules_of_assessment",
   "department": null,
   "academic_year": "2025-26",
@@ -1732,11 +1740,12 @@
    "src:holdout",
    "doc:rules_of_assessment",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "roa-ug-3yr-year-1-variations.pdf"
  },
  {
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-1-variations.pdf",
-  "source_title": "roa-ug-4yr-year-1-variations.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/variations/year-1-variations-ug.pdf",
+  "source_title": "year-1-variations-ug.pdf",
   "doc_type": "rules_of_assessment",
   "department": null,
   "academic_year": "2025-26",
@@ -1762,7 +1771,8 @@
    "src:holdout",
    "doc:rules_of_assessment",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "roa-ug-4yr-year-1-variations.pdf"
  },
  {
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/foundation-year/roa-ug-foundation-year-variations.pdf",
@@ -3040,15 +3050,16 @@
    "coursework aggregate mark",
    "exam mark"
   ],
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
-  "source_title": "csee_model_1_accredited_january_starts_rules_jan25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-full-time-accredited-degrees---jan-start.pdf",
+  "source_title": "csee-full-time-accredited-degrees---jan-start.pdf",
   "doc_type": "rules_of_assessment",
   "_source": "sibling",
   "_strata": [
    "src:sibling",
    "doc:rules_of_assessment",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "csee_model_1_accredited_january_starts_rules_jan25.pdf"
  },
  {
   "question": "What is the pass mark for the MSc Artificial Intelligence and its Applications programme in the Project Demonstration Oral (PDO) and written Dissertation element?",
@@ -3064,15 +3075,16 @@
    "review frequency",
    "Annually"
   ],
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf",
-  "source_title": "csee_non_accredited_january_start_2025_msc.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-non-accredited-january-start-2026-msc.pdf",
+  "source_title": "csee-non-accredited-january-start-2026-msc.pdf",
   "doc_type": "rules_of_assessment",
   "_source": "sibling",
   "_strata": [
    "src:sibling",
    "doc:rules_of_assessment",
    "has_followup"
-  ]
+  ],
+  "_repointed_from": "csee_non_accredited_january_start_2025_msc.pdf"
  },
  {
   "question": "What is the pass mark for core modules on the MFA Theatre Directing programme?",

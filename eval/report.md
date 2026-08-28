@@ -6727,3 +6727,60 @@ Default ON: it cannot touch a query without one of the seven acronyms, it
 regressed nothing measured, and it improves concentration on 17% of real turns.
 Not eval-justified in the usual sense, and that is worth naming - no scored set
 contains an applicable case, which is why the probe had to be built by hand.
+
+### Round 34d: the benchmark was scoring correct retrieval as a miss - 62 points of it (2026-08-28)
+
+`check_benchmark_stamp.py` failed closed after the PGRE ingest, as designed.
+Fixing what it found turned out to matter more than anything measured today.
+
+**Gold repointing (12 items).** The provenance audit's DEFINITELY BROKEN class
+held 12 of 152 items graded against superseded documents - caused by the
+2026-27 policies that arrived in the same crawl, not by PGRE. Each successor
+was resolved through `document_family` and checked before repointing; five
+families had no within-family successor and were traced by hand
+(`roa-ug-3yr/4yr-year-1-variations` -> the consolidated `year-1-variations-ug`,
+matching the SUPERSEDED_URLS note; `east-15-prof-code-conduct-22-v2` ->
+`roa-ug-e15-code-of-conduct`; two CSEE January-start files -> their 2026
+editions). DEFINITELY BROKEN: **12 -> 0**, OK 109 -> 115.
+
+Keyphrases were deliberately NOT rewritten. Several repointed items now match
+only partially (PARTIAL_DRIFT 25 -> 31), which is the honest state: the clause
+was reworded in the new edition. Inventing keyphrases to match would be
+fabricating gold, and the audit's own note says exact-substring drift "flags
+items for a human, it does not condemn them".
+
+**The two flagged items, looked at rather than left flagged.**
+`student-voice-policy.pdf` is fine - "SVG" appears 67 times and the missing
+"engaging proactively" is present as "engage with them proactively". Stale
+keyphrases, correct gold. `east15-25.pdf` is **mis-specified, not stale**: the
+question compares East 15 with Edge Hotel School, but its keyphrases
+("accelerated delivery", "maximum periods of study") were verified to live in
+the Edge Hotel documents, not East 15. A two-document comparison carrying one
+gold document cannot be scored by hit@6 either way. Left as-is and recorded -
+rewriting it silently would hide a benchmark design defect.
+
+**Then the same defect, found in the OTHER instrument.** Repointing fixed
+`questions_regression.json`; `retrieval_replay.py` reads stored RESULTS files,
+which freeze their own gold URLs. 26 of its 160 turns carried a superseded
+gold:
+
+| gold | turns | hit@6 |
+|---|---|---|
+| still current | 134 | **82.1%** |
+| superseded | 26 | **19.2%** |
+| all | 160 | 71.9% |
+
+A 62-point gap that is entirely an artefact of the instrument. Every "71.9%"
+quoted earlier today - including both arms of the alias A/B - was depressed by
+it.
+
+Fixed at the scoring rule rather than by editing stored results: a hit now
+counts the gold URL **or the CURRENT edition of its family**, and only the
+current one, so returning a 2017 edition for a 2025 question stays a miss.
+Corrected baseline: **71.9% -> 82.5%** (132/160), 17 turns recovered that were
+correct retrieval all along.
+
+**The alias A/B re-run on the fixed instrument is unchanged: 132/160 both arms,
+0 gained, 0 lost.** The 34c conclusion survives - department aliases move chunk
+concentration, not hit@6 - and it now rests on a baseline that is not lying by
+ten points.
