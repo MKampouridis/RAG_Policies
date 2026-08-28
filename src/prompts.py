@@ -100,6 +100,31 @@ _INLINE_CITATION_RULE = (
 # institution fix unmeasurable. It stays on for the real-user evidence
 # (the CSEE/MSAS/Psychology complaint), with that limit recorded not assumed.
 # Revert with = False.
+# Enumeration fidelity (2026-08-28). Retrieval was fixed first: milestone
+# documents are now completed into the context, so all 16 codes (M1.1 ... M3.3)
+# of ce-phd-2025-26.pdf are present on EVERY run. The generator still dropped
+# one on 3 of 6 runs, always a trailing item of a group - M2.7 is the last row
+# of its chunk, in a flattened table, immediately before a new section header.
+#
+# Detail level is NOT the lever: concise scored 15/16, 16, 16 and detailed
+# 15, 15, 16, so lengthening the answer did not help. Cloud generation cannot
+# be temperature-pinned, so this is measured over repeats, never one run.
+# FALSIFIED 2026-08-28, kept OFF with the measurement rather than deleted.
+# Paired arms, 4 runs each, same session and same context:
+#   rule OFF: 3/4 runs complete, worst run 15/16 (dropped M2.7 only)
+#   rule ON : 2/4 runs complete, worst run 11/16 (dropped M1.3-M1.6 AND M3.3)
+# Telling the model not to omit items made it omit MORE, and in blocks -
+# the same direction INLINE_CITATIONS went (-11 points of groundedness).
+# Two base-prompt rules have now helped (MULTI_ENTITY) and two have hurt.
+ENUMERATION_COMPLETENESS = os.environ.get("RAG_ENUMERATION_RULE", "0") == "1"
+_ENUMERATION_RULE = (
+    "\n- When the documents present an itemised or coded list (milestone codes like M2.7, "
+    "numbered clauses, lettered sub-paragraphs) and the question asks what the list contains, "
+    "reproduce EVERY item, including the last one in each group. Do not summarise a list, "
+    "abbreviate it with \"etc.\", or stop at a representative sample - a list that silently "
+    "omits an item reads as complete and is wrong."
+)
+
 MULTI_ENTITY_COVERAGE = True
 _MULTI_ENTITY_RULE = (
     "\n- If the question names several specific things (multiple programmes, departments, "
@@ -264,6 +289,7 @@ SYSTEM_PROMPT = (
     + (_VERBATIM_RULE if QUOTE_FIGURES_VERBATIM else "")
     + (_INLINE_CITATION_RULE if INLINE_CITATIONS else "")
     + (_MULTI_ENTITY_RULE if MULTI_ENTITY_COVERAGE else "")
+    + (_ENUMERATION_RULE if ENUMERATION_COMPLETENESS else "")
     + (_USER_FACING_RULE if USER_FACING_LANGUAGE else "")
     + "\n"
 )

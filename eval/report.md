@@ -6841,3 +6841,49 @@ eval scores keyphrase coverage on those 27 turns.
 **Still not fixed:** enumerative questions over LARGE documents. A 65-chunk
 policy cannot be enumerated from a 6-chunk window and this change does not try.
 That needs parent-child chunking, which Round 33 returned to the open list.
+
+### Round 34f: why 15/16, and a prompt rule that made it worse (2026-08-28)
+
+"It's crucial to retrieve all milestones" - so the remaining gap was chased
+rather than accepted.
+
+**Retrieval is not the gap.** With completion on, all 16 codes (M1.1 ... M3.3)
+of `ce-phd-2025-26.pdf` are in the context on every run - verified directly on
+the assembled context string, not inferred from the answer. 11 chunks, 14.9k
+chars.
+
+**The gap is generation, and it is variance, not a ceiling.** The reported
+"15/16" was one sample of a noisy process: repeated runs scored 16, 14, 16 and
+then 15, 16, 16. Cloud generation cannot be temperature-pinned, so a single run
+here means nothing - the same trap the noise-floor note describes.
+
+**Detail level is not the lever.** concise 15/16, 16, 16; detailed 15, 15, 16.
+Lengthening the answer did not help, which rules out a brevity or token-budget
+explanation (answers ran ~700-1000 output tokens against a 2048 cap).
+
+**The failure is positional.** Every single-code omission was M2.7 - the LAST
+row of its chunk, in a flattened table, immediately before a new section header
+begins the next chunk. The generator summarises per year-group and drops the
+trailing item of a group.
+
+**A prompt rule aimed at exactly that made it worse.** `_ENUMERATION_RULE`
+("reproduce EVERY item, including the last one in each group; do not summarise
+a list"). Paired arms, 4 runs each, same session:
+
+| | runs complete | worst run |
+|---|---|---|
+| rule OFF | **3/4** | 15/16 (M2.7 only) |
+| rule ON | 2/4 | **11/16** (M1.3-M1.6 and M3.3) |
+
+Telling the model not to omit items made it omit MORE, and in blocks rather
+than singly. Same direction INLINE_CITATIONS went (-11 points of groundedness).
+Base-prompt rules are now 2 for 4 in this project: MULTI_ENTITY and
+USER_FACING_LANGUAGE helped, INLINE_CITATIONS and this one hurt. Kept OFF
+behind `RAG_ENUMERATION_RULE` with the numbers, not deleted.
+
+**Where this leaves it.** 3 of 4 runs enumerate all 16; the failure mode is one
+trailing code, not a truncated list. Closing the last gap is a GENERATION
+problem and the untried lever is a verification pass - the codes present in the
+context are known exactly, so an answer can be checked against them and a
+second pass asked for the missing ones. That is a new mechanism, it costs a
+round trip on every enumerative turn, and it is unmeasured.
