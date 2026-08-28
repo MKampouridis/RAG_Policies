@@ -6,6 +6,7 @@ import json
 import os
 import re
 import time as _perf
+from collections import Counter
 
 from src import colbert_index as _colbert_index
 from src import doc_index as _doc_index
@@ -755,6 +756,118 @@ ADJACENT_CHUNK_EXPANSION = os.environ.get("RAG_ADJACENT_CHUNKS", "1") == "1"
 ADJACENT_MAX_ADDED = 2          # hard cap on appended neighbours
 ADJACENT_FROM_TOP_N = 1         # only expand around the rank-1 chunk
 
+# Document completion (2026-08-28). Reported failure: "list a department's
+# milestones" returns some and not all. Measured cause - N_RESULTS is 6 and
+# `ce-phd-2025-26.pdf` is 9 chunks, so the complete list cannot fit in the
+# context even when the right document wins every slot. Across 160 replay
+# turns the generator sees 15% of the gold document's chunks (532/3487).
+#
+# Completing the document outright is NOT viable: on enumerative turns the
+# median gold document is missing 18 chunks and the worst is missing 65, so
+# "add the rest" would multiply context on exactly the queries that already
+# retrieve well - the failure mode of "When More Documents Hurt RAG"
+# (arXiv 2606.11350) that this codebase has paid for before.
+#
+# Bounded instead, and the bounds are measured rather than picked. Only
+# documents SMALL enough to complete (<= MAX_DOC_CHUNKS) and already DOMINANT
+# in the ranking (>= MIN_SLOTS of the six), which is a structural signal rather
+# than a regex over question wording - "list"/"what are the" matches 32% of
+# turns and says nothing about whether the answer is spread across chunks.
+# Ceiling at these settings: 27 of 160 turns (17%), median 5 chunks added,
+# worst case 9.
+#
+# OFF by default. hit@6 cannot validate this by construction - adding chunks of
+# a document already in the top 6 cannot change whether it was retrieved - so
+# justifying it ON needs a generation eval (keyphrase coverage / judge), which
+# has not been run. See eval/report.md "Round 34e".
+DOC_COMPLETION_ENABLED = os.environ.get("RAG_DOC_COMPLETION", "1") == "1"
+DOC_COMPLETION_MAX_DOC_CHUNKS = 12   # only complete documents at most this big
+DOC_COMPLETION_MIN_SLOTS = 2         # ...that already hold this many of the six
+DOC_COMPLETION_MAX_ADDED = 12        # hard cap on appended chunks, all documents
+
+# Scope gate (user's call, and it is the reason this ships ON). Restricting
+# completion to ONE document class rather than every small dominant document
+# is what makes the change provably inert everywhere it has not been measured:
+# these documents entered the corpus on 2026-08-28, so all 160 replay turns and
+# both stored results files contain ZERO of them, and the mechanism cannot
+# change a single previously-measured number.
+#
+# It also matches the shape of the defect. Milestone documents are an
+# enumeration - 16 codes (M1.1 ... M3.3) spread across 9 chunks - so a partial
+# retrieval yields a partial LIST, which reads as a complete answer and is not.
+# A policy answers from the clause that matches; a milestone document only
+# answers in full. Measured on "List all the milestones for a CSEE PhD
+# student": 8 of 16 codes cited before, 15 of 16 after.
+#
+# Widening this to all small documents is a real option and is NOT justified
+# yet: it would touch 27 of 160 turns (17%), which hit@6 cannot score, so it
+# needs a generation eval first. Set RAG_DOC_COMPLETION_SCOPE="" to test that.
+DOC_COMPLETION_SCOPE = os.environ.get("RAG_DOC_COMPLETION_SCOPE", "/pgre/milestones-")
+
+
+def _complete_small_documents(results: dict) -> dict:
+    """Append the missing chunks of any SMALL document that already dominates
+    the ranking, so an enumerable answer is not truncated by the slot budget.
+
+    Additive and order-preserving, like _adjacent_chunks: appended chunks go
+    after the ranked ones and carry no distance, because they were never
+    scored. Returns the input unchanged on any lookup failure - a context
+    expansion must never cost a retrieval.
+    """
+    metas = results.get("metadatas", [[]])[0]
+    docs = results.get("documents", [[]])[0]
+    if not metas:
+        return results
+
+    slots = Counter(m.get("source_url") for m in metas if m.get("source_url"))
+    candidates = [u for u, n in slots.items()
+                  if n >= DOC_COMPLETION_MIN_SLOTS and DOC_COMPLETION_SCOPE in u]
+    if not candidates:
+        return results
+
+    have = {(m.get("source_url"), m.get("chunk_index")) for m in metas}
+    try:
+        from src.ingest import _get_collection
+        coll = _get_collection()
+        # ONE call for every candidate document's chunks - the same batching
+        # discipline as _adjacent_chunks, which was costing two full metadata
+        # scans per query before it was fixed.
+        got = coll.get(
+            where={"source_url": {"$in": candidates}} if len(candidates) > 1
+                  else {"source_url": candidates[0]},
+            include=["documents", "metadatas"],
+        )
+        gd, gm = got.get("documents") or [], got.get("metadatas") or []
+    except Exception:
+        return results
+
+    by_url: dict[str, list] = {}
+    for d, m in zip(gd, gm):
+        by_url.setdefault(m.get("source_url"), []).append((d, m))
+
+    add_docs, add_metas = [], []
+    # deterministic order: densest-in-the-ranking document first, then by URL,
+    # so the same query yields the same context on every run
+    for url in sorted(candidates, key=lambda u: (-slots[u], u)):
+        chunks = by_url.get(url, [])
+        if not chunks or len(chunks) > DOC_COMPLETION_MAX_DOC_CHUNKS:
+            continue
+        for d, m in sorted(chunks, key=lambda c: c[1].get("chunk_index") or 0):
+            if (m.get("source_url"), m.get("chunk_index")) in have:
+                continue
+            if len(add_docs) >= DOC_COMPLETION_MAX_ADDED:
+                break
+            add_docs.append(d)
+            add_metas.append(m)
+
+    if not add_docs:
+        return results
+    out = {"documents": [docs + add_docs], "metadatas": [metas + add_metas]}
+    dists = results.get("distances")
+    if dists:
+        out["distances"] = [list(dists[0]) + [None] * len(add_docs)]
+    return out
+
 
 def _adjacent_chunks(results: dict) -> dict:
     """Append the immediate neighbours (chunk_index +/-1) of the top-ranked
@@ -1040,6 +1153,13 @@ def retrieve(question: str, history: list[dict], summary: str = "",
         _ts = _perf.time()
         results = _adjacent_chunks(results)
         _stage_timer("r_adjacent", _ts)
+
+    if DOC_COMPLETION_ENABLED:
+        # after adjacent expansion, so already-appended neighbours count as
+        # present and are not added twice
+        _ts = _perf.time()
+        results = _complete_small_documents(results)
+        _stage_timer("r_doc_completion", _ts)
 
     _stage_timer("retrieve", _t0)
     return results, retrieval_query

@@ -6784,3 +6784,60 @@ correct retrieval all along.
 0 gained, 0 lost.** The 34c conclusion survives - department aliases move chunk
 concentration, not hit@6 - and it now rests on a baseline that is not lying by
 ten points.
+
+### Round 34e: document completion, scoped to milestones (2026-08-28)
+
+The last of the three user-reported failures: "list a department's milestones"
+returns some and not all.
+
+**Measured cause.** `N_RESULTS = 6`; `ce-phd-2025-26.pdf` is 9 chunks. Across
+160 replay turns the generator sees **15% of the gold document's chunks**
+(532/3487). The list cannot be complete because most of the document is never
+in the context.
+
+**Completing documents in general is not viable, and the numbers say so.** On
+enumerative turns the median gold document is missing **18** chunks and the
+worst is missing **65**. "Add the rest" would multiply context on exactly the
+queries that already retrieve well - the failure "When More Documents Hurt RAG"
+describes and this project has paid for before.
+
+**Two candidate scopes, and the user picked the better one.** A structural rule
+(complete any document that is small enough and already holds >= 2 of the six
+slots) touches **27 of 160 turns (17%)**, and hit@6 cannot score any of it -
+appending chunks to a document already in the top 6 cannot change whether it
+was retrieved - so shipping it would have required a generation eval first.
+
+Scoping instead to the DOCUMENT CLASS (`/pgre/milestones-`) touches almost
+nothing previously measured, because those documents entered the corpus the
+same day. It also matches the shape of the defect: a milestone document is an
+enumeration, 16 codes (M1.1 ... M3.3) across 9 chunks, so a partial retrieval
+yields a partial LIST that still reads as a complete answer. A policy answers
+from the clause that matches; a milestone document only answers in full.
+
+**Correction to a claim made before it was checked:** the scoped mechanism
+fires on **1 of 160** replay turns, not 0. One pre-PGRE query now retrieves a
+milestone document with two slots - a consequence of the corpus growing 20%
+that day, not of the gate. Ten chunks added across the whole set.
+
+**Result.** "List all the milestones for a CSEE PhD student":
+
+| | milestone codes cited |
+|---|---|
+| completion OFF | **8/16** (missing M1.2-M1.6, M3.1-M3.3) |
+| completion ON  | **15/16** |
+
+Retrieval replay is unchanged - 132/160 both arms, 0 gained, 0 lost - which is
+the expected result and not evidence of benefit: completion appends AFTER the
+ranked six, so it cannot move a metric defined on the first six. Recorded to
+show the absence of harm, not a gain.
+
+Shipped ON, which is a deliberate exception to "new mechanisms default False":
+the flag exists (`RAG_DOC_COMPLETION`), but the thing that justifies ON is the
+scope gate making it inert on 159 of 160 previously-measured turns, not an eval
+of its benefit. The wider all-small-documents variant stays OFF behind
+`RAG_DOC_COMPLETION_SCOPE=""` and is genuinely unjustified until a generation
+eval scores keyphrase coverage on those 27 turns.
+
+**Still not fixed:** enumerative questions over LARGE documents. A 65-chunk
+policy cannot be enumerated from a 6-chunk window and this change does not try.
+That needs parent-child chunking, which Round 33 returned to the open list.
