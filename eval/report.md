@@ -6539,3 +6539,87 @@ could move items out of that 31%. Closing it was the weakest of the five and the
   instead, which pyflakes does honour and which states the intent in something
   the language understands. Four genuinely-dead imports and one no-op `global`
   removed.
+
+## Round 34: adding a webpage source pulled in nine years of PGRE milestones (2026-08-28)
+
+Request: index the PGR-progress **webpage**, whose text has no PDF equivalent.
+Three defects surfaced, two of them mine.
+
+### The crawler indexed PDFs only, by design
+
+`run_ingest.py` rejected every non-PDF as a hub/navigation page — a durable
+guard from round 3, worth keeping: those pages list every programme name and act
+as lexical magnets. So the fix is an explicit `_INCLUDED_HTML_URLS` allowlist,
+one URL, rather than a loosened rule. `classify()` still makes the keep/reject
+call; the allowlist only lets it be asked. It kept the page unprompted
+(`rules_of_assessment`, dept PGRE, 37 chunks).
+
+### Ingesting against a live server corrupts the server, not the store
+
+**Every question failed** with `InternalError: Error executing plan: Internal
+error: Error finding id` after a recrawl was launched while production served
+on :8000. Chroma's persistent client does not share writes across processes: the
+crawl wrote from its own process and the *server's* cached segment state went on
+pointing at an index that no longer matched. It does not self-heal.
+
+My first explanation — transient contention, stop the crawl and retry — was
+**wrong, and the user's retry falsified it**. The store on disk was fine: a fresh
+process read 21,912 chunks and queried them happily. That two-line check is what
+localised the fault to the server's memory; restarting cleared it. Diagnosis
+cost more than it should have because the plausible cause was asserted before
+the cheap check was run.
+
+`run_ingest.py` now refuses to run while :8000/:8001 has a listener
+(`RAG_INGEST_ALLOW_LIVE_SERVER=1` overrides). **Tested against the failure it
+claims to catch** — refused with exit 1 while production was up, ran clean once
+unloaded. Not covered, stated in the docstring: it detects a *listening server*,
+not any process holding the store — a second ingest or a REPL slips past.
+
+### One webpage, 578 new documents
+
+The crawler follows in-content `/-/media/documents/` links from every seed. The
+three original seeds never linked to PGRE's archive; the PGR-progress page does.
+Result: **578 new documents, ~4,300 chunks, +20% corpus** — nine years of
+per-department × per-award milestone PDFs (2017-18 … 2025-26). Verified as new,
+not re-ingested: all 283 checked carried no prior manifest entry.
+
+### The currency rule failed on them: 157 stale documents flagged current
+
+Including 11 from **2017-18** and 33 from 2018-19. Cause: the family rule marks
+the newest edition *within a family*, and PGRE renamed relentlessly — department
+codes changed (`csee`→`ce`, `psychology`→`py`, `langling`→`lt`, `iser`→`rc`), a
+`-milestones` token appeared, `(accessible)` variants split further. A department
+that stopped publishing under an old filename left its last edition as that
+family's permanent maximum. **158 distinct family keys** affected.
+
+`_FAMILY_ALIASES` is the usual remedy and **does not scale here**:
+`audit_family_aliases.py` proposes only **5 of 158** by design, since it refuses
+to merge stems differing by a whole word — exactly what these renames do. Hand-
+writing ~158 mappings invites a wrong merge; `ll-phd-mono` and `ll-phd-by-papers`
+are different documents, not editions.
+
+Fixed with the stronger signal already in the path: PGRE states the year in the
+**directory** (`/pgre/milestones-2025-26/`), so currency is read off that and
+needs no filename inference. Same shape as the existing `/previous-years/` and
+`/current/` rules. `YEAR_DIR_RE` misses these — it requires the segment to *be*
+the year.
+
+**Blast radius, measured before applying: 157 documents change, all 157 the
+wrong ones, and 0 non-PGRE documents touched.** After: every historical year
+`False`, 2025-26 `True` (80), plus `pgr-intermission-absence.pdf` current — not
+year-scoped, correctly unaffected. A live PhD-milestones question now cites
+`ce-phd-2025-26.pdf` and no 2017 edition.
+
+### Eval set now stale — 12 items, NOT caused by this change
+
+`check_benchmark_stamp.py` fails closed as designed. The provenance audit finds
+**12 of 152 items graded against superseded documents** (round 8 saw 9 of 148 —
+recurrence, as predicted). The cause is the 2026-27 policies that landed in the
+same crawl superseding their 2025-26 gold documents, plus the UG variations
+consolidation — not PGRE. Left stale deliberately: re-stamping without repointing
+the gold documents would paper over the 12. Retrieval numbers measured before
+those are fixed will understate hit@6.
+
+**Not measured:** no eval was run on the +20% corpus. Whether 4,300 new chunks
+help PGR questions or dilute the pool for everything else is **open**, and the
+stale benchmark has to be fixed before that number would mean anything.

@@ -23,6 +23,34 @@ MANIFEST_PATH = Path("data/manifest.json")
 
 YEAR_DIR_RE = re.compile(r"/(20\d{2}-\d{2,4})/")
 
+# PGRE files its progress milestones in per-year directories
+# (.../pgre/milestones-2025-26/ce-phd-2025-26.pdf), so the PUBLISHER states the
+# academic year in the path - a stronger signal than anything inferable from
+# the filename. YEAR_DIR_RE does not match these: it requires the path segment
+# to BE the year, and here the year carries a "milestones-" prefix.
+#
+# That mattered (2026-08-28). Ingesting the PGRE archive (578 documents, nine
+# years, reached for the first time via the PGR-progress webpage) left 157
+# historical documents flagged current, including 11 from 2017-18 and 33 from
+# 2018-19. Cause: the family rule marks the newest edition WITHIN a family, and
+# PGRE renamed its files repeatedly across those years - department codes
+# changed (csee->ce, psychology->py, langling->lt, iser->rc), a "-milestones"
+# token was added, "(accessible)" variants appeared - so a department that
+# stopped publishing under an old filename left its last edition as that
+# family's permanent maximum. 158 distinct family keys were affected.
+#
+# _FAMILY_ALIASES is the usual remedy, but audit_family_aliases.py proposes
+# only 5 of these by design (it refuses to merge stems differing by a whole
+# word, which is exactly what these renames do), and hand-writing ~158 mappings
+# invites a wrong merge - `ll-phd-mono` and `ll-phd-by-papers` are genuinely
+# different documents, not editions of one.
+#
+# So currency for these is read off the directory instead, which needs no
+# filename inference at all. Same shape as the /previous-years/ and /current/
+# path rules below, and the blast radius is exactly the URLs this matches:
+# 578 PGRE milestone documents, no others.
+PGRE_MILESTONE_DIR_RE = re.compile(r"/pgre/milestones-(20\d{2}-\d{2,4})/")
+
 
 # Explicitly superseded documents (2026-08-11). Essex CONSOLIDATED the
 # per-degree-length UG variations files into one file per year:
@@ -64,6 +92,9 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
     successor exists even though the edition is clearly superseded), while
     the one-year grace keeps departments alive during the staggered
     start-of-year rollout when their new edition hasn't been published yet.
+    PGRE milestone directories (/pgre/milestones-2025-26/...) are decided by
+    their directory year alone - see PGRE_MILESTONE_DIR_RE for why the family
+    rule cannot be trusted there.
     Per-document year comes from effective_year() (docid.py), not raw
     normalize_year() - see its docstring for the PGT "January starts"
     content/folder-year mismatch this guards against."""
@@ -79,11 +110,23 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
         if family not in max_year_per_family or year > max_year_per_family[family]:
             max_year_per_family[family] = year
 
+    # newest PGRE milestone directory present in the corpus - the comparison
+    # point for the path rule below. Scoped to PGRE's own archive rather than
+    # corpus_max_year so a newer document elsewhere can never archive the whole
+    # milestone set during a staggered publication window.
+    pgre_max_year = max(
+        (normalize_year(m.group(1))
+         for d in kept
+         if (m := PGRE_MILESTONE_DIR_RE.search(d["url"]))),
+        default="",
+    )
+
     flags = {}
     for doc in kept:
         url = doc["url"]
         year = effective_year(url, doc.get("academic_year"))
         year_dir = YEAR_DIR_RE.search(url)
+        pgre_dir = PGRE_MILESTONE_DIR_RE.search(url)
         if url in SUPERSEDED_URLS:
             flags[url] = False
             continue
@@ -91,6 +134,9 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
             flags[url] = False
         elif "/current/" in url:
             flags[url] = True
+        elif pgre_dir:
+            # directory year is authoritative here - see PGRE_MILESTONE_DIR_RE
+            flags[url] = normalize_year(pgre_dir.group(1)) == pgre_max_year
         elif year_dir and normalize_year(year_dir.group(1)) < grace_floor and year < grace_floor:
             flags[url] = False
         else:

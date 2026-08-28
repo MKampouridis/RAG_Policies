@@ -1,5 +1,11 @@
 [
  {
+  "question": "",
+  "source_url": null,
+  "verdict": "NO_GOLD",
+  "detail": "item has no gold document"
+ },
+ {
   "question": "Under which circumstances can a concern or complaint be made under this University of Essex whistleblowing pol",
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/policy-whistleblowing.pdf",
   "verdict": "OK",
@@ -107,12 +113,8 @@
  {
   "question": "What are the five principles that underpin the Student Engagement Policy at the University of Essex?",
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy.pdf",
-  "verdict": "PARTIAL_DRIFT",
-  "detail": "7 of 9 key terms found",
-  "missing": [
-   "driven by support and advice to succeed",
-   "visibility and shared understanding"
-  ]
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What does the Fitness to Study policy address in terms of student behavior?",
@@ -132,14 +134,14 @@
  {
   "question": "What are the responsibilities of the Academic Registrar in managing fee liability for students?",
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/tuition-fee-payment-and-liability-policy-2025-26.pdf",
-  "verdict": "OK",
-  "detail": "3 of 3 key terms found"
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What are the payment terms for self-funded International fee-paying students who started their course in acade",
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
-  "verdict": "OK",
-  "detail": "6 of 6 key terms found"
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What are the minimum supervision hours required per student according to this Code of Practice?",
@@ -319,11 +321,8 @@
  {
   "question": "What are the consequences of failing to adhere to the Professional Code of Conduct in a module?",
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/east-15-prof-code-conduct-22-v2.pdf",
-  "verdict": "PARTIAL_DRIFT",
-  "detail": "3 of 4 key terms found",
-  "missing": [
-   "failing to adhere"
-  ]
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What are the principles that guide content development and management at the University of Essex Library & Cul",
@@ -334,14 +333,8 @@
  {
   "question": "What are the five principles underlying the Student Engagement Policy at the University of Essex?",
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-engagement-policy-2024-25.pdf",
-  "verdict": "PARTIAL_DRIFT",
-  "detail": "4 of 8 key terms found",
-  "missing": [
-   "underpinning the policy",
-   "driven by support and advice to succeed",
-   "personalized interventions",
-   "parity of experience for all students"
-  ]
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What criteria must candidates applying for a postgraduate research degree involving practice as research demon",
@@ -361,8 +354,8 @@
  {
   "question": "What are the payment terms for self-funded International fee-paying students starting their course in academic",
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/fees-and-funding/student-debt-policy-2025-26.pdf",
-  "verdict": "OK",
-  "detail": "6 of 6 key terms found"
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What are the conditions for postgraduate research students to apply for GTA or GLA positions?",
@@ -720,14 +713,14 @@
  {
   "question": "What is the pass mark for all modules on the MSc Artificial Intelligence (T/F) programme at CSEE?",
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_model_1_accredited_january_starts_rules_jan25.pdf",
-  "verdict": "OK",
-  "detail": "3 of 3 key terms found"
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What is the pass mark for the MSc Artificial Intelligence and its Applications programme in the Project Demons",
   "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2024-25/department-specific/csee_non_accredited_january_start_2025_msc.pdf",
-  "verdict": "OK",
-  "detail": "3 of 3 key terms found"
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What is the pass mark for core modules on the MFA Theatre Directing programme?",
