@@ -13,6 +13,8 @@ Usage:
 """
 
 import json
+import os
+import subprocess
 import time
 import sys
 from pathlib import Path
@@ -227,7 +229,69 @@ def run(seed_urls: list[str]) -> dict:
     return stats
 
 
+def _listeners_on(port: int) -> list[str]:
+    """PIDs/commands listening on a local TCP port, via lsof. Empty list when
+    nothing is listening (or lsof is unavailable - absence of evidence, so the
+    guard below fails OPEN rather than blocking a legitimate ingest)."""
+    try:
+        out = subprocess.run(
+            ["lsof", "-nP", f"-iTCP:{port}", "-sTCP:LISTEN"],
+            capture_output=True, text=True, timeout=10,
+        ).stdout.strip().splitlines()
+    except (OSError, subprocess.SubprocessError):
+        return []
+    return out[1:]  # drop the header row
+
+
+def _refuse_if_server_live() -> None:
+    """Refuse to ingest while a server holds the same Chroma store open.
+
+    Found the hard way (2026-08-28): a full recrawl was launched while
+    production was serving on :8000. Chroma's persistent client does NOT share
+    writes across processes - the crawl wrote new documents from its own
+    process, and the SERVER's cached segment state went on pointing at an index
+    that no longer matched the metadata on disk. Every subsequent question
+    failed with `InternalError: Error executing plan: Internal error: Error
+    finding id`, and it did not heal on its own: the store on disk was fine
+    (verified - a fresh process read 21912 chunks and queried them happily),
+    so only restarting the server cleared it. Same class as eval_session.sh's
+    :8001 guard, and the same reasoning: refuse rather than silently corrupt.
+
+    NOT COVERED, deliberately stated: this detects a LISTENING SERVER on the
+    two known ports, not "any process with the store open". A second ingest,
+    a reembed.py, or a python REPL holding the collection would slip past it -
+    the port is a proxy for the real condition, chosen because it catches the
+    failure that actually happened at the cost of one lsof call. Override with
+    RAG_INGEST_ALLOW_LIVE_SERVER=1 when you know the listener does not touch
+    this store.
+    """
+    if os.environ.get("RAG_INGEST_ALLOW_LIVE_SERVER") == "1":
+        return
+    ports = {int(os.environ.get("PORT", "8000")), int(os.environ.get("EVAL_PORT", "8001"))}
+    busy = {p: _listeners_on(p) for p in sorted(ports)}
+    busy = {p: rows for p, rows in busy.items() if rows}
+    if not busy:
+        return
+    print("!! a server is listening while this ingest would write to the same")
+    print("   Chroma store - refusing to run. Its in-memory index would go stale")
+    print("   against the new writes and every answer would fail until restart.")
+    for port, rows in busy.items():
+        print(f"   :{port}")
+        for row in rows:
+            print(f"     {row}")
+    plist = Path.home() / "Library/LaunchAgents/com.mkampo.ragpolicies.plist"
+    if plist.exists():
+        print("\n   Stop production first (KeepAlive means unload, not kill):")
+        print(f"     launchctl unload {plist}")
+        print("   ...then re-run this, and afterwards:")
+        print(f"     launchctl load {plist}")
+    print("\n   Override with RAG_INGEST_ALLOW_LIVE_SERVER=1 if the listener")
+    print("   does not share this store.")
+    sys.exit(1)
+
+
 if __name__ == "__main__":
+    _refuse_if_server_live()
     extra = sys.argv[1:]
     urls = SEED_URLS + [u for u in extra if u not in SEED_URLS]
     result = run(urls)
