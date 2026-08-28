@@ -27,6 +27,9 @@ SEED_URLS = [
     "https://www.essex.ac.uk/governance-and-strategy/governance/policies",
     "https://www.essex.ac.uk/student/rules-of-assessment",
     "https://www.essex.ac.uk/student/rules-of-assessment/roa-pgt-dept-specific",
+    # HTML content page, not a PDF - see _INCLUDED_HTML_URLS below for why this
+    # one is exempt from the PDF-only hub-page guard.
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-progress",
 ]
 
 MANIFEST_PATH = Path("data/manifest.json")
@@ -42,6 +45,20 @@ TEXT_CACHE_DIR = Path("data/text_cache")
 # year-5.pdf). Same spirit as the hub-page guard below, but keyed by exact URL.
 _EXCLUDED_URLS = {
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+}
+
+# Explicit exemption from the PDF-only hub-page guard below (2026-08-28). The
+# guard exists because EVERY real document in this corpus used to be a PDF -
+# but the PGR Progress procedure has no PDF equivalent, only this webpage, and
+# its content (verified by hand: 36KB of substantive procedural text in the
+# page's richtext div, not a nav/listing page) is exactly the kind of thing
+# this corpus should answer questions from. Scoped to this one URL rather than
+# loosening the guard generally, since the guard's purpose - keeping lexical-
+# magnet nav pages like roa-pgt-previous-years out of the index - still holds
+# for every other non-PDF page the crawler reaches. classify() still makes the
+# keep/reject call same as any PDF; this only lets it be asked the question.
+_INCLUDED_HTML_URLS = {
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-progress",
 }
 
 
@@ -109,7 +126,7 @@ def run(seed_urls: list[str]) -> dict:
                 "department": None, "academic_year": None,
                 "reason": "no extractable text",
             }
-        elif not item.url.lower().endswith(".pdf"):
+        elif not item.url.lower().endswith(".pdf") and item.url not in _INCLUDED_HTML_URLS:
             # Durable hub-page guard (external code review round 3, 2026-07-22,
             # Fable 5, verified): every real document in this corpus is a PDF;
             # the crawl's HTML pages are navigation/listing hubs (e.g.
@@ -120,7 +137,9 @@ def run(seed_urls: list[str]) -> dict:
             # containing no answerable rule, actively displacing the intended
             # PDF (seen polluting the Phase 5 mt8 top-6). The crawler still
             # FOLLOWS these pages to reach the PDFs; they just aren't indexed as
-            # documents themselves.
+            # documents themselves. _INCLUDED_HTML_URLS is the explicit,
+            # by-hand exemption list for the rare non-PDF page that IS real
+            # content - see its comment above.
             decision = {
                 "keep": False, "doc_type": "none",
                 "department": None, "academic_year": None,
