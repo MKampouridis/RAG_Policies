@@ -6987,3 +6987,59 @@ each adding a full generation call (~20-30s). It is gated to milestone
 documents and to answers already citing >= 3 codes, so it cannot fire on
 ordinary questions - but on the questions it does fire on, it roughly doubles
 generation time. That is the price of a list that can be trusted.
+
+### Round 34i: all 17 remaining departments - and the metric was wrong, not the system (2026-08-29)
+
+Ran every department not already covered: one PhD milestone document each, 17
+in total, repair enabled.
+
+**First pass said 10/17 complete, 7 partial, 0 wrong-document. Five of those
+seven "partials" scored 0/N** - zero codes cited with the correct document
+retrieved. A failure that total is implausible, so the answers were read rather
+than believed.
+
+**They were not failures. They enumerate every milestone in PROSE, without
+printing the `M1.1` labels the metric counts.** Checking coverage by the
+milestone TEXT instead of the code label:
+
+| document | by code label | by description |
+|---|---|---|
+| east-15-phd | 0/16 | **14/14** |
+| se-phd | 0/18 | **18/18** |
+| lt-phd | 0/19 | **18/18** |
+| ma-phd | 9/19 | **19/19** |
+| ar-phd | 15/16 | 15/16 (M1.3) |
+
+**Corrected result: 14 of 17 complete, 1 missing a single item, 2 genuine
+failures** - not 10/17.
+
+**The two real failures are both multi-variant departments.** Language and
+Linguistics (3 PhD routes) and Essex Business School (5: standard, 3-paper,
+3-paper-sustainable, integrated, sustainable) both returned 0 coverage. Essex
+Business School's first answer was CORRECT behaviour - asked for "the
+milestones for a PhD student in Essex Business School" it said milestones vary
+by programme type, which is true, five documents deep. But it still failed
+after the question was disambiguated to the standard route, so this is a real
+defect and not only an ambiguous question. Single-variant departments pass;
+`gv` passes with 3 variants, so variant count is a risk factor, not a law.
+
+**The consequence for enumeration repair, stated plainly: it shares the
+metric's blind spot.** `_missing_enumeration_codes` counts code labels and
+fires only when the answer already cites >= 3 of them. An answer written as
+prose cites none, so repair NEVER fires on it. That is the safe direction for
+the 5 answers that were complete - repair correctly left them alone - but it
+means a prose answer that IS incomplete goes uncaught, which is exactly what
+happened to Language and Linguistics and Essex Business School. Repair
+therefore protects the labelled-list style only.
+
+Recorded rather than patched. Extending repair to prose needs a coverage test
+over milestone DESCRIPTIONS - the loose word-overlap proxy used here is good
+enough to audit 17 answers by hand, not to gate production on.
+
+**The general lesson is the ledger's oldest one.** Every number in 34f, 34g and
+34h was computed from code labels, and the instrument silently assumed a
+formatting choice the generator is free not to make. "0/16" read as total
+failure and meant perfect coverage in a different style. The scores were only
+caught because a total failure looked implausible enough to go and read the
+answers - which is precisely what "read whole answers rather than only the
+scores" was written for.
