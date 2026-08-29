@@ -7124,3 +7124,40 @@ no retry can clear.
 **Not claimed:** 100% means no milestone is MISSING. It does not verify every
 description is worded correctly - `_scrub_plumbing` proved wording can be wrong
 while coverage is perfect, and no metric here would see it.
+
+### Round 34l: a citation that 404s (2026-08-29)
+
+User clicked a source link in an answer and got "the requested document was not
+found". The link was
+`.../pgre/milestones-2025-26/` - the shared PARENT DIRECTORY of the documents
+the answer drew on, not a document.
+
+**Reproduced from the stored conversation, not guessed.** The question ("do
+schools/departments need to formally request a student to enter completion?")
+spans SIX departments, and the answer synthesised six milestone documents.
+Citing their one common ancestor instead of six URLs is a reasonable-looking
+move that yields a dead link every time. A 6-question spot check found 0 broken
+links, so this is not systematic - it needs many sources sharing a directory.
+
+**Fixed deterministically, because the valid URLs are known exactly**: this
+turn's own retrieved `source_url`s. Same shape as `_scrub_plumbing`, and for the
+same reason - a prompt rule would be guessing, and prompt rules here are 2 for 4.
+
+- URL is a retrieved source: untouched.
+- URL is a prefix of EXACTLY ONE retrieved source: repaired to it. A truncation
+  with one candidate is unambiguous.
+- Anything else (several candidates, or unknown): the link is REMOVED, not
+  resolved to an arbitrary sibling. A wrong citation is worse than none, and
+  `answer()` still returns the full `sources` list, built from metadata and
+  incapable of this fault.
+
+Three details cost a revision each and are worth stating: a dropped link must
+keep its trailing punctuation, or "Refer to <url>." becomes "Refer to "; a
+markdown `[label](url)` whose target is dropped must keep its label; and the
+whitespace tidy-up must not collapse LEADING spaces, which carry markdown list
+nesting.
+
+**Verified over HTTP, not against the index**: the reproduced question's three
+inline links all return 200 from essex.ac.uk. Checking them against our own
+corpus would only prove internal consistency - the user's complaint was that
+the browser 404'd.

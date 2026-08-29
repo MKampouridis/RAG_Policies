@@ -1507,6 +1507,57 @@ def _repair_prompt(missing: list[str]) -> str:
     )
 
 
+# Inline-link repair (2026-08-29). A user clicked a citation and got "the
+# requested document was not found". The answer had cited
+# .../pgre/milestones-2025-26/ - the shared PARENT DIRECTORY of the six
+# documents it drew on - which is not a document and 404s. The question spanned
+# six departments, and citing one common ancestor instead of six URLs is a
+# reasonable-looking move that produces a dead link every time.
+#
+# Deterministic, like _scrub_plumbing, because we KNOW the valid URLs: this
+# turn's own retrieved sources. A prompt rule would be guessing, and prompt
+# rules here are 2 for 4.
+#
+# Truncation to a directory is repairable when exactly one retrieved source
+# sits beneath it - that is the document meant. When several do, the link is
+# genuinely ambiguous and is REMOVED rather than resolved to an arbitrary one:
+# a wrong citation is worse than none, and answer() still returns the full
+# `sources` list, which is built from metadata and cannot be malformed.
+_ANSWER_URL_RE = re.compile(r'''https?://[^\s)\]>"'`]+''')
+
+
+def _repair_answer_links(text: str, valid: set) -> str:
+    """Fix or remove inline URLs that point at nothing we retrieved."""
+    if not text or not valid:
+        return text
+
+    def _fix(m):
+        raw = m.group(0)
+        url = raw.rstrip(".,;:")          # trailing sentence punctuation
+        tail = raw[len(url):]
+        if url in valid:
+            return raw
+        under = sorted(v for v in valid if v.startswith(url.rstrip("/") + "/"))
+        if len(under) == 1:
+            return under[0] + tail
+        # keep the trailing punctuation: dropping it too swallowed the
+        # sentence's full stop ("Refer to <url>." -> "Refer to ")
+        return tail                        # ambiguous or unknown - drop the link
+
+    out = _ANSWER_URL_RE.sub(_fix, text)
+    # a markdown link whose target was dropped becomes "[label]()" - keep the
+    # label, lose the empty link, so the sentence still reads
+    out = re.sub(r"\[([^\]]*)\]\(\s*\)", r"\1", out)
+    # and a bare "()" or "<>" left where a URL was
+    out = re.sub(r"\(\s*\)|<\s*>", "", out)
+    # tidy the gap a removal leaves: doubled spaces MID-LINE only (leading
+    # spaces carry markdown list nesting), and a space stranded before
+    # sentence punctuation
+    out = re.sub(r"(?<=\S)[ \t]{2,}", " ", out)
+    out = re.sub(r"[ \t]+([.,;:)])", r"\1", out)
+    return out
+
+
 def answer(question: str, history: list[dict], summary: str = "", detail: str = "default",
            on_token=None, partner_mode: str | None = None) -> tuple[str, list[str], str, list[str]]:
     """Returns (answer_text, source_urls_used, retrieval_query, ranked_top_urls).
@@ -1574,6 +1625,8 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     # split. The client re-renders from the returned text, so what the user ends
     # up with is scrubbed; a leaked phrase can flicker mid-stream.
     response_text = _scrub_plumbing(response_text)
+    response_text = _repair_answer_links(
+        response_text, {m.get("source_url") for m in metadatas if m.get("source_url")})
 
     if ENUMERATION_REPAIR_ENABLED:
         _missing = _missing_enumeration_codes(context, response_text, metadatas)
