@@ -6,7 +6,6 @@ import json
 import os
 import re
 import time as _perf
-from collections import Counter
 
 from src import colbert_index as _colbert_index
 from src import doc_index as _doc_index
@@ -788,7 +787,6 @@ DOC_COMPLETION_ENABLED = os.environ.get("RAG_DOC_COMPLETION", "1") == "1"
 # carry the most codes in the corpus (21 and 19). A cap that drops the
 # documents most in need of completion is worse than no cap.
 DOC_COMPLETION_MAX_DOC_CHUNKS = 16   # covers all 80; the largest is 16
-DOC_COMPLETION_MIN_SLOTS = 2         # ...that already hold this many of the six
 DOC_COMPLETION_MAX_ADDED = 16        # hard cap on appended chunks, all documents
 # Complete ONE document, not every qualifying one (2026-08-28, after a probe).
 # "List all the milestones for a Law PhD student" put BOTH lw-phd-milestones
@@ -833,9 +831,25 @@ def _complete_small_documents(results: dict) -> dict:
     if not metas:
         return results
 
-    slots = Counter(m.get("source_url") for m in metas if m.get("source_url"))
-    candidates = [u for u, n in slots.items()
-                  if n >= DOC_COMPLETION_MIN_SLOTS and DOC_COMPLETION_SCOPE in u]
+    # Complete the document owning the RANK-1 chunk, not the one holding the
+    # most slots (2026-08-29). Densest-wins was wrong whenever near-identical
+    # programme variants split the ranking between them, and its alphabetical
+    # tiebreak made it wrong SYSTEMATICALLY: "be-phd-2025-26-sustainable-
+    # transitions.pdf" sorts before "be-phd-2025-26.pdf", because '-' precedes
+    # '.', so a tie always resolved to the variant over the base document.
+    #
+    # Measured on the two departments that failed completely: for Essex
+    # Business School (5 PhD routes) rank-1 was `be-phd-2025-26.pdf` - correct -
+    # while densest-wins completed `be-phd-2025-26-sustainable-transitions` to
+    # 13 chunks and left the right document with 2. Language and Linguistics
+    # (3 routes) was the same shape. The mechanism was not failing to help
+    # these questions, it was actively burying the answer under a sibling.
+    #
+    # Rank-1 is the reranker's single best-matching chunk, which is the only
+    # signal here that reflects the QUERY rather than the shape of the pool.
+    # Same choice _adjacent_chunks made, for the same reason.
+    top_url = metas[0].get("source_url") or ""
+    candidates = [top_url] if DOC_COMPLETION_SCOPE in top_url else []
     if not candidates:
         return results
 
@@ -860,9 +874,7 @@ def _complete_small_documents(results: dict) -> dict:
         by_url.setdefault(m.get("source_url"), []).append((d, m))
 
     add_docs, add_metas = [], []
-    # deterministic order: densest-in-the-ranking document first, then by URL,
-    # so the same query yields the same context on every run
-    for url in sorted(candidates, key=lambda u: (-slots[u], u))[:DOC_COMPLETION_MAX_DOCS]:
+    for url in candidates[:DOC_COMPLETION_MAX_DOCS]:
         chunks = by_url.get(url, [])
         if not chunks or len(chunks) > DOC_COMPLETION_MAX_DOC_CHUNKS:
             continue
