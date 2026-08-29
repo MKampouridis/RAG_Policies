@@ -1482,17 +1482,82 @@ ENUMERATION_MIN_CITED = 3
 ENUMERATION_SCOPE = os.environ.get("RAG_ENUMERATION_SCOPE", "/pgre/milestones-")
 
 
+# A milestone reaches the reader one of two ways, and each signal is reliable
+# exactly where the other is not (2026-08-29):
+#
+#   LABELLED  "**M2.7:** Demonstrate effective project management ..."
+#   PROSE     "* Demonstrate effective project management ..."
+#
+# Counting CODES works on a labelled answer and sees nothing in a prose one.
+# Counting DESCRIPTIONS works on a prose answer - measured 13/14, 18/18, 18/18
+# on three of them - and fails on a labelled answer that paraphrases tersely,
+# where it found 5 of 19 descriptions in an answer that cited all 19 codes.
+# So the signal is chosen by the answer's own style rather than blended.
+_ENUM_DESC_RE = re.compile(r"\b([MC]\d+\.\d+)\s+(.{0,110})")
+_ENUM_LEADING_NUMS = re.compile(r"^[\s\d/]+")
+_ENUM_STOP = set("the a an of and to for in with on its their this that be is are as at by or "
+                 "will must should which where when what who whom".split())
+# A prose answer that IS complete still paraphrases, so a strict miss-count
+# would repair good answers. Repair only when a substantial share is absent:
+# the three complete prose answers above missed 0-1 apiece, while the genuinely
+# broken one missed all 16.
+# A prose answer is judged short only when it lists well under this share of
+# the milestones the document defines. Set low on purpose: the cost of a
+# false repair is a wasted generation, but the cost of a false ACCUSATION
+# is telling the user a complete answer was incomplete.
+ENUMERATION_PROSE_ITEM_SHARE = 0.6
+_ENUM_ITEM_RE = re.compile(r"^\s*(?:[-*\u2022\u25aa]|\d+[.)])\s+", re.M)
+
+
+def _enum_descriptions(context: str) -> dict:
+    """code -> its description, as the retrieved documents state it."""
+    out = {}
+    for m in _ENUM_DESC_RE.finditer(context):
+        # term/credit columns sit between code and text in these table-derived
+        # documents ("M1.1 1 1 Assess training needs ...")
+        out.setdefault(m.group(1), _ENUM_LEADING_NUMS.sub("", m.group(2)))
+    return out
+
+
 def _missing_enumeration_codes(context: str, answer_text: str, metadatas: list[dict]) -> list[str]:
-    """Codes present in the retrieved context but absent from the answer, or []
-    when repair does not apply. Empty for a question about one specific
-    milestone - see ENUMERATION_MIN_CITED."""
+    """Milestones present in the retrieved context but absent from the answer,
+    or [] when repair does not apply."""
     if not any(ENUMERATION_SCOPE in (m.get("source_url") or "") for m in metadatas):
         return []
     in_ctx = set(ENUMERATION_CODE_RE.findall(context))
     in_ans = set(ENUMERATION_CODE_RE.findall(answer_text))
-    if len(in_ans) < ENUMERATION_MIN_CITED:
+    if len(in_ans) >= ENUMERATION_MIN_CITED:
+        return sorted(in_ctx - in_ans)          # labelled answer: codes are exact
+
+    # Prose answer. One or two codes means a question about ONE milestone
+    # ("what does M2.1 require?"), correctly answered by citing it - not an
+    # enumeration that fell short, so nothing to repair.
+    if in_ans:
         return []
-    return sorted(in_ctx - in_ans)
+    # Which milestone a prose answer covered cannot be decided by WORDS.
+    # Milestone documents restate the same competency at each stage - M1.1
+    # "assess training needs and knowledge required", M2.1 "REVIEW training
+    # needs and knowledge required" - so descriptions share four words in five
+    # and differ only by a verb and their code. Measured: with shared terms
+    # removed, an answer covering a third of the list still matched every
+    # milestone, because the words were present from its siblings. Semantic
+    # matching is not merely loose here, it is the wrong instrument.
+    #
+    # What survives is STRUCTURAL: how many items the answer lists. A prose
+    # answer enumerating 14 milestones has ~14 bullets; one that stops after 5
+    # has 5, whatever words it used. Deliberately crude, and gated hard - it
+    # fires only when the answer is MUCH shorter than the document, because a
+    # bullet count cannot tell a grouped answer ("M1.1-M1.3 all require...")
+    # from a truncated one.
+    descs = _enum_descriptions(context)
+    if not descs:
+        return []
+    items = len(_ENUM_ITEM_RE.findall(answer_text))
+    if items >= len(descs) * ENUMERATION_PROSE_ITEM_SHARE:
+        return []
+    # Report the codes as the document orders them: the answer named none, so
+    # there is nothing to subtract - the retry asks for the whole list again.
+    return sorted(descs)
 
 
 def _repair_prompt(missing: list[str]) -> str:

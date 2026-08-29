@@ -7205,3 +7205,41 @@ department aliases, document completion, enumeration repair, scoped identity
 headers, the scrub fix and the link repair. Net zero means none of it caused a
 regression. It cannot say which change did what. Isolating the corpus alone
 would need a pre-ingest snapshot that does not exist.
+
+### Round 36: closing the prose blind spot - by abandoning the obvious method (2026-08-29)
+
+Enumeration repair fired only on answers citing >= 3 milestone CODES, so a
+prose answer - which cites none - was never checked. Safe for the complete ones,
+useless for the two that were genuinely short (Round 34i).
+
+**The obvious fix does not work, and the reason is in the documents.** Matching
+milestone DESCRIPTIONS looked right: it scored 13/14 and 18/18 on real prose
+answers. It fails as a GATE because milestone documents restate the same
+competency at each stage:
+
+    M1.1  assess training needs and knowledge required ...
+    M2.1  REVIEW training needs and knowledge required ...
+
+Four words in five, differing by a verb and a code. Measured directly: after
+removing terms shared across a document's milestones, an answer covering ONE
+THIRD of the list still matched all 14 - the words were present, from siblings.
+Only the code distinguishes these milestones, which is exactly what a prose
+answer omits. Semantic matching is not loose here, it is the wrong instrument.
+
+**What survives is structural.** A prose answer enumerating 14 milestones has
+~14 bullets; one that stops at 5 has 5, whatever words it used. Repair now
+counts list items and fires only when the answer lists under 60% of what the
+document defines. Deliberately crude and deliberately lenient: a bullet count
+cannot tell a GROUPED answer ("M1.1-M1.3 all require...") from a truncated one,
+and the cost of a false accusation - telling a user a complete answer is
+incomplete - is worse than the cost of missing one.
+
+Tested against both directions before shipping: full list and two-thirds
+trigger nothing, one-third triggers, a single-code question ("what does M2.1
+require?") triggers nothing. On three live answers, all complete: 0 false
+repairs.
+
+**Residual, stated rather than buried:** an answer between 60% and 100% complete
+in prose form still passes unchallenged. This narrows the hole, it does not
+close it - and the honest reason it cannot be closed by matching is that the
+source documents do not make their milestones textually distinguishable.
