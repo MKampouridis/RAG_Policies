@@ -7243,3 +7243,22 @@ repairs.
 in prose form still passes unchallenged. This narrows the hole, it does not
 close it - and the honest reason it cannot be closed by matching is that the
 source documents do not make their milestones textually distinguishable.
+
+### Benchmark items 2 and 3: DECLINED (2026-08-29, user's call)
+
+Two `questions_regression.json` items are faulty and stay faulty, deliberately:
+
+- **student-voice-policy** - gold document correct, expected keyphrases stale.
+  Essex reworded the policy ("engage with them proactively" for "engaging
+  proactively"); "SVG" appears 67 times, so the content is plainly present. A
+  correct answer is marked down against wording from a superseded edition.
+- **east15-25 comparison** - "How do the East 15 and Edge Hotel School rules
+  differ in structure?" is a TWO-document question filed against one document,
+  graded on keyphrases ("accelerated delivery", "maximum periods of study")
+  verified to live in the Edge Hotel documents and not in East 15. No answer
+  can pass it.
+
+Both depress scores slightly and affect no user. Options were laid out (rewrite
+the keyphrases; split the comparison into two questions; grade it on the East 15
+half; delete it) and the call was to leave them. Recorded so the next person -
+or the next round - does not rediscover them as new findings.
