@@ -7161,3 +7161,47 @@ nesting.
 inline links all return 200 from essex.ac.uk. Checking them against our own
 corpus would only prove internal consistency - the user's complaint was that
 the browser 404'd.
+
+## Round 35: the +20% corpus cost nothing measurable (2026-08-29)
+
+The question left open since the PGRE ingest: 578 new documents and ~4,300 new
+chunks entered the corpus, and nothing but retrieval had been checked. Full
+end-to-end eval, both 40-question sets, 160 turns, local gemma3 + deterministic
+(temperature 0, seed 42) - the same generator the stored baseline used.
+
+| | baseline | 2026-08-29 | delta |
+|---|---|---|---|
+| hit@6, family-aware | 133/160 | 133/160 | **0** |
+| judge mean, set 1 | 3.84 | 3.89 | +0.05 |
+| judge mean, set 2 | 3.79 | 3.91 | +0.12 |
+
+Six turns gained, six lost. Both judge deltas sit BELOW the ~0.20 noise floor
+this ledger records for sets this size, so the reading is "no detectable
+change", not "a small improvement".
+
+**The family-aware correction decided the result.** Scored as stored, set 1
+reads **-4** and looks like a genuine regression. It is not: 10 of the 80
+questions carry a gold document superseded by a 2026-27 edition that arrived in
+the same crawl, so retrieval returning the CURRENT edition was scored a miss.
+Set 2 shows the same artefact at 54 stored vs 64 family-aware. `questions.json`
+and `questions_set2.json` were never repointed - only `questions_regression.json`
+was (Round 34d) - and repointing mid-run would have meant restarting, so
+`eval/compare_family_aware.py` applies the fix at ANALYSIS time using the
+`top_urls` both files already store. Same rule as retrieval_replay.py: the gold
+URL or the CURRENT edition of its family, never an older sibling.
+
+**Both sides were re-judged with one model.** The run judged with a cloud model
+(deliberately: qwen2.5:14b is 9GB and gemma3 is 8.1GB, and running both is what
+thrashed this machine to a standstill earlier the same day). The baseline's
+judge is not recorded in its file. Since the judge alone moves this metric ~9
+points, BOTH sides were re-judged with qwen2.5:14b before any comparison - the
+cloud-judged first pass showed +0.23 on set 1, which the matched pass corrects
+to +0.05.
+
+**Attribution is bundled and that is a limitation, not a footnote.** The
+baseline predates the whole of 2026-08-28/29, so this compares today's system
+against the last measured state: corpus growth PLUS multi-year retrieval,
+department aliases, document completion, enumeration repair, scoped identity
+headers, the scrub fix and the link repair. Net zero means none of it caused a
+regression. It cannot say which change did what. Isolating the corpus alone
+would need a pre-ingest snapshot that does not exist.
