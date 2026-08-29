@@ -1,7 +1,7 @@
 [
  {
   "_stamp": true,
-  "corpus_version": "025a75bb5150471eab0e60e49eea7308",
+  "corpus_version": "20442efad31144268c7b0b35d7453d2a",
   "note": "This eval set was verified against this corpus version. If the corpus version differs, gold documents may have been superseded - re-run eval/benchmark_provenance_audit.py."
  },
  {
