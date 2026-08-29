@@ -1,0 +1,643 @@
+<title>PGR Milestone Coverage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --paper:#F5F7F9; --surface:#FFFFFF; --line:#DDE3EA; --line-soft:#EAEFF4;
+  --ink:#12161C; --body:#333D4B; --muted:#5C6B7F;
+  --accent:#1F4E79; --accent-soft:#E8EFF6;
+  --good:#15803D; --good-bg:#E7F3EC; --warn:#B45309; --warn-bg:#FBF0E2; --crit:#B02A20; --crit-bg:#FAEAE8;
+}
+:root:not([data-theme="light"]) { }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#0E1116; --surface:#161B22; --line:#2A323C; --line-soft:#1F262E;
+    --ink:#E9EDF2; --body:#C3CCD7; --muted:#8B97A6;
+    --accent:#7FB2E0; --accent-soft:#17222E;
+    --good:#5FCB8B; --good-bg:#14251C; --warn:#E0A45E; --warn-bg:#2A2015; --crit:#F08A80; --crit-bg:#2C1815;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:#0E1116; --surface:#161B22; --line:#2A323C; --line-soft:#1F262E;
+  --ink:#E9EDF2; --body:#C3CCD7; --muted:#8B97A6;
+  --accent:#7FB2E0; --accent-soft:#17222E;
+  --good:#5FCB8B; --good-bg:#14251C; --warn:#E0A45E; --warn-bg:#2A2015; --crit:#F08A80; --crit-bg:#2C1815;
+}
+* { box-sizing:border-box; }
+body { margin:0; background:var(--paper); color:var(--body);
+  font-family:Literata,Georgia,serif; font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; }
+.wrap { max-width:1080px; margin:0 auto; padding:56px 28px 96px; }
+h1,h2,h3,.kindname,.pill,.kind,th,.eyebrow { font-family:Archivo,"Helvetica Neue",Arial,sans-serif; }
+.eyebrow { font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--accent); font-weight:600; margin:0 0 14px; }
+h1 { font-size:clamp(30px,4.4vw,46px); line-height:1.1; color:var(--ink); margin:0 0 16px; font-weight:700; text-wrap:balance; letter-spacing:-.015em; }
+.lede { font-size:18px; color:var(--body); margin:0; max-width:62ch; }
+.prov { display:flex; flex-wrap:wrap; gap:10px 22px; margin:26px 0 0; padding:14px 18px;
+  background:var(--surface); border:1px solid var(--line); border-radius:3px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:12.5px; color:var(--muted); }
+.prov b { color:var(--body); font-weight:500; }
+h2 { font-size:13px; letter-spacing:.13em; text-transform:uppercase; color:var(--muted);
+  margin:56px 0 18px; font-weight:600; padding-bottom:9px; border-bottom:1px solid var(--line); }
+.tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:16px; margin-top:34px; }
+.tile { background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 22px; }
+.tile .big { font-family:Archivo,sans-serif; font-size:38px; font-weight:700; color:var(--ink);
+  line-height:1.05; font-variant-numeric:tabular-nums; }
+.tile .of { color:var(--muted); font-weight:500; font-size:24px; }
+.tile .lbl { font-size:13px; color:var(--muted); margin-top:7px; }
+.tile.hero { border-left:3px solid var(--accent); }
+.kinds { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; }
+.kindcard { background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 22px; }
+.kindname { font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); font-weight:600; }
+.kindbig { font-family:Archivo,sans-serif; font-size:34px; font-weight:700; color:var(--ink); line-height:1.15; font-variant-numeric:tabular-nums; }
+.kindbig .of { font-size:20px; color:var(--muted); font-weight:500; }
+.kindsub { font-size:12.5px; color:var(--muted); }
+.kindbar { height:5px; background:var(--line-soft); border-radius:99px; overflow:hidden; margin:12px 0 7px; }
+.kindbar span { display:block; height:100%; background:var(--accent); }
+.scroll { overflow-x:auto; border:1px solid var(--line); border-radius:3px; background:var(--surface); }
+table { width:100%; border-collapse:collapse; font-size:14.5px; }
+th { text-align:left; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+  font-weight:600; padding:13px 16px; border-bottom:1px solid var(--line); white-space:nowrap; }
+td { padding:13px 16px; border-bottom:1px solid var(--line-soft); vertical-align:top; }
+tr:last-child td { border-bottom:none; }
+.num { font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap; color:var(--ink); }
+.dept,.prog { color:var(--ink); }
+.deptcell { color:var(--muted); font-size:13.5px; }
+.barcell { display:flex; align-items:center; gap:11px; min-width:170px; }
+.bar { flex:1; height:6px; background:var(--line-soft); border-radius:99px; overflow:hidden; min-width:90px; }
+.fill { display:block; height:100%; }
+.fill.good { background:var(--good); } .fill.warn { background:var(--warn); } .fill.crit { background:var(--crit); }
+.pctv { font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-variant-numeric:tabular-nums; min-width:38px; text-align:right; }
+.pctv.good { color:var(--good); } .pctv.warn { color:var(--warn); } .pctv.crit { color:var(--crit); }
+.pill { display:inline-block; font-size:11px; letter-spacing:.05em; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; }
+.pill.good { background:var(--good-bg); color:var(--good); }
+.pill.warn { background:var(--warn-bg); color:var(--warn); }
+.pill.crit { background:var(--crit-bg); color:var(--crit); }
+.kind { display:inline-block; font-size:10.5px; letter-spacing:.08em; font-weight:600; color:var(--muted);
+  border:1px solid var(--line); border-radius:2px; padding:2px 6px; }
+tr.s-crit td:first-child { box-shadow:inset 3px 0 0 var(--crit); }
+tr.s-warn td:first-child { box-shadow:inset 3px 0 0 var(--warn); }
+.detail { font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted); margin-top:6px; line-height:1.75; }
+code { font-family:"IBM Plex Mono",monospace; font-size:11.5px; background:var(--accent-soft); color:var(--accent);
+  padding:1px 5px; border-radius:2px; }
+.notes { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); }
+.note { background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--accent);
+  border-radius:3px; padding:18px 20px; }
+.note h3 { margin:0 0 8px; font-size:14px; color:var(--ink); font-weight:600; }
+.note p { margin:0; font-size:14px; color:var(--body); }
+.note.flag { border-left-color:var(--crit); }
+footer { margin-top:64px; padding-top:22px; border-top:1px solid var(--line); font-size:13px; color:var(--muted); }
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">Retrieval audit &middot; 2026-08-29</p>
+  <h1>Can the assistant list every PGR milestone?</h1>
+  <p class="lede">Every PhD, MPhil and Masters-by-Dissertation programme in the corpus was asked for its
+  full milestone list, and the answer checked against the milestones the document actually defines.</p>
+
+  <div class="prov">
+    <span><b>63</b> programmes</span>
+    <span><b>18</b> departments</span>
+    <span><b>839</b> milestones</span>
+    <span>generator <b>claude-sonnet-5</b></span>
+    <span>corpus <b>025a75bb</b></span>
+    <span>code <b>9b16436</b></span>
+  </div>
+
+  <div class="tiles">
+    <div class="tile hero"><div class="big">56<span class="of">/63</span></div>
+      <div class="lbl">programmes answered completely</div></div>
+    <div class="tile"><div class="big">97.4<span class="of">%</span></div>
+      <div class="lbl">of all 839 milestones covered</div></div>
+    <div class="tile"><div class="big">62<span class="of">/63</span></div>
+      <div class="lbl">retrieved the right document</div></div>
+    <div class="tile"><div class="big">7</div>
+      <div class="lbl">programmes needing attention</div></div>
+  </div>
+
+  <h2>By degree type</h2>
+  <div class="kinds"><div class="kindcard">
+      <div class="kindname">PhD</div>
+      <div class="kindbig">31<span class="of">/37</span></div>
+      <div class="kindsub">programmes complete</div>
+      <div class="kindbar"><span style="width:96.3%"></span></div>
+      <div class="kindsub">579/601 milestones &middot; 96.3%</div>
+    </div><div class="kindcard">
+      <div class="kindname">MPhil</div>
+      <div class="kindbig">18<span class="of">/18</span></div>
+      <div class="kindsub">programmes complete</div>
+      <div class="kindbar"><span style="width:100.0%"></span></div>
+      <div class="kindsub">193/193 milestones &middot; 100.0%</div>
+    </div><div class="kindcard">
+      <div class="kindname">MAD</div>
+      <div class="kindbig">7<span class="of">/8</span></div>
+      <div class="kindsub">programmes complete</div>
+      <div class="kindbar"><span style="width:100.0%"></span></div>
+      <div class="kindsub">45/45 milestones &middot; 100.0%</div>
+    </div></div>
+
+  <h2>By department &middot; weakest first</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Department</th><th>Programmes complete</th><th>Milestones</th><th>Coverage</th></tr></thead>
+    <tbody><tr>
+      <td class="dept">School of Health and Social Care</td>
+      <td class="num">1/2</td>
+      <td class="num">18/31</td>
+      <td class="barcell"><div class="bar"><span class="fill crit" style="width:58.1%"></span></div><span class="pctv crit">58%</span></td>
+    </tr><tr>
+      <td class="dept">School of Life Sciences</td>
+      <td class="num">1/3</td>
+      <td class="num">41/47</td>
+      <td class="barcell"><div class="bar"><span class="fill crit" style="width:87.2%"></span></div><span class="pctv crit">87%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Language &amp; Linguistics</td>
+      <td class="num">2/3</td>
+      <td class="num">43/44</td>
+      <td class="barcell"><div class="bar"><span class="fill warn" style="width:97.7%"></span></div><span class="pctv warn">98%</span></td>
+    </tr><tr>
+      <td class="dept">Essex Law School</td>
+      <td class="num">2/3</td>
+      <td class="num">49/50</td>
+      <td class="barcell"><div class="bar"><span class="fill warn" style="width:98.0%"></span></div><span class="pctv warn">98%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Government</td>
+      <td class="num">4/5</td>
+      <td class="num">62/63</td>
+      <td class="barcell"><div class="bar"><span class="fill warn" style="width:98.4%"></span></div><span class="pctv warn">98%</span></td>
+    </tr><tr>
+      <td class="dept">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">9/10</td>
+      <td class="num">112/112</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Sociology</td>
+      <td class="num">10/10</td>
+      <td class="num">133/133</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Essex Business School</td>
+      <td class="num">5/5</td>
+      <td class="num">76/76</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">East 15 Acting School</td>
+      <td class="num">4/4</td>
+      <td class="num">44/44</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Literature, Film and Theatre Studies</td>
+      <td class="num">3/3</td>
+      <td class="num">35/35</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Psychosocial and Psychoanalytic Studies</td>
+      <td class="num">3/3</td>
+      <td class="num">37/37</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Psychology</td>
+      <td class="num">3/3</td>
+      <td class="num">40/40</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">School of Computer Science and Electronic Engineering</td>
+      <td class="num">2/2</td>
+      <td class="num">30/30</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Institute for Social and Economic Research</td>
+      <td class="num">2/2</td>
+      <td class="num">21/21</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">School of Sport, Rehabilitation and Exercise Sciences</td>
+      <td class="num">2/2</td>
+      <td class="num">30/30</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Economics</td>
+      <td class="num">1/1</td>
+      <td class="num">11/11</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">Department of Language and Linguistics</td>
+      <td class="num">1/1</td>
+      <td class="num">16/16</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr><tr>
+      <td class="dept">School of Mathematics, Statistics and Actuarial Sciences</td>
+      <td class="num">1/1</td>
+      <td class="num">19/19</td>
+      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
+    </tr></tbody>
+  </table></div>
+
+  <h2>Every programme</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Type</th><th>Programme</th><th>Department</th><th>Covered</th><th>Result</th></tr></thead>
+    <tbody><tr class="s-warn">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Integrated PhD<div class="detail">missing <code>M2.5</code></div></td>
+      <td class="deptcell">Department of Government</td>
+      <td class="num">15/16</td>
+      <td><span class="pill warn">1 missing</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Department of Government</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions PhD</td>
+      <td class="deptcell">Department of Government</td>
+      <td class="num">15/15</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-warn">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Integrated PhD<div class="detail">missing <code>M1.8</code></div></td>
+      <td class="deptcell">Department of Language &amp; Linguistics</td>
+      <td class="num">15/16</td>
+      <td><span class="pill warn">1 missing</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD by Papers</td>
+      <td class="deptcell">Department of Language &amp; Linguistics</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD (Monograph)</td>
+      <td class="deptcell">Department of Language and Linguistics</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Department of Literature, Film and Theatre Studies</td>
+      <td class="num">18/18</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Integrated PhD</td>
+      <td class="deptcell">Department of Psychology</td>
+      <td class="num">15/15</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Department of Psychology</td>
+      <td class="num">15/15</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td>
+      <td class="num">14/14</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Professional Doctorate</td>
+      <td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td>
+      <td class="num">13/13</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Integrated Journal PhD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">18/18</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Integrated PhD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Journal PhD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">17/17</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Monograph PhD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions Journal PhD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">17/17</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions Monograph PhD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">17/17</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">East 15 Acting School</td>
+      <td class="num">14/14</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Practice-as-Research PhD</td>
+      <td class="deptcell">East 15 Acting School</td>
+      <td class="num">14/14</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">3-Paper PhD</td>
+      <td class="deptcell">Essex Business School</td>
+      <td class="num">14/14</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Integrated PhD</td>
+      <td class="deptcell">Essex Business School</td>
+      <td class="num">14/14</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Essex Business School</td>
+      <td class="num">15/15</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions 3-Paper PhD</td>
+      <td class="deptcell">Essex Business School</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions PhD</td>
+      <td class="deptcell">Essex Business School</td>
+      <td class="num">17/17</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Essex Law School</td>
+      <td class="num">19/19</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-warn">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions PhD<div class="detail">missing <code>M1.2</code></div></td>
+      <td class="deptcell">Essex Law School</td>
+      <td class="num">20/21</td>
+      <td><span class="pill warn">1 missing</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">Institute for Social and Economic Research</td>
+      <td class="num">13/13</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">School of Computer Science and Electronic Engineering</td>
+      <td class="num">17/17</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-crit">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD<div class="detail">missing <code>M1.2</code> <code>M1.3</code> <code>M1.5</code> <code>M2.1</code> <code>M2.2</code> <code>M2.3</code> <code>M2.4</code> <code>M2.6</code> <code>M2.8</code> <code>M2.9</code> <code>M3.1</code> <code>M3.2</code> <code>M3.4</code></div></td>
+      <td class="deptcell">School of Health and Social Care</td>
+      <td class="num">6/19</td>
+      <td><span class="pill crit">13 missing</span></td>
+    </tr><tr class="s-warn">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD<div class="detail">missing <code>M1.4</code> <code>M2.1</code> <code>M2.2</code></div></td>
+      <td class="deptcell">School of Life Sciences</td>
+      <td class="num">15/18</td>
+      <td><span class="pill warn">3 missing</span></td>
+    </tr><tr class="s-warn">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Sustainable Transitions PhD<div class="detail">missing <code>M1.4</code> <code>M2.1</code> <code>M2.2</code></div></td>
+      <td class="deptcell">School of Life Sciences</td>
+      <td class="num">15/18</td>
+      <td><span class="pill warn">3 missing</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">School of Mathematics, Statistics and Actuarial Sciences</td>
+      <td class="num">19/19</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Art History PhD</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Curating PhD</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">15/15</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">History PhD</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">16/16</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">Philosophy PhD</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">17/17</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-phd">PhD</span></td>
+      <td class="prog">PhD</td>
+      <td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td>
+      <td class="num">18/18</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Department of Economics</td>
+      <td class="num">11/11</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Department of Government</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Department of Language &amp; Linguistics</td>
+      <td class="num">12/12</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Department of Literature, Film and Theatre Studies</td>
+      <td class="num">11/11</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Department of Psychology</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">Journal-based MPhil</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">11/11</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil Monograph</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">East 15 Acting School</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Essex Law School</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">Institute for Social and Economic Research</td>
+      <td class="num">8/8</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">School of Computer Science and Electronic Engineering</td>
+      <td class="num">13/13</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">School of Health and Social Care</td>
+      <td class="num">12/12</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">School of Life Sciences</td>
+      <td class="num">11/11</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">Art History MPhil</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">11/11</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">History MPhil</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">10/10</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">Philosophy MPhil</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">11/11</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mphil">MPhil</span></td>
+      <td class="prog">MPhil</td>
+      <td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td>
+      <td class="num">12/12</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">MAD</td>
+      <td class="deptcell">Department of Government</td>
+      <td class="num">6/6</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">MAD</td>
+      <td class="deptcell">Department of Literature, Film and Theatre Studies</td>
+      <td class="num">6/6</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">Journal Paper-Based MAD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">5/5</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">Monograph-based MAD</td>
+      <td class="deptcell">Department of Sociology</td>
+      <td class="num">6/6</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">MAD</td>
+      <td class="deptcell">East 15 Acting School</td>
+      <td class="num">6/6</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">Art History Masters by Dissertation</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">6/6</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-good">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">History Masters by Dissertation</td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">6/6</td>
+      <td><span class="pill good">complete</span></td>
+    </tr><tr class="s-crit">
+      <td><span class="kind k-mad">MAD</span></td>
+      <td class="prog">Philosophy Masters by Dissertation<div class="detail">returned <code>hr-mad-milestones-2025-26.pdf</code></div></td>
+      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
+      <td class="num">4/4</td>
+      <td><span class="pill crit">wrong document</span></td>
+    </tr></tbody>
+  </table></div>
+
+  <h2>How to read this</h2>
+  <div class="notes">
+    <div class="note"><h3>Coverage is scored by description, not code</h3>
+      <p>An answer that describes a milestone without printing its <code>M1.1</code> label still counts.
+      A label-only count previously scored five complete answers as zero.</p></div>
+    <div class="note"><h3>Every failure was retried once</h3>
+      <p>Generation varies run to run &mdash; one programme scored 15/15 and 1/15 on the same question.
+      A programme counts as incomplete only if it fell short twice.</p></div>
+    <div class="note flag"><h3>Health and Social Care is the real outlier</h3>
+      <p>Its PhD returned 6 of 19 milestones on both attempts, with the correct document retrieved.
+      Every other shortfall is one to three milestones.</p></div>
+    <div class="note flag"><h3>One wrong document</h3>
+      <p>Philosophy&rsquo;s Masters by Dissertation returned the History equivalent. Both sit in the same
+      school, and the question names the school, so nothing distinguishes them.</p></div>
+    <div class="note"><h3>Measured against production</h3>
+      <p>Answers came from the same cloud generator production serves. An earlier version of this run
+      used the local model by default and was discarded.</p></div>
+    <div class="note"><h3>What is not covered</h3>
+      <p>MSD, Professional Doctorate, DClinPsych and PhP programmes exist in the corpus but were outside
+      this request. Coverage is a word-overlap proxy: fit to audit, not to gate releases.</p></div>
+  </div>
+
+  <footer>Generated from <code>eval/questions_milestones.json</code>, itself built from the corpus so it
+  regenerates after an ingest. Milestone documents are 2025&ndash;26 editions.</footer>
+</div>

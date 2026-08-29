@@ -7043,3 +7043,34 @@ failure and meant perfect coverage in a different style. The scores were only
 caught because a total failure looked implausible enough to go and read the
 answers - which is precisely what "read whole answers rather than only the
 scores" was written for.
+
+### Round 34j: the scrub was rewriting the POLICY, not the plumbing (2026-08-29)
+
+Chasing the report's worst case produced a defect worth more than the case.
+
+**The outlier was my scorer, not the system.** `hs-phd` scored 6/19 in the
+coverage report. Re-run and read: retrieval put all 19 codes in context and the
+answer cited **all 19**. The word-overlap coverage proxy under-counted it. The
+proxy was built to audit answers by hand and is not fit to score a report
+headline - stated when it was written, and now demonstrated.
+
+**Reading that answer surfaced a real user-facing bug.** Milestone M2.2 reached
+the user as *"Demonstrate understanding of chosen topic within the guidance I
+can see of the field."* The document says "within the **context** of the
+field". `_scrub_plumbing`'s catch-all - `\bthe (?:provided |supplied )?context\b`
+-> "the guidance I can see" - fires on ANY occurrence, including ordinary
+English inside quoted policy text.
+
+Sized before fixing: **504 of the 511 occurrences of "the context" in the corpus
+are "the context of", across 389 documents.** The rule was wrong far more often
+than right whenever an answer quoted its source. Four patterns needed the same
+`(?! of\b)` guard, `in the context` most of all - the commonest English form.
+The plumbing cases still scrub: "The context does not contain X" ->
+"The guidance I can see does not contain X".
+
+**Why no metric caught it.** Every instrument here scores WHICH documents and
+WHICH milestones appear. This changed the wording of a milestone's definition
+and left both invariant - hit@6, coverage and code counts are identical before
+and after. It is the same class as the plumbing leak that motivated
+USER_FACING_LANGUAGE: found by reading an answer, not by scoring one. The
+irony is that the scrub added to fix that defect introduced this one.

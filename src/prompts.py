@@ -188,13 +188,23 @@ _PLUMBING_SUBS = [
     # singular "excerpt" keeps the singular replacement
     (r"\bthe (?:provided |supplied )?excerpt (?:I can see|provided)\b",
      "the guidance I can see"),
-    (r"\baccording to the (?:provided |supplied )?context\b",
+    (r"\baccording to the (?:provided |supplied )?context\b(?! of\b)",
      "according to the guidance I can see"),
-    (r"\bbased on the (?:provided |supplied )?context\b",
+    (r"\bbased on the (?:provided |supplied )?context\b(?! of\b)",
      "based on the guidance I can see"),
-    (r"\bin the (?:provided |supplied )?context\b", "in the guidance I can see"),
+    # "in the context of X" is the commonest ordinary-English form of all -
+    # same guard as the catch-all below, for the same reason.
+    (r"\bin the (?:provided |supplied )?context\b(?! of\b)", "in the guidance I can see"),
     # catch-all last
-    (r"\bthe (?:provided |supplied )?context\b", "the guidance I can see"),
+    # NOT followed by "of": "the context of the field" is ordinary English and
+    # belongs to the POLICY being quoted, not to our retrieval plumbing.
+    # Without this guard the scrub rewrote a milestone the documents actually
+    # define - "understanding of chosen topic within the context of the field"
+    # was served to users as "within the guidance I can see of the field".
+    # 504 of the 511 occurrences of "the context" in the corpus are "the
+    # context of", across 389 documents, so the unguarded rule was wrong far
+    # more often than it was right whenever an answer quoted its source.
+    (r"\bthe (?:provided |supplied )?context\b(?! of\b)", "the guidance I can see"),
 ]
 _PLUMBING_RES = [(re.compile(pat, re.I), rep) for pat, rep in _PLUMBING_SUBS]
 
