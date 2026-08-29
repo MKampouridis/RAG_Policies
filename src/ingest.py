@@ -153,6 +153,29 @@ def _readable_title(title: str) -> str:
 # displace chunk embeddings. Off by default.
 IDENTITY_HEADER_ENABLED = False
 
+# ...but SCOPED enrichment is a different proposition from J2, and the
+# difference is the mechanism of J2's regression, not a hope that it won't
+# recur (2026-08-29). J2 changed headers CORPUS-WIDE, and its own post-mortem
+# found documents with EMPTY identity records flipping hit->miss because ~450
+# OTHER documents' chunks moved in embedding space and crowded into queries
+# they had not previously won. Restricting enrichment to URLs matching this
+# scope leaves every other document's embedding byte-identical, so that
+# displacement mechanism structurally cannot occur for them - the same argument
+# _TITLE_REPAIRS above records for its own narrow change.
+#
+# Scoped to PGRE because that is where the need is measured and where the risk
+# is lowest. Philosophy's and History's Masters-by-Dissertation documents sit
+# in ONE school, and the header carries only the school, so nothing
+# distinguishes them: the Philosophy question returns the History document
+# (Round 34i). Their identity records name them exactly ("Philosophy Masters by
+# Dissertation"). And these 578 documents entered the corpus on 2026-08-28, so
+# they appear in NO measured baseline - enriching them cannot move a number the
+# ledger has recorded.
+#
+# Set RAG_IDENTITY_HEADER_SCOPE="" to disable, or widen it deliberately - but
+# widening it to the whole corpus is J2, which is falsified.
+IDENTITY_HEADER_SCOPE = os.environ.get("RAG_IDENTITY_HEADER_SCOPE", "/pgre/")
+
 
 def _load_doc_identity(url: str) -> dict:
     """J1's per-document extracted identity record (programme name,
@@ -182,7 +205,8 @@ def build_chunk_header(url: str, metadata: dict) -> str:
     parts = [f"Document: {_readable_title(metadata.get('title') or url.rsplit('/', 1)[-1])}"]
     if metadata.get("doc_type"):
         parts.append(metadata["doc_type"].replace("_", " "))
-    identity = _load_doc_identity(url) if IDENTITY_HEADER_ENABLED else {}
+    _identity_ok = IDENTITY_HEADER_ENABLED or (IDENTITY_HEADER_SCOPE and IDENTITY_HEADER_SCOPE in url)
+    identity = _load_doc_identity(url) if _identity_ok else {}
     if identity.get("programme_name"):
         parts.append(f"programme: {identity['programme_name']}")
     if identity.get("department") or metadata.get("department"):

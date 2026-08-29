@@ -214,6 +214,16 @@ def _friendly_error(exc: Exception) -> str:
         return ("I could not reach the language model - this machine may have lost "
                 "its network connection. The policy documents are local, so this is "
                 "not a problem with the documents themselves.")
+    # Out of credits is NOT a retry-able fault and NOT a bad key, but it
+    # previously fell through to the generic "something went wrong ... please
+    # try again" - the same words the user sees for a transient blip, so an
+    # account that simply needs topping up looked like an intermittent bug and
+    # was retried indefinitely (2026-08-29, seen in production). The API says
+    # "credit balance is too low"; say that, and say who can fix it.
+    if "credit balance" in low or "billing" in low or "quota" in low:
+        return ("The assistant's API account has run out of credit, so it cannot "
+                "write answers until that is topped up. Retrying will not help - "
+                "this needs whoever manages the account.")
     if "401" in text or "403" in text or "api_key" in low or "authentication" in low:
         return ("The assistant is not configured with a valid API key, so it cannot "
                 "write an answer. This needs an administrator, not a retry.")

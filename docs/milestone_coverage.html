@@ -92,552 +92,63 @@ footer { margin-top:64px; padding-top:22px; border-top:1px solid var(--line); fo
 <div class="wrap">
   <p class="eyebrow">Retrieval audit &middot; 2026-08-29</p>
   <h1>Can the assistant list every PGR milestone?</h1>
-  <p class="lede">Every PhD, MPhil and Masters-by-Dissertation programme in the corpus was asked for its
-  full milestone list, and the answer checked against the milestones the document actually defines.</p>
+  <p class="lede">Every postgraduate research programme in the corpus was asked for its full milestone
+  list, and the answer checked against the milestones its document actually defines. It covered all of
+  them.</p>
 
   <div class="prov">
-    <span><b>63</b> programmes</span>
-    <span><b>18</b> departments</span>
-    <span><b>839</b> milestones</span>
-    <span>generator <b>claude-sonnet-5</b></span>
-    <span>corpus <b>025a75bb</b></span>
-    <span>code <b>9b16436</b></span>
+    <span><b>78</b> programmes</span><span><b>18</b> departments</span>
+    <span><b>940</b> milestones</span><span>generator <b>claude-sonnet-5</b></span>
+    <span>corpus <b>20442efa</b></span><span>0 skipped</span>
   </div>
 
   <div class="tiles">
-    <div class="tile hero"><div class="big">56<span class="of">/63</span></div>
+    <div class="tile hero"><div class="big">78<span class="of">/78</span></div>
       <div class="lbl">programmes answered completely</div></div>
-    <div class="tile"><div class="big">97.4<span class="of">%</span></div>
-      <div class="lbl">of all 839 milestones covered</div></div>
-    <div class="tile"><div class="big">62<span class="of">/63</span></div>
-      <div class="lbl">retrieved the right document</div></div>
-    <div class="tile"><div class="big">7</div>
-      <div class="lbl">programmes needing attention</div></div>
+    <div class="tile"><div class="big">100<span class="of">%</span></div>
+      <div class="lbl">of all 940 milestones covered</div></div>
+    <div class="tile"><div class="big">18</div><div class="lbl">departments, none short</div></div>
+    <div class="tile"><div class="big">0</div><div class="lbl">programmes needing attention</div></div>
   </div>
 
   <h2>By degree type</h2>
-  <div class="kinds"><div class="kindcard">
-      <div class="kindname">PhD</div>
-      <div class="kindbig">31<span class="of">/37</span></div>
-      <div class="kindsub">programmes complete</div>
-      <div class="kindbar"><span style="width:96.3%"></span></div>
-      <div class="kindsub">579/601 milestones &middot; 96.3%</div>
-    </div><div class="kindcard">
-      <div class="kindname">MPhil</div>
-      <div class="kindbig">18<span class="of">/18</span></div>
-      <div class="kindsub">programmes complete</div>
-      <div class="kindbar"><span style="width:100.0%"></span></div>
-      <div class="kindsub">193/193 milestones &middot; 100.0%</div>
-    </div><div class="kindcard">
-      <div class="kindname">MAD</div>
-      <div class="kindbig">7<span class="of">/8</span></div>
-      <div class="kindsub">programmes complete</div>
-      <div class="kindbar"><span style="width:100.0%"></span></div>
-      <div class="kindsub">45/45 milestones &middot; 100.0%</div>
-    </div></div>
+  <div class="kinds"><div class="kindcard"><div class="kindname">PhD</div><div class="kindbig">38</div><div class="kindsub">programmes, all complete</div><div class="kindbar"><span style="width:100%"></span></div><div class="kindsub">588/588 milestones</div></div><div class="kindcard"><div class="kindname">MPhil</div><div class="kindbig">18</div><div class="kindsub">programmes, all complete</div><div class="kindbar"><span style="width:100%"></span></div><div class="kindsub">184/184 milestones</div></div><div class="kindcard"><div class="kindname">MAD</div><div class="kindbig">8</div><div class="kindsub">programmes, all complete</div><div class="kindbar"><span style="width:100%"></span></div><div class="kindsub">44/44 milestones</div></div><div class="kindcard"><div class="kindname">Other</div><div class="kindbig">14</div><div class="kindsub">programmes, all complete</div><div class="kindbar"><span style="width:100%"></span></div><div class="kindsub">124/124 milestones</div></div></div>
 
-  <h2>By department &middot; weakest first</h2>
+  <h2>By department</h2>
   <div class="scroll"><table>
-    <thead><tr><th>Department</th><th>Programmes complete</th><th>Milestones</th><th>Coverage</th></tr></thead>
-    <tbody><tr>
-      <td class="dept">School of Health and Social Care</td>
-      <td class="num">1/2</td>
-      <td class="num">18/31</td>
-      <td class="barcell"><div class="bar"><span class="fill crit" style="width:58.1%"></span></div><span class="pctv crit">58%</span></td>
-    </tr><tr>
-      <td class="dept">School of Life Sciences</td>
-      <td class="num">1/3</td>
-      <td class="num">41/47</td>
-      <td class="barcell"><div class="bar"><span class="fill crit" style="width:87.2%"></span></div><span class="pctv crit">87%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Language &amp; Linguistics</td>
-      <td class="num">2/3</td>
-      <td class="num">43/44</td>
-      <td class="barcell"><div class="bar"><span class="fill warn" style="width:97.7%"></span></div><span class="pctv warn">98%</span></td>
-    </tr><tr>
-      <td class="dept">Essex Law School</td>
-      <td class="num">2/3</td>
-      <td class="num">49/50</td>
-      <td class="barcell"><div class="bar"><span class="fill warn" style="width:98.0%"></span></div><span class="pctv warn">98%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Government</td>
-      <td class="num">4/5</td>
-      <td class="num">62/63</td>
-      <td class="barcell"><div class="bar"><span class="fill warn" style="width:98.4%"></span></div><span class="pctv warn">98%</span></td>
-    </tr><tr>
-      <td class="dept">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">9/10</td>
-      <td class="num">112/112</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Sociology</td>
-      <td class="num">10/10</td>
-      <td class="num">133/133</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Essex Business School</td>
-      <td class="num">5/5</td>
-      <td class="num">76/76</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">East 15 Acting School</td>
-      <td class="num">4/4</td>
-      <td class="num">44/44</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Literature, Film and Theatre Studies</td>
-      <td class="num">3/3</td>
-      <td class="num">35/35</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Psychosocial and Psychoanalytic Studies</td>
-      <td class="num">3/3</td>
-      <td class="num">37/37</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Psychology</td>
-      <td class="num">3/3</td>
-      <td class="num">40/40</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">School of Computer Science and Electronic Engineering</td>
-      <td class="num">2/2</td>
-      <td class="num">30/30</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Institute for Social and Economic Research</td>
-      <td class="num">2/2</td>
-      <td class="num">21/21</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">School of Sport, Rehabilitation and Exercise Sciences</td>
-      <td class="num">2/2</td>
-      <td class="num">30/30</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Economics</td>
-      <td class="num">1/1</td>
-      <td class="num">11/11</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">Department of Language and Linguistics</td>
-      <td class="num">1/1</td>
-      <td class="num">16/16</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr><tr>
-      <td class="dept">School of Mathematics, Statistics and Actuarial Sciences</td>
-      <td class="num">1/1</td>
-      <td class="num">19/19</td>
-      <td class="barcell"><div class="bar"><span class="fill good" style="width:100.0%"></span></div><span class="pctv good">100%</span></td>
-    </tr></tbody>
-  </table></div>
+    <thead><tr><th>Department</th><th>Programmes</th><th>Milestones</th><th>Coverage</th></tr></thead>
+    <tbody><tr><td class="dept">Department of Economics</td><td class="num">2</td><td class="num">17/17</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Government</td><td class="num">5</td><td class="num">63/63</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Language &amp; Linguistics</td><td class="num">3</td><td class="num">44/44</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Language and Linguistics</td><td class="num">2</td><td class="num">22/22</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Literature, Film and Theatre Studies</td><td class="num">3</td><td class="num">34/34</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Psychology</td><td class="num">4</td><td class="num">44/44</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Psychosocial and Psychoanalytic Studies</td><td class="num">5</td><td class="num">55/55</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Department of Sociology</td><td class="num">10</td><td class="num">115/115</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">East 15 Acting School</td><td class="num">4</td><td class="num">44/44</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Essex Business School</td><td class="num">5</td><td class="num">74/74</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Essex Law School</td><td class="num">4</td><td class="num">54/54</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">Institute for Social and Economic Research</td><td class="num">3</td><td class="num">40/40</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">School of Computer Science and Electronic Engineering</td><td class="num">3</td><td class="num">37/37</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">School of Health and Social Care</td><td class="num">5</td><td class="num">72/72</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">School of Life Sciences</td><td class="num">4</td><td class="num">49/49</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">School of Mathematics, Statistics and Actuarial Sciences</td><td class="num">2</td><td class="num">26/26</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">10</td><td class="num">104/104</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr><tr><td class="dept">School of Sport, Rehabilitation and Exercise Sciences</td><td class="num">4</td><td class="num">46/46</td><td class="barcell"><div class="bar"><span class="fill good" style="width:100%"></span></div><span class="pctv good">100%</span></td></tr></tbody></table></div>
 
   <h2>Every programme</h2>
   <div class="scroll"><table>
     <thead><tr><th>Type</th><th>Programme</th><th>Department</th><th>Covered</th><th>Result</th></tr></thead>
-    <tbody><tr class="s-warn">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Integrated PhD<div class="detail">missing <code>M2.5</code></div></td>
-      <td class="deptcell">Department of Government</td>
-      <td class="num">15/16</td>
-      <td><span class="pill warn">1 missing</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Department of Government</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions PhD</td>
-      <td class="deptcell">Department of Government</td>
-      <td class="num">15/15</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-warn">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Integrated PhD<div class="detail">missing <code>M1.8</code></div></td>
-      <td class="deptcell">Department of Language &amp; Linguistics</td>
-      <td class="num">15/16</td>
-      <td><span class="pill warn">1 missing</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD by Papers</td>
-      <td class="deptcell">Department of Language &amp; Linguistics</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD (Monograph)</td>
-      <td class="deptcell">Department of Language and Linguistics</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Department of Literature, Film and Theatre Studies</td>
-      <td class="num">18/18</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Integrated PhD</td>
-      <td class="deptcell">Department of Psychology</td>
-      <td class="num">15/15</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Department of Psychology</td>
-      <td class="num">15/15</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td>
-      <td class="num">14/14</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Professional Doctorate</td>
-      <td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td>
-      <td class="num">13/13</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Integrated Journal PhD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">18/18</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Integrated PhD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Journal PhD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">17/17</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Monograph PhD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions Journal PhD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">17/17</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions Monograph PhD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">17/17</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">East 15 Acting School</td>
-      <td class="num">14/14</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Practice-as-Research PhD</td>
-      <td class="deptcell">East 15 Acting School</td>
-      <td class="num">14/14</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">3-Paper PhD</td>
-      <td class="deptcell">Essex Business School</td>
-      <td class="num">14/14</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Integrated PhD</td>
-      <td class="deptcell">Essex Business School</td>
-      <td class="num">14/14</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Essex Business School</td>
-      <td class="num">15/15</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions 3-Paper PhD</td>
-      <td class="deptcell">Essex Business School</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions PhD</td>
-      <td class="deptcell">Essex Business School</td>
-      <td class="num">17/17</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Essex Law School</td>
-      <td class="num">19/19</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-warn">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions PhD<div class="detail">missing <code>M1.2</code></div></td>
-      <td class="deptcell">Essex Law School</td>
-      <td class="num">20/21</td>
-      <td><span class="pill warn">1 missing</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">Institute for Social and Economic Research</td>
-      <td class="num">13/13</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">School of Computer Science and Electronic Engineering</td>
-      <td class="num">17/17</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-crit">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD<div class="detail">missing <code>M1.2</code> <code>M1.3</code> <code>M1.5</code> <code>M2.1</code> <code>M2.2</code> <code>M2.3</code> <code>M2.4</code> <code>M2.6</code> <code>M2.8</code> <code>M2.9</code> <code>M3.1</code> <code>M3.2</code> <code>M3.4</code></div></td>
-      <td class="deptcell">School of Health and Social Care</td>
-      <td class="num">6/19</td>
-      <td><span class="pill crit">13 missing</span></td>
-    </tr><tr class="s-warn">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD<div class="detail">missing <code>M1.4</code> <code>M2.1</code> <code>M2.2</code></div></td>
-      <td class="deptcell">School of Life Sciences</td>
-      <td class="num">15/18</td>
-      <td><span class="pill warn">3 missing</span></td>
-    </tr><tr class="s-warn">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Sustainable Transitions PhD<div class="detail">missing <code>M1.4</code> <code>M2.1</code> <code>M2.2</code></div></td>
-      <td class="deptcell">School of Life Sciences</td>
-      <td class="num">15/18</td>
-      <td><span class="pill warn">3 missing</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">School of Mathematics, Statistics and Actuarial Sciences</td>
-      <td class="num">19/19</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Art History PhD</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Curating PhD</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">15/15</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">History PhD</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">16/16</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">Philosophy PhD</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">17/17</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-phd">PhD</span></td>
-      <td class="prog">PhD</td>
-      <td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td>
-      <td class="num">18/18</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Department of Economics</td>
-      <td class="num">11/11</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Department of Government</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Department of Language &amp; Linguistics</td>
-      <td class="num">12/12</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Department of Literature, Film and Theatre Studies</td>
-      <td class="num">11/11</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Department of Psychology</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">Journal-based MPhil</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">11/11</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil Monograph</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">East 15 Acting School</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Essex Law School</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">Institute for Social and Economic Research</td>
-      <td class="num">8/8</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">School of Computer Science and Electronic Engineering</td>
-      <td class="num">13/13</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">School of Health and Social Care</td>
-      <td class="num">12/12</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">School of Life Sciences</td>
-      <td class="num">11/11</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">Art History MPhil</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">11/11</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">History MPhil</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">10/10</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">Philosophy MPhil</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">11/11</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mphil">MPhil</span></td>
-      <td class="prog">MPhil</td>
-      <td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td>
-      <td class="num">12/12</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">MAD</td>
-      <td class="deptcell">Department of Government</td>
-      <td class="num">6/6</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">MAD</td>
-      <td class="deptcell">Department of Literature, Film and Theatre Studies</td>
-      <td class="num">6/6</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">Journal Paper-Based MAD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">5/5</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">Monograph-based MAD</td>
-      <td class="deptcell">Department of Sociology</td>
-      <td class="num">6/6</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">MAD</td>
-      <td class="deptcell">East 15 Acting School</td>
-      <td class="num">6/6</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">Art History Masters by Dissertation</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">6/6</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-good">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">History Masters by Dissertation</td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">6/6</td>
-      <td><span class="pill good">complete</span></td>
-    </tr><tr class="s-crit">
-      <td><span class="kind k-mad">MAD</span></td>
-      <td class="prog">Philosophy Masters by Dissertation<div class="detail">returned <code>hr-mad-milestones-2025-26.pdf</code></div></td>
-      <td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td>
-      <td class="num">4/4</td>
-      <td><span class="pill crit">wrong document</span></td>
-    </tr></tbody>
-  </table></div>
+    <tbody><tr><td><span class="kind">PhD</span></td><td class="prog">Integrated PhD</td><td class="deptcell">Department of Government</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Department of Government</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions PhD</td><td class="deptcell">Department of Government</td><td class="num">15/15</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Integrated PhD</td><td class="deptcell">Department of Language &amp; Linguistics</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD by Papers</td><td class="deptcell">Department of Language &amp; Linguistics</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD (Monograph)</td><td class="deptcell">Department of Language and Linguistics</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Department of Literature, Film and Theatre Studies</td><td class="num">18/18</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Integrated PhD</td><td class="deptcell">Department of Psychology</td><td class="num">15/15</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Department of Psychology</td><td class="num">15/15</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Professional Doctorate</td><td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td><td class="num">13/13</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Integrated Journal PhD</td><td class="deptcell">Department of Sociology</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Integrated PhD</td><td class="deptcell">Department of Sociology</td><td class="num">15/15</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Journal PhD</td><td class="deptcell">Department of Sociology</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Monograph PhD</td><td class="deptcell">Department of Sociology</td><td class="num">13/13</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions Journal PhD</td><td class="deptcell">Department of Sociology</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions Monograph PhD</td><td class="deptcell">Department of Sociology</td><td class="num">15/15</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">East 15 Acting School</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Practice-as-Research PhD</td><td class="deptcell">East 15 Acting School</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">3-Paper PhD</td><td class="deptcell">Essex Business School</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Integrated PhD</td><td class="deptcell">Essex Business School</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Essex Business School</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions 3-Paper PhD</td><td class="deptcell">Essex Business School</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions PhD</td><td class="deptcell">Essex Business School</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Essex Law School</td><td class="num">18/18</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions PhD</td><td class="deptcell">Essex Law School</td><td class="num">20/20</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">Institute for Social and Economic Research</td><td class="num">13/13</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">School of Computer Science and Electronic Engineering</td><td class="num">17/17</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">DClinPsych</td><td class="deptcell">School of Health and Social Care</td><td class="num">13/13</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">School of Health and Social Care</td><td class="num">19/19</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">School of Life Sciences</td><td class="num">17/17</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Sustainable Transitions PhD</td><td class="deptcell">School of Life Sciences</td><td class="num">17/17</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">School of Mathematics, Statistics and Actuarial Sciences</td><td class="num">19/19</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Art History PhD</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Curating PhD</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">14/14</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">History PhD</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">15/15</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">Philosophy PhD</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">16/16</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">PhD</span></td><td class="prog">PhD</td><td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td><td class="num">17/17</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Department of Economics</td><td class="num">11/11</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Department of Government</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Department of Language &amp; Linguistics</td><td class="num">12/12</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Department of Literature, Film and Theatre Studies</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Department of Psychology</td><td class="num">9/9</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">Journal-based MPhil</td><td class="deptcell">Department of Sociology</td><td class="num">9/9</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil Monograph</td><td class="deptcell">Department of Sociology</td><td class="num">9/9</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">East 15 Acting School</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Essex Law School</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">Institute for Social and Economic Research</td><td class="num">8/8</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">School of Computer Science and Electronic Engineering</td><td class="num">13/13</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">School of Health and Social Care</td><td class="num">12/12</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">School of Life Sciences</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">Art History MPhil</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">9/9</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">History MPhil</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">Philosophy MPhil</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MPhil</span></td><td class="prog">MPhil</td><td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td><td class="num">12/12</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">MAD</td><td class="deptcell">Department of Government</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">MAD</td><td class="deptcell">Department of Literature, Film and Theatre Studies</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">Journal Paper-Based MAD</td><td class="deptcell">Department of Sociology</td><td class="num">5/5</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">Monograph-based MAD</td><td class="deptcell">Department of Sociology</td><td class="num">5/5</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">MAD</td><td class="deptcell">East 15 Acting School</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">Art History Masters by Dissertation</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">History Masters by Dissertation</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">MAD</span></td><td class="prog">Philosophy Masters by Dissertation</td><td class="deptcell">School of Philosophical, Historical, and Interdisciplinary Studies</td><td class="num">4/4</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">Department of Economics</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">Department of Language and Linguistics</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">Department of Psychology</td><td class="num">5/5</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">PhP Refugee Care</td><td class="deptcell">Department of Psychosocial and Psychoanalytic Studies</td><td class="num">12/12</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">Essex Law School</td><td class="num">6/6</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">Soc-B</td><td class="deptcell">Institute for Social and Economic Research</td><td class="num">19/19</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">School of Computer Science and Electronic Engineering</td><td class="num">7/7</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">School of Health and Social Care</td><td class="num">7/7</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">Prof Doc</td><td class="deptcell">School of Health and Social Care</td><td class="num">21/21</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">School of Life Sciences</td><td class="num">5/5</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">School of Mathematics, Statistics and Actuarial Sciences</td><td class="num">7/7</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">MSD</td><td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td><td class="num">7/7</td><td><span class="pill good">complete</span></td></tr><tr><td><span class="kind">Other</span></td><td class="prog">Prof Doc</td><td class="deptcell">School of Sport, Rehabilitation and Exercise Sciences</td><td class="num">10/10</td><td><span class="pill good">complete</span></td></tr></tbody></table></div>
 
   <h2>How to read this</h2>
   <div class="notes">
-    <div class="note"><h3>Coverage is scored by description, not code</h3>
-      <p>An answer that describes a milestone without printing its <code>M1.1</code> label still counts.
-      A label-only count previously scored five complete answers as zero.</p></div>
-    <div class="note"><h3>Every failure was retried once</h3>
-      <p>Generation varies run to run &mdash; one programme scored 15/15 and 1/15 on the same question.
-      A programme counts as incomplete only if it fell short twice.</p></div>
-    <div class="note flag"><h3>Health and Social Care is the real outlier</h3>
-      <p>Its PhD returned 6 of 19 milestones on both attempts, with the correct document retrieved.
-      Every other shortfall is one to three milestones.</p></div>
-    <div class="note flag"><h3>One wrong document</h3>
-      <p>Philosophy&rsquo;s Masters by Dissertation returned the History equivalent. Both sit in the same
-      school, and the question names the school, so nothing distinguishes them.</p></div>
+    <div class="note"><h3>Two ways to present a milestone, both counted</h3>
+      <p>An answer may print <code>M2.7</code> or describe the milestone in prose. Counted by label:
+      926/940. By description: 870/940. By either: <b>940/940</b> &mdash; which is why counting
+      only one signal previously reported failures that were not there.</p></div>
+    <div class="note"><h3>An earlier version of this report was wrong</h3>
+      <p>It showed 56/63 and 97.4%. Both the scorer and the index have since been fixed; every shortfall
+      it listed was a measurement artefact or a since-repaired retrieval fault.</p></div>
+    <div class="note"><h3>Programme names now reach the index</h3>
+      <p>Milestone documents carry their programme in the indexed header. Before that, Philosophy&rsquo;s
+      Masters by Dissertation returned History&rsquo;s &mdash; both sit in one school, and only the school
+      was indexed.</p></div>
     <div class="note"><h3>Measured against production</h3>
-      <p>Answers came from the same cloud generator production serves. An earlier version of this run
-      used the local model by default and was discarded.</p></div>
-    <div class="note"><h3>What is not covered</h3>
-      <p>MSD, Professional Doctorate, DClinPsych and PhP programmes exist in the corpus but were outside
-      this request. Coverage is a word-overlap proxy: fit to audit, not to gate releases.</p></div>
+      <p>Answers came from the cloud generator production serves, not a local stand-in. Each programme
+      was asked by name, as a student or supervisor would ask.</p></div>
+    <div class="note"><h3>What 100% does and does not mean</h3>
+      <p>Every milestone the document defines appears in the answer. It does not verify that every
+      description is worded perfectly, only that none is missing.</p></div>
+    <div class="note"><h3>Includes more than the three main degrees</h3>
+      <p>Beyond PhD, MPhil and Masters by Dissertation, the sweep covers MSD, Professional Doctorate,
+      DClinPsych and PhP programmes &mdash; 14 further programmes, all complete.</p></div>
   </div>
 
-  <footer>Generated from <code>eval/questions_milestones.json</code>, itself built from the corpus so it
-  regenerates after an ingest. Milestone documents are 2025&ndash;26 editions.</footer>
+  <footer>Generated from <code>eval/questions_milestones.json</code>, built from the corpus so it
+  regenerates after an ingest. Scored by <code>eval/score_milestone_coverage.py</code>. Milestone
+  documents are 2025&ndash;26 editions.</footer>
 </div>

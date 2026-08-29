@@ -1,12 +1,782 @@
 [
  {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "Art History Masters by Dissertation",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "ar-mad-milestones-2025-26.pdf"
+ },
+ {
+  "total": 9,
+  "covered": 9,
+  "by_label": 9,
+  "by_description": 9,
+  "missing": [],
+  "programme": "Art History MPhil",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "ar-mphil-milestones-2025-26.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 14,
+  "missing": [],
+  "programme": "Art History PhD",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "ar-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 16,
+  "missing": [],
+  "programme": "Sustainable Transitions 3-Paper PhD",
+  "department": "Essex Business School",
+  "source_title": "be-3-paper-phd-2025-26-sustainable-transitions.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 14,
+  "missing": [],
+  "programme": "3-Paper PhD",
+  "department": "Essex Business School",
+  "source_title": "be-3-paper-phd-2025-26.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 9,
+  "missing": [],
+  "programme": "Integrated PhD",
+  "department": "Essex Business School",
+  "source_title": "be-integrated-phd-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 16,
+  "missing": [],
+  "programme": "Sustainable Transitions PhD",
+  "department": "Essex Business School",
+  "source_title": "be-phd-2025-26-sustainable-transitions.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 14,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Essex Business School",
+  "source_title": "be-phd-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "School of Life Sciences",
+  "source_title": "bs-mphil-2025-26.pdf"
+ },
+ {
+  "total": 5,
+  "covered": 5,
+  "by_label": 5,
+  "by_description": 5,
+  "missing": [],
+  "programme": "MSD",
+  "department": "School of Life Sciences",
+  "source_title": "bs-msd-2025-26.pdf"
+ },
+ {
+  "total": 17,
+  "covered": 17,
+  "by_label": 17,
+  "by_description": 10,
+  "missing": [],
+  "programme": "PhD",
+  "department": "School of Life Sciences",
+  "source_title": "bs-phd-2025-26.pdf"
+ },
+ {
+  "total": 13,
+  "covered": 13,
+  "by_label": 13,
+  "by_description": 13,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "School of Computer Science and Electronic Engineering",
+  "source_title": "ce-mphil-2025-26.pdf"
+ },
+ {
+  "total": 7,
+  "covered": 7,
+  "by_label": 7,
+  "by_description": 7,
+  "missing": [],
+  "programme": "MSD",
+  "department": "School of Computer Science and Electronic Engineering",
+  "source_title": "ce-msd-2025-26.pdf"
+ },
+ {
+  "total": 17,
+  "covered": 17,
+  "by_label": 17,
+  "by_description": 17,
+  "missing": [],
+  "programme": "PhD",
+  "department": "School of Computer Science and Electronic Engineering",
+  "source_title": "ce-phd-2025-26.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 14,
+  "missing": [],
+  "programme": "Curating PhD",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "curating-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MAD",
+  "department": "East 15 Acting School",
+  "source_title": "east-15-mad-milestones-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "East 15 Acting School",
+  "source_title": "east-15-mphil-milestones-2025-26.pdf"
+ },
+ {
   "total": 14,
   "covered": 14,
   "by_label": 14,
   "by_description": 13,
   "missing": [],
+  "programme": "Practice-as-Research PhD",
+  "department": "East 15 Acting School",
+  "source_title": "east-15-par-milestones-2025-26.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 9,
+  "missing": [],
   "programme": "PhD",
   "department": "East 15 Acting School",
   "source_title": "east-15-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 11,
+  "covered": 11,
+  "by_label": 11,
+  "by_description": 11,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Department of Economics",
+  "source_title": "ec-mphil-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MSD",
+  "department": "Department of Economics",
+  "source_title": "ec-msd-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MAD",
+  "department": "Department of Government",
+  "source_title": "gv-mad-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Department of Government",
+  "source_title": "gv-mphil-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 13,
+  "missing": [],
+  "programme": "Integrated PhD",
+  "department": "Department of Government",
+  "source_title": "gv-phd-(integrated)-2025-26.pdf"
+ },
+ {
+  "total": 15,
+  "covered": 15,
+  "by_label": 15,
+  "by_description": 15,
+  "missing": [],
+  "programme": "Sustainable Transitions PhD",
+  "department": "Department of Government",
+  "source_title": "gv-phd-2025-26-sustainable-transitions.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 14,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Department of Government",
+  "source_title": "gv-phd-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "History Masters by Dissertation",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "hr-mad-milestones-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "History MPhil",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "hr-mphil-milestones-2025-26.pdf"
+ },
+ {
+  "total": 15,
+  "covered": 15,
+  "by_label": 15,
+  "by_description": 14,
+  "missing": [],
+  "programme": "History PhD",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "hr-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 13,
+  "covered": 13,
+  "by_label": 13,
+  "by_description": 13,
+  "missing": [],
+  "programme": "DClinPsych",
+  "department": "School of Health and Social Care",
+  "source_title": "hs-dclinpsych-2025-26.pdf"
+ },
+ {
+  "total": 12,
+  "covered": 12,
+  "by_label": 12,
+  "by_description": 12,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "School of Health and Social Care",
+  "source_title": "hs-mphil-2025-26.pdf"
+ },
+ {
+  "total": 7,
+  "covered": 7,
+  "by_label": 7,
+  "by_description": 7,
+  "missing": [],
+  "programme": "MSD",
+  "department": "School of Health and Social Care",
+  "source_title": "hs-msd-2025-26.pdf"
+ },
+ {
+  "total": 19,
+  "covered": 19,
+  "by_label": 19,
+  "by_description": 5,
+  "missing": [],
+  "programme": "PhD",
+  "department": "School of Health and Social Care",
+  "source_title": "hs-phd-2025-26.pdf"
+ },
+ {
+  "total": 21,
+  "covered": 21,
+  "by_label": 21,
+  "by_description": 13,
+  "missing": [],
+  "programme": "Prof Doc",
+  "department": "School of Health and Social Care",
+  "source_title": "hs-profdoc-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 11,
+  "missing": [],
+  "programme": "Integrated PhD",
+  "department": "Department of Language & Linguistics",
+  "source_title": "ll-integrated-phd-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MSD",
+  "department": "Department of Language and Linguistics",
+  "source_title": "ll-mad-2025-26.pdf"
+ },
+ {
+  "total": 12,
+  "covered": 12,
+  "by_label": 12,
+  "by_description": 12,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Department of Language & Linguistics",
+  "source_title": "ll-mphil-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 16,
+  "missing": [],
+  "programme": "PhD by Papers",
+  "department": "Department of Language & Linguistics",
+  "source_title": "ll-phd-by-papers-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 16,
+  "missing": [],
+  "programme": "PhD (Monograph)",
+  "department": "Department of Language and Linguistics",
+  "source_title": "ll-phd-monograph-2025-26.pdf"
+ },
+ {
+  "total": 17,
+  "covered": 17,
+  "by_label": 17,
+  "by_description": 16,
+  "missing": [],
+  "programme": "Sustainable Transitions PhD",
+  "department": "School of Life Sciences",
+  "source_title": "ls-phd-milestones-sustainable-transitions-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MAD",
+  "department": "Department of Literature, Film and Theatre Studies",
+  "source_title": "lt-mad-milestones-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Department of Literature, Film and Theatre Studies",
+  "source_title": "lt-mphil-milestones-2025-26.pdf"
+ },
+ {
+  "total": 18,
+  "covered": 18,
+  "by_label": 18,
+  "by_description": 18,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Department of Literature, Film and Theatre Studies",
+  "source_title": "lt-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Essex Law School",
+  "source_title": "lw-mphil-milestones-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MSD",
+  "department": "Essex Law School",
+  "source_title": "lw-msd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 18,
+  "covered": 18,
+  "by_label": 18,
+  "by_description": 13,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Essex Law School",
+  "source_title": "lw-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 20,
+  "covered": 20,
+  "by_label": 20,
+  "by_description": 19,
+  "missing": [],
+  "programme": "Sustainable Transitions PhD",
+  "department": "Essex Law School",
+  "source_title": "lw-phd-milestones-sustainable-transitions-2025-26.pdf"
+ },
+ {
+  "total": 7,
+  "covered": 7,
+  "by_label": 7,
+  "by_description": 7,
+  "missing": [],
+  "programme": "MSD",
+  "department": "School of Mathematics, Statistics and Actuarial Sciences",
+  "source_title": "ma-msd-2025-26.pdf"
+ },
+ {
+  "total": 19,
+  "covered": 19,
+  "by_label": 19,
+  "by_description": 17,
+  "missing": [],
+  "programme": "PhD",
+  "department": "School of Mathematics, Statistics and Actuarial Sciences",
+  "source_title": "ma-phd-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Department of Psychosocial and Psychoanalytic Studies",
+  "source_title": "pa-mphil-2025-26.pdf"
+ },
+ {
+  "total": 6,
+  "covered": 6,
+  "by_label": 6,
+  "by_description": 6,
+  "missing": [],
+  "programme": "MSD",
+  "department": "Department of Psychosocial and Psychoanalytic Studies",
+  "source_title": "pa-msd-2025-26.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 14,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Department of Psychosocial and Psychoanalytic Studies",
+  "source_title": "pa-phd-2025-26.pdf"
+ },
+ {
+  "total": 12,
+  "covered": 12,
+  "by_label": 12,
+  "by_description": 11,
+  "missing": [],
+  "programme": "PhP Refugee Care",
+  "department": "Department of Psychosocial and Psychoanalytic Studies",
+  "source_title": "pa-php-2025-26.pdf"
+ },
+ {
+  "total": 13,
+  "covered": 13,
+  "by_label": 13,
+  "by_description": 13,
+  "missing": [],
+  "programme": "Professional Doctorate",
+  "department": "Department of Psychosocial and Psychoanalytic Studies",
+  "source_title": "pa-prof-doc-2025-26.pdf"
+ },
+ {
+  "total": 15,
+  "covered": 15,
+  "by_label": 15,
+  "by_description": 11,
+  "missing": [],
+  "programme": "Integrated PhD",
+  "department": "Department of Psychology",
+  "source_title": "ps-intphd-2025-26.pdf"
+ },
+ {
+  "total": 9,
+  "covered": 9,
+  "by_label": 9,
+  "by_description": 9,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Department of Psychology",
+  "source_title": "ps-mphil-2025-26.pdf"
+ },
+ {
+  "total": 5,
+  "covered": 5,
+  "by_label": 5,
+  "by_description": 5,
+  "missing": [],
+  "programme": "MSD",
+  "department": "Department of Psychology",
+  "source_title": "ps-msd-2025-26.pdf"
+ },
+ {
+  "total": 15,
+  "covered": 15,
+  "by_label": 15,
+  "by_description": 15,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Department of Psychology",
+  "source_title": "ps-phd-2025-26.pdf"
+ },
+ {
+  "total": 4,
+  "covered": 4,
+  "by_label": 4,
+  "by_description": 4,
+  "missing": [],
+  "programme": "Philosophy Masters by Dissertation",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "py-mad-milestones-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 9,
+  "missing": [],
+  "programme": "Philosophy MPhil",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "py-mphil-milestones-2025-26.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 16,
+  "missing": [],
+  "programme": "Philosophy PhD",
+  "department": "School of Philosophical, Historical, and Interdisciplinary Studies",
+  "source_title": "py-phd-milestones-2025-26.pdf"
+ },
+ {
+  "total": 8,
+  "covered": 8,
+  "by_label": 8,
+  "by_description": 8,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "Institute for Social and Economic Research",
+  "source_title": "rc-mphil-2025-2026.pdf"
+ },
+ {
+  "total": 13,
+  "covered": 13,
+  "by_label": 13,
+  "by_description": 13,
+  "missing": [],
+  "programme": "PhD",
+  "department": "Institute for Social and Economic Research",
+  "source_title": "rc-phd-2025-26.pdf"
+ },
+ {
+  "total": 19,
+  "covered": 19,
+  "by_label": 19,
+  "by_description": 19,
+  "missing": [],
+  "programme": "Soc-B",
+  "department": "Institute for Social and Economic Research",
+  "source_title": "rc-soc-b-2025-26.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 14,
+  "by_description": 14,
+  "missing": [],
+  "programme": "Integrated Journal PhD",
+  "department": "Department of Sociology",
+  "source_title": "sc-integrated-phd-journal-milestones-2025-26.pdf"
+ },
+ {
+  "total": 15,
+  "covered": 15,
+  "by_label": 15,
+  "by_description": 15,
+  "missing": [],
+  "programme": "Integrated PhD",
+  "department": "Department of Sociology",
+  "source_title": "sc-integrated-phd-mono-milestones-2025-26.pdf"
+ },
+ {
+  "total": 5,
+  "covered": 5,
+  "by_label": 5,
+  "by_description": 5,
+  "missing": [],
+  "programme": "Journal Paper-Based MAD",
+  "department": "Department of Sociology",
+  "source_title": "sc-mad-journal-milestones-2025-26.pdf"
+ },
+ {
+  "total": 5,
+  "covered": 5,
+  "by_label": 5,
+  "by_description": 5,
+  "missing": [],
+  "programme": "Monograph-based MAD",
+  "department": "Department of Sociology",
+  "source_title": "sc-mad-mono-milestones-2025-26.pdf"
+ },
+ {
+  "total": 9,
+  "covered": 9,
+  "by_label": 9,
+  "by_description": 9,
+  "missing": [],
+  "programme": "Journal-based MPhil",
+  "department": "Department of Sociology",
+  "source_title": "sc-mphil-journal-milestones-2025-26.pdf"
+ },
+ {
+  "total": 9,
+  "covered": 9,
+  "by_label": 9,
+  "by_description": 9,
+  "missing": [],
+  "programme": "MPhil Monograph",
+  "department": "Department of Sociology",
+  "source_title": "sc-mphil-mono-milestones-2025-26.pdf"
+ },
+ {
+  "total": 15,
+  "covered": 15,
+  "by_label": 15,
+  "by_description": 15,
+  "missing": [],
+  "programme": "Sustainable Transitions Monograph PhD",
+  "department": "Department of Sociology",
+  "source_title": "sc-phd-2025-26-sustainable-transitions.pdf"
+ },
+ {
+  "total": 16,
+  "covered": 16,
+  "by_label": 16,
+  "by_description": 16,
+  "missing": [],
+  "programme": "Sustainable Transitions Journal PhD",
+  "department": "Department of Sociology",
+  "source_title": "sc-phd-journal-2025-26-sustainable-transitions.pdf"
+ },
+ {
+  "total": 14,
+  "covered": 14,
+  "by_label": 0,
+  "by_description": 14,
+  "missing": [],
+  "programme": "Journal PhD",
+  "department": "Department of Sociology",
+  "source_title": "sc-phd-journal-milestones-2025-26.pdf"
+ },
+ {
+  "total": 13,
+  "covered": 13,
+  "by_label": 13,
+  "by_description": 12,
+  "missing": [],
+  "programme": "Monograph PhD",
+  "department": "Department of Sociology",
+  "source_title": "sc-phd-mono-milestones-2025-26.pdf"
+ },
+ {
+  "total": 12,
+  "covered": 12,
+  "by_label": 12,
+  "by_description": 12,
+  "missing": [],
+  "programme": "MPhil",
+  "department": "School of Sport, Rehabilitation and Exercise Sciences",
+  "source_title": "se-mphil-2025-26.pdf"
+ },
+ {
+  "total": 7,
+  "covered": 7,
+  "by_label": 7,
+  "by_description": 7,
+  "missing": [],
+  "programme": "MSD",
+  "department": "School of Sport, Rehabilitation and Exercise Sciences",
+  "source_title": "se-msd-2025-26.pdf"
+ },
+ {
+  "total": 17,
+  "covered": 17,
+  "by_label": 17,
+  "by_description": 14,
+  "missing": [],
+  "programme": "PhD",
+  "department": "School of Sport, Rehabilitation and Exercise Sciences",
+  "source_title": "se-phd-2025-26.pdf"
+ },
+ {
+  "total": 10,
+  "covered": 10,
+  "by_label": 10,
+  "by_description": 10,
+  "missing": [],
+  "programme": "Prof Doc",
+  "department": "School of Sport, Rehabilitation and Exercise Sciences",
+  "source_title": "se-profdoc-2025-26.pdf"
  }
 ]

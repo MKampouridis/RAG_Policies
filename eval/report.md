@@ -7074,3 +7074,53 @@ and left both invariant - hit@6, coverage and code counts are identical before
 and after. It is the same class as the plumbing leak that motivated
 USER_FACING_LANGUAGE: found by reading an answer, not by scoring one. The
 irony is that the scrub added to fix that defect introduced this one.
+
+### Round 34k: 78/78, and what the earlier 56/63 actually measured (2026-08-29)
+
+Full sweep, every postgraduate research programme, cloud generator, corrected
+scorer: **78/78 programmes complete, 940/940 milestones, 0 skipped.** The
+earlier report's 56/63 and 97.4% measured two defects of my own, not the system.
+
+**Both fixes were needed and neither was the one first proposed.**
+
+- SCORER. A milestone counts as covered when EITHER its code or its description
+  appears. Label alone: 926/940. Description alone: 870/940. Either: 940/940 -
+  so each signal on its own invents failures the other sees.
+- INDEX. `IDENTITY_HEADER_ENABLED` is off because J2 measured it at RoA hit@6
+  70%->60%. But J2's own post-mortem names the mechanism: corpus-wide header
+  changes moved ~450 OTHER documents in embedding space. Scoping enrichment to
+  `/pgre/` leaves every other document byte-identical, so that mechanism cannot
+  fire - verified, not assumed: **0 non-PGRE chunks carry a programme field.**
+  Philosophy's Masters by Dissertation now returns its own document instead of
+  History's, and Art History and History still return theirs.
+
+**The identity records needed filling deterministically.** The local extractor
+left `programme_name` empty on 59 of 80 milestone documents - its prompt says
+to return "" for a general document and these read as generic. The programme is
+stated in the first line of each, so parsing beat guessing: 241 records filled,
+none overwritten.
+
+**Four false alarms, all mine, worth recording as a class.** Each looked like a
+system fault and was an instrument fault:
+
+1. `_scrub_plumbing` rewriting quoted policy text (Round 34j) - a real bug, but
+   found only because a scoring anomaly sent me to read the answer.
+2. The 6/19 outlier - the scorer, not the system.
+3. "Stuck at 0/78" for 10 minutes, twice - `grep` block-buffers to a file, so
+   progress sat in a 4KB buffer while the run proceeded normally. Every launcher
+   here piped through `grep -v`; the pipe was the instrument.
+4. A genuine hang the same day - the local run really was thrashing (18.5GB of
+   19.4GB swap). Same symptom as (3), different cause. CLAUDE.md says to stop
+   production during local-generation evals; I reasoned past it on the grounds
+   that Ollama shares one model, missing that two Python processes each hold
+   Chroma on top of an 8.8GB model.
+
+**Also fixed:** the scorer fetched all 26k chunks WITH documents twice per run
+(one `.get()` per key in a comprehension). And out-of-credit API failures now
+say so - they previously showed the generic "something went wrong, please try
+again", identical to a transient fault, inviting endless retries of a condition
+no retry can clear.
+
+**Not claimed:** 100% means no milestone is MISSING. It does not verify every
+description is worded correctly - `_scrub_plumbing` proved wording can be wrong
+while coverage is perfect, and no metric here would see it.

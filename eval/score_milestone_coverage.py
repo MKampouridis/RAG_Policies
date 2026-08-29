@@ -22,6 +22,7 @@ import collections
 import json
 import re
 import sys
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -76,8 +77,11 @@ def main() -> int:
 
     want = sys.argv[1] if len(sys.argv) > 1 else ""
     body = collections.defaultdict(dict)
-    for m, doc in zip(*[_get_collection().get(include=["metadatas", "documents"])[k]
-                        for k in ("metadatas", "documents")]):
+    # ONE fetch. The list comprehension this replaces called .get() once per
+    # key, pulling all 26k chunks WITH documents twice - minutes of work before
+    # the first programme was scored, and it looked like a hang.
+    store = _get_collection().get(include=["metadatas", "documents"])
+    for m, doc in zip(store["metadatas"], store["documents"]):
         u = m.get("source_url", "")
         if u and m.get("is_current"):
             body[u][m.get("chunk_index") or 0] = doc
@@ -87,7 +91,18 @@ def main() -> int:
     rows, full = [], 0
     for i, item in enumerate(items, 1):
         text = " ".join(body[item["source_url"]][k] for k in sorted(body.get(item["source_url"], {})))
-        ans, *_ = R.answer(item["question"], [])
+        # one transient 503 must not kill a 15-minute run: retry, then skip
+        ans = None
+        for attempt in range(3):
+            try:
+                ans, *_ = R.answer(item["question"], [])
+                break
+            except Exception as exc:
+                print(f"    attempt {attempt + 1} failed: {str(exc)[:90]}", flush=True)
+                time.sleep(5 * (attempt + 1))
+        if ans is None:
+            print(f"[{i}/{len(items)}] {item['source_title'][:44]:44} SKIPPED", flush=True)
+            continue
         s = score(ans, text)
         s.update({"programme": item["programme"], "department": item["department"],
                   "source_title": item["source_title"]})
