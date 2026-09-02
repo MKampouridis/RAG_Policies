@@ -7383,3 +7383,13 @@ question behind the university-hosting request, and it is now closed.
 `RAG_COLBERT_DEVICE` is added but left UNSET, so the default is unchanged -
 MPS, which the paired test says is the right default here. It exists so the
 Linux deployment can pin CPU explicitly rather than relying on auto-selection.
+
+**Follow-up: `delete_collection` leaves its vector index on disk.** Three
+directories totalling 176MB survived the drop, their segment ids no longer
+present in the `segments` table, so nothing could reach them. Removed after
+re-verifying orphan status against a live database rather than against the
+earlier listing. Final store **1.3GB, down from 2.0GB** - two collections,
+one index directory each. Confirmed by a cold restart (warmup 11s) and a
+replay against the pre-prune baseline: 132/160 either side, 0 gained, 0 lost.
+Worth knowing for any future prune: dropping a collection reclaims the
+SQLite rows, not the index files.
