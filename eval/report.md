@@ -7283,19 +7283,19 @@ paragraph openings put it at 6%.
 **docx beat PDF as a source, against the initial guess.** Converting to PDF
 would have passed the `.pdf` guard in `run_ingest.py` for free, but it does not
 solve the actual blocker (a local file has no URL) and it degrades the text:
-this document's substance includes a 5-column RSPB decision table, a
-registration-code table and appendix checklists. Walking the docx body XML
-keeps paragraphs and tables in reading order - 96 table rows survived with
-their structure, including the `RSPB decision | Outcome | Paperwork | Form`
-table that answers most of the questions the document exists to answer.
+much of this document's substance sits in multi-column decision tables,
+reference-code tables and appendix checklists rather than in prose. Walking
+the docx body XML keeps paragraphs and tables in reading order - 96 table rows
+survived with their structure, including the decision table that answers most
+of the questions the document exists to answer.
 
 **Two anticipated risks, both falsified by a check rather than an argument:**
 
-- `clean_text` was expected to eat the nine appendices of letter-template
-  boilerplate - the repeated-clause shape that once deleted policy clauses as
-  page furniture. It removed **0 characters**. Its heuristics target PDF
-  extraction artifacts (dot leaders, per-page headers) that a docx does not
-  have.
+- `clean_text` was expected to eat the repeated letter-template boilerplate
+  across its appendices - the repeated-clause shape that once deleted policy
+  clauses as page furniture. It removed **0 characters**. Its heuristics target
+  PDF extraction artifacts (dot leaders, per-page headers) that a docx does
+  not have.
 - A locally-ingested document was expected to need protection from future
   crawls. It does not: `run()` only calls `delete_document` for an item the
   crawl actually reached that no longer qualifies. Documents it never sees are
