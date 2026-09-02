@@ -32,7 +32,9 @@ Usage:
     python verify.py --static   # steps 1-4 only, no server needed
 """
 
+import hashlib
 import json
+import os
 import pathlib
 import subprocess
 import sys
@@ -221,17 +223,25 @@ def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> N
         step(5, "live request", False, "requests not available")
         return
     h = {"X-User": "verify"}
+    # Once RAG_ACCESS_PASSWORD is set, every /api/ path returns 401 without the
+    # access cookie - which would fail this step for a server that is working
+    # perfectly, turning the one check that caught the 503 into noise. Derived
+    # the same way src/app.py does (sha256 of "rag-access:" + password), so the
+    # password itself is never sent. Absent the variable this is a no-op and the
+    # request is unauthenticated, exactly as before.
+    _pw = os.environ.get("RAG_ACCESS_PASSWORD", "")
+    cookies = {"rag_access": hashlib.sha256(("rag-access:" + _pw).encode()).hexdigest()} if _pw else None
     last = ""
     for attempt in range(1, attempts + 1):
         try:
-            r = requests.get(f"{base}/api/config", headers=h, timeout=10)
+            r = requests.get(f"{base}/api/config", headers=h, cookies=cookies, timeout=10)
             if r.status_code != 200:
                 step(5, "live request", False, f"/api/config returned {r.status_code}")
                 return
-            cid = requests.post(f"{base}/api/conversations", headers=h,
+            cid = requests.post(f"{base}/api/conversations", headers=h, cookies=cookies,
                                 json={"title": "__verify__"}, timeout=15).json()["id"]
             try:
-                a = requests.post(f"{base}/api/conversations/{cid}/messages", headers=h,
+                a = requests.post(f"{base}/api/conversations/{cid}/messages", headers=h, cookies=cookies,
                                   json={"content": "What are the pass marks for a PGT Merit?",
                                         "detail": "default", "partner_mode": "essex_only"},
                                   timeout=300)
@@ -245,7 +255,7 @@ def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> N
                     return
                 last = f"HTTP {a.status_code}: {a.text[:70]}"
             finally:
-                requests.delete(f"{base}/api/conversations/{cid}", headers=h, timeout=15)
+                requests.delete(f"{base}/api/conversations/{cid}", headers=h, cookies=cookies, timeout=15)
         except Exception as exc:  # noqa: BLE001
             last = f"{type(exc).__name__}: {exc}"[:80]
     step(5, "live request", False, f"{last}  (failed {attempts} attempts)")
