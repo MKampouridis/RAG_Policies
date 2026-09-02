@@ -164,20 +164,36 @@ comparison would have produced a small difference and been read as confirmation.
   by 24 points. `phi4` is the neutral cross-family judge; `JUDGE_PROVIDER=anthropic` gives a
   frontier judge. Never mix judges within one comparison — the judge alone moves the threshold
   metric by ~9 points.
-- **RAM, as of 2026-08-12** — production is far lighter than it was, because generation
-  and query rewriting moved to the cloud and the ColBERT embedding cache was removed:
+- **RAM, as of 2026-09-02 — measure `phys_footprint`, NOT `rss`.** The figures in this
+  table were wrong by ~40% for a year because they were resident-size readings, and on
+  macOS RSS does not mean what it looks like: the memory compressor pages out an idle
+  process, so the SAME server measured minutes apart read 22MB, 198MB, 801MB and 271MB.
+  A 2-day-idle process read 11MB. None of those is the memory it needs. `footprint -p
+  <pid>` reports the physical footprint, which is the number to provision against —
+  and a Linux host has no such compressor, so RSS there behaves differently again.
 
-  | | resident |
+  | | phys_footprint |
   |---|---|
-  | server, idle | **0.8GB** |
-  | server, after a request | 1.1GB |
-  | server, after sustained use | ~2.2GB |
-  | Ollama (`nomic-embed-text`, on demand, unloads after ~4 min) | 0.4GB |
-  | **production total** | **~1.5-2.6GB** |
+  | server, warm, under use | **~3.9GB** (peak ~4.2GB) |
+  | Ollama, embed model loaded | ~70MB charged, ~325MB resident |
+  | **production total** | **~4GB** |
 
-  The old figure in these notes was ~5GB per instance, and ~13GB for the three local
-  models; both predate the cloud move. Two consequences: retrieval-only eval work no
-  longer needs production stopped, and the machine is no longer the constraint it was.
+  Measured twice on separate days (3948MB/4219MB peak, then 3863MB/4177MB) so the
+  figure is corroborated, not a single reading.
+
+  Two things the old table hid. **~2.0GB of that footprint is in the "graphics"
+  category**: nothing in `src/rerank.py` or `src/colbert_index.py` ever sets a device,
+  pylate auto-selects, and MPS is available — so the reranker runs on the Apple GPU
+  against unified memory. On a CPU-only host that work moves to the CPU; what it costs
+  there is UNMEASURED. And **Ollama is cheaper than stated** because llama.cpp mmaps
+  the model: `llama-server` shows 303MB resident but only 42MB charged, the other
+  278MB being clean file-backed pages the kernel can reclaim.
+
+  The conclusion the old figure supported still holds on the corrected one:
+  retrieval-only eval work does not need production stopped (~4GB + an eval process on
+  a 16GB machine), and the machine is no longer the constraint it was — the older notes
+  said ~5GB per instance and ~13GB for three local models, both predating the cloud
+  move. But it holds with less headroom than 1.5-2.6GB implied.
 
   **Local EVAL is a different profile.** `gemma3:12b` (8.1GB) and a judge (`phi4` 9.1GB
   or `qwen2.5:14b` 9.0GB) will not both fit in 16GB — run generation and judging as
