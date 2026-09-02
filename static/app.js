@@ -123,7 +123,7 @@ function markdownToHtml(text) {
 // The only document name the backend has is the stored filename, so that is
 // what is shown - tidied, never invented.
 function readableTitle(url) {
-  const name = (url.split('/').pop() || url).replace(/\.pdf$/i, '').replace(/[-_]+/g, ' ').trim();
+  const name = (url.split('/').pop() || url).replace(/\.(pdf|docx?)$/i, '').replace(/[-_]+/g, ' ').trim();
   return name || url;
 }
 function normaliseQ(s) {

@@ -157,6 +157,15 @@ def _start_warmup() -> None:
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+# Locally-ingested documents (ingest_local.py) are keyed by the URL they are
+# served from, so the source modal's "open" link resolves to the real file the
+# answer was drawn from. Crawled documents keep their essex.ac.uk URLs and
+# never reach this mount. Created on demand: a corpus with no local documents
+# has no such directory, and mounting a missing one raises at import time.
+LOCAL_DOCS_DIR = Path(__file__).resolve().parent.parent / "data" / "local_documents"
+LOCAL_DOCS_DIR.mkdir(parents=True, exist_ok=True)
+app.mount("/documents", StaticFiles(directory=LOCAL_DOCS_DIR), name="documents")
+
 
 class NewConversation(BaseModel):
     title: str | None = None

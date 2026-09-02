@@ -7262,3 +7262,72 @@ Both depress scores slightly and affect no user. Options were laid out (rewrite
 the keyphrases; split the comparison into two questions; grade it on the East 15
 half; delete it) and the call was to leave them. Recorded so the next person -
 or the next round - does not rediscover them as new findings.
+
+### Local (unpublished) document ingestion: PGR Progress Handbook (2026-09-02)
+
+First document in the corpus that the crawler cannot reach. The PGR Progress
+Procedure Handbook 2025-26 is a staff-facing Word document, circulated
+internally rather than published: not linked from `/student/postgraduate-
+research/pgr-progress`, absent from two site-scoped web searches, and outside
+`ALLOWED_PAGE_PREFIXES`. Confirmed unpublished before building anything,
+because a published URL would have made this zero code - add it to
+`SEED_URLS` and re-ingest.
+
+**The gap was real, and measured before acting.** 213 of 227 substantive
+handbook paragraphs (94%) were absent from the corpus. The public page shares
+key *phrases* with the handbook but not paragraphs - it paraphrases in about
+40k characters what the handbook covers in 73k. An early read of the overlap
+as "substantial" was wrong and retracted: exact-substring probes on 120-char
+paragraph openings put it at 6%.
+
+**docx beat PDF as a source, against the initial guess.** Converting to PDF
+would have passed the `.pdf` guard in `run_ingest.py` for free, but it does not
+solve the actual blocker (a local file has no URL) and it degrades the text:
+this document's substance includes a 5-column RSPB decision table, a
+registration-code table and appendix checklists. Walking the docx body XML
+keeps paragraphs and tables in reading order - 96 table rows survived with
+their structure, including the `RSPB decision | Outcome | Paperwork | Form`
+table that answers most of the questions the document exists to answer.
+
+**Two anticipated risks, both falsified by a check rather than an argument:**
+
+- `clean_text` was expected to eat the nine appendices of letter-template
+  boilerplate - the repeated-clause shape that once deleted policy clauses as
+  page furniture. It removed **0 characters**. Its heuristics target PDF
+  extraction artifacts (dot leaders, per-page headers) that a docx does not
+  have.
+- A locally-ingested document was expected to need protection from future
+  crawls. It does not: `run()` only calls `delete_document` for an item the
+  crawl actually reached that no longer qualifies. Documents it never sees are
+  left alone.
+
+**Citations resolve, deliberately.** The manifest is URL-keyed and the source
+modal sets `dlg-open.href` to the stored key (`static/app.js` paintModal), so
+a `file://` or synthetic key would have produced exactly the dead citation the
+"Repair inline citations" commit fixed. The file is copied into
+`data/local_documents/`, mounted at `/documents`, and keyed by that path -
+verified end to end (HTTP 200, correct MIME type). It sits behind the access
+password like any other route, which is the right default for an internal
+document.
+
+**Retrieval: no regression, and the control says so honestly.** Replay before
+and after, 160 turns: 132/160 (82.5%) both sides, 0 gained, 0 lost, rank moved
+on 1 turn. That is a *control*, not evidence of benefit - none of those 160
+turns asks about PGR progress, so the instrument cannot see this document. A
+targeted probe of 5 handbook questions hit 5/5 (4 at rank 1), and an
+undergraduate-reassessment control did not surface it at all.
+
+Provenance audit after the corpus bump: DEFINITELY BROKEN 0, distribution
+unchanged at OK 115 / PARTIAL_DRIFT 31 / TEXT_DRIFT 2 / NO_GOLD 4 - identical
+to the previous re-stamp - so the eval set was re-stamped on the same grounds.
+
+**Open, not fixed:** answers cite this document as a bare path
+(`Source: /documents/pgr-progress-...docx`). Pre-existing behaviour from
+`prompts.py` ("always cite the source_url(s)"), which renders a full URL for
+crawled documents and a path for this one. Changing it is a wording change
+affecting every answer, so it is out of scope here and recorded instead.
+
+**Product consequence, worth stating.** The corpus is no longer exclusively
+published material, which contradicts the "publicly available documents only"
+line in the university hosting email. `--internal` marks such documents in the
+manifest (`published: false`) so the distinction stays visible.
