@@ -92,7 +92,17 @@ function escapeHtml(s) {
 function inlineMd(s) {
   return s
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/(https?:\/\/[^\s<)]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+    // Absolute URLs, and the served paths that locally-ingested documents
+    // (ingest_local.py) are cited by - which would otherwise be dead text
+    // while a crawled document's citation is clickable.
+    //
+    // ONE alternation rather than two passes, deliberately: Essex's own URLs
+    // contain "/documents/" (.../-/media/documents/...), so a second pass over
+    // already-linked text re-matches inside the anchor it just built and
+    // mangles every crawled citation. Matching once consumes the whole URL.
+    // The lookbehind stops a bare path being matched mid-token.
+    .replace(/(https?:\/\/[^\s<)]+|(?<![\w:/])\/documents\/[^\s<)]+)/g,
+             '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
 function markdownToHtml(text) {
   const lines = escapeHtml(text).split('\n');
