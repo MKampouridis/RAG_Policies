@@ -7331,3 +7331,55 @@ affecting every answer, so it is out of scope here and recorded instead.
 published material, which contradicts the "publicly available documents only"
 line in the university hosting email. `--internal` marks such documents in the
 manifest (`published: false`) so the distinction stays visible.
+
+### Chroma prune, and a self-inflicted latency claim that reversed (2026-09-02)
+
+**The store held five collections; two are used.** Collection names are derived
+from the embedding model (`src/ingest.py:24`), so every embedder experiment
+created a new one and nothing ever removed it when the experiment was
+falsified. 44,260 of ~71,700 stored chunks belonged to dead arms:
+`policies_bge-m3` (20,466, `EMBEDDING_ENSEMBLE_ENABLED=False`),
+`policies_mxbai-embed-large` (12,592, rejected) and
+`pseudo_query_nomic_embed_text` (11,202, `PSEUDO_QUERY_ENABLED=False`). Each
+carried its own copy of chunk text, metadata and a full-text index.
+
+Dropped, then `VACUUM` (SQLite keeps deleted pages as reusable free space, so
+the file does not shrink on its own): **2.0GB -> 1.5GB**, 590MB of it from
+`chroma.sqlite3` in 11 seconds. Warmup also fell from ~22s to 11s. A full copy
+was taken first, under `data/backups/`. Replay confirms the prune was inert:
+132/160 before and after, 0 gained, 0 lost.
+
+**One trap left behind.** `src/ensemble.py` and `src/pseudo_query.py` both use
+`get_or_create_collection`, so reviving either flag now SILENTLY creates an
+empty collection and contributes nothing to fusion rather than failing. A
+future revival that skips rebuilding (`reembed.py` for bge-m3,
+`build_pseudo_query_index.py` for pseudo-query) would measure "no effect" for a
+mechanism whose data is simply absent - the same shape as Round 16's
+zero-applicable-case runs. Rebuild before re-measuring.
+
+**A latency claim of mine, made and then falsified the same day.** A 16-query
+timing put the ColBERT reranker at a 1.84s median on CPU against 4.54s on MPS,
+and I reported the GPU as a 2.5x pessimisation - kernel launch overhead
+swamping a 30-candidate MaxSim. The paired 160-turn replay reversed it:
+
+| arm | wall clock, 160 turns | CPU time | hit@6 |
+|---|---|---|---|
+| MPS (current default) | **4:15** | 78s | 132/160 |
+| CPU (`RAG_COLBERT_DEVICE=cpu`) | 4:51 | 947s | 132/160 |
+
+MPS is ~12% faster on wall clock and uses ~12x less CPU time. The
+micro-benchmark was wrong twice over: 16 iterations is too few to amortise
+MPS warm-up, and it ran while the production server was up and competing.
+Recorded because the ledger's own rule - repeat both arms before believing a
+small delta - is the rule I broke, and the direction reversed, not just the
+magnitude.
+
+**What survives is the finding that mattered.** Ranking is IDENTICAL on both
+devices: 132/160 either way, zero rank changes across 160 turns. So the
+device is a performance question, not a correctness one, and a CPU-only host
+(a Linux VM, where MPS does not exist) costs no accuracy. That was the open
+question behind the university-hosting request, and it is now closed.
+
+`RAG_COLBERT_DEVICE` is added but left UNSET, so the default is unchanged -
+MPS, which the paired test says is the right default here. It exists so the
+Linux deployment can pin CPU explicitly rather than relying on auto-selection.

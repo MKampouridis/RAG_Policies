@@ -20,6 +20,7 @@ process, not twice.
 """
 
 import itertools
+import os
 import threading
 from pathlib import Path
 
@@ -61,13 +62,28 @@ _ids_to_embeddings = None   # memoised pylate map; see _get_documents_embeddings
 _load_lock = threading.Lock()
 
 
+# Which device the reranker runs on. UNSET (the default) keeps pylate's
+# auto-selection, which on Apple silicon picks the GPU via MPS - what every
+# measurement in eval/report.md was taken on. Set RAG_COLBERT_DEVICE=cpu to
+# pin the CPU.
+#
+# This exists because the GPU appears to be a PESSIMISATION here, not an
+# optimisation: MaxSim over a 30-candidate pool of short passages is too small
+# a workload to amortise kernel launches and host/device transfers. A 16-query
+# timing put CPU at a 1.84s median against MPS's 4.54s. Left unset until a
+# retrieval eval confirms the ranking is unchanged - a device switch alters
+# float precision, which can reorder near-ties.
+COLBERT_DEVICE = os.environ.get("RAG_COLBERT_DEVICE", "").strip().lower() or None
+
+
 def get_model():
     global _model
     if _model is None:
         with _load_lock:
             if _model is None:  # re-check: another thread may have loaded it
                 from pylate import models
-                _model = models.ColBERT(model_name_or_path=MODEL_NAME)
+                kwargs = {"device": COLBERT_DEVICE} if COLBERT_DEVICE else {}
+                _model = models.ColBERT(model_name_or_path=MODEL_NAME, **kwargs)
     return _model
 
 
