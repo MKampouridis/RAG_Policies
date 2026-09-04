@@ -87,9 +87,19 @@ class _BM25Index:
         self.documents = data["documents"]
         self.metadatas = data["metadatas"]
         # index header (repeated HEADER_WEIGHT times) + body so document
-        # identity is searchable and isn't drowned out by shared boilerplate
+        # identity is searchable and isn't drowned out by shared boilerplate.
+        # chunk_context (generate_chunk_context.py's LLM-written situating
+        # sentence, where present) is indexed too - it was already prepended
+        # to the DENSE embedding text in upsert_document, but BM25 rebuilds
+        # from Chroma's stored `documents` field, which never included it, so
+        # lexical search got none of its benefit. Found 2026-09-04: a chunk
+        # whose only mention of "plagiarism" was as a heading term lost to an
+        # unrelated chunk that coincidentally matched a rarer query word - the
+        # situating sentence names the chunk's actual topic in plain words,
+        # which is exactly what BM25 needs to weight it correctly.
         corpus = [
-            _tokenize(meta.get("chunk_header") or "") * HEADER_WEIGHT + _tokenize(doc)
+            _tokenize(meta.get("chunk_header") or "") * HEADER_WEIGHT
+            + _tokenize(meta.get("chunk_context") or "") + _tokenize(doc)
             for doc, meta in zip(self.documents, self.metadatas)
         ]
         # BM25Okapi divides by corpus size; an empty collection (fresh setup,

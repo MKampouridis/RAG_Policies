@@ -7462,11 +7462,61 @@ TEXT_DRIFT items are unresolved and undisturbed. **Not re-stamped**: the stamp
 asserts the set was checked and is trustworthy, and 33 items still need a
 human look.
 
-**What was investigated and explicitly set aside.** The plagiarism question's
-"what constitutes X" phrasing scores badly in isolation (dense/BM25 both rank
-its own correct chunk far outside any usable pool even restricted to that one
-document), independent of the currency bug. But this phrasing is rare: 1 of
-151 regression questions, 3 of 298 real user messages (2 of those 3 from this
-session's own testing). Per this ledger's own rule - check how often it fires
-before optimising it - not worth a dedicated retrieval mechanism. Recorded as
-a known gap, not fixed.
+**Initially set aside, then fixed at the user's request.** The plagiarism
+question's "what constitutes X" phrasing scores badly in isolation
+(dense/BM25 both rank its own correct chunk far outside any usable pool even
+restricted to that one document), independent of the currency bug. By
+prevalence alone this looked like a no: 1 of 151 regression questions, 3 of
+298 real user messages (2 of those 3 from this session's own testing) - per
+this ledger's own rule, not worth a dedicated mechanism on volume. The user
+hit it directly, though, and asked to fix it anyway - real, felt pain
+outweighs an aggregate count, and this ledger's low-prevalence finding was
+about whether to justify NEW infrastructure, not about whether an existing,
+already-built mechanism was worth reusing here.
+
+**Root cause, measured, not assumed.** BM25's IDF table: `plagiarism` (idf
+4.94, in 188 of 26,496 chunks - diluted because dozens of unrelated policies
+cross-reference "the Academic Offences Policy... plagiarism detection
+software" in passing) is LESS discriminative than `constitutes` (idf 8.68, in
+just 4 chunks corpus-wide). One of those 4 is an unrelated Board of Examiners
+document containing "what constitutes passing for each stage of study" - a
+coincidental match on a throwaway grammatical word outweighing a real match on
+the topic word. Dense embedding has a separate, harder-to-prove-directly gap:
+the correct chunk is dense itemized-listing prose (three offence definitions
+in one 175-word chunk); a near-verbatim rephrasing of its own text found it
+easily (distance 0.457), a natural question did not.
+
+**Fix: reuse `generate_chunk_context.py`'s existing mechanism, extended to
+also feed BM25.** That tool (LLM-written per-chunk situating sentences,
+previously scoped to a sibling-disambiguation pilot) already prepends its
+output to the DENSE embedding text in `upsert_document` - but BM25 rebuilds
+from Chroma's stored `documents` field, which never included it, so lexical
+search got none of the benefit despite `chunk_context` already sitting unused
+in every chunk's metadata. `src/lexical.py` now indexes it alongside the
+existing `chunk_header` boost. A first pass generating contexts for all 59
+chunks of `academic-offences-procedure-2026-27.pdf` (local qwen2.5:7b, free)
+needed a quality check before shipping: 2 chunks came back with garbled
+non-English tokens mixed in, 1 hallucinated "the University of Warwick" (this
+document is Essex-only) - all three passed the same generation on retry, and
+a full re-scan of all 59 found nothing else wrong. Generated output helped
+but was not enough on its own (dense rank 1075->178, BM25 rank 371->213,
+neither clearing the top-48 pool). A hand-written, more keyword-dense context
+for the one chunk that matters - naming "what constitutes plagiarism" and the
+offence names directly rather than describing them abstractly - was: both
+ranks went to **0** (top result) within the current-only pool, and the chunk
+now appears in the final post-fusion, post-rerank top-8 (position 2) where it
+did not before.
+
+**Verified against a broad control, and the one apparent regression fully
+explained, not dismissed.** `retrieval_replay.py` against the two stored e2e
+result sets: 131/160 vs a `post_orphan_removal` (2026-09-02) baseline of
+132/160. The one "lost" turn (`student-debt-policy-2025-26.pdf`, a follow-up)
+is not a new defect - it is the SAME family-aware scoring artifact Round 35
+already named, and the SAME specific stale-gold case this round already found
+and declined to auto-fix in `questions_regression.json` (its keyphrases name
+academic years the current edition no longer contains), just also present in
+`results_gemma3_e2e_main.json`, a different stored file the gold-repair pass
+did not touch. Confirmed directly: `student-debt-policy-2025-26.pdf` is
+correctly `is_current: False` now (superseded by `2026-27`/`2027-28`), so
+retrieval returning the CURRENT edition scores as a miss against a gold URL
+that predates the rollover. Net real effect: 0 regressions, 1 confirmed fix.
