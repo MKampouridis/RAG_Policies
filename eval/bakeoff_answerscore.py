@@ -43,11 +43,25 @@ for m in FINALISTS:
         print(f"{m}: no bake-off file, skipped", flush=True)
         continue
     rows = json.loads(p.read_text())
+    out = p.with_name(p.stem + "_ascore.json")
+    # Resume from a partial _ascore file and save after every judgment: ~390
+    # local 14B judgments across the roster runs well past a background-task
+    # window, and saving only at the end of each model meant a kill re-did all
+    # of it from zero (learned the hard way on the groundedness pass,
+    # 2026-09-04).
+    if out.exists():
+        prior = {r["label"]: r.get("ascore") for r in json.loads(out.read_text())}
+        for r in rows:
+            if r["label"] in prior and prior[r["label"]] is not None:
+                r["ascore"] = prior[r["label"]]
     for r in rows:
+        if r.get("ascore") is not None:
+            continue
         title, turn = r["label"].rsplit("[", 1)
         turn = turn.rstrip("]")
         exp = EXP.get((title, turn))
         r["ascore"] = score_of(judge_answer(r["question"], exp, r["answer"])) if exp else None
+        out.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
     scored = [r for r in rows if r.get("ascore") is not None]
     roa = [r for r in scored if r["doc_type"] == "rules_of_assessment"]
     pol = [r for r in scored if r["doc_type"] == "policy"]

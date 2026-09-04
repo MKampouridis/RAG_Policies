@@ -173,6 +173,16 @@ ANTHROPIC_THINKING = os.environ.get("ANTHROPIC_THINKING", "disabled").lower()
 
 USAGE_PATH = os.environ.get("RAG_USAGE_PATH", "data/usage.jsonl")
 
+# Token counts + stop_reason from the most recent generate() call, for callers
+# that need per-call attribution rather than the append-only USAGE_PATH log
+# (which carries only a timestamp and so has to be correlated by time).
+# Added 2026-09-04 for the generator bake-off: token counts are the one thing a
+# paid comparison run cannot reconstruct afterwards, since the stored answer
+# text supports re-judging any quality metric locally for free, but nothing
+# recovers what the provider billed. Overwritten per call, single-threaded use
+# only; production ignores it.
+LAST_USAGE: dict = {}
+
 
 def _log_usage(data: dict) -> None:
     """Token counts beside the generate timing. Without these, a slow turn
@@ -322,6 +332,16 @@ def _anthropic_generate(messages: list[dict], model: str | None = None, on_token
         # A safety refusal returns HTTP 200 with stop_reason 'refusal' and no text
         # block, so indexing content[0] blindly would IndexError on a live refusal.
         _log_usage(data)
+        u = data.get("usage") or {}
+        LAST_USAGE.clear()
+        LAST_USAGE.update({
+            "provider": "anthropic",
+            "model": payload["model"],
+            "input_tokens": u.get("input_tokens"),
+            "output_tokens": u.get("output_tokens"),
+            "cache_read": u.get("cache_read_input_tokens"),
+            "stop_reason": data.get("stop_reason"),
+        })
         if data.get("stop_reason") == "refusal":
             return "I can't answer that from the provided documents."
         return "".join(b.get("text", "") for b in data.get("content", []) if b.get("type") == "text")
@@ -464,7 +484,21 @@ def generate(messages: list[dict], on_token=None) -> str:
             # surface the provider's error body (rate/quota/model messages) instead
             # of a bare status - the daily-token-limit diagnosis came from this body
             raise RuntimeError(f"{GENERATOR_PROVIDER} generator HTTP {resp.status_code}: {resp.text[:500]}")
-        return resp.json()["choices"][0]["message"]["content"]
+        body = resp.json()
+        choice = body["choices"][0]
+        u = body.get("usage") or {}
+        LAST_USAGE.clear()
+        LAST_USAGE.update({
+            "provider": GENERATOR_PROVIDER,
+            "model": payload["model"],
+            "input_tokens": u.get("prompt_tokens"),
+            "output_tokens": u.get("completion_tokens"),
+            # reasoning models bill invisible thinking inside completion_tokens -
+            # broken out where the provider reports it (Groq's gpt-oss does)
+            "reasoning_tokens": (u.get("completion_tokens_details") or {}).get("reasoning_tokens"),
+            "stop_reason": choice.get("finish_reason"),
+        })
+        return choice["message"]["content"]
     raise RuntimeError(f"{GENERATOR_PROVIDER} generator rate-limited (429) after retries")
 
 

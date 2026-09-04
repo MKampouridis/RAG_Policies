@@ -35,7 +35,7 @@ from src.llm import DETERMINISTIC, DETERMINISTIC_OPTIONS, JUDGE_MODEL, chat
 from src.rag import SYSTEM_PROMPT, _format_context, retrieve
 
 
-_CLOUD_PROVIDERS = ("groq", "gemini")
+_CLOUD_PROVIDERS = ("groq", "gemini", "anthropic")
 
 
 def _generate(model_spec: str, msgs: list[dict]) -> str:
@@ -45,6 +45,11 @@ def _generate(model_spec: str, msgs: list[dict]) -> str:
     inherent (kept, with a big latency win). "<provider>:<model>" (single
     colon, provider first) dispatches to a free-tier cloud generator. Plain
     names use chat() unchanged."""
+    # Cleared per call: LAST_USAGE is a module global, so a local model (which
+    # never writes it) would otherwise inherit the previous cloud call's counts
+    # and silently mis-attribute them.
+    import src.llm as llm
+    llm.LAST_USAGE.clear()
     if ":" in model_spec and model_spec.split(":", 1)[0] in _CLOUD_PROVIDERS:
         return _cloud_generate(model_spec, msgs)
     if "::" not in model_spec:
@@ -72,6 +77,16 @@ def _cloud_generate(model_spec: str, msgs: list[dict]) -> str:
     llm.GENERATOR_MODEL = model
     llm.GENERATOR_REASONING_EFFORT = "low" if "gpt-oss" in model else None
     return llm.generate(messages=msgs)
+
+
+def _last_usage() -> dict:
+    """Token counts for the call _generate() just made, or {} for local models
+    (Ollama reports no billable usage and none is needed - local is free).
+    Captured per turn because it is the ONE thing a paid comparison run cannot
+    reconstruct later: the stored answer text supports re-judging any quality
+    metric locally at no cost, but nothing recovers what a provider billed."""
+    import src.llm as llm
+    return dict(llm.LAST_USAGE)
 
 REF = Path("eval/results_qwen14b_full.json")
 CTX_CACHE = Path("eval/bakeoff_contexts.json")
@@ -155,20 +170,26 @@ def run_model(model: str, ctxs: list[dict]) -> list[dict]:
                         {"role": "user", "content": f"Context:\n{c['context']}\n\nQuestion: {c['question']}"}]
                 t0 = time.time()
                 ans = _generate(model, msgs)
-                rows.append({**c, "answer": ans, "latency": time.time() - t0})
+                rows.append({**c, "answer": ans, "latency": time.time() - t0,
+                             "usage": _last_usage()})
                 out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
         except Exception as exc:
+            # Judge what's already generated instead of returning nothing -
+            # 69-75 of 80 turns is a large enough sample for a directional
+            # read today, rather than waiting on a quota reset for the last
+            # handful. Not re-raised: the caller distinguishes "complete" from
+            # "partial" by comparing len(rows) to len(ctxs), not by exception.
             print(f"    stopped after {len(rows)}/{len(ctxs)} turns ({exc}); "
-                  f"re-run later to resume", flush=True)
-            raise
-    # judge after all gens so the generator model isn't swapped in/out per turn
-    judged = False
+                  f"judging what's generated so far, re-run later to finish", flush=True)
+    # judge after all gens so the generator model isn't swapped in/out per turn.
+    # Saved after EVERY judgment, same reason generation is: a local 14B judge
+    # over 80 turns runs longer than a harness background-task window, and
+    # writing only at the end of the loop meant two consecutive kills lost all
+    # judging progress and re-did it from zero (2026-09-04).
     for r in rows:
         if "grounded" not in r:
             r["grounded"] = judge_grounded(r["context"], r["answer"])
-            judged = True
-    if judged:
-        out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
+            out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
     return rows
 
 
@@ -203,16 +224,14 @@ if __name__ == "__main__":
               f"({'resuming from ' + str(len(existing)) if existing else 'starting'}/{len(ctxs)}) ===",
               flush=True)
         t0 = time.time()
-        try:
-            rows = run_model(m, ctxs)
-        except Exception:
-            # A free-tier daily quota can run out mid-model - each model is an
-            # independent account-side counter (observed 2026-09-04: distinct
-            # remaining-token counts per Groq model on the same key), so one
-            # model's exhaustion should not stop the others from running today.
-            partial = json.loads(done_path.read_text()) if done_path.exists() else []
-            summarize(m, partial, total=len(ctxs))
-            print(f"    ({m} incomplete - continuing to next model)\n", flush=True)
-            continue
-        summarize(m, rows)
-        print(f"    ({m} done in {(time.time() - t0) / 60:.1f} min)\n", flush=True)
+        # run_model() no longer raises on a quota-exhaustion stop - it judges
+        # whatever was generated and returns. Completeness is read from the
+        # row count, not from catching an exception, so a partial run still
+        # yields a real (if partial) groundedness score today, and one
+        # model's exhaustion never stops the rest of the roster from running -
+        # each Groq model carries its own independent daily counter (observed
+        # 2026-09-04: distinct remaining-token counts per model on one key).
+        rows = run_model(m, ctxs)
+        summarize(m, rows, total=len(ctxs))
+        status = "done" if _is_complete(rows, len(ctxs)) else "incomplete - re-run later to finish"
+        print(f"    ({m} {status}; {(time.time() - t0) / 60:.1f} min)\n", flush=True)

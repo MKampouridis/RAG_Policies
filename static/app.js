@@ -104,23 +104,67 @@ function inlineMd(s) {
     .replace(/(https?:\/\/[^\s<)]+|(?<![\w:/])\/documents\/[^\s<)]+)/g,
              '<a href="$1" target="_blank" rel="noopener">$1</a>');
 }
+// A GFM table separator: |---|:--:|---:| and the pipe-less variants.
+const TABLE_SEP_RE = /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/;
+
+function tableCells(line) {
+  return line.replace(/^\s*\|/, '').replace(/\|\s*$/, '').split('|').map((c) => c.trim());
+}
+
+// Cell contents get the same inline treatment as prose, plus one thing prose
+// does not need: a literal <br>, which markdown tables are the only practical
+// way to put a line break inside a cell. escapeHtml() has already turned it
+// into &lt;br&gt; by this point, so it is restored here - deliberately narrow,
+// no other tag is un-escaped.
+function cellMd(s) {
+  return inlineMd(s).replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+}
+
+function alignOf(spec) {
+  const s = spec.trim();
+  if (s.startsWith(':') && s.endsWith(':')) return ' style="text-align:center"';
+  if (s.endsWith(':')) return ' style="text-align:right"';
+  return '';
+}
+
 function markdownToHtml(text) {
   const lines = escapeHtml(text).split('\n');
   let html = '', list = null, para = [];
   const flushPara = () => { if (para.length) { html += '<p>' + para.map(inlineMd).join('<br>') + '</p>'; para = []; } };
   const closeList = () => { if (list) { html += '</' + list + '>'; list = null; } };
-  for (const raw of lines) {
-    const line = raw.replace(/\s+$/, '');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].replace(/\s+$/, '');
     const bullet = line.match(/^\s*[-*•]\s+(.*)/);
     const numbered = line.match(/^\s*\d+[.)]\s+(.*)/);
-    if (bullet) {
+    // Tables: header row + separator, then rows until a non-pipe line. Added
+    // 2026-09-04 - gpt-oss-120b answers rules-of-assessment questions with
+    // tables (year-by-year progression, per-programme pass marks), which this
+    // renderer previously showed as raw pipes with a literal <br> in each
+    // cell. Checked before the bullet branch: a separator row like |---|---|
+    // also matches the bullet pattern.
+    if (line.includes('|') && i + 1 < lines.length && TABLE_SEP_RE.test(lines[i + 1])) {
+      flushPara(); closeList();
+      const head = tableCells(line);
+      const aligns = tableCells(lines[i + 1]).map(alignOf);
+      i += 1;
+      let body = '';
+      while (i + 1 < lines.length && lines[i + 1].includes('|') && lines[i + 1].trim() !== '') {
+        i += 1;
+        const cells = tableCells(lines[i]);
+        body += '<tr>' + head.map((_, c) =>
+          `<td${aligns[c] || ''}>${cellMd(cells[c] || '')}</td>`).join('') + '</tr>';
+      }
+      html += '<div class="md-table-wrap"><table class="md-table"><thead><tr>'
+        + head.map((h, c) => `<th${aligns[c] || ''}>${cellMd(h)}</th>`).join('')
+        + '</tr></thead><tbody>' + body + '</tbody></table></div>';
+    } else if (bullet) {
       flushPara();
       if (list !== 'ul') { closeList(); html += '<ul>'; list = 'ul'; }
-      html += '<li>' + inlineMd(bullet[1]) + '</li>';
+      html += '<li>' + cellMd(bullet[1]) + '</li>';
     } else if (numbered) {
       flushPara();
       if (list !== 'ol') { closeList(); html += '<ol>'; list = 'ol'; }
-      html += '<li>' + inlineMd(numbered[1]) + '</li>';
+      html += '<li>' + cellMd(numbered[1]) + '</li>';
     } else if (line.trim() === '') {
       flushPara(); closeList();
     } else {
