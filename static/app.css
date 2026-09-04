@@ -97,8 +97,11 @@
      small round "UE" mark instead of a bordered card. A long policy answer
      then reads as a document rather than a chat bubble - which is the whole
      reason production moved away from bubbles. */
-  .msg-user {
+  .msg-user-wrap {
     align-self: flex-end; max-width: 82%;
+    position: relative;
+  }
+  .msg-user {
     background: var(--color-accent); color: #fff;
     padding: 11px 16px; border-radius: 24px;
     font-size: 15px; line-height: 1.55;
@@ -110,6 +113,23 @@
     padding: 0 0 0 34px;
     display: flex; flex-direction: column; gap: 12px;
     background: transparent; border: none;
+  }
+  .copy-btn { background: var(--color-surface); }
+  .copy-btn.copied { color: var(--color-accent-700); border-color: var(--color-accent-700); }
+  /* Question's copy button only: hidden until the bubble is hovered/focused,
+     like the chat UIs this is modelled on. Touch devices have no hover, so
+     it stays visible there instead of being unreachable. The answer's copy
+     button sits in .msg-actions instead and is always visible - see
+     renderAssistant. */
+  .msg-user-wrap .copy-btn {
+    position: absolute;
+    opacity: 0; transition: opacity .12s ease;
+    right: calc(100% + 6px); bottom: 2px;
+  }
+  .msg-user-wrap:hover .copy-btn,
+  .msg-user-wrap:focus-within .copy-btn { opacity: 1; }
+  @media (hover: none) {
+    .msg-user-wrap .copy-btn { opacity: 1; }
   }
   .msg-assistant::before {
     content: 'UE';
@@ -361,7 +381,7 @@
     }
     body.drawer-open #drawer-backdrop { opacity: 1; pointer-events: auto; }
     #messages { padding: 16px 14px; gap: 16px; }
-    .msg-user { max-width: 86%; }
+    .msg-user-wrap { max-width: 86%; }
     .msg-assistant { max-width: 100%; }
     #chat-composer-bar { padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); }
     .src-chip span { max-width: 200px; }

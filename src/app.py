@@ -157,6 +157,21 @@ def _start_warmup() -> None:
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
+
+@app.middleware("http")
+async def _no_cache_static(request: Request, call_next):
+    # StaticFiles sets no Cache-Control at all, so browsers fall back to
+    # heuristic caching and can keep serving a pre-edit app.js/app.css for a
+    # long time with no re-check - happened 2026-09-04, one tab showed stale
+    # JS, another stale CSS, from the same deploy. no-cache forces a
+    # conditional GET (cheap - 304 off the existing ETag) before ever reusing
+    # a cached copy, so an edit is visible on the next load, not the next
+    # hard refresh.
+    response = await call_next(request)
+    if request.url.path.startswith("/static/"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
 # Locally-ingested documents (ingest_local.py) are keyed by the URL they are
 # served from, so the source modal's "open" link resolves to the real file the
 # answer was drawn from. Crawled documents keep their essex.ac.uk URLs and

@@ -465,9 +465,7 @@ function submitFeedback(rating, tags, comment, context, answer) {
   }).catch(() => {});
 }
 
-function buildFeedback(content, context) {
-  const bar = document.createElement('div');
-  bar.className = 'msg-actions';
+function buildFeedback(content, context, bar) {
   const note = document.createElement('span');
   note.className = 'text-muted rate-note';
 
@@ -536,21 +534,65 @@ function buildFeedback(content, context) {
     paint();
   };
 
-  const wrap = document.createDocumentFragment();
-  wrap.append(bar, panel);
-  return wrap;
+  return panel;
 }
 
 /* ── message rendering ────────────────────────────────────────────────────── */
+const COPY_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>';
+const COPIED_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>';
+
+// Copies the raw text (markdown source for an answer, plain text for a
+// question) rather than the rendered HTML - pasting into an email or doc
+// should not carry the app's markup.
+function buildCopyButton(getText) {
+  const btn = document.createElement('button');
+  btn.className = 'btn btn-icon btn-secondary copy-btn';
+  btn.type = 'button';
+  btn.title = 'Copy';
+  btn.setAttribute('aria-label', 'Copy');
+  btn.innerHTML = COPY_ICON;
+  let resetTimer = null;
+  btn.onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(getText());
+    } catch (e) {
+      // Clipboard API unavailable (non-HTTPS/non-localhost context, or
+      // permission denied) - fall back to the legacy copy command.
+      const ta = document.createElement('textarea');
+      ta.value = getText();
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); } catch (e2) { /* give up quietly */ }
+      document.body.removeChild(ta);
+    }
+    btn.innerHTML = COPIED_ICON;
+    btn.classList.add('copied');
+    btn.title = 'Copied';
+    clearTimeout(resetTimer);
+    resetTimer = setTimeout(() => {
+      btn.innerHTML = COPY_ICON;
+      btn.classList.remove('copied');
+      btn.title = 'Copy';
+    }, 1500);
+  };
+  return btn;
+}
+
 function renderUser(text) {
   const hint = messagesEl.querySelector('.chat-hint');
   if (hint) hint.remove();
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-user-wrap';
   const el = document.createElement('div');
   el.className = 'msg-user';
   el.textContent = text;
-  messagesEl.appendChild(el);
+  wrap.appendChild(el);
+  wrap.appendChild(buildCopyButton(() => text));
+  messagesEl.appendChild(wrap);
   messagesEl.scrollTop = messagesEl.scrollHeight;
-  return el;
+  return wrap;
 }
 
 function renderAssistant(content, sources, context) {
@@ -619,8 +661,22 @@ function renderAssistant(content, sources, context) {
       box.append(label, row);
       card.appendChild(box);
     }
-    card.appendChild(buildFeedback(content, context));
   }
+
+  // Actions bar (rating when this answer has a context to rate against, plus
+  // copy). Always present - unlike the question's copy button, this one
+  // stays visible rather than hover-revealed, per instruction 2026-09-04.
+  // Copy is appended AFTER buildFeedback populates the bar: .rate-note has
+  // margin-right: auto, which shoves everything after it flush right as a
+  // group - append copy before that and it strands alone on the left instead
+  // of sitting next to the thumbs.
+  const actions = document.createElement('div');
+  actions.className = 'msg-actions';
+  card.appendChild(actions);
+  if (context) {
+    card.appendChild(buildFeedback(content, context, actions));
+  }
+  actions.appendChild(buildCopyButton(() => content));
 
   messagesEl.appendChild(card);
   addCorners(card);
