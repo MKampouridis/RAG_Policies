@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Weekly document watch, run by com.mkampo.ragpolicieswatch (Sundays 23:00).
+# Weekly document watch, run by com.mkampo.ragpolicieswatch (Mondays 11:00).
 #
 # Deliberately does NOT ingest. It crawls, compares against the manifest and
 # writes data/new_documents_report.md; pulling anything into the corpus stays a

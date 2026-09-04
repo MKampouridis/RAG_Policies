@@ -88,7 +88,7 @@ This was invisible before: 9 incidental partner-gold questions in older sets gav
 
 ## 7. Corpus re-ingest, a weekly watcher, and a deliberate re-baseline
 
-I built `check_new_documents.py` — a **detect-only** weekly crawler (Sundays 23:00 via launchd, report Monday morning). It never ingests: auto-ingesting would silently change what every answer is based on and silently invalidate the ledger, with nobody deciding to.
+I built `check_new_documents.py` — a **detect-only** weekly crawler (Mondays 11:00 via launchd, moved from Sunday 23:00 after the overnight notification was found to be silently suppressed). It never ingests: auto-ingesting would silently change what every answer is based on and silently invalidate the ledger, with nobody deciding to.
 
 Its first run found **5 new and ~20 changed documents** — the system had been answering from superseded text, including final-year UG rules. Ingested deliberately, checks in order: 10 indexed, 0 errors, 0 new rename-split aliases, 0 missing content.
 
