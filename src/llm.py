@@ -116,12 +116,32 @@ GENERATOR_MODEL = os.environ.get("GENERATOR_MODEL", "")  # override: cloud model
 # History: 7B -> 14B (item 3) -> gemma3:12b (round 5). Override via GENERATOR_MODEL.
 LOCAL_GENERATOR_MODEL = "gemma3:12b"
 
+# GENERATOR_REASONING_EFFORT, if set, is passed through as `reasoning_effort`
+# in the cloud payload. Needed for Groq's gpt-oss models (2026-09-04
+# free-tier bake-off): unconstrained, gpt-oss-120b spent 48 of a 50-token
+# budget on an invisible "reasoning" field before any visible answer,
+# eating the free-tier token quota far faster than its raw TPD suggests.
+# "low" cut that to 17 tokens with no loss of the visible answer. Left unset
+# by default - only relevant to reasoning-capable cloud models, and other
+# providers may reject an unrecognised field.
+GENERATOR_REASONING_EFFORT = os.environ.get("GENERATOR_REASONING_EFFORT", "").strip() or None
+
+# Providers that accept an OpenAI-style `seed` for reproducibility under
+# RAG_DETERMINISTIC. NOT harmless-if-ignored, despite the old assumption:
+# Gemini 400s outright on an unrecognised field ("Unknown name \"seed\":
+# Cannot find field"), confirmed 2026-09-04 - it doesn't silently drop it.
+_SEED_SUPPORTED = {"groq"}
+
 _CLOUD_GENERATORS = {
     # provider: (OpenAI-compatible chat-completions endpoint, api-key env var, default model)
     "groq": (
         "https://api.groq.com/openai/v1/chat/completions",
         "GROQ_API_KEY",
-        "llama-3.3-70b-versatile",
+        # llama-3.3-70b-versatile was retired from Groq's free tier at some
+        # point after item 3 (2026-07-20) shipped this default - confirmed
+        # gone 2026-09-04 (404 model_not_found; absent from /v1/models).
+        # gpt-oss-120b is Groq's own fallback choice from that same round.
+        "openai/gpt-oss-120b",
     ),
     "gemini": (
         "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
@@ -419,8 +439,10 @@ def generate(messages: list[dict], on_token=None) -> str:
         "messages": messages,
         "temperature": 0 if DETERMINISTIC else 0.7,
     }
-    if DETERMINISTIC:
-        payload["seed"] = 42  # honored by Groq; harmless if a provider ignores it
+    if DETERMINISTIC and GENERATOR_PROVIDER in _SEED_SUPPORTED:
+        payload["seed"] = 42
+    if GENERATOR_REASONING_EFFORT:
+        payload["reasoning_effort"] = GENERATOR_REASONING_EFFORT
     headers = {"Authorization": f"Bearer {api_key}"}
     # Free tiers rate-limit by tokens-per-minute (Groq: 6k TPM), and a larger
     # RoA context prompt sitting near that ceiling gets a 429. Back off INSIDE

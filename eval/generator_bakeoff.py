@@ -13,6 +13,14 @@ latency - the speed/quality frontier. Cross-family judge + answer_score are a
 second pass on the finalists.
 
 Usage: RAG_DETERMINISTIC=1 PYTHONPATH=. python eval/generator_bakeoff.py [model ...]
+
+Cloud free-tier models (2026-09-04 investigation): pass "<provider>:<model>",
+e.g. "groq:openai/gpt-oss-120b" or "gemini:gemini-2.5-flash". Requires
+GROQ_API_KEY / GEMINI_API_KEY in the environment. Dispatches through
+src.llm.generate() (its existing 429 retry/backoff), not a separate HTTP
+path. Free-tier daily quotas are small enough that a single run can exhaust
+one mid-list - run_model() saves after every turn and resumes from the last
+completed one, so a quota-exhaustion crash costs one day, not all progress.
 """
 import json
 import re
@@ -27,17 +35,43 @@ from src.llm import DETERMINISTIC, DETERMINISTIC_OPTIONS, JUDGE_MODEL, chat
 from src.rag import SYSTEM_PROMPT, _format_context, retrieve
 
 
+_CLOUD_PROVIDERS = ("groq", "gemini")
+
+
 def _generate(model_spec: str, msgs: list[dict]) -> str:
     """Generate an answer. A '::nothink' / '::think' suffix on the model name
     toggles reasoning for thinking models (qwen3) - to test whether qwen3's
     strong RoA groundedness comes FROM the thinking (lost when off) or is
-    inherent (kept, with a big latency win). Plain names use chat() unchanged."""
+    inherent (kept, with a big latency win). "<provider>:<model>" (single
+    colon, provider first) dispatches to a free-tier cloud generator. Plain
+    names use chat() unchanged."""
+    if ":" in model_spec and model_spec.split(":", 1)[0] in _CLOUD_PROVIDERS:
+        return _cloud_generate(model_spec, msgs)
     if "::" not in model_spec:
         return chat(messages=msgs, model=model_spec)
     real, mode = model_spec.split("::", 1)
     opts = DETERMINISTIC_OPTIONS if DETERMINISTIC else {"num_ctx": 8192}
     resp = ollama.chat(model=real, messages=msgs, options=opts, think=(mode == "think"))
     return resp["message"]["content"]
+
+
+def _cloud_generate(model_spec: str, msgs: list[dict]) -> str:
+    """Routes through src.llm.generate() - its existing retry/backoff on 429s
+    - by setting the module's GENERATOR_PROVIDER/MODEL globals rather than
+    re-implementing the HTTP call here. reasoning_effort="low" for gpt-oss
+    models only: unconstrained, gpt-oss-120b spent 48 of a 50-token budget on
+    an invisible reasoning field before any visible answer (verified
+    2026-09-04), eating free-tier quota far faster than raw TPD implies;
+    "low" cut that to 17 tokens with the answer intact. Not applied to Qwen's
+    thinking models - their <think> tags are visible content, not a separate
+    field Groq's reasoning_effort controls, and _clean() already strips them
+    before judging."""
+    import src.llm as llm
+    provider, model = model_spec.split(":", 1)
+    llm.GENERATOR_PROVIDER = provider
+    llm.GENERATOR_MODEL = model
+    llm.GENERATOR_REASONING_EFFORT = "low" if "gpt-oss" in model else None
+    return llm.generate(messages=msgs)
 
 REF = Path("eval/results_qwen14b_full.json")
 CTX_CACHE = Path("eval/bakeoff_contexts.json")
@@ -102,29 +136,56 @@ def judge_grounded(context: str, answer: str) -> bool | None:
         return None
 
 
+def _out_path(model: str) -> Path:
+    return Path(f"eval/bakeoff_{model.replace(':', '_').replace('/', '_')}.json")
+
+
 def run_model(model: str, ctxs: list[dict]) -> list[dict]:
-    out_path = Path(f"eval/bakeoff_{model.replace(':', '_').replace('/', '_')}.json")
-    rows = []
-    for i, c in enumerate(ctxs, 1):
-        msgs = [{"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Context:\n{c['context']}\n\nQuestion: {c['question']}"}]
-        t0 = time.time()
-        ans = _generate(model, msgs)
-        rows.append({**c, "answer": ans, "latency": time.time() - t0})
-    for r in rows:  # judge after all gens so the generator model isn't swapped in/out per turn
-        r["grounded"] = judge_grounded(r["context"], r["answer"])
-    out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
+    out_path = _out_path(model)
+    # Resume from a PARTIAL file, not just "fully done or not started" - a
+    # free-tier daily quota can run out mid-list (this is the whole reason
+    # cloud models are in scope here), so a crash must cost one day, not the
+    # whole run. Saved after every generated turn, not just at the end.
+    rows = json.loads(out_path.read_text()) if out_path.exists() else []
+    start = len(rows)
+    if start < len(ctxs):
+        try:
+            for c in ctxs[start:]:
+                msgs = [{"role": "system", "content": SYSTEM_PROMPT},
+                        {"role": "user", "content": f"Context:\n{c['context']}\n\nQuestion: {c['question']}"}]
+                t0 = time.time()
+                ans = _generate(model, msgs)
+                rows.append({**c, "answer": ans, "latency": time.time() - t0})
+                out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
+        except Exception as exc:
+            print(f"    stopped after {len(rows)}/{len(ctxs)} turns ({exc}); "
+                  f"re-run later to resume", flush=True)
+            raise
+    # judge after all gens so the generator model isn't swapped in/out per turn
+    judged = False
+    for r in rows:
+        if "grounded" not in r:
+            r["grounded"] = judge_grounded(r["context"], r["answer"])
+            judged = True
+    if judged:
+        out_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2))
     return rows
 
 
-def summarize(model: str, rows: list[dict]) -> None:
-    scored = [r for r in rows if r["grounded"] is not None]
+def summarize(model: str, rows: list[dict], total: int | None = None) -> None:
+    total = total if total is not None else len(rows)
+    scored = [r for r in rows if r.get("grounded") is not None]
     rate = lambda sub: f"{sum(1 for r in sub if r['grounded']) / len(sub) * 100:.1f}%" if sub else "n/a"
     hit = [r for r in scored if r["hit"]]
     roa = [r for r in scored if r["doc_type"] == "rules_of_assessment"]
-    lat = sum(r["latency"] for r in rows) / len(rows)
+    lat = sum(r["latency"] for r in rows) / len(rows) if rows else 0
+    partial = f" [PARTIAL {len(rows)}/{total}]" if len(rows) < total else ""
     print(f"RESULT {model:24s} grounded: overall {rate(scored)} | hit-turns {rate(hit)} | "
-          f"RoA {rate(roa)} | mean latency {lat:.0f}s/answer", flush=True)
+          f"RoA {rate(roa)} | mean latency {lat:.0f}s/answer{partial}", flush=True)
+
+
+def _is_complete(rows: list[dict], total: int) -> bool:
+    return len(rows) == total and all("grounded" in r for r in rows)
 
 
 if __name__ == "__main__":
@@ -132,13 +193,26 @@ if __name__ == "__main__":
     ctxs = build_contexts()
     print(f"contexts ready: {len(ctxs)} turns; judge={JUDGE_MODEL}\n", flush=True)
     for m in models:
-        done_path = Path(f"eval/bakeoff_{m.replace(':', '_').replace('/', '_')}.json")
-        if done_path.exists():  # resume: skip models already completed (survives a wedge/restart)
-            summarize(m, json.loads(done_path.read_text()))
+        done_path = _out_path(m)
+        existing = json.loads(done_path.read_text()) if done_path.exists() else []
+        if _is_complete(existing, len(ctxs)):
+            summarize(m, existing)
             print(f"    ({m} already done - skipped)\n", flush=True)
             continue
-        print(f"=== generating + judging: {m} ===", flush=True)
+        print(f"=== generating + judging: {m} "
+              f"({'resuming from ' + str(len(existing)) if existing else 'starting'}/{len(ctxs)}) ===",
+              flush=True)
         t0 = time.time()
-        rows = run_model(m, ctxs)
+        try:
+            rows = run_model(m, ctxs)
+        except Exception:
+            # A free-tier daily quota can run out mid-model - each model is an
+            # independent account-side counter (observed 2026-09-04: distinct
+            # remaining-token counts per Groq model on the same key), so one
+            # model's exhaustion should not stop the others from running today.
+            partial = json.loads(done_path.read_text()) if done_path.exists() else []
+            summarize(m, partial, total=len(ctxs))
+            print(f"    ({m} incomplete - continuing to next model)\n", flush=True)
+            continue
         summarize(m, rows)
         print(f"    ({m} done in {(time.time() - t0) / 60:.1f} min)\n", flush=True)

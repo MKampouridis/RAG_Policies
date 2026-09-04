@@ -9,3 +9,4 @@ __pycache__/
 data/latency*.jsonl
 data/backups/
 data/usage.jsonl
+.env*
