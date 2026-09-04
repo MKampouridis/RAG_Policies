@@ -1,0 +1,29 @@
+{
+ "fixed": [],
+ "needs_human": [
+  {
+   "question": "What are the payment terms for self-funded International fee-paying students who started their course in acade",
+   "old_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/student-debt-policy-2026-27.pdf",
+   "new_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-debt-policy-2027-28.pdf",
+   "keyphrases": [
+    "International fee-paying students",
+    "2024-25 and 2025-26",
+    "two equal instalments",
+    "October and January",
+    "January and April",
+    "April and October"
+   ],
+   "found": [
+    "International fee-paying students",
+    "two equal instalments",
+    "October and January",
+    "January and April",
+    "April and October"
+   ],
+   "missing": [
+    "2024-25 and 2025-26"
+   ]
+  }
+ ],
+ "unresolved_family": []
+}

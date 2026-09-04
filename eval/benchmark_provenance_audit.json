@@ -13,7 +13,7 @@
  },
  {
   "question": "What constitutes plagiarism according to this document?",
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure-2026-27.pdf",
   "verdict": "OK",
   "detail": "3 of 3 key terms found"
  },
@@ -137,18 +137,15 @@
  },
  {
   "question": "What are the responsibilities of the Academic Registrar in managing fee liability for students?",
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/tuition-fee-payment-and-liability-policy-2026-27.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/tuition-fee-payment-and-liability-policy-2027-28.pdf",
   "verdict": "OK",
   "detail": "3 of 3 key terms found"
  },
  {
   "question": "What are the payment terms for self-funded International fee-paying students who started their course in acade",
   "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/student-debt-policy-2026-27.pdf",
-  "verdict": "PARTIAL_DRIFT",
-  "detail": "5 of 6 key terms found",
-  "missing": [
-   "2024-25 and 2025-26"
-  ]
+  "verdict": "NOT_CURRENT",
+  "detail": "a newer edition exists; returning it scores as a miss"
  },
  {
   "question": "What are the minimum supervision hours required per student according to this Code of Practice?",
@@ -216,7 +213,7 @@
  },
  {
   "question": "What minimum marks are required for passing a taught core module at University of Essex under these rules?",
-  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/department-specific/csee-ft-masters-accredited-variations-25.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/specific-courses/csee_ft_masters_accredited_variations_24.pdf",
   "verdict": "OK",
   "detail": "4 of 4 key terms found"
  },
@@ -300,7 +297,7 @@
  },
  {
   "question": "What actions can be considered as academic offences according to the document?",
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/academic-offences-procedure-2026-27.pdf",
   "verdict": "OK",
   "detail": "5 of 5 key terms found"
  },
@@ -376,7 +373,7 @@
  },
  {
   "question": "What are the payment terms for self-funded International fee-paying students starting their course in academic",
-  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/contractual-documents/2026-27/student-debt-policy-2026-27.pdf",
+  "source_url": "https://www.essex.ac.uk/-/media/documents/about/governance/student-debt-policy-2027-28.pdf",
   "verdict": "OK",
   "detail": "6 of 6 key terms found"
  },

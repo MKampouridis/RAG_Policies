@@ -7393,3 +7393,80 @@ one index directory each. Confirmed by a cold restart (warmup 11s) and a
 replay against the pre-prune baseline: 132/160 either side, 0 gained, 0 lost.
 Worth knowing for any future prune: dropping a collection reclaims the
 SQLite rows, not the index files.
+
+### Academic-year rollover ingest, and a grace-floor bug that orphaned 68 real documents (2026-09-04)
+
+A user report ("plagiarism question stopped answering") led to a corpus-wide
+`is_current` bug, not a content gap. `academic-offences-procedure-2026-27.pdf`
+existed, was `keep=True`, and contained a complete, correctly-worded
+definition - retrieval just ranked it badly (dense: outside the top 48 of
+~9,000 current chunks; BM25: rank 67/200). First diagnosed as the definition
+sentence split across a chunk boundary - **wrong, and retracted within the
+same investigation**: printing the FULL chunk (not a 600-char preview) showed
+it intact. The preview truncation, not the data, produced the artifact.
+
+**The real bug was upstream of ranking, in which documents even entered the
+current-only pool.** `compute_current_flags()` (`reembed.py`) derives a
+one-year grace floor from a single global `corpus_max_year`, meant to protect
+a family whose new edition "hasn't been published yet" during the staggered
+autumn rollout. Two finance documents - `tuition-fee-payment-and-liability-
+policy-2027-28.pdf` and `student-debt-policy-2027-28.pdf`, apparently
+routinely published a year ahead by that office - pushed `corpus_max_year` to
+2027-28, dragging the grace floor to 2026-27. Every family still on its
+(genuinely current, no `2026-27` successor published) `2025-26` edition fell
+outside the window and was force-archived by the directory-year rule.
+
+**Blast radius, measured before touching anything:** 68 document families
+corpus-wide - not 1, not the eval set's count of 48 - lost their only current
+edition (MBA completion periods, MSc Human Resource Management pass marks,
+MSc Physiotherapy credit rules, East 15 Acting School rules, more). Any
+question about them got a false "the policies I can see don't cover X" or a
+stale answer, invisible to hit@6 in a way TEXT_DRIFT/PARTIAL_DRIFT checks
+don't catch because the failure is upstream of retrieval scoring the gold URL
+at all.
+
+**Fix, chosen over the two more obvious ones.** Not "does a newer family
+sibling exist" - that is the identical signature the SAME rule correctly uses
+to archive a genuinely renamed/abandoned family (the `east15`/`east` case in
+`document_family()`'s own docstring), so it would have silently undone that
+protection. Not the plain mode of family-max-years either - `2025-26` is the
+mode (217 of 748 families) precisely because most departments haven't
+rolled over yet in early September, which is normal, not evidence `2026-27`
+isn't real. Shipped: `corpus_max_year` now requires a candidate year to be
+reached by **more than 2 independent families** before it can advance the
+floor. `2027-28` (2 families, one finance office, same week) is excluded;
+`2026-27` (4 unrelated families: academic offences, academic appeals, student
+engagement, tuition-fee/debt) is kept - cross-department corroboration is
+real evidence a rollover happened, one office publishing early is not.
+
+Verified before shipping: all 68 orphaned families return to `is_current:
+True`; both `2027-28` outliers keep their own correct status; every
+genuinely-archived old edition checked (`academic-offences-procedure-2018-19`,
+`-2024-25`) stays archived. Applied via `recompute_current_flags()` -
+metadata only, no re-embed, no API cost - 845 chunks updated, production
+stopped for the write and restarted after.
+
+**The eval set, measured and partially repaired, not re-stamped.**
+`benchmark_provenance_audit.py` went from 55 NOT_CURRENT / 27 PARTIAL_DRIFT to
+1 NOT_CURRENT / 30 PARTIAL_DRIFT after the fix. A new `eval/
+refresh_stale_gold.py` auto-swaps a NOT_CURRENT gold URL to its current family
+sibling, but ONLY when the item's keyphrases still match the new document's
+text - it refuses to touch PARTIAL_DRIFT or a keyphrase mismatch, since
+guessing whether a reworded chunk still means the same thing is a domain call,
+not a mechanical one. 5 items auto-fixed this way (including the plagiarism
+question itself, now pointed at the 2026-27 edition). One remains: `student-
+debt-policy-2026-27.pdf` was itself superseded by the `2027-28` edition, and
+its keyphrases (`2024-25 and 2025-26`) are genuinely stale payment-year text,
+not a false alarm - left for a human, not swapped. 30 PARTIAL_DRIFT and 2
+TEXT_DRIFT items are unresolved and undisturbed. **Not re-stamped**: the stamp
+asserts the set was checked and is trustworthy, and 33 items still need a
+human look.
+
+**What was investigated and explicitly set aside.** The plagiarism question's
+"what constitutes X" phrasing scores badly in isolation (dense/BM25 both rank
+its own correct chunk far outside any usable pool even restricted to that one
+document), independent of the currency bug. But this phrasing is rare: 1 of
+151 regression questions, 3 of 298 real user messages (2 of those 3 from this
+session's own testing). Per this ledger's own rule - check how often it fires
+before optimising it - not worth a dedicated retrieval mechanism. Recorded as
+a known gap, not fixed.

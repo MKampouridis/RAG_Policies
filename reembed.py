@@ -100,15 +100,36 @@ def compute_current_flags(documents: dict) -> dict[str, bool]:
     content/folder-year mismatch this guards against."""
     kept = [d for d in documents.values() if d.get("keep")]
 
-    corpus_max_year = max((effective_year(d["url"], d.get("academic_year")) for d in kept), default="")
-    grace_floor = previous_year(corpus_max_year)
-
     max_year_per_family: dict[str, str] = {}
     for doc in kept:
         family = document_family(doc["url"])
         year = effective_year(doc["url"], doc.get("academic_year"))
         if family not in max_year_per_family or year > max_year_per_family[family]:
             max_year_per_family[family] = year
+
+    # corpus_max_year drives the one-year grace floor below, so it must
+    # reflect a genuine year-over-year rollover, not one office's early
+    # publication. Found 2026-09-04: two finance documents dated 2027-28
+    # (tuition-fee-payment-and-liability-policy, student-debt-policy -
+    # published a year ahead, apparently routine for that office) pushed
+    # corpus_max_year from 2026-27 to 2027-28, which pulled the grace floor
+    # forward one year and force-archived 68 families whose latest edition
+    # was still 2025-26 with no 2026-27 successor published yet - exactly the
+    # staggered-rollout case the grace period exists to protect. Requiring
+    # >2 independent FAMILIES (not documents) at a candidate year excludes
+    # that single-office pair while keeping the 2026-27 rollover, which was
+    # independently corroborated by 4 unrelated families (academic offences,
+    # academic appeals, student engagement, tuition-fee/debt) the same week.
+    # A single family reaching a year proves nothing about the wider corpus;
+    # several unrelated ones agreeing is real cross-department evidence.
+    year_family_counts: dict[str, int] = {}
+    for year in max_year_per_family.values():
+        year_family_counts[year] = year_family_counts.get(year, 0) + 1
+    corpus_max_year = max(
+        (year for year, count in year_family_counts.items() if count > 2),
+        default=max(year_family_counts, default=""),
+    )
+    grace_floor = previous_year(corpus_max_year)
 
     # newest PGRE milestone directory present in the corpus - the comparison
     # point for the path rule below. Scoped to PGRE's own archive rather than
