@@ -7520,3 +7520,65 @@ did not touch. Confirmed directly: `student-debt-policy-2025-26.pdf` is
 correctly `is_current: False` now (superseded by `2026-27`/`2027-28`), so
 retrieval returning the CURRENT edition scores as a miss against a gold URL
 that predates the rollover. Net real effect: 0 regressions, 1 confirmed fix.
+
+### Free-tier generator bake-off: gpt-oss-120b beats Sonnet 5 on this corpus (2026-09-05)
+
+The user asked for a cheaper generator than Sonnet 5, testing on free tiers to
+avoid handing card details to several providers. Five arms on the SAME 80 fixed
+contexts (generation isolated per `generator_bakeoff.py`), local judge:
+
+| model | grounded | ascore | ascore RoA | latency (true) | $/answer |
+|---|---|---|---|---|---|
+| **groq openai/gpt-oss-120b** | **93.6%** | **4.38** | **4.39** | **~0.8s** | **$0.00051** |
+| anthropic claude-sonnet-5 | 83.8% | 4.30 | 4.03 | 5.3s | $0.01288 |
+| groq qwen/qwen3.8-27b | 72.2% | 4.14 | 3.94 | - | free tier |
+| gemini-3.5-flash-lite | 85.0% | 4.10 | 3.85 | - | free tier |
+| gemma3:12b (local) | 90.0% | 3.75 | 3.30 | 66s | $0 |
+
+**The winner survived both falsification attempts.** Cross-family re-judge with
+phi4 on the SAME stored answers (`eval/bakeoff_rejudge.py`, no regeneration):
+gpt-oss 92.3% vs Sonnet 86.2% - the gap narrows from 9.8 to 6.1 points but the
+direction is identical, so the ~9-point judge sensitivity this ledger records
+does not explain it. Repeat run, paired on the same first 33 contexts:
+**93.9% both times**, 2 turns flipping in opposite directions and cancelling.
+Direction robust to judge, magnitude robust to rerun.
+
+**Two of my own claims were wrong and are retracted.** (1) I reported Sonnet as
+4x faster (19s vs 5s). That was free-tier throttling inside the measured call -
+the latency spread gave it away (0.7s min against 39.5s max is a fast model
+being locked out, not a slow one). Unthrottled, with realistic ~2.7k-token
+contexts, gpt-oss-120b answers in **0.5-1.1s**, 5-10x FASTER than Sonnet. The
+error pointed the conclusion in exactly the wrong direction. (2) I hypothesised
+Sonnet's lower groundedness was the price of fuller answers. answer_score
+falsified it: Sonnet is not more complete (4.30 vs 4.38) and is materially worse
+on RoA (4.03 vs 4.39). It is not trading faithfulness for usefulness.
+
+**The cost motivation is real but tiny, and saying so matters.** 25x cheaper,
+measured from captured token counts, not estimated. But at this deployment's
+actual traffic (298 user messages, ever) that is ~£3/year against ~£0.15/year.
+The case for switching is the 6-10 point groundedness gap and the 12-20 point
+RoA gap, i.e. fewer invented pass marks - cost is a rounding error either way,
+and framing this as a cost win would oversell it.
+
+**Free tiers are an eval-logistics obstacle, not a product constraint** - the
+user pays for whatever wins. Groq's daily quota truncated runs at 78/80 and
+33/80; Gemini 2.5-flash turned out to be **20 requests/day** (its own 429 body
+said so; my earlier "1,500/day" came from aggregator blogs and was wrong).
+gemini-2.5-flash-lite / 2.0-flash / 2.0-flash-lite are retired for new users.
+Groq has dropped the Llama models this codebase defaulted to; gpt-oss models
+bill invisible reasoning tokens unless `reasoning_effort` is set low.
+
+**Three production defects the swap exposed, none visible to any metric.**
+Markdown tables rendered as raw pipes with literal `<br>` (the renderer only did
+paragraphs and lists). `_repair_answer_links` DELETED every citation, because
+its URL regex excluded ASCII closers but not `】`, so the bracket was absorbed,
+the lookup missed, and the "bad" link was stripped - users saw a bare 【. And a
+404'd duplicate outranked its live twin, producing dead citations. Groundedness
+and answer_score both scored those answers highly: the facts were right, only
+the surface was broken. Read the answers.
+
+**Status: trial, not shipped.** Production serves gpt-oss-120b behind
+`RAG_GROQ_GENERATOR` (revert = set it to 0) so the user can judge it in real
+use. NOT yet done: the 151-question regression set, and Sonnet is a SINGLE
+unrepeated run - the user declined a $1 rerun, which is a reasonable call given
+the gap survived a judge swap. The contextualizer stays on Haiku, untested here.
