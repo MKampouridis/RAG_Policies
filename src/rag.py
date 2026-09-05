@@ -1734,11 +1734,6 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     # split. The client re-renders from the returned text, so what the user ends
     # up with is scrubbed; a leaked phrase can flicker mid-stream.
     response_text = _scrub_plumbing(response_text)
-    _valid_urls = {m.get("source_url") for m in metadatas if m.get("source_url")}
-    response_text = _repair_answer_links(response_text, _valid_urls)
-    # after the repair, so a filename promoted to a URL is not then re-examined
-    # (and cannot be removed) by the repair pass on the same turn
-    response_text = _link_filename_citations(response_text, _valid_urls)
 
     if ENUMERATION_REPAIR_ENABLED:
         _missing = _missing_enumeration_codes(context, response_text, metadatas)
@@ -1765,6 +1760,20 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
                     f"defines {', '.join(_still)}._"
                 )
             _stage_timer("enumeration_repair", _tr)
+
+    # Link processing runs HERE, after enumeration repair, so it applies to
+    # whichever text is actually returned. It used to run before the repair
+    # block, which meant a REPAIRED answer (the retry re-generates from
+    # scratch) reached the user with neither pass applied - so a hallucinated
+    # URL in a repaired answer was never removed, silently defeating
+    # _repair_answer_links on exactly the turns most likely to need it. Found
+    # 2026-09-05 by an integration test: a filename citation survived
+    # unlinked because enumeration repair had replaced the processed text.
+    _valid_urls = {m.get("source_url") for m in metadatas if m.get("source_url")}
+    response_text = _repair_answer_links(response_text, _valid_urls)
+    # after the repair, so a filename promoted to a URL is not then re-examined
+    # (and cannot be removed) by the repair pass on the same turn
+    response_text = _link_filename_citations(response_text, _valid_urls)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         # variance gate: skip the "rules differ by programme" caveat when the
