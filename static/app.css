@@ -156,6 +156,13 @@
   .md-table th { background: var(--color-surface); font-weight: 600; }
   .md-table tr:nth-child(even) td { background: color-mix(in srgb, var(--color-text) 3%, transparent); }
   .msg-pending { opacity: .65; font-style: italic; }
+  /* A turn that never got an answer - stated, not silently missing. */
+  .msg-failed {
+    align-self: flex-start; max-width: 100%;
+    margin-left: 34px; padding: 8px 12px;
+    border-left: 2px solid var(--color-divider);
+    font-size: 13px; font-style: italic; color: var(--color-neutral-600);
+  }
   /* ── empty conversation state: the former onboarding screen, in place ── */
   .chat-hint { margin: auto; max-width: 340px; text-align: center; font-size: 13px; }
   .empty-wrap { max-width: 700px; margin: 0 auto; padding: 30px 4px 8px; text-align: center; }

@@ -825,7 +825,20 @@ async function openConversation(id) {
   let lastUserQ = '';
   const rendered = [];
   for (const m of msgs) {
-    if (m.role === 'user') { lastUserQ = m.content; renderUser(m.content); }
+    if (m.role === 'user') {
+      lastUserQ = m.content;
+      renderUser(m.content);
+      // A turn whose generation failed has no assistant message at all, so
+      // without this the question sits in history looking like the answer was
+      // lost. Say what happened instead (2026-09-05).
+      if (m.status) {
+        const note = document.createElement('div');
+        note.className = 'msg-failed';
+        note.textContent = 'No answer was generated for this question — the '
+          + 'assistant was unavailable at the time. Ask it again to retry.';
+        messagesEl.appendChild(note);
+      }
+    }
     // Stored messages carry no sources: the messages endpoint returns role and
     // content only. Citations therefore appear on live answers, not on reloaded
     // history - inventing them here is not an option. The URLs printed in the

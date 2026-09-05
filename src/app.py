@@ -423,6 +423,10 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         )
     except Exception as exc:  # noqa: BLE001
         print(f"[answer] {type(exc).__name__}: {exc}", flush=True)
+        # The question was committed before generation was attempted, so a
+        # failure here would otherwise leave it in history with no answer and
+        # nothing to explain why (26 such orphans accumulated before this).
+        memory.mark_last_message_failed(conversation_id)
         raise HTTPException(status_code=503, detail=_friendly_error(exc))
 
     memory.add_message(conversation_id, "assistant", answer_text,
@@ -507,6 +511,7 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage,
             }))
         except Exception as exc:  # noqa: BLE001 - must reach the client as an event
             print(f"[answer-stream] {type(exc).__name__}: {exc}", flush=True)
+            memory.mark_last_message_failed(conversation_id)   # see the note on the non-streaming path
             q.put(("error", _friendly_error(exc)))
         finally:
             q.put(("__end__", None))

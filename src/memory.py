@@ -108,6 +108,18 @@ def _connect() -> sqlite3.Connection:
                          (OWNER_LEGACY,))
         except sqlite3.OperationalError:
             pass  # column already exists
+        # Turn status (2026-09-05). A question is written BEFORE generation is
+        # attempted, so a generator failure left it in history with no answer
+        # and no explanation - indistinguishable from data loss to the reader.
+        # 26 such orphans existed across 194 conversations, back to 2026-08-28,
+        # i.e. this predates the cloud-generator trial and is not specific to
+        # any model. The question is still kept (it is the user's own text, and
+        # losing it silently is worse), but now it is MARKED, so the UI can say
+        # what happened. NULL means an ordinary turn.
+        try:
+            conn.execute("ALTER TABLE messages ADD COLUMN status TEXT DEFAULT NULL")
+        except sqlite3.OperationalError:
+            pass  # column already exists
         _migrated = True
     return conn
 
@@ -250,11 +262,23 @@ def purge_deleted(older_than_seconds: float = 30 * 24 * 3600,
 def get_messages(conversation_id: str) -> list[dict]:
     with _connect() as conn:
         rows = conn.execute(
-            "SELECT role, content, created_at, meta FROM messages"
+            "SELECT role, content, created_at, meta, status FROM messages"
             " WHERE conversation_id = ? ORDER BY id ASC",
             (conversation_id,),
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+def mark_last_message_failed(conversation_id: str, reason: str = "generation_failed") -> None:
+    """Flag the most recent message in a conversation as a turn that never got
+    an answer. Called when generation raises: the question stays (it is the
+    user's own text) but stops looking like an answer went missing."""
+    with _connect() as conn:
+        conn.execute(
+            "UPDATE messages SET status = ? WHERE id = ("
+            "  SELECT id FROM messages WHERE conversation_id = ? ORDER BY id DESC LIMIT 1)",
+            (reason, conversation_id),
+        )
 
 
 def _get_summary_state(conversation_id: str) -> tuple[str, int]:
