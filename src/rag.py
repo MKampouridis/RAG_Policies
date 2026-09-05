@@ -1588,7 +1588,13 @@ def _repair_prompt(missing: list[str]) -> str:
 # genuinely ambiguous and is REMOVED rather than resolved to an arbitrary one:
 # a wrong citation is worse than none, and answer() still returns the full
 # `sources` list, which is built from metadata and cannot be malformed.
-_ANSWER_URL_RE = re.compile(r'''https?://[^\s)\]>"'`]+''')
+# The excluded set must contain every delimiter a model might close a citation
+# with, or the delimiter is absorbed into the match and the URL fails the
+# `valid` test below - at which point this function deletes a link that was
+# perfectly good. gpt-oss-120b cites as 【<url>】 (2026-09-05): the 】 was
+# swallowed, the lookup missed, and users saw a bare 【 where the citation had
+# been. ASCII brackets were already covered; the CJK ones now are.
+_ANSWER_URL_RE = re.compile(r'''https?://[^\s)\]>"'`】」》〉]+''')
 
 
 def _repair_answer_links(text: str, valid: set) -> str:
