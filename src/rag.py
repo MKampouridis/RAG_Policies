@@ -1597,6 +1597,44 @@ def _repair_prompt(missing: list[str]) -> str:
 _ANSWER_URL_RE = re.compile(r'''https?://[^\s)\]>"'`】」》〉]+''')
 
 
+# Filename citations -> real links (2026-09-05). A model that cites
+# "se-phd-2025-26.pdf" instead of the URL leaves the user nothing to click:
+# inlineMd() in the client linkifies URLs, and a bare filename is not one.
+# gpt-oss-120b does this inconsistently - sometimes the full URL, sometimes the
+# filename, sometimes a human title - so the prompt cannot be relied on (and
+# prompt rules here are 2 for 4). Deterministic instead, same principle as
+# _repair_answer_links: THIS TURN's retrieved sources are known, so a cited
+# basename that matches exactly one of them can be rewritten to its URL.
+#
+# Normalisation strips non-alphanumerics deliberately: these answers cite with
+# NON-BREAKING hyphens (sc‑phd‑mono‑…), which no literal comparison would match.
+# Ambiguous matches are left alone - a wrong link is worse than none.
+_FILENAME_CITE_RE = re.compile(r"(?<![\w/.\u2010-\u2015-])[\w\u2010-\u2015.-]+\.(?:pdf|docx?)", re.I)
+
+
+def _norm_doc_key(s: str) -> str:
+    return re.sub(r"[^a-z0-9]", "", re.sub(r"\.(?:pdf|docx?)$", "", s.strip(), flags=re.I).lower())
+
+
+def _link_filename_citations(text: str, valid: set) -> str:
+    """Rewrite bare-filename citations to the URL of the source they name."""
+    if not text or not valid:
+        return text
+    by_key: dict = {}
+    for u in valid:
+        by_key.setdefault(_norm_doc_key(u.rsplit("/", 1)[-1]), set()).add(u)
+
+    def _fix(m):
+        raw = m.group(0)
+        # already inside a URL - leave it, _repair_answer_links owns those
+        if "://" in raw:
+            return raw
+        hits = by_key.get(_norm_doc_key(raw))
+        return next(iter(hits)) if hits and len(hits) == 1 else raw
+
+    return _FILENAME_CITE_RE.sub(_fix, text)
+
+
 def _repair_answer_links(text: str, valid: set) -> str:
     """Fix or remove inline URLs that point at nothing we retrieved."""
     if not text or not valid:
@@ -1696,8 +1734,11 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     # split. The client re-renders from the returned text, so what the user ends
     # up with is scrubbed; a leaked phrase can flicker mid-stream.
     response_text = _scrub_plumbing(response_text)
-    response_text = _repair_answer_links(
-        response_text, {m.get("source_url") for m in metadatas if m.get("source_url")})
+    _valid_urls = {m.get("source_url") for m in metadatas if m.get("source_url")}
+    response_text = _repair_answer_links(response_text, _valid_urls)
+    # after the repair, so a filename promoted to a URL is not then re-examined
+    # (and cannot be removed) by the repair pass on the same turn
+    response_text = _link_filename_citations(response_text, _valid_urls)
 
     if ENUMERATION_REPAIR_ENABLED:
         _missing = _missing_enumeration_codes(context, response_text, metadatas)
