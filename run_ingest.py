@@ -47,6 +47,14 @@ TEXT_CACHE_DIR = Path("data/text_cache")
 # year-5.pdf). Same spirit as the hub-page guard below, but keyed by exact URL.
 _EXCLUDED_URLS = {
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/five-year-integrated-masters-21-v7.pdf",
+    # Same shape (2026-09-05): the Jan-2025-start Model 2 rules also sat under
+    # /2025-26/, where the directory year made them look like the current
+    # edition, and got cited in preference to the Jan-2026 document. Essex has
+    # since removed this copy (404 confirmed) while the real one is live at
+    # /2024-25/masters-taught-courses/...jan25start.pdf - so this is a dead
+    # duplicate, not a superseded edition. jan25start and jan26start are
+    # DIFFERENT COHORTS and both stay in the corpus; only this path is dropped.
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/pgt/2025-26/masters-taught-courses/pgt-model-2-january-starts-rules-of-assessment-jan25start.pdf",
 }
 
 # Explicit exemption from the PDF-only hub-page guard below (2026-08-28). The
