@@ -78,6 +78,19 @@ SUPERSEDED_URLS = {
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-2-variations.pdf",
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-3-variations.pdf",
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/rules-of-assessment/ug/current/4-year-honours-degrees/roa-ug-4yr-year-4-variations.pdf",
+    # Board-of-examiners / appeals procedures whose successors were RENAMED
+    # (2026-09-07). Each was the newest edition in its own family, so the
+    # family rule marked it current - a 2018-19 and a 2019-20 document sitting
+    # in the default pool and answering live questions about external examiners
+    # and quorum. Their content now lives in academic-appeals-procedure-*
+    # (appeals) and assessment-policies-summary.pdf (boards of examiners), and
+    # the current rule for taught postgraduate boards DIFFERS from what these
+    # said: external examiners are excluded from the PGT quorum. Both files are
+    # still live on essex.ac.uk (200), so this is supersession, not link rot.
+    # Checked before demoting: every topic they cover is present in the current
+    # corpus, mostly by orders of magnitude, so nothing becomes unreachable.
+    "https://www.essex.ac.uk/-/media/documents/about/governance/progress-appeals-procedures-taught-programmes-study-2018-19.pdf",
+    "https://www.essex.ac.uk/-/media/documents/about/governance/progress-procedures-undergraduate-taught-postgraduate-2019-20.pdf",
 }
 
 
