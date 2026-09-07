@@ -32,6 +32,31 @@ SEED_URLS = [
     # HTML content page, not a PDF - see _INCLUDED_HTML_URLS below for why this
     # one is exempt from the PDF-only hub-page guard.
     "https://www.essex.ac.uk/student/postgraduate-research/pgr-progress",
+    # Staff exams-and-assessment pages (2026-09-07). Added because a live
+    # question about PGT external examiners was answered from a 2018-19
+    # document: the current rule lives in assessment-policies-summary.pdf,
+    # under /directories/academic-section/academic-standards-and-quality/,
+    # which NO existing seed reaches. These three pages carry the substantive
+    # documents the corpus was missing entirely - Principal Regulations for
+    # Research Degrees, Regulations for Academic Affairs, and the current
+    # marking policy.
+    #
+    # Seeds, deliberately, NOT a wider ALLOWED_PAGE_PREFIXES. /staff/ is
+    # outside the allow-list so page links are not followed, but MEDIA links
+    # are queued regardless of prefix (crawler.crawl, the _is_media_doc
+    # branch) - so seeding the page that HOLDS the documents harvests them
+    # without opening the whole /staff/ tree to transitive discovery. Measured
+    # before adding: a depth-2 crawl of the exams area reaches 32 pages and
+    # only 13 documents new to the corpus, of which these seeds cover the 4
+    # that are policy rather than operational paperwork.
+    #
+    # Six Word documents in the same area remain UNREACHABLE - fetch() returns
+    # None for any non-PDF, non-HTML content type, so the external-examiner
+    # absence form and the marking/moderation templates need docx support
+    # (ingest_local.py already has the parser) before a seed can pick them up.
+    "https://www.essex.ac.uk/staff/exams-and-assessment/assessment-and-marking-policies-staff",
+    "https://www.essex.ac.uk/staff/exams-and-assessment/exam-procedures-for-staff-phd-candidates",
+    "https://www.essex.ac.uk/staff/exams-and-assessment/departmentally-arranged-exams-and-tests",
 ]
 
 MANIFEST_PATH = Path("data/manifest.json")
