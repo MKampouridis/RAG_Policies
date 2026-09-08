@@ -62,6 +62,23 @@ SEED_URLS = [
     # nothing. Holds the external-examiner absence request - the form behind
     # the question that started this whole thread.
     "https://www.essex.ac.uk/staff/exams-and-assessment/postgraduate-exam-policies-and-resources",
+    # Four documents seeded DIRECTLY rather than via the page holding them
+    # (2026-09-08). A survey of /staff/academic-standards-and-quality found 146
+    # documents absent from the corpus, and seeding that area would have taken
+    # nearly all of them: 31 Senate committee papers going back to 2002, 28
+    # blank forms and proformas, 14 IT system user guides, 13 course-approval
+    # process documents, 7 periodic-review templates, plus HR policy (sickness
+    # absence, family leave, recruitment) that is real policy for the wrong
+    # audience - this corpus answers questions about programmes and rules of
+    # assessment, not employment terms. That is the PGRE-milestone mistake
+    # (578 documents, Round 34) waiting to be repeated.
+    #
+    # These four are the survey's actual yield. A PDF seed has no links to
+    # follow, so each brings itself and nothing else.
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/taught-external-examiner-policy.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/code-of-practice-when-sharing-open-educational-resources.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/responsible-use-of-education-data-and-metrics.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/wbl-policy.pdf",
 ]
 
 MANIFEST_PATH = Path("data/manifest.json")
