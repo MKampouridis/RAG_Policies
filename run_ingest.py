@@ -57,6 +57,11 @@ SEED_URLS = [
     "https://www.essex.ac.uk/staff/exams-and-assessment/assessment-and-marking-policies-staff",
     "https://www.essex.ac.uk/staff/exams-and-assessment/exam-procedures-for-staff-phd-candidates",
     "https://www.essex.ac.uk/staff/exams-and-assessment/departmentally-arranged-exams-and-tests",
+    # Added once the crawler could fetch .docx (2026-09-08): this page's
+    # documents are all Word, so seeding it before that would have gained
+    # nothing. Holds the external-examiner absence request - the form behind
+    # the question that started this whole thread.
+    "https://www.essex.ac.uk/staff/exams-and-assessment/postgraduate-exam-policies-and-resources",
 ]
 
 MANIFEST_PATH = Path("data/manifest.json")
@@ -161,10 +166,18 @@ def run(seed_urls: list[str]) -> dict:
                 "department": None, "academic_year": None,
                 "reason": "no extractable text",
             }
-        elif not item.url.lower().endswith(".pdf") and item.url not in _INCLUDED_HTML_URLS:
+        elif item.content_type == "html" and item.url not in _INCLUDED_HTML_URLS:
             # Durable hub-page guard (external code review round 3, 2026-07-22,
-            # Fable 5, verified): every real document in this corpus is a PDF;
-            # the crawl's HTML pages are navigation/listing hubs (e.g.
+            # Fable 5, verified). Tests for an HTML PAGE rather than "not a
+            # .pdf" as of 2026-09-08: the guard's purpose was always to keep
+            # navigation pages out, and when every document in the corpus was
+            # a PDF the two tests were equivalent. They stopped being
+            # equivalent once the crawler learned to fetch .docx - Essex
+            # publishes some policy as Word - and the old form would have
+            # rejected those as "hub/navigation page (non-PDF)" no matter
+            # which page was seeded. HTML pages are still excluded, which is
+            # the behaviour that was verified.
+            # The crawl's HTML pages are navigation/listing hubs (e.g.
             # /rules-of-assessment/roa-pgt-previous-years lists every historical
             # programme name). 19 of them had slipped past the LLM classifier
             # and were indexed - and because they list every programme name,

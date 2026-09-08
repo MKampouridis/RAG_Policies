@@ -41,8 +41,8 @@ import sys
 import time
 from pathlib import Path
 
-import docx
 
+from src.docx_text import extract_docx_text
 from reembed import compute_current_flags
 from run_ingest import (
     TEXT_CACHE_DIR,
@@ -56,59 +56,6 @@ from src.relevance import classify
 
 LOCAL_DOCS_DIR = Path("data/local_documents")
 URL_PREFIX = "/documents/"
-
-
-def _iter_block_text(document) -> list[str]:
-    """Paragraphs and tables in document order.
-
-    python-docx exposes .paragraphs and .tables as separate flat lists, which
-    loses their interleaving - and this document's substance is largely in
-    appendix tables sitting between explanatory paragraphs. Walking the body
-    XML keeps reading order, so a chunk boundary can't land between a table
-    and the sentence that introduces it.
-    """
-    from docx.table import Table
-    from docx.text.paragraph import Paragraph
-
-    out = []
-    body = document.element.body
-    for child in body.iterchildren():
-        tag = child.tag.split("}")[-1]
-        if tag == "p":
-            out.append(Paragraph(child, document).text)
-        elif tag == "tbl":
-            table = Table(child, document)
-            for row in table.rows:
-                cells = [c.text.strip() for c in row.cells]
-                # de-duplicate horizontally merged cells, which python-docx
-                # reports once per underlying grid column
-                deduped = [c for i, c in enumerate(cells) if i == 0 or c != cells[i - 1]]
-                line = " | ".join(c for c in deduped if c)
-                if line:
-                    out.append(line)
-    return out
-
-
-def extract_docx_text(path: Path) -> str:
-    """Readable text from a .docx, minus Word's table-of-contents plumbing.
-
-    TOC entries survive as literal field text ("Introduction PAGEREF
-    _Toc234314569 \\h 2"). They are pure noise for retrieval - a list of
-    headings the body already contains, carrying page numbers that mean
-    nothing once chunked - and they would otherwise be the document's most
-    heading-dense chunk, which is exactly the shape that wins on identity
-    queries while answering nothing.
-    """
-    document = docx.Document(str(path))
-    lines = []
-    for raw in _iter_block_text(document):
-        line = raw.strip()
-        if not line:
-            continue
-        if "PAGEREF" in line or line.startswith("TOC \\"):
-            continue
-        lines.append(line)
-    return "\n".join(lines)
 
 
 def main() -> int:

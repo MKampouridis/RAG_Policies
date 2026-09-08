@@ -18,6 +18,8 @@ import requests
 from bs4 import BeautifulSoup
 from pypdf import PdfReader
 
+from src.docx_text import extract_docx_text
+
 USER_AGENT = "RAGPoliciesBot/1.0 (personal research assistant; contact: kampouridis.michael@gmail.com)"
 ALLOWED_DOMAIN = "www.essex.ac.uk"
 ALLOWED_PAGE_PREFIXES = ("/governance-and-strategy/", "/student/rules-of-assessment/")
@@ -135,6 +137,26 @@ def fetch(url: str, session: requests.Session) -> CrawledItem | None:
         text = _extract_pdf_text(resp.content)
         title = url.rsplit("/", 1)[-1]
         return CrawledItem(url=url, content_type="pdf", title=title, text=text, content_hash=content_hash)
+
+    # Word documents (2026-09-08). Essex publishes some policy as .docx - the
+    # external-examiner absence form and the double-marking/moderation
+    # templates among them - and returning None for these meant they were
+    # silently unreachable no matter which page was seeded. Same parser the
+    # local ingester uses, so tables survive in reading order.
+    #
+    # Legacy binary .doc is NOT handled: python-docx reads Office Open XML
+    # only. Skipped explicitly rather than raising, so one old file on a page
+    # cannot abort the crawl.
+    if url.lower().endswith(".docx") or "wordprocessingml" in content_type.lower():
+        try:
+            text = extract_docx_text(io.BytesIO(resp.content))
+        except Exception:
+            return None
+        title = url.rsplit("/", 1)[-1]
+        return CrawledItem(url=url, content_type="docx", title=title, text=text,
+                           content_hash=content_hash)
+    if url.lower().endswith(".doc"):
+        return None
 
     if "html" not in content_type.lower():
         return None
