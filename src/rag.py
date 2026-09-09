@@ -1635,6 +1635,50 @@ def _link_filename_citations(text: str, valid: set) -> str:
     return _FILENAME_CITE_RE.sub(_fix, text)
 
 
+# Citation shape (2026-09-09). Sonnet ended every answer with a trailing
+# "Source: <url>" / "Sources: <url>, <url>" line; gpt-oss-120b instead scatters
+# 【<url>】 markers mid-sentence. The user asked for the old shape back.
+#
+# Done here rather than in the prompt for the reason the file already gives at
+# _repair_answer_links - prompt rules here are 2 for 4 - and because the one
+# previous attempt to specify citation behaviour (INLINE_CITATIONS) cost 11
+# points of groundedness. A rewrite of text the model has already produced
+# cannot change what it decided to claim.
+#
+# A marker with no URL in it is LEFT ALONE: it cannot become a link, and
+# deleting it would silently drop the only provenance the sentence had.
+_CJK_CITE_RE = re.compile(r"\s*【([^】]*)】")
+_TRAILING_SOURCES_RE = re.compile(r"\n+\s*sources?\s*:", re.I)
+
+
+def _normalise_citation_block(text: str) -> str:
+    """Move inline 【<url>】 citations into one trailing Sources line."""
+    if not text or "【" not in text:
+        return text
+    urls: list[str] = []
+
+    def _take(m):
+        found = _ANSWER_URL_RE.findall(m.group(1))
+        if not found:
+            return m.group(0)            # nothing citable - leave the marker
+        for u in found:
+            u = u.rstrip(".,;:")
+            if u not in urls:
+                urls.append(u)
+        return ""
+
+    body = _CJK_CITE_RE.sub(_take, text)
+    if not urls:
+        return text
+    # tidy what removing a mid-sentence marker leaves behind
+    body = re.sub(r"[ \t]+([.,;:)])", r"\1", body)
+    body = re.sub(r"(?<=\S)[ \t]{2,}", " ", body).rstrip()
+    if _TRAILING_SOURCES_RE.search(body):
+        return body                      # the model already wrote one
+    label = "Source" if len(urls) == 1 else "Sources"
+    return f"{body}\n\n{label}: " + ", ".join(urls)
+
+
 def _repair_answer_links(text: str, valid: set) -> str:
     """Fix or remove inline URLs that point at nothing we retrieved."""
     if not text or not valid:
@@ -1774,6 +1818,9 @@ def answer(question: str, history: list[dict], summary: str = "", detail: str = 
     # after the repair, so a filename promoted to a URL is not then re-examined
     # (and cannot be removed) by the repair pass on the same turn
     response_text = _link_filename_citations(response_text, _valid_urls)
+    # last, so it collects URLs that the two passes above have already
+    # validated and resolved rather than whatever the model first wrote
+    response_text = _normalise_citation_block(response_text)
 
     if DISCLOSE_AMBIGUITY_ENABLED and _top_family_count(metadatas) <= AMBIGUITY_FAMILY_COUNT_THRESHOLD:
         # variance gate: skip the "rules differ by programme" caveat when the
