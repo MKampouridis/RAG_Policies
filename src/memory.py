@@ -3,6 +3,7 @@ restarts and are resumable from either machine that points at the same
 data/chat.db."""
 
 import json
+import re
 import sqlite3
 import threading
 import time
@@ -267,6 +268,42 @@ def get_messages(conversation_id: str) -> list[dict]:
             (conversation_id,),
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+def usage_stats() -> dict:
+    """Counts the feedback log cannot see, for the dashboard.
+
+    Ratings are a self-selected sample - people click when annoyed - so a
+    satisfaction percentage means little without knowing what share of answers
+    was rated at all. And two failure modes are structurally invisible to
+    feedback: a turn that never produced an answer cannot be rated, and a
+    question re-asked verbatim usually means the first answer missed whether or
+    not anyone said so.
+    """
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT"
+            "  (SELECT COUNT(*) FROM messages WHERE role='assistant') AS answers,"
+            "  (SELECT COUNT(*) FROM messages WHERE role='user') AS questions,"
+            "  (SELECT COUNT(*) FROM messages WHERE status='generation_failed') AS failed_turns,"
+            "  (SELECT COUNT(*) FROM conversations WHERE deleted_at IS NULL) AS conversations"
+        ).fetchone()
+        stats = dict(row)
+        # Repeats are counted per conversation: the same question asked in two
+        # DIFFERENT conversations is a second person wanting the same thing,
+        # which is not a failure signal.
+        rows = conn.execute(
+            "SELECT conversation_id, content FROM messages WHERE role='user' ORDER BY id"
+        ).fetchall()
+    seen: dict = {}
+    repeats = 0
+    for r in rows:
+        key = (r["conversation_id"], re.sub(r"[^a-z0-9 ]", "", (r["content"] or "").lower()).strip())
+        if key in seen:
+            repeats += 1
+        seen[key] = True
+    stats["repeat_questions"] = repeats
+    return stats
 
 
 def mark_last_message_failed(conversation_id: str, reason: str = "generation_failed") -> None:

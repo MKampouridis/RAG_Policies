@@ -178,8 +178,68 @@ function panelProvenance(){
     <table class="prov">${gen}${cor}</table>
     ${missing?`<div class="sparse">${missing} of ${rows.length} ratings predate provenance recording and are excluded here.</div>`:''}</div>`;
 }
-function renderDash(){
-  const panels = [panelTrend(), panelTags(), panelDocs(), panelProvenance()].filter(Boolean);
+// How the answer opens is the reliable signal. Mid-answer hedging ("I don't
+// have COMPLETE rules for...", "based on what I can see...") appears in plenty
+// of substantive answers, so matching anywhere in the text misclassifies them
+// as abstentions. Heuristic either way, and labelled as one.
+// Phrasing varies across the log because these records straddle the
+// introduction of USER_FACING_LANGUAGE: older answers say "the provided
+// context does not contain X", newer ones "the policies I can see don't
+// cover X". Both are the same event and both must match.
+const ABSTAIN_RE = new RegExp([
+  "(don'?t|do not|does not|doesn'?t) (have|contain|include|cover|specify|mention|address)",
+  "policies i can see don'?t cover",
+  "(can'?t|cannot|could not|couldn'?t|unable to) (find|locate|answer|determine)",
+  "no (information|details|document|mention) (on|about|regarding|of)",
+  "not (covered|specified|stated|mentioned|available) (by|in|within)?",
+  "i (don'?t|do not) have",
+].join("|"), "i");
+function abstained(a){ return ABSTAIN_RE.test(String(a||'').slice(0,300)); }
+
+function panelAbstain(){
+  const down = rows.filter(r=>r.rating==='down');
+  if(!down.length) return '';
+  const ab = down.filter(r=>abstained(r.answer)).length;
+  const wrong = down.length - ab;
+  return `<div class="panel"><h2>Rejected: missing vs wrong</h2>
+    <p class="why">Of the thumbs-down, how many were the system saying it couldn't answer
+      versus answering confidently. They need different fixes.</p>
+    <div class="row"><span class="lbl">Couldn't answer</span>
+      <div class="bar"><div class="dn" style="width:${pct(ab,down.length)}%"></div></div>
+      <span class="n">${ab}</span></div>
+    <div class="lever">&rarr; corpus coverage - the document is missing or unreachable</div>
+    <div class="row"><span class="lbl">Answered wrongly</span>
+      <div class="bar"><div class="dn" style="width:${pct(wrong,down.length)}%"></div></div>
+      <span class="n">${wrong}</span></div>
+    <div class="lever">&rarr; retrieval ranking, or the generator</div>
+    <div class="sparse">Heuristic: matched on how the answer opens, so treat as indicative.</div>
+  </div>`;
+}
+
+function panelCoverage(ctx){
+  if(!ctx) return '';
+  const rated = rows.length, answers = ctx.answers || 0;
+  const cov = pct(rated, answers);
+  return `<div class="panel"><h2>What the ratings don't cover</h2>
+    <p class="why">Ratings are self-selected - people click when annoyed - so every
+      percentage above describes this share of answers, not all of them.</p>
+    <div class="row"><span class="lbl">Answers rated</span>
+      <div class="bar"><div class="up" style="width:${cov}%"></div></div>
+      <span class="n">${cov}% · ${rated}/${answers}</span></div>
+    <div class="row"><span class="lbl">Failed turns</span>
+      <div class="bar"><div class="dn" style="width:${pct(ctx.failed_turns, answers)}%"></div></div>
+      <span class="n">${ctx.failed_turns}</span></div>
+    <div class="lever">&rarr; questions that never got an answer, so nobody could rate them</div>
+    <div class="row"><span class="lbl">Repeated questions</span>
+      <div class="bar"><div class="dn" style="width:${pct(ctx.repeat_questions, ctx.questions||1)}%"></div></div>
+      <span class="n">${ctx.repeat_questions}</span></div>
+    <div class="lever">&rarr; asked again in the same conversation - usually the first answer missed</div>
+  </div>`;
+}
+
+function renderDash(ctx){
+  const panels = [panelTrend(), panelTags(), panelDocs(), panelAbstain(),
+                  panelCoverage(ctx), panelProvenance()].filter(Boolean);
   document.getElementById('dash').innerHTML = panels.length
     ? `<div class="panels">${panels.join('')}</div>` : '';
 }
@@ -201,7 +261,10 @@ fetch('/api/feedback?limit=100000').then(r=>r.json()).then(d=>{
     `<span><b>${up}</b> up</span><span><b>${pct(up,up+down)}%</b> positive</span>`+
     `<span><b>${people.size}</b> ${people.size===1?'person':'people'}</span>`+
     `<span><b>${rows.filter(r=>r.comment).length}</b> with comments</span>`;
-  renderDash();
+  // the context call is additive: if it fails the dashboard still renders,
+  // just without the coverage panel
+  fetch('/api/feedback/context').then(r=>r.json()).then(ctx=>renderDash(ctx))
+    .catch(()=>renderDash(null));
   render();
 }).catch(e=>{ document.getElementById('list').innerHTML='<div class="empty">Could not load feedback: '+esc(e)+'</div>'; });
 </script>

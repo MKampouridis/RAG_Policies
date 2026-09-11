@@ -305,6 +305,14 @@ def api_feedback_list(limit: int = 200):
     return rows[:limit]
 
 
+@app.get("/api/feedback/context")
+def api_feedback_context():
+    """Counts the feedback log cannot see, so the dashboard can say what share
+    of answers was rated (ratings are self-selected) and surface the failures
+    nobody could rate - see memory.usage_stats()."""
+    return memory.usage_stats()
+
+
 @app.post("/api/sources")
 def api_sources(payload: SourceLookup):
     """Document metadata + a matching passage for the cited URLs, for the source
