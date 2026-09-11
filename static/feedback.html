@@ -18,6 +18,25 @@ main{max-width:900px;margin:0 auto;padding:20px}
 .who{font-weight:700;color:var(--v)}
 .q{font-weight:600;margin:0 0 8px;font-size:15px}
 .comment{background:#fffbe6;border-left:3px solid #e0c200;border-radius:6px;padding:8px 11px;font-size:13.5px;margin:8px 0}
+/* dashboard */
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:13px;margin-bottom:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.panel h2{margin:0 0 3px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--v)}
+.panel .why{margin:0 0 11px;font-size:12px;color:var(--muted)}
+.panel.wide{grid-column:1/-1}
+.row{display:grid;grid-template-columns:minmax(90px,auto) 1fr auto;gap:9px;align-items:center;
+  margin-bottom:6px;font-size:13px}
+.row .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .lbl.click{cursor:pointer;text-decoration:underline dotted}
+.bar{height:15px;border-radius:3px;background:#eee;overflow:hidden;display:flex;min-width:2px}
+.bar .dn{background:#b3261e}
+.bar .up{background:#2e7d32}
+.n{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px;white-space:nowrap}
+.lever{font-size:11.5px;color:var(--muted);margin:-3px 0 7px 0}
+.sparse{font-size:12px;color:var(--muted);font-style:italic}
+table.prov{width:100%;border-collapse:collapse;font-size:13px}
+table.prov th,table.prov td{text-align:left;padding:4px 8px 4px 0;border-bottom:1px solid var(--line)}
+table.prov th{font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
 .tags span{display:inline-block;background:#f1edf4;border-radius:999px;padding:2px 9px;font-size:11.5px;margin-right:5px}
 details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
 .a{white-space:pre-wrap;background:#fbfbfc;border:1px solid var(--line);border-radius:7px;
@@ -30,6 +49,7 @@ details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
   <div class="stats" id="stats">loading…</div>
 </header>
 <main>
+  <div id="dash"></div>
   <div class="filters">
     <button data-f="down" class="on">Thumbs down</button>
     <button data-f="up">Thumbs up</button>
@@ -64,19 +84,124 @@ function render(){
       </details>
     </div>`).join('');
 }
+// ---- dashboard ---------------------------------------------------------
+// Diagnostic first: every panel answers "where do I act next", and the
+// aggregates deliberately carry no names - this page is shareable, and a
+// per-person scoreboard of colleagues' complaints is not what it is for.
+const LEVER = {
+  wrong_programme: 'retrieval / clarification of under-specified questions',
+  wrong_figure:    'generator - a figure not supported by the retrieved text',
+  outdated:        'data hygiene - stale edition, exclude the URL and re-crawl',
+  no_answer:       'abstention or under-specified - retrieval coverage',
+  other:           'read the comments',
+};
+const pct = (n,d) => d ? Math.round(n/d*100) : 0;
+function bar(dn, up){
+  const t = dn+up || 1;
+  return `<div class="bar"><div class="dn" style="width:${dn/t*100}%"></div>`+
+         `<div class="up" style="width:${up/t*100}%"></div></div>`;
+}
+function weekOf(ts){
+  const d = new Date(ts); if(isNaN(d)) return null;
+  const m = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  m.setUTCDate(m.getUTCDate() - ((m.getUTCDay()+6)%7));   // ISO Monday
+  return m.toISOString().slice(0,10);
+}
+function panelTrend(){
+  const w = {};
+  rows.forEach(r=>{ const k=weekOf(r.timestamp); if(!k) return;
+    (w[k] = w[k] || {up:0,down:0})[r.rating==='down'?'down':'up']++; });
+  const keys = Object.keys(w).sort();
+  if(!keys.length) return '';
+  const body = keys.map(k=>{
+    const {up,down} = w[k];
+    return `<div class="row"><span class="lbl">${k}</span>${bar(down,up)}`+
+           `<span class="n">${pct(up,up+down)}% up · ${up+down}</span></div>`;
+  }).join('');
+  return `<div class="panel wide"><h2>Satisfaction over time</h2>
+    <p class="why">Weekly. The panel that most rewards volume - a change that helps should show up here.</p>
+    ${body}</div>`;
+}
+function panelTags(){
+  const c = {};
+  rows.filter(r=>r.rating==='down').forEach(r=>(r.tags||[]).forEach(t=>c[t]=(c[t]||0)+1));
+  const keys = Object.keys(c).sort((a,b)=>c[b]-c[a]);
+  const untagged = rows.filter(r=>r.rating==='down' && !(r.tags||[]).length).length;
+  if(!keys.length && !untagged) return '';
+  const max = Math.max(...keys.map(k=>c[k]), 1);
+  const body = keys.map(k=>
+    `<div class="row"><span class="lbl">${esc(k)}</span>
+       <div class="bar"><div class="dn" style="width:${c[k]/max*100}%"></div></div>
+       <span class="n">${c[k]}</span></div>
+     <div class="lever">&rarr; ${esc(LEVER[k]||'')}</div>`).join('');
+  return `<div class="panel"><h2>Why answers were rejected</h2>
+    <p class="why">Thumbs-down by failure tag, each routed to the lever that would fix it.</p>
+    ${body}${untagged?`<div class="sparse">${untagged} thumbs-down carried no tag.</div>`:''}</div>`;
+}
+function panelDocs(){
+  const c = {};
+  rows.forEach(r=>{
+    const seen = new Set((r.sources||[]).map(s=>String(s).split('/').pop()));
+    seen.forEach(f=>{ const e = c[f] = c[f] || {up:0,down:0};
+      e[r.rating==='down'?'down':'up']++; });
+  });
+  const keys = Object.keys(c).filter(k=>c[k].down>0)
+    .sort((a,b)=>c[b].down-c[a].down || (c[b].down+c[b].up)-(c[a].down+c[a].up)).slice(0,10);
+  if(!keys.length) return '';
+  const body = keys.map(k=>
+    `<div class="row"><span class="lbl" title="${esc(k)}">${esc(k)}</span>
+       ${bar(c[k].down, c[k].up)}
+       <span class="n">${c[k].down}▼ ${c[k].up}▲</span></div>`).join('');
+  return `<div class="panel"><h2>Documents in rejected answers</h2>
+    <p class="why">Cited when a user said the answer was wrong. A document that is all red is worth opening.</p>
+    ${body}</div>`;
+}
+function panelProvenance(){
+  const by = (keyFn, label) => {
+    const c = {};
+    rows.forEach(r=>{ const k = keyFn(r); if(!k) return;
+      const e = c[k] = c[k] || {up:0,down:0}; e[r.rating==='down'?'down':'up']++; });
+    const keys = Object.keys(c).sort();
+    if(!keys.length) return '';
+    return `<tr><th colspan="3">${label}</th></tr>` + keys.map(k=>{
+      const {up,down}=c[k];
+      return `<tr><td>${esc(k)}</td><td>${bar(down,up)}</td>`+
+             `<td class="n">${pct(up,up+down)}% up · ${up+down}</td></tr>`;
+    }).join('');
+  };
+  const gen = by(r=>(r.provenance||{}).generator, 'By generator');
+  const cor = by(r=>((r.provenance||{}).corpus_version||'').slice(0,7), 'By corpus version');
+  const missing = rows.filter(r=>!(r.provenance||{}).generator).length;
+  if(!gen && !cor) return '';
+  return `<div class="panel"><h2>By model and corpus</h2>
+    <p class="why">Whether a model or corpus change moved real user reactions, not just eval scores.</p>
+    <table class="prov">${gen}${cor}</table>
+    ${missing?`<div class="sparse">${missing} of ${rows.length} ratings predate provenance recording and are excluded here.</div>`:''}</div>`;
+}
+function renderDash(){
+  const panels = [panelTrend(), panelTags(), panelDocs(), panelProvenance()].filter(Boolean);
+  document.getElementById('dash').innerHTML = panels.length
+    ? `<div class="panels">${panels.join('')}</div>` : '';
+}
+
 document.querySelectorAll('.filters button').forEach(b=>{
   b.onclick=()=>{ filter=b.dataset.f;
     document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
     render(); };
 });
-fetch('/api/feedback').then(r=>r.json()).then(d=>{
+// limit raised from the endpoint's default of 200: the dashboard aggregates
+// every rating it is given, so silently truncating would make the percentages
+// wrong - and wrong quietly - once colleagues push the volume past 200.
+fetch('/api/feedback?limit=100000').then(r=>r.json()).then(d=>{
   rows=d;
   const up=rows.filter(r=>r.rating==='up').length, down=rows.filter(r=>r.rating==='down').length;
   const people=new Set(rows.map(r=>r.owner).filter(Boolean));
   document.getElementById('stats').innerHTML =
     `<span><b>${rows.length}</b> ratings</span><span><b>${down}</b> down</span>`+
-    `<span><b>${up}</b> up</span><span><b>${people.size}</b> ${people.size===1?'person':'people'}</span>`+
+    `<span><b>${up}</b> up</span><span><b>${pct(up,up+down)}%</b> positive</span>`+
+    `<span><b>${people.size}</b> ${people.size===1?'person':'people'}</span>`+
     `<span><b>${rows.filter(r=>r.comment).length}</b> with comments</span>`;
+  renderDash();
   render();
 }).catch(e=>{ document.getElementById('list').innerHTML='<div class="empty">Could not load feedback: '+esc(e)+'</div>'; });
 </script>
