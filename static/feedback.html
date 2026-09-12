@@ -69,6 +69,7 @@ details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
 <script src="/static/dash.js"></script>
 <script>
 document.getElementById('hdr').innerHTML = dashHeader('/feedback');
+mountAlerts();
 let rows = [], filter = 'down';
 const sel = {tag:'', gen:'', age:'', doc:''};
 // Replay results, keyed by row index, so re-rendering after a filter change

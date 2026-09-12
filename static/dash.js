@@ -177,3 +177,108 @@ function fetchJSON(url) {
     return r.json();
   });
 }
+
+
+/* ── alert surface ───────────────────────────────────────────────────────────
+ * The macOS banner is transient and WILL be missed - the user said so, and has
+ * already missed one from this channel. So the dashboard is the real alerting
+ * surface, and the design rule follows from that: landing on ANY of the three
+ * pages while something is broken must be impossible to mistake for normal.
+ *
+ * Three cues, loudest first: a full-width coloured bar at the top of the page,
+ * a status pill in the header, and the browser tab title. The tab title matters
+ * more than it looks - it is the one cue visible without the page in focus.
+ */
+const SEV_RANK = {critical: 0, high: 1, medium: 2, low: 3};
+/* Hours before a silent monitor is itself treated as a problem. Generous
+ * against the hourly schedule, so one missed run is not called a dead monitor. */
+const MONITOR_STALE_H = 3;
+
+function alertState(m) {
+  if (!m || m.never_run) {
+    return {level: 'stale', label: 'Monitor not running',
+            note: 'The monitor has never run, so nothing is being checked.'};
+  }
+  const ageH = m.generated_at ? (Date.now() - Date.parse(m.generated_at)) / 3600000 : null;
+  const stale = ageH == null || ageH > MONITOR_STALE_H;
+  const staleNote = `The monitor last checked ${ageH == null ? 'at an unknown time' : ageH.toFixed(1) + ' hours ago'}.` +
+    ' A silent monitor looks exactly like a healthy one, so treat this as unknown, not all-clear.';
+
+  // NOT `SEV_RANK[x] || 9`: critical ranks 0, which is falsy, so `||` would
+  // sort the most serious alert to the BOTTOM. And not `??` either - the
+  // project's JS parser rejects it.
+  const rank = sev => (Object.prototype.hasOwnProperty.call(SEV_RANK, sev) ? SEV_RANK[sev] : 9);
+  const alerts = (m.alerts || []).slice().sort((a, b) => rank(a.severity) - rank(b.severity));
+
+  // Staleness must NOT suppress alerts the monitor already found. A first
+  // version returned early on stale and hid a CRITICAL alert behind a grey
+  // "has not checked in" bar - the loudest possible thing to get wrong, and
+  // caught only by rendering the combination rather than each state alone.
+  // An out-of-date "the system is down" is still "the system is down".
+  if (alerts.length) {
+    return {level: alerts[0].severity,
+            label: `${alerts.length} problem${alerts.length > 1 ? 's' : ''} detected` +
+                   (stale ? ' — and the monitor is out of date' : ''),
+            note: stale ? staleNote : '', alerts};
+  }
+  if (stale) {
+    return {level: 'stale', label: 'Monitor has not checked in', note: staleNote, alerts: []};
+  }
+  return {level: 'ok', label: 'All clear', alerts: []};
+}
+
+function alertBarHTML(m) {
+  const st = alertState(m);
+  const when_ = m && m.generated_at ? `checked ${when(m.generated_at)}` : '';
+  const items = (st.alerts || []).map(a => `
+    <div class="ab-item">
+      <span class="ab-sev ${esc(a.severity)}">${esc(a.severity)}</span>
+      <div><div class="ab-title">${esc(a.title)}</div>
+           <div class="ab-detail">${esc(a.detail || '')}</div></div>
+    </div>`).join('');
+  const foot = st.level === 'ok'
+    ? `<div class="ab-foot">Nothing wrong right now. Past alerts are kept on
+         <a href="/health">Health</a> even when the condition has cleared.</div>`
+    : (st.note ? `<div class="ab-foot">${esc(st.note)}</div>`
+               : `<div class="ab-foot">Details and history on <a href="/health">Health</a>.</div>`);
+  return `<div class="alertbar ${esc(st.level)}">
+    <div class="ab-head"><span class="dot"></span>${esc(st.label)}
+      <span class="ab-when">${esc(when_)}</span></div>
+    ${items ? `<div class="ab-list">${items}</div>` : ''}
+    ${foot}</div>`;
+}
+
+/* Call once per page, after the header is in the DOM. Fetches on its own so no
+ * page has to remember to; a failure leaves the page working and says so,
+ * because a dashboard that hides its own broken alerting is the worst outcome
+ * available here. */
+function mountAlerts() {
+  const main = document.querySelector('main');
+  if (!main) return;
+  const holder = document.createElement('div');
+  main.insertBefore(holder, main.firstChild);
+  const paint = (m, failed) => {
+    if (failed) {
+      holder.innerHTML = `<div class="alertbar stale"><div class="ab-head">
+        <span class="dot"></span>Alert status unavailable</div>
+        <div class="ab-foot">Could not read /api/alerts, so this page cannot say whether
+          anything is wrong.</div></div>`;
+      return;
+    }
+    holder.innerHTML = alertBarHTML(m);
+    const st = alertState(m);
+    const pill = document.createElement('span');
+    pill.className = 'pill ' + st.level;
+    pill.textContent = st.level === 'ok' ? 'All clear'
+      : (st.level === 'stale' ? 'Unchecked' : st.label);
+    const h1 = document.querySelector('header h1');
+    if (h1 && !document.querySelector('header .pill')) h1.after(pill);
+    // The tab title is the only cue visible when the page is not in focus.
+    if (st.level !== 'ok' && st.level !== 'stale') {
+      document.title = `(${(st.alerts || []).length}) ${document.title}`;
+      const tab = document.querySelector('header .tab[href="/health"]');
+      if (tab) tab.classList.add('alerting');
+    }
+  };
+  fetchJSON('/api/alerts').then(m => paint(m, false)).catch(() => paint(null, true));
+}

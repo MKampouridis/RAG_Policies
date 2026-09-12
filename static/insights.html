@@ -12,6 +12,7 @@
  * a handful of anecdotes. */
 
 document.getElementById('hdr').innerHTML = dashHeader('/insights');
+mountAlerts();
 
 function panelVolume(d) {
   const series = byDay(d.answers, 'created_at');

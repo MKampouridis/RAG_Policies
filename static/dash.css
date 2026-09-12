@@ -1,7 +1,11 @@
 /* Shared styling for /feedback, /insights and /health. One file so the three
    pages read as one tool; see the note at the top of dash.js. */
 :root{--v:#622567;--lime:#bed600;--bg:#faf9fb;--line:#e5e1e8;--muted:#6b6472;
-      --good:#2e7d32;--bad:#b3261e;--warn:#e08600}
+      --good:#2e7d32;--bad:#b3261e;--warn:#e08600;
+      /* One severity palette, used by the banner, the header pill and every
+         alert row - so a colour means the same thing everywhere on the site. */
+      --sev-critical:#7f1120;--sev-high:#b3261e;--sev-medium:#b36b00;
+      --sev-low:#6b6472;--sev-ok:#2e7d32;--sev-stale:#6b6472}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:#1a1620;
      font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
@@ -73,3 +77,58 @@ table.prov th{font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;col
 .empty{color:var(--muted);text-align:center;padding:40px}
 .note{background:#fff4e5;border-left:3px solid var(--warn);border-radius:6px;
       padding:8px 11px;font-size:12.5px;margin-bottom:13px}
+
+
+/* ── alert banner ────────────────────────────────────────────────────────────
+   Deliberately loud and deliberately at the top of EVERY dashboard page. The
+   user has said they will miss the macOS notification, so the dashboard is the
+   real alerting surface: landing on any page while something is broken must be
+   impossible to read as normal. */
+.alertbar{border-radius:10px;margin:0 0 16px;overflow:hidden;
+          border:2px solid var(--sev-ok);background:#fff}
+.alertbar.critical{border-color:var(--sev-critical)}
+.alertbar.high{border-color:var(--sev-high)}
+.alertbar.medium{border-color:var(--sev-medium)}
+.alertbar.stale{border-color:var(--sev-stale)}
+.alertbar .ab-head{display:flex;align-items:center;gap:11px;padding:11px 15px;
+  color:#fff;font-weight:700;font-size:15px;background:var(--sev-ok)}
+.alertbar.critical .ab-head{background:var(--sev-critical)}
+.alertbar.high     .ab-head{background:var(--sev-high)}
+.alertbar.medium   .ab-head{background:var(--sev-medium)}
+.alertbar.stale    .ab-head{background:var(--sev-stale)}
+.alertbar .ab-head .dot{width:11px;height:11px;border-radius:50%;background:#fff;flex:none}
+/* Only the worst states pulse. Everything pulsing is the same as nothing
+   pulsing, and an all-clear that animates is just noise. */
+.alertbar.critical .ab-head .dot,
+.alertbar.high .ab-head .dot{animation:ab-pulse 1.6s ease-in-out infinite}
+@keyframes ab-pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.alertbar .ab-when{margin-left:auto;font-weight:500;font-size:12px;opacity:.9}
+.alertbar .ab-list{padding:4px 0}
+.alertbar .ab-item{display:grid;grid-template-columns:88px 1fr;gap:12px;
+  padding:9px 15px;border-top:1px solid var(--line);align-items:start}
+.alertbar .ab-item:first-child{border-top:0}
+.alertbar .ab-sev{font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;
+  color:#fff;background:var(--sev-low);border-radius:4px;padding:3px 0;text-align:center}
+.alertbar .ab-sev.critical{background:var(--sev-critical)}
+.alertbar .ab-sev.high{background:var(--sev-high)}
+.alertbar .ab-sev.medium{background:var(--sev-medium)}
+.alertbar .ab-title{font-weight:600;font-size:14px}
+.alertbar .ab-detail{font-size:12.5px;color:var(--muted);margin-top:2px}
+.alertbar .ab-foot{padding:8px 15px;border-top:1px solid var(--line);font-size:12px;
+  color:var(--muted)}
+.alertbar .ab-foot a{color:var(--v)}
+
+/* header status pill - visible from whichever page you land on */
+header .pill{margin-left:10px;font-size:11.5px;font-weight:800;letter-spacing:.04em;
+  text-transform:uppercase;border-radius:999px;padding:4px 11px;background:var(--sev-ok);color:#fff}
+header .pill.critical{background:var(--sev-critical)}
+header .pill.high{background:var(--sev-high)}
+header .pill.medium{background:var(--sev-medium)}
+header .pill.stale{background:var(--sev-stale)}
+header .tab.alerting{box-shadow:inset 0 -3px 0 var(--sev-high)}
+
+/* severity colouring for the /health alert rows and history */
+.sev-critical{color:var(--sev-critical)}
+.sev-high{color:var(--sev-high)}
+.sev-medium{color:var(--sev-medium)}
+.sev-low{color:var(--sev-low)}
