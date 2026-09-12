@@ -94,7 +94,14 @@ fi
 echo ">> starting eval server on :$EVAL_PORT  [$CFG, deterministic]"
 # stage timing to a SEPARATE file: 160 turns of controlled latency data per run,
 # which is the sample that ad-hoc single-query timings kept getting wrong
-env PORT="$EVAL_PORT" HOST=127.0.0.1 RAG_DETERMINISTIC=1 \
+# -u RAG_ACCESS_PASSWORD: eval/run_eval.py does NOT send the access cookie, so
+# an eval server that inherited the production password would 401 every turn.
+# The password lives in ~/.config/ragpolicies/env, sourced only by the daemon
+# launcher - but a human who sourced that file in their shell before running
+# this script would silently poison the run. Unset it here so the eval server's
+# configuration depends on this script, not on the shell that invoked it.
+env -u RAG_ACCESS_PASSWORD \
+    PORT="$EVAL_PORT" HOST=127.0.0.1 RAG_DETERMINISTIC=1 \
     RAG_TIMING=1 RAG_TIMING_PATH="data/latency_eval_${NAME}.jsonl" \
     "${GEN_ENV[@]}" "${CTX_ENV[@]}" \
     .venv/bin/python3 run_server.py > "data/server_eval${EVAL_PORT}.log" 2>&1 &

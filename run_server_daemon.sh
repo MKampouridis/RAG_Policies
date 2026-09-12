@@ -20,6 +20,12 @@ cd "$(dirname "$0")"
 
 [ -f "$HOME/.config/anthropic/env" ] && source "$HOME/.config/anthropic/env"
 [ -f "$HOME/.config/groq/env" ] && source "$HOME/.config/groq/env"
+# Shared access password (RAG_ACCESS_PASSWORD). Sourced HERE, in the daemon
+# launcher, and deliberately NOT exported anywhere global: eval/run_eval.py
+# does not send the access cookie, so an eval server that inherited this would
+# 401 every single turn. eval_session.sh sources nothing, which is what keeps
+# the :8001 eval server open and the ledger's numbers reproducible.
+[ -f "$HOME/.config/ragpolicies/env" ] && source "$HOME/.config/ragpolicies/env"
 
 # Production serves from the cloud models by default (2026-08-08, user's call).
 # Rationale is latency and RAM, not answer quality alone: with gemma3 (8GB) and

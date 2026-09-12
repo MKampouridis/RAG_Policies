@@ -41,7 +41,15 @@ app.include_router(_research_router)
 # which is correct for a single-user machine and is why this is opt-in rather
 # than a hardcoded secret nobody can change.
 ACCESS_PASSWORD = os.environ.get("RAG_ACCESS_PASSWORD", "")
-_OPEN_PATHS = ("/login", "/static/", "/favicon")
+# Only the login page and the favicon. /static/ was exempt here and should not
+# have been: the review and dashboard pages are served from it, so /feedback
+# would have been protected while /static/feedback.html still returned 200 (the
+# shell only - its data comes from /api/feedback, which 401s - but the same held
+# for guide.html, provenance_review.html and the rest). Nothing needs the
+# exemption: the login page is entirely inline HTML/CSS and pulls no assets, and
+# the app's CSS/JS load after sign-in, when the browser sends the cookie with
+# subresource requests anyway. Verified both directions after narrowing.
+_OPEN_PATHS = ("/login", "/favicon")
 
 
 @app.middleware("http")

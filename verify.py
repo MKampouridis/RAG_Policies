@@ -229,7 +229,17 @@ def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> N
     # the same way src/app.py does (sha256 of "rag-access:" + password), so the
     # password itself is never sent. Absent the variable this is a no-op and the
     # request is unauthenticated, exactly as before.
+    # Read the password from the daemon's own env file when the shell does not
+    # have it. Requiring `source ~/.config/ragpolicies/env` first would mean the
+    # ladder's most valuable step fails with a 401 whenever someone forgets -
+    # and a check that cries wolf stops being run at all.
     _pw = os.environ.get("RAG_ACCESS_PASSWORD", "")
+    if not _pw:
+        _envfile = pathlib.Path.home() / ".config" / "ragpolicies" / "env"
+        if _envfile.exists():
+            for _line in _envfile.read_text().splitlines():
+                if "RAG_ACCESS_PASSWORD=" in _line:
+                    _pw = _line.split("RAG_ACCESS_PASSWORD=", 1)[1].strip().strip("'\"")
     cookies = {"rag_access": hashlib.sha256(("rag-access:" + _pw).encode()).hexdigest()} if _pw else None
     last = ""
     for attempt in range(1, attempts + 1):
