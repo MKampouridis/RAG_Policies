@@ -7582,3 +7582,55 @@ the surface was broken. Read the answers.
 use. NOT yet done: the 151-question regression set, and Sonnet is a SINGLE
 unrepeated run - the user declined a $1 rerun, which is a reasonable call given
 the gap survived a judge swap. The contextualizer stays on Haiku, untested here.
+
+## Round 33 — Sonnet vs gpt-oss-120b on POLICY questions (2026-09-12)
+
+**Finding: Sonnet 5 is clearly better than gpt-oss-120b on policy questions —
+19 wins to 6 (76% of decisive pairs). The Round 5 bake-off's small gap on this
+question type (answer_score 4.58 vs 4.38) understated it.**
+
+Method. 40 policy-type questions drawn from REAL TRAFFIC (not a curated list),
+answered from IDENTICAL fixed contexts so the comparison isolates generation.
+Judged pairwise and blind by phi4 (neither contestant), every pair scored in
+BOTH orders. `eval/policy_arena.py`.
+
+| | |
+|---|---|
+| Sonnet wins (both orders agree) | 19 |
+| gpt-oss wins (both orders agree) | 6 |
+| genuine ties | 1 |
+| order-dependent (flipped on swap) | 13 (33%) |
+
+**The 33% order-dependence is the honest headline caveat**: on a third of pairs
+the judge's verdict depended on which answer it saw first, i.e. it could not
+tell them apart. Those are excluded from the 19-6, not counted as ties for
+either side. Measuring this was the point of running both orders.
+
+**Length confound, examined rather than waved away.** Sonnet writes ~1,198
+chars to gpt-oss's ~676 and is the longer answer in 34 of 39 pairs, so "always
+pick the longer one" would predict Sonnet winning every decisive pair. It did
+not: **gpt-oss won 6 pairs while being the shorter answer**. Length is heavily
+entangled with the verdict and cannot be fully separated from it, but it is not
+the whole story.
+
+Reading a pair confirms the extra length is substantive, not padding. On "Is an
+independent chair required for a reexamination of a PhD?" both answer "Yes"
+correctly; Sonnet additionally names who determines the appeal, corroborates
+from a SECOND policy document gpt-oss never cites
+(independent-chairs-policy.pdf), and notes the related referral-and-resubmission
+circumstance.
+
+**Production finding, unrelated to quality.** Groq's free tier refuses any
+single request over 8,000 tokens with a 413 — not a rate limit that clears by
+waiting. 1 of these 40 policy contexts exceeded it, so a small share of policy
+questions cannot reach gpt-oss on the free tier at all. Since 2026-09-12 they
+fall back to Sonnet instead of failing outright.
+
+Cost of the run: $0.82 (~£0.65), against a £0.45 estimate — the estimate used
+gpt-oss's output length for both arms and Sonnet writes ~2x more.
+
+NOT settled by this: rules-of-assessment questions (Round 5 had gpt-oss ahead,
+4.39 vs 4.03) and groundedness (94% vs 84%), neither re-tested here. The
+sensible next step is the cheap one — prompt gpt-oss for more completeness on
+policy questions and re-run this arena — before considering a per-question-type
+route or a full switch back.
