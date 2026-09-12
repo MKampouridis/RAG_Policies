@@ -148,7 +148,8 @@ function render(){
       </details>
       <div class="actions">
         <button data-replay="${i}">Replay against today's index</button>
-        <span class="hint">re-asks the question now &middot; costs one generation</span>
+        <span class="hint">re-asks the question now &middot; one generation on the free tier,
+          never falls back to a paid model</span>
       </div>
       ${replays[i] ? replayHTML(replays[i], r) : ''}
     </div>`).join('');
@@ -175,10 +176,17 @@ async function doReplay(i, btn){
       body: JSON.stringify({question: replayTarget(r),
                             previous_answer: r.answer || '',
                             previous_sources: r.sources || []})});
-    if(!res.ok) throw new Error('HTTP '+res.status);
+    if(!res.ok){
+      // The server's detail says WHY (quota exhausted, and that replays do not
+      // fall back to a paid model). "HTTP 503" would send the reader hunting
+      // through a log for something the response already told them.
+      let detail = 'HTTP '+res.status;
+      try{ const j = await res.json(); if(j && j.detail) detail = j.detail; }catch(e2){}
+      throw new Error(detail);
+    }
     replays[i] = await res.json();
   }catch(e){
-    replays[i] = {error: String(e)};
+    replays[i] = {error: e.message || String(e)};
   }
   render();
 }

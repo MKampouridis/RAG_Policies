@@ -353,7 +353,23 @@ def api_feedback_replay(payload: ReplayRequest):
     if not q:
         raise HTTPException(status_code=400, detail="question is required")
     t0 = time.time()
-    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(q, history=[])
+    # NO fallback for replays. The Sonnet fallback exists so a person waiting on
+    # a real question gets an answer instead of a 503, and ~26x the cost is
+    # plainly worth that. A replay is not that: it is a diagnostic clicked row
+    # by row, so an exhausted Groq quota should stop it rather than run up
+    # credit one click at a time. Failing is also the more USEFUL outcome here -
+    # a silent Sonnet answer would attribute the replay's verdict to a model
+    # that is not the one serving production.
+    try:
+        with llm.no_fallback():
+            answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(q, history=[])
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(
+            status_code=503,
+            detail=(f"Replay did not run: the {llm.GENERATOR_PROVIDER or 'local'} generator "
+                    f"failed and replays deliberately do not fall back to a paid model. "
+                    f"({type(exc).__name__}: {str(exc)[:200]})"),
+        )
     before = {_doc_name(u) for u in (payload.previous_sources or [])}
     after = {_doc_name(u) for u in sources}
     return {

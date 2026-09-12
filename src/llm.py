@@ -6,6 +6,7 @@ import os
 import re
 import sys
 import time
+from contextvars import ContextVar
 
 import ollama
 import requests
@@ -452,6 +453,32 @@ LAST_GENERATOR: dict = {}
 # fallback configured, waiting out the ladder is still better than failing.
 _FALLBACK_MAX_RETRY_WAIT = 20.0
 
+# Per-call suppression of the fallback. The fallback exists so a real person
+# waiting on a real question gets an answer rather than a 503, and paying
+# Sonnet's ~26x for that is obviously worth it. Some callers are not that:
+# the feedback page's replay button is a diagnostic the user chose to click,
+# and a quota-exhausted day should stop it rather than quietly run up credit
+# one click at a time. For those, failing IS the correct answer - and "Groq is
+# out of quota" is itself useful information, where a silent Sonnet answer
+# would misattribute the replay's result to the wrong model.
+#
+# A ContextVar rather than a module global: a replay must not disable the
+# fallback for a real user's question arriving on another thread at the same
+# moment.
+_NO_FALLBACK: ContextVar[bool] = ContextVar("no_generator_fallback", default=False)
+
+
+class no_fallback:
+    """`with llm.no_fallback():` - generation inside raises instead of hopping."""
+
+    def __enter__(self):
+        self._token = _NO_FALLBACK.set(True)
+        return self
+
+    def __exit__(self, *exc):
+        _NO_FALLBACK.reset(self._token)
+        return False
+
 
 def _record_generator(provider: str, model: str, fell_back_from: str | None = None) -> None:
     LAST_GENERATOR.clear()
@@ -468,7 +495,7 @@ def generate(messages: list[dict], on_token=None) -> str:
     try:
         return _generate_once(GENERATOR_PROVIDER, GENERATOR_MODEL, messages, on_token)
     except Exception as exc:
-        target = GENERATOR_FALLBACK
+        target = "" if _NO_FALLBACK.get() else GENERATOR_FALLBACK
         if not target or target == (GENERATOR_PROVIDER or "local"):
             raise
         print(f"[generate] {GENERATOR_PROVIDER or 'local'} failed ({type(exc).__name__}), "
@@ -559,10 +586,15 @@ def _generate_once(provider: str, model: str, messages: list[dict], on_token=Non
             # someone is still waiting for it; a minute-window 429 that has not
             # cleared in ~20s is not going to clear in the next 160 either.
             waited += wait
-            if GENERATOR_FALLBACK and waited > _FALLBACK_MAX_RETRY_WAIT:
+            # Capped for a caller that has somewhere better to be: either a
+            # fallback is configured (hand off to it), or the fallback was
+            # explicitly suppressed for this call (report the failure now).
+            # Both beat a three-minute hang. An eval run is neither, and keeps
+            # the full ladder.
+            if (GENERATOR_FALLBACK or _NO_FALLBACK.get()) and waited > _FALLBACK_MAX_RETRY_WAIT:
                 raise RuntimeError(
                     f"{provider} generator rate-limited (429), gave up after "
-                    f"{waited:.0f}s to let the fallback answer: {resp.text[:200]}"
+                    f"{waited:.0f}s: {resp.text[:200]}"
                 )
             time.sleep(wait)
             continue
