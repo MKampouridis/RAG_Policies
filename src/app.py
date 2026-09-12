@@ -20,6 +20,7 @@ from src import feedback as feedback_store
 from src import ingest
 from src import llm
 from src import memory
+from src import telemetry
 from src.rag import answer as rag_answer
 from src.rag import GENERATED_TITLES, generate_title
 
@@ -231,6 +232,28 @@ class SourceLookup(BaseModel):
 # the chat, which is the debug-log-as-user-surface failure CLAUDE.md names,
 # surviving in the one path nobody read. The detail is still logged; only the
 # user-facing sentence changes.
+def _failure_reason(exc: Exception) -> str:
+    """A machine-readable failure category for the `status` column.
+
+    Every failure was stored as the single string "generation_failed" - 28 rows
+    of it - so a quota exhaustion, a timeout, a network drop and a retrieval
+    error were indistinguishable in the data. They need different fixes, and
+    /health cannot chart what it cannot tell apart.
+    """
+    text = f"{type(exc).__name__}: {exc}".lower()
+    if "daily quota" in text:
+        return "quota_exhausted"
+    if "429" in text or ("rate" in text and "limit" in text):
+        return "rate_limited"
+    if "529" in text or "overloaded" in text:
+        return "overloaded"
+    if "timeout" in text or "timed out" in text:
+        return "timeout"
+    if "connection" in text or "network" in text or "dns" in text or "resolve" in text:
+        return "network"
+    return "generation_failed"
+
+
 def _friendly_error(exc: Exception) -> str:
     text = f"{type(exc).__name__}: {exc}"
     low = text.lower()
@@ -305,6 +328,26 @@ def feedback_page():
     return FileResponse(page)
 
 
+@app.get("/insights")
+def insights_page():
+    """What the system is doing - every answer, not the rated 11%."""
+    page = STATIC_DIR / "insights.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="page not built")
+    return FileResponse(page)
+
+
+@app.get("/health")
+def health_page():
+    """Speed, spend and failures. Separate from /feedback deliberately: latency
+    percentiles and thumbs-down tags do not belong in one visual conversation,
+    and they are drawn from datasets two orders of magnitude apart in size."""
+    page = STATIC_DIR / "health.html"
+    if not page.is_file():
+        raise HTTPException(status_code=404, detail="page not built")
+    return FileResponse(page)
+
+
 @app.get("/api/feedback")
 def api_feedback_list(limit: int = 200):
     """Newest first. Read-only; returns what was recorded, including the
@@ -320,6 +363,78 @@ def api_feedback_context():
     of answers was rated (ratings are self-selected) and surface the failures
     nobody could rate - see memory.usage_stats()."""
     return memory.usage_stats()
+
+
+class ClientEvent(BaseModel):
+    kind: str
+    detail: dict = {}
+
+
+@app.post("/api/event")
+def api_event(ev: ClientEvent):
+    """One client-side signal: a copy click, a source opened.
+
+    Explicit ratings cover 11% of answers and come from whoever remembered to
+    click a thumb. These cover every answer and need nobody to remember - but
+    they are WEAKER evidence, not stronger: a copy means "I am using this", not
+    "this is correct", and someone can copy a confidently wrong answer. Worth
+    having alongside ratings, never worth plotting on the same axis as one.
+
+    Unknown kinds are dropped rather than stored, so a typo in a fetch() call
+    cannot quietly become a category on a chart.
+    """
+    stored = telemetry.log_event(ev.kind, ev.detail)
+    return {"stored": stored}
+
+
+@app.get("/api/insights")
+def api_insights(limit: int = 5000):
+    """Per-answer telemetry for /insights - every answer, not the rated 11%."""
+    return {"answers": memory.answer_telemetry(limit=limit),
+            "events": telemetry.load_events()}
+
+
+@app.get("/api/health/stats")
+def api_health_stats():
+    """Latency, spend and failures for /health.
+
+    Stage timings come from data/latency.jsonl (2,673 rows and counting);
+    tokens and cost come from message meta. Kept as two sources rather than
+    merged, because they are written by different code paths at different
+    times and pretending otherwise would invent joins that do not exist.
+    """
+    return {
+        "stages": _latency_rows(),
+        "answers": memory.answer_telemetry(limit=5000),
+        "failures": memory.failure_breakdown(),
+        "free_tier_daily_tokens": telemetry.FREE_TIER_DAILY_TOKENS,
+        "pricing": telemetry.PRICING,
+    }
+
+
+def _latency_rows(limit: int = 20000) -> list[dict]:
+    """Stage timings, newest-last. Best-effort: an unreadable telemetry file
+    must degrade the chart, never the endpoint."""
+    path = os.environ.get("RAG_TIMING_PATH", "data/latency.jsonl")
+    rows = []
+    try:
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    r = json.loads(line)
+                except ValueError:
+                    continue
+                if r.get("seconds") is not None:
+                    rows.append({"ts": r.get("ts"), "stage": r.get("stage"),
+                                 "seconds": r.get("seconds")})
+    except FileNotFoundError:
+        return []
+    except Exception:  # noqa: BLE001
+        return rows[-limit:]
+    return rows[-limit:]
 
 
 class ReplayRequest(BaseModel):
@@ -513,6 +628,7 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         memory.update_title(conversation_id, payload.content[:60])
 
     history_for_prompt = [{"role": m["role"], "content": m["content"]} for m in history]
+    _t_turn = time.time()
     try:
         answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(
             payload.content, history_for_prompt, summary, detail=payload.detail,
@@ -523,11 +639,18 @@ def api_post_message(conversation_id: str, payload: NewMessage, background: Back
         # The question was committed before generation was attempted, so a
         # failure here would otherwise leave it in history with no answer and
         # nothing to explain why (26 such orphans accumulated before this).
-        memory.mark_last_message_failed(conversation_id)
+        memory.mark_last_message_failed(conversation_id, _failure_reason(exc))
         raise HTTPException(status_code=503, detail=_friendly_error(exc))
 
     memory.add_message(conversation_id, "assistant", answer_text,
-                       meta={"provenance": provenance(), "sources": sources})
+                       meta={"provenance": provenance(), "sources": sources,
+                             "usage": telemetry.answer_record(
+                                 answer_text=answer_text, sources=sources,
+                                 ranked_top_urls=ranked_top_urls,
+                                 history=history_for_prompt,
+                                 retrieval_query=retrieval_query,
+                                 question=payload.content,
+                                 seconds=time.time() - _t_turn)})
 
     if is_first_message:
         # after the response, never before: a title is cosmetic and must not
@@ -582,20 +705,45 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage,
 
     q: "queue.Queue[tuple[str, object]]" = queue.Queue()
 
+    # Time to FIRST token, which is the latency a reader of a streamed answer
+    # actually experiences. answer_total (~9s) measures something else: the
+    # whole turn including the generation the user watches arrive. Neither
+    # substitutes for the other and only one of them was recorded.
+    ttft: dict = {}
+
     def work() -> None:
+        _t_turn = time.time()
+
+        def _on_token(t):
+            if not ttft:
+                ttft["seconds"] = round(time.time() - _t_turn, 3)
+            q.put(("token", t))
+
         try:
             q.put(("stage", "retrieving"))
             result = rag_answer(
                 payload.content, history_for_prompt, summary, detail=payload.detail,
                 partner_mode=payload.partner_mode,
-                on_token=lambda t: q.put(("token", t)),
+                on_token=_on_token,
             )
             answer_text, sources, retrieval_query, ranked_top_urls = result
+            _usage = telemetry.answer_record(
+                answer_text=answer_text, sources=sources,
+                ranked_top_urls=ranked_top_urls, history=history_for_prompt,
+                retrieval_query=retrieval_query, question=payload.content,
+                seconds=time.time() - _t_turn)
+            # Absent when the provider ignored on_token (only the Anthropic path
+            # streams), so it is omitted rather than recorded as 0 - a
+            # non-streaming turn has no time-to-first-token, and a zero would
+            # drag every percentile down while looking like a real measurement.
+            if ttft:
+                _usage["ttft_seconds"] = ttft["seconds"]
             # Store from the RETURNED text, never from the concatenated tokens:
             # a provider that ignores on_token still returns a complete answer,
             # and what is stored must equal what answer() produced either way.
             memory.add_message(conversation_id, "assistant", answer_text,
-                               meta={"provenance": provenance(), "sources": sources})
+                               meta={"provenance": provenance(), "sources": sources,
+                                     "usage": _usage})
             if is_first_message:
                 _retitle(conversation_id, payload.content)
             q.put(("done", {
@@ -608,7 +756,7 @@ def api_post_message_stream(conversation_id: str, payload: NewMessage,
             }))
         except Exception as exc:  # noqa: BLE001 - must reach the client as an event
             print(f"[answer-stream] {type(exc).__name__}: {exc}", flush=True)
-            memory.mark_last_message_failed(conversation_id)   # see the note on the non-streaming path
+            memory.mark_last_message_failed(conversation_id, _failure_reason(exc))  # see the non-streaming path
             q.put(("error", _friendly_error(exc)))
         finally:
             q.put(("__end__", None))

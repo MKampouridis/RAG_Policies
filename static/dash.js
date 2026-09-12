@@ -1,0 +1,179 @@
+/* Shared chrome and chart primitives for the three dashboard pages.
+ *
+ * WHY A SHARED FILE. The pages answer three different questions - what did
+ * people think (/feedback), what is the system doing (/insights), what does it
+ * cost and how fast is it (/health) - but they render the same bars, the same
+ * escaping, the same percentages. Three inline copies would drift, and the
+ * first thing to drift silently is the thing every panel depends on: esc().
+ *
+ * WHY HAND-ROLLED SVG rather than Chart.js or D3. This app has no build step
+ * and loads no external JavaScript. A CDN dependency means the dashboard
+ * renders blank whenever that CDN is unreachable - and everything here is
+ * bars, a histogram and a sparkline, which are a few dozen lines each. A
+ * library earns its keep when charts become zoomable and animated; these are
+ * not that, and a blank page costs more than the polish is worth.
+ */
+
+/* ── primitives ──────────────────────────────────────────────────────────── */
+function esc(s) {
+  const d = document.createElement('div');
+  d.textContent = s == null ? '' : String(s);
+  return d.innerHTML;
+}
+const pct = (n, d) => (d ? Math.round((n / d) * 100) : 0);
+const fileOf = u => String(u || '').replace(/\/$/, '').split('/').pop();
+function when(ts) {
+  if (!ts) return '';
+  try { return new Date(ts).toLocaleString(); } catch (e) { return ts; }
+}
+/* Numbers are read off a screen, not summed by hand: 1,284 beats 1284 and
+ * £0.0043 beats 0.004300000000001. */
+const num = n => (n == null ? '—' : Number(n).toLocaleString());
+function money(usd) {
+  if (usd == null) return '—';
+  if (usd === 0) return '$0';
+  return usd < 0.01 ? '$' + usd.toFixed(4) : '$' + usd.toFixed(2);
+}
+
+/* ── navigation ──────────────────────────────────────────────────────────── */
+/* One header across all three, so they read as one tool rather than three
+ * pages that happen to share a colour. */
+const DASH_PAGES = [
+  ['/feedback', 'Feedback', 'what people thought'],
+  ['/insights', 'Insights', 'what the system is doing'],
+  ['/health',   'Health',   'speed, spend and failures'],
+];
+function dashHeader(active, statsHTML) {
+  const tabs = DASH_PAGES.map(([href, label, sub]) =>
+    `<a href="${href}" class="tab${href === active ? ' on' : ''}" title="${esc(sub)}">${esc(label)}</a>`
+  ).join('');
+  return `<header>
+    <div class="bar"><h1>Essex Policy Assistant</h1><nav>${tabs}</nav>
+      <a class="back" href="/">&larr; Back to chat</a></div>
+    <div class="stats" id="stats">${statsHTML || 'loading…'}</div>
+  </header>`;
+}
+
+/* ── charts ──────────────────────────────────────────────────────────────── */
+
+/* A split bar: the down/up proportion of one row. */
+function bar(dn, up) {
+  const t = dn + up || 1;
+  return `<div class="bar-track"><div class="dn" style="width:${(dn / t) * 100}%"></div>` +
+         `<div class="up" style="width:${(up / t) * 100}%"></div></div>`;
+}
+
+/* Horizontal ranked bars. `rows` is [{label, value, title?, key?}].
+ * onPick makes a bar clickable, which is what turns a chart into a filter. */
+function rankedBars(rows, opts) {
+  opts = opts || {};
+  if (!rows.length) return '<div class="sparse">No data.</div>';
+  const max = Math.max(...rows.map(r => r.value), 1);
+  return rows.map(r =>
+    `<div class="row${opts.pickable ? ' pickable' : ''}"${opts.pickable ? ` data-pick="${esc(r.key != null ? r.key : r.label)}"` : ''}>
+       <span class="lbl" title="${esc(r.title || r.label)}">${esc(r.label)}</span>
+       <div class="bar-track"><div class="fill" style="width:${(r.value / max) * 100}%"></div></div>
+       <span class="n">${esc(opts.fmt ? opts.fmt(r.value) : num(r.value))}</span>
+     </div>`).join('');
+}
+
+/* Percentiles. A mean hides the tail, and the tail is the complaint - the
+ * project's own note says the ~9s median "has a long tail worth attributing
+ * from real traffic rather than estimating a fourth time". */
+function percentile(sorted, p) {
+  if (!sorted.length) return null;
+  const i = Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length));
+  return sorted[i];
+}
+function pctlRow(label, values) {
+  const s = values.slice().sort((a, b) => a - b);
+  const p50 = percentile(s, 50), p90 = percentile(s, 90), p99 = percentile(s, 99);
+  const worst = s[s.length - 1] || 1;
+  const seg = (v, cls) => `<div class="${cls}" style="left:${(v / worst) * 100}%"></div>`;
+  return `<div class="pctl">
+    <div class="pctl-head"><span class="lbl">${esc(label)}</span>
+      <span class="n">p50 ${p50.toFixed(2)}s · p90 ${p90.toFixed(2)}s · p99 ${p99.toFixed(2)}s · n=${s.length}</span></div>
+    <div class="pctl-track"><div class="pctl-fill" style="width:${(p90 / worst) * 100}%"></div>
+      ${seg(p50, 'tick p50')}${seg(p99, 'tick p99')}</div></div>`;
+}
+
+/* Histogram as inline SVG. Shows the SHAPE a percentile list flattens - two
+ * clusters and a long tail all report the same p50. */
+function histogram(values, opts) {
+  opts = opts || {};
+  if (!values.length) return '<div class="sparse">No data.</div>';
+  const bins = opts.bins || 24;
+  const max = opts.max || Math.max(...values);
+  const counts = new Array(bins).fill(0);
+  values.forEach(v => {
+    const i = Math.min(bins - 1, Math.floor((v / max) * bins));
+    if (i >= 0) counts[i]++;
+  });
+  const peak = Math.max(...counts, 1);
+  const W = 100, H = 42;
+  const bw = W / bins;
+  const barsSVG = counts.map((c, i) => {
+    const h = (c / peak) * H;
+    return `<rect x="${(i * bw).toFixed(2)}" y="${(H - h).toFixed(2)}" width="${(bw * 0.86).toFixed(2)}" ` +
+           `height="${h.toFixed(2)}" rx="0.4"><title>${(i * max / bins).toFixed(1)}–${((i + 1) * max / bins).toFixed(1)}${esc(opts.unit || '')}: ${c}</title></rect>`;
+  }).join('');
+  return `<svg class="hist" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
+      aria-label="${esc(opts.label || 'distribution')}">${barsSVG}</svg>
+    <div class="axis"><span>0${esc(opts.unit || '')}</span><span>${max.toFixed(1)}${esc(opts.unit || '')}</span></div>`;
+}
+
+/* Daily sparkline. `series` is [[dayISO, value], ...] already sorted. */
+function sparkline(series, opts) {
+  opts = opts || {};
+  if (series.length < 2) return '<div class="sparse">Not enough days yet.</div>';
+  const vals = series.map(s => s[1]);
+  const max = Math.max(...vals, 1);
+  const W = 100, H = 30;
+  const step = W / (series.length - 1);
+  const pts = series.map((s, i) => `${(i * step).toFixed(2)},${(H - (s[1] / max) * H).toFixed(2)}`);
+  const dots = series.map((s, i) =>
+    `<circle cx="${(i * step).toFixed(2)}" cy="${(H - (s[1] / max) * H).toFixed(2)}" r="0.9">
+       <title>${esc(s[0])}: ${esc(opts.fmt ? opts.fmt(s[1]) : num(s[1]))}</title></circle>`).join('');
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img"
+      aria-label="${esc(opts.label || 'over time')}">
+      <polyline points="${pts.join(' ')}" fill="none" stroke-width="0.8"/>${dots}</svg>
+    <div class="axis"><span>${esc(series[0][0])}</span><span>peak ${esc(opts.fmt ? opts.fmt(max) : num(max))}</span><span>${esc(series[series.length - 1][0])}</span></div>`;
+}
+
+/* ── helpers ─────────────────────────────────────────────────────────────── */
+function byDay(rows, tsKey, valueFn) {
+  const m = {};
+  rows.forEach(r => {
+    let ts = r[tsKey];
+    if (typeof ts === 'number') ts = new Date(ts * 1000).toISOString();
+    const day = String(ts || '').slice(0, 10);
+    if (!day) return;
+    m[day] = (m[day] || 0) + (valueFn ? valueFn(r) : 1);
+  });
+  return Object.keys(m).sort().map(k => [k, m[k]]);
+}
+function counter(rows, keyFn) {
+  const c = {};
+  rows.forEach(r => { const k = keyFn(r); if (k == null || k === '') return; c[k] = (c[k] || 0) + 1; });
+  return c;
+}
+function toRows(countObj, limit) {
+  const rows = Object.keys(countObj)
+    .sort((a, b) => countObj[b] - countObj[a])
+    .map(k => ({ label: k, value: countObj[k] }));
+  return limit ? rows.slice(0, limit) : rows;
+}
+/* Every panel states the sample it was drawn from. The provenance panel once
+ * drew three points looking exactly like one drawn on all 38 - a denominator
+ * in the subtitle is the cheapest defence against reading noise as a finding. */
+function panel(title, why, body, opts) {
+  opts = opts || {};
+  return `<div class="panel${opts.wide ? ' wide' : ''}"${opts.id ? ` id="${opts.id}"` : ''}>
+    <h2>${esc(title)}</h2><p class="why">${why}</p>${body}</div>`;
+}
+function fetchJSON(url) {
+  return fetch(url).then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  });
+}

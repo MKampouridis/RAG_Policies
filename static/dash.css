@@ -1,0 +1,75 @@
+/* Shared styling for /feedback, /insights and /health. One file so the three
+   pages read as one tool; see the note at the top of dash.js. */
+:root{--v:#622567;--lime:#bed600;--bg:#faf9fb;--line:#e5e1e8;--muted:#6b6472;
+      --good:#2e7d32;--bad:#b3261e;--warn:#e08600}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#1a1620;
+     font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+
+/* header + tabs */
+header{position:sticky;top:0;z-index:9;background:var(--v);color:#fff;
+       padding:11px 20px 0;border-bottom:4px solid var(--lime)}
+header .bar{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+header h1{margin:0;font-size:16px;font-weight:700}
+header nav{display:flex;gap:3px;margin-left:4px}
+header .tab{color:#fff;opacity:.72;text-decoration:none;font-size:13.5px;font-weight:600;
+            padding:7px 13px;border-radius:7px 7px 0 0}
+header .tab:hover{opacity:1;background:rgba(255,255,255,.12)}
+header .tab.on{opacity:1;background:var(--bg);color:var(--v)}
+header .back{margin-left:auto;color:#fff;opacity:.8;text-decoration:none;font-size:12.5px}
+header .back:hover{opacity:1;text-decoration:underline}
+.stats{display:flex;gap:18px;padding:8px 0 11px;font-size:13px;opacity:.94;flex-wrap:wrap}
+
+main{max-width:1120px;margin:0 auto;padding:20px}
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:13px;margin-bottom:18px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.panel h2{margin:0 0 3px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--v)}
+.panel .why{margin:0 0 11px;font-size:12px;color:var(--muted)}
+.panel.wide{grid-column:1/-1}
+
+/* rows and bars */
+.row{display:grid;grid-template-columns:minmax(100px,1.1fr) 2fr auto;gap:9px;align-items:center;
+     margin-bottom:6px;font-size:13px}
+.row .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row.pickable{cursor:pointer;border-radius:5px}
+.row.pickable:hover{background:#f6f2f8}
+.row.picked{background:#f1e7f4;box-shadow:inset 2px 0 0 var(--v)}
+.bar-track{height:15px;border-radius:3px;background:#eee;overflow:hidden;display:flex;min-width:2px}
+.bar-track .dn{background:var(--bad)}
+.bar-track .up{background:var(--good)}
+.bar-track .fill{background:var(--v)}
+.n{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px;white-space:nowrap}
+.lever{font-size:11.5px;color:var(--muted);margin:-3px 0 7px 0}
+.sparse{font-size:12px;color:var(--muted);font-style:italic}
+.tags span{display:inline-block;background:#f1edf4;border-radius:999px;padding:2px 9px;
+           font-size:11.5px;margin-right:5px}
+
+/* charts */
+svg.hist,svg.spark{width:100%;display:block}
+svg.hist rect{fill:var(--v);opacity:.82}
+svg.hist rect:hover{opacity:1}
+svg.spark{height:64px}
+svg.spark polyline{stroke:var(--v)}
+svg.spark circle{fill:var(--v)}
+.axis{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:3px}
+.pctl{margin-bottom:11px}
+.pctl-head{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;margin-bottom:3px}
+.pctl-track{position:relative;height:14px;border-radius:3px;background:#eee;overflow:hidden}
+.pctl-fill{height:100%;background:var(--v);opacity:.3}
+.pctl .tick{position:absolute;top:0;width:2px;height:100%}
+.pctl .tick.p50{background:var(--v)}
+.pctl .tick.p99{background:var(--bad)}
+
+/* big numbers */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:11px}
+.kpi{background:#fbfafc;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.kpi .v{font-size:21px;font-weight:700;color:var(--v);font-variant-numeric:tabular-nums}
+.kpi .k{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.kpi .sub{font-size:11.5px;color:var(--muted);margin-top:2px}
+
+table.prov{width:100%;border-collapse:collapse;font-size:13px}
+table.prov th,table.prov td{text-align:left;padding:4px 8px 4px 0;border-bottom:1px solid var(--line)}
+table.prov th{font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+.empty{color:var(--muted);text-align:center;padding:40px}
+.note{background:#fff4e5;border-left:3px solid var(--warn);border-radius:6px;
+      padding:8px 11px;font-size:12.5px;margin-bottom:13px}

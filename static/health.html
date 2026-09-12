@@ -1,0 +1,176 @@
+<!doctype html><meta charset="utf-8"><title>Health</title>
+<link rel="stylesheet" href="/static/dash.css">
+<div id="hdr"></div>
+<main><div id="dash"><div class="empty">loading…</div></div></main>
+<script src="/static/dash.js"></script>
+<script>
+/* "What does it cost and how fast is it?"
+ *
+ * Draws on the two LARGE datasets - data/latency.jsonl (thousands of stage
+ * timings) and the per-answer usage blocks - rather than the 38 self-selected
+ * ratings. That is the whole reason this is a separate page: percentiles and
+ * thumbs-down tags do not belong in the same visual conversation, and a
+ * distribution needs a sample the ratings cannot supply. */
+
+document.getElementById('hdr').innerHTML = dashHeader('/health');
+
+const STAGE_LABEL = {
+  answer_total: 'Whole turn', contextualize: 'Query rewrite', retrieve: 'Retrieval (all)',
+  r_dense: '· dense search', r_rerank: '· ColBERT rerank', r_adjacent: '· adjacent chunks',
+  r_doc_completion: '· document completion', r_multientity: '· multi-entity fill',
+  generate: 'Generation', enumeration_repair: 'Enumeration repair',
+  multi_entity_fill: 'Multi-entity fill',
+};
+/* Ordered by where the time goes, not alphabetically: a reader wants the whole
+ * turn first and the sub-stages nested under the stage they belong to. */
+const STAGE_ORDER = ['answer_total', 'contextualize', 'retrieve', 'r_dense', 'r_rerank',
+                     'r_adjacent', 'r_doc_completion', 'generate'];
+
+function panelKPIs(d) {
+  const withUsage = d.answers.filter(a => a.has_usage);
+  const totals = withUsage.reduce((acc, a) => {
+    acc.in += a.input_tokens || 0; acc.out += a.output_tokens || 0;
+    acc.reason += a.reasoning_tokens || 0; acc.cost += a.cost_usd || 0;
+    return acc;
+  }, {in: 0, out: 0, reason: 0, cost: 0});
+  const totalTok = totals.in + totals.out;
+  const days = new Set(withUsage.map(a => new Date(a.created_at * 1000).toISOString().slice(0, 10)));
+  const perDay = days.size ? totals.cost / days.size : 0;
+  const truncated = withUsage.filter(a => a.truncated).length;
+
+  /* The coverage note is not decoration. Telemetry landed after most of this
+   * history was written, so these KPIs describe a SUBSET - and a cost figure
+   * that silently covers a third of the answers is worse than no figure. */
+  const cover = `${withUsage.length} of ${d.answers.length} answers carry token data`;
+  const k = (v, label, sub) =>
+    `<div class="kpi"><div class="v">${v}</div><div class="k">${esc(label)}</div>
+       ${sub ? `<div class="sub">${sub}</div>` : ''}</div>`;
+  return panel('Spend', `Token cost from the answers themselves. ${esc(cover)}.`,
+    `<div class="kpis">
+      ${k(money(totals.cost), 'total so far', esc(days.size + ' day(s)'))}
+      ${k(money(perDay), 'per day', 'average over those days')}
+      ${k(num(totalTok), 'tokens', `${num(totals.in)} in · ${num(totals.out)} out`)}
+      ${k(num(totals.reason), 'invisible reasoning', 'billed, never shown to the reader')}
+      ${k(truncated, 'truncated answers', truncated ? 'hit max_tokens — cut off mid-sentence' : 'none hit max_tokens')}
+     </div>`, {wide: true});
+}
+
+function panelHeadroom(d) {
+  const cap = (d.free_tier_daily_tokens || {}).groq;
+  if (!cap) return '';
+  const today = new Date().toISOString().slice(0, 10);
+  const used = d.answers.filter(a => a.has_usage &&
+      new Date(a.created_at * 1000).toISOString().slice(0, 10) === today)
+    .reduce((n, a) => n + (a.input_tokens || 0) + (a.output_tokens || 0), 0);
+  const p = Math.min(100, pct(used, cap));
+  /* The point of this panel is to see the ceiling BEFORE hitting it. When the
+   * free tier ran out on 2026-09-05 every question 503'd for everyone, and the
+   * first sign of it was the outage. */
+  return panel('Free-tier headroom today',
+    `Groq’s daily token ceiling. This server counts only what it sent, so evals or
+     other clients sharing the key are invisible here — treat it as a floor.`,
+    `<div class="row"><span class="lbl">Used today</span>
+       <div class="bar-track"><div class="${p > 80 ? 'dn' : 'fill'}" style="width:${p}%"></div></div>
+       <span class="n">${num(used)} / ${num(cap)} · ${p}%</span></div>
+     ${p > 80 ? '<div class="lever">&rarr; close to the ceiling; answers will start failing rather than falling back</div>' : ''}`);
+}
+
+function panelLatency(d) {
+  const by = {};
+  d.stages.forEach(r => { (by[r.stage] = by[r.stage] || []).push(r.seconds); });
+  const present = STAGE_ORDER.filter(s => (by[s] || []).length);
+  if (!present.length) return '';
+  return panel('Where the time goes',
+    `Percentiles from ${num(d.stages.length)} stage timings of real traffic.
+     A mean would hide the tail, and the tail is the complaint.`,
+    present.map(s => pctlRow(STAGE_LABEL[s] || s, by[s])).join(''), {wide: true});
+}
+
+function panelTurnShape(d) {
+  const totals = d.stages.filter(r => r.stage === 'answer_total').map(r => r.seconds);
+  if (!totals.length) return '';
+  const slow = totals.filter(v => v > 20).length;
+  return panel('How long a whole turn takes',
+    `Distribution of ${num(totals.length)} complete turns. Two clusters and a long tail
+     all report the same median — the shape is the point.`,
+    histogram(totals, {unit: 's', label: 'turn duration', max: Math.min(60, Math.max(...totals))}) +
+    `<div class="lever">&rarr; ${slow} turn(s) over 20s (${pct(slow, totals.length)}%)</div>`);
+}
+
+function panelTTFT(d) {
+  const t = d.answers.filter(a => a.ttft_seconds != null).map(a => a.ttft_seconds);
+  if (!t.length) {
+    return panel('Time to first token',
+      `What a reader of a streamed answer actually waits. Not yet recorded — only the
+       Anthropic path streams token-by-token, and the current generator returns whole
+       answers, so there is no first token to time.`, '<div class="sparse">No data.</div>');
+  }
+  return panel('Time to first token',
+    `What a reader of a streamed answer actually waits, as opposed to the whole turn.
+     ${num(t.length)} streamed answers.`, pctlRow('First token', t));
+}
+
+function panelSpendOverTime(d) {
+  const withUsage = d.answers.filter(a => a.has_usage && a.cost_usd != null);
+  const series = byDay(withUsage, 'created_at', a => a.cost_usd);
+  if (series.length < 2) {
+    return panel('Spend per day', 'Needs at least two days of token data.',
+      '<div class="sparse">Not enough days yet.</div>');
+  }
+  return panel('Spend per day', 'Daily cost from recorded token counts.',
+    sparkline(series, {fmt: money, label: 'cost per day'}));
+}
+
+function panelFailures(d) {
+  if (!d.failures.length) return '';
+  const byReason = {};
+  d.failures.forEach(f => { byReason[f.reason] = (byReason[f.reason] || 0) + f.n; });
+  const LEVER = {
+    quota_exhausted: 'free-tier daily ceiling — wait, or re-enable the paid fallback',
+    rate_limited: 'per-minute window — the retry ladder should absorb these',
+    timeout: 'slow retrieval or a stalled provider',
+    network: 'this machine lost its connection',
+    overloaded: 'provider-side; usually clears in a minute',
+    generation_failed: 'recorded before failures were classified — cause unknown',
+  };
+  const rows = toRows(byReason);
+  return panel('Turns that never got an answer',
+    `Nobody can rate a question that returned nothing, so feedback is structurally blind
+     to these. ${num(rows.reduce((n, r) => n + r.value, 0))} in total.`,
+    rows.map(r => rankedBars([r]) + `<div class="lever">&rarr; ${esc(LEVER[r.label] || '')}</div>`).join(''));
+}
+
+function panelModelMix(d) {
+  const withUsage = d.answers.filter(a => a.has_usage && a.model);
+  if (!withUsage.length) return '';
+  const c = counter(withUsage, a => a.model);
+  const fellBack = withUsage.filter(a => a.fell_back_from).length;
+  return panel('Which model answered',
+    `From the answers themselves, not from configuration — a fallback would otherwise be
+     invisible.`,
+    rankedBars(toRows(c)) +
+    (fellBack ? `<div class="lever">&rarr; ${fellBack} answer(s) came from a fallback after the primary failed</div>`
+              : '<div class="lever">&rarr; no fallbacks used</div>'));
+}
+
+fetchJSON('/api/health/stats').then(d => {
+  const withUsage = d.answers.filter(a => a.has_usage);
+  document.getElementById('stats').innerHTML =
+    `<span><b>${num(d.stages.length)}</b> stage timings</span>` +
+    `<span><b>${num(d.answers.length)}</b> answers</span>` +
+    `<span><b>${num(withUsage.length)}</b> with token data</span>` +
+    `<span><b>${money(withUsage.reduce((n, a) => n + (a.cost_usd || 0), 0))}</b> recorded spend</span>`;
+  const panels = [panelKPIs(d), panelHeadroom(d), panelLatency(d), panelTurnShape(d),
+                  panelTTFT(d), panelSpendOverTime(d), panelFailures(d), panelModelMix(d)]
+                 .filter(Boolean);
+  document.getElementById('dash').innerHTML =
+    (withUsage.length < d.answers.length
+      ? `<div class="note">Token and cost telemetry started on 2026-09-12, so
+         ${num(d.answers.length - withUsage.length)} older answers have none. Spend figures
+         describe the ${num(withUsage.length)} that do, not the whole history.</div>` : '') +
+    `<div class="panels">${panels.join('')}</div>`;
+}).catch(e => {
+  document.getElementById('dash').innerHTML =
+    '<div class="empty">Could not load: ' + esc(e.message || e) + '</div>';
+});
+</script>

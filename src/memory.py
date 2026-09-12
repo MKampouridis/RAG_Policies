@@ -285,7 +285,12 @@ def usage_stats() -> dict:
             "SELECT"
             "  (SELECT COUNT(*) FROM messages WHERE role='assistant') AS answers,"
             "  (SELECT COUNT(*) FROM messages WHERE role='user') AS questions,"
-            "  (SELECT COUNT(*) FROM messages WHERE status='generation_failed') AS failed_turns,"
+            # NOT status='generation_failed': that was the only value written
+            # until failures were classified (quota_exhausted, rate_limited,
+            # timeout, network). Matching the old literal would have silently
+            # stopped counting every failure recorded after that change - the
+            # count would have looked healthy precisely as it broke.
+            "  (SELECT COUNT(*) FROM messages WHERE status IS NOT NULL) AS failed_turns,"
             "  (SELECT COUNT(*) FROM conversations WHERE deleted_at IS NULL) AS conversations"
         ).fetchone()
         stats = dict(row)
@@ -404,3 +409,56 @@ def _summarize(existing_summary: str, messages: list[dict]) -> str:
     prompt += f"\n\nNew turns to fold in:\n{transcript}"
 
     return chat(messages=[{"role": "user", "content": prompt}])
+
+
+def answer_telemetry(limit: int = 5000) -> list[dict]:
+    """The per-answer `usage` block from message meta, newest last.
+
+    One row per ANSWER rather than per rating: 340 rows against the feedback
+    log's 38, which is the whole reason the insight pages exist. Rows written
+    before telemetry was added carry no usage block and are returned with just
+    their timestamp, so a chart can show its own coverage instead of quietly
+    plotting a subset as if it were everything.
+    """
+    with _connect() as conn:
+        rows = conn.execute(
+            "SELECT id, conversation_id, created_at, meta FROM messages "
+            "WHERE role='assistant' ORDER BY id DESC LIMIT ?", (limit,)
+        ).fetchall()
+    out = []
+    for r in reversed(rows):
+        rec = {"id": r["id"], "conversation_id": r["conversation_id"],
+               "created_at": r["created_at"]}
+        try:
+            meta = json.loads(r["meta"]) if r["meta"] else {}
+        except ValueError:
+            meta = {}
+        rec.update(meta.get("usage") or {})
+        rec["has_usage"] = bool(meta.get("usage"))
+        prov = meta.get("provenance") or {}
+        rec.setdefault("model", prov.get("generator"))
+        # `sources` has been stored on every answer since long before the usage
+        # block existed, so document-usage charts get ~290 answers of history
+        # instead of only what was written after telemetry landed. Filenames,
+        # not URLs: the same document at a new URL after a re-ingest is the same
+        # document to a reader asking which ones actually get used.
+        srcs = meta.get("sources") or []
+        rec["cited_docs"] = sorted({str(u).rstrip("/").rsplit("/", 1)[-1] for u in srcs})
+        rec["n_sources"] = rec.get("n_sources", len(srcs))
+        out.append(rec)
+    return out
+
+
+def failure_breakdown() -> list[dict]:
+    """Failed turns by reason and day, for /health.
+
+    Turns that never produced an answer are structurally invisible to feedback -
+    nobody can rate a question that got nothing back - so this is the only place
+    they are counted.
+    """
+    with _connect() as conn:
+        rows = conn.execute(
+            "SELECT status AS reason, date(created_at,'unixepoch') AS day, COUNT(*) AS n "
+            "FROM messages WHERE status IS NOT NULL GROUP BY reason, day ORDER BY day"
+        ).fetchall()
+    return [dict(r) for r in rows]

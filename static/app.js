@@ -406,6 +406,9 @@ function paintModal(url, info, loading) {
 }
 
 async function openSourceModal(url, question) {
+  // Which cited documents people actually open - the closest thing to a
+  // relevance judgement that costs the reader nothing.
+  reportEvent('open_source', { doc: String(url || '').split('/').pop() });
   lastFocused = document.activeElement;
   modalUrl = url;
   const cached = sourceCache.get(url);
@@ -588,7 +591,26 @@ const COPIED_ICON = '<svg viewBox="0 0 24 24" width="13" height="13" fill="none"
 // Copies the raw text (markdown source for an answer, plain text for a
 // question) rather than the rendered HTML - pasting into an email or doc
 // should not carry the app's markup.
-function buildCopyButton(getText) {
+/* Implicit usage signals. Explicit ratings cover ~11% of answers and come from
+   whoever remembered to click a thumb; these cover every answer and need nobody
+   to remember. They are WEAKER evidence, not stronger - a copy means "I am using
+   this", not "this is correct" - so /insights plots them separately from
+   ratings, never on the same axis.
+
+   Fire-and-forget by design: telemetry must never delay or break the action the
+   user actually asked for, so nothing awaits this and every error is swallowed. */
+function reportEvent(kind, detail) {
+  try {
+    fetch('/api/event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: kind, detail: detail || {} }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch (e) { /* never let instrumentation break a copy */ }
+}
+
+function buildCopyButton(getText, kind) {
   const btn = document.createElement('button');
   btn.className = 'btn btn-icon btn-secondary copy-btn';
   btn.type = 'button';
@@ -611,6 +633,7 @@ function buildCopyButton(getText) {
       try { document.execCommand('copy'); } catch (e2) { /* give up quietly */ }
       document.body.removeChild(ta);
     }
+    reportEvent(kind || 'copy_answer', { chars: (getText() || '').length });
     btn.innerHTML = COPIED_ICON;
     btn.classList.add('copied');
     btn.title = 'Copied';
@@ -633,7 +656,7 @@ function renderUser(text) {
   el.className = 'msg-user';
   el.textContent = text;
   wrap.appendChild(el);
-  wrap.appendChild(buildCopyButton(() => text));
+  wrap.appendChild(buildCopyButton(() => text, 'copy_question'));
   messagesEl.appendChild(wrap);
   messagesEl.scrollTop = messagesEl.scrollHeight;
   return wrap;
@@ -720,7 +743,7 @@ function renderAssistant(content, sources, context) {
   if (context) {
     card.appendChild(buildFeedback(content, context, actions));
   }
-  actions.appendChild(buildCopyButton(() => content));
+  actions.appendChild(buildCopyButton(() => content, 'copy_answer'));
 
   messagesEl.appendChild(card);
   addCorners(card);

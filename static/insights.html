@@ -1,0 +1,152 @@
+<!doctype html><meta charset="utf-8"><title>Insights</title>
+<link rel="stylesheet" href="/static/dash.css">
+<div id="hdr"></div>
+<main><div id="dash"><div class="empty">loading…</div></div></main>
+<script src="/static/dash.js"></script>
+<script>
+/* "What is the system actually doing?"
+ *
+ * Every answer, not the rated 11%. The feedback page's panels all divide by 38
+ * self-selected ratings from one person; these divide by every answer the
+ * system has produced, which is the only way to see a distribution rather than
+ * a handful of anecdotes. */
+
+document.getElementById('hdr').innerHTML = dashHeader('/insights');
+
+function panelVolume(d) {
+  const series = byDay(d.answers, 'created_at');
+  return panel('Answers per day',
+    `Every answer produced, rated or not. ${num(d.answers.length)} in total.`,
+    sparkline(series, {label: 'answers per day'}), {wide: true});
+}
+
+function panelDocs(d) {
+  /* The feedback page's document panel divides by 38 RATED answers. This one
+   * divides by every answer with sources, which is the denominator that makes
+   * "which documents does this system actually use" answerable. */
+  const withSrc = d.answers.filter(a => a.n_sources > 0);
+  const c = {};
+  d.answers.forEach(a => (a.cited_docs || []).forEach(f => { c[f] = (c[f] || 0) + 1; }));
+  const rows = toRows(c, 12);
+  if (!rows.length) {
+    return panel('Most-used documents',
+      `Needs per-answer source records, which started with telemetry on 2026-09-12.`,
+      '<div class="sparse">No data yet.</div>');
+  }
+  const distinct = Object.keys(c).length;
+  return panel('Most-used documents',
+    `Across ${num(withSrc.length)} answers that cited anything. ${num(distinct)} distinct
+     documents have ever been cited — the corpus holds far more, so the tail matters
+     as much as the head.`,
+    rankedBars(rows, {pickable: false}));
+}
+
+function panelRetrievedNotCited(d) {
+  const rel = d.answers.filter(a => a.has_usage);
+  if (!rel.length) return '';
+  const c = {};
+  rel.forEach(a => (a.retrieved_not_cited || []).forEach(f => { c[f] = (c[f] || 0) + 1; }));
+  const rows = toRows(c, 10);
+  const affected = rel.filter(a => (a.retrieved_not_cited || []).length).length;
+  return panel('Retrieved, then ignored',
+    `Documents the retriever ranked into the top results and the generator did not cite.
+     This is the “right document, wrong chunk / had the facts, didn’t use them” gap that
+     hit@6 cannot see by construction. ${num(affected)} of ${num(rel.length)} answers.`,
+    rows.length ? rankedBars(rows) : '<div class="sparse">None — every retrieved document was cited.</div>');
+}
+
+function panelAbstain(d) {
+  const rel = d.answers.filter(a => a.has_usage);
+  if (!rel.length) {
+    return panel('Answered vs couldn’t answer',
+      'Recorded at answer time from 2026-09-12; older answers predate it.',
+      '<div class="sparse">No data yet.</div>');
+  }
+  const ab = rel.filter(a => a.abstained).length;
+  const nocite = rel.filter(a => !a.cited_any).length;
+  /* The feedback page GUESSES this with a regex over the answer text and
+   * labels it "indicative". Here it is a recorded fact, and it sits beside a
+   * harder one - whether any source was cited at all. */
+  return panel('Answered vs couldn’t answer',
+    `Recorded at answer time rather than guessed from the wording later.
+     Sample: ${num(rel.length)} answers.`,
+    `<div class="row"><span class="lbl">Said it couldn’t answer</span>
+       <div class="bar-track"><div class="dn" style="width:${pct(ab, rel.length)}%"></div></div>
+       <span class="n">${ab} · ${pct(ab, rel.length)}%</span></div>
+     <div class="lever">&rarr; corpus coverage — the document is missing or unreachable</div>
+     <div class="row"><span class="lbl">Cited no source</span>
+       <div class="bar-track"><div class="dn" style="width:${pct(nocite, rel.length)}%"></div></div>
+       <span class="n">${nocite} · ${pct(nocite, rel.length)}%</span></div>
+     <div class="lever">&rarr; a fact, not a heuristic: an answer with no source is ungrounded</div>`);
+}
+
+function panelFollowUp(d) {
+  const rel = d.answers.filter(a => a.has_usage);
+  if (!rel.length) return '';
+  const fu = rel.filter(a => a.follow_up);
+  const pri = rel.filter(a => !a.follow_up);
+  const rate = arr => (arr.length ? pct(arr.filter(a => a.abstained || !a.cited_any).length, arr.length) : 0);
+  /* The ledger splits on this constantly, because the contextualizer only runs
+   * on follow-ups - but production traffic was never labelled, so "are
+   * follow-ups worse in REAL use?" had no evidence either way. */
+  return panel('Primary vs follow-up',
+    `The query rewriter only runs on follow-ups, so this is the split that isolates it.
+     Rate shown is answers that abstained or cited nothing.`,
+    `<div class="row"><span class="lbl">Primary</span>
+       <div class="bar-track"><div class="fill" style="width:${rate(pri)}%"></div></div>
+       <span class="n">${rate(pri)}% weak · n=${pri.length}</span></div>
+     <div class="row"><span class="lbl">Follow-up</span>
+       <div class="bar-track"><div class="fill" style="width:${rate(fu)}%"></div></div>
+       <span class="n">${rate(fu)}% weak · n=${fu.length}</span></div>
+     <div class="lever">&rarr; a gap here points at the rewriter, not at retrieval</div>`);
+}
+
+function panelEvents(d) {
+  const ev = d.events || [];
+  if (!ev.length) {
+    return panel('What people did with answers',
+      `Copy clicks and source opens — implicit signals that need nobody to remember to
+       rate anything. Recording started 2026-09-12.`,
+      '<div class="sparse">No events yet.</div>');
+  }
+  const LABEL = {copy_answer: 'Copied an answer', copy_question: 'Copied a question',
+                 open_source: 'Opened a cited source', rephrase: 'Re-asked immediately'};
+  const c = counter(ev, e => e.kind);
+  const rows = toRows(c).map(r => ({label: LABEL[r.label] || r.label, value: r.value}));
+  return panel('What people did with answers',
+    `Implicit signals, covering every answer rather than the 11% someone rated.
+     WEAKER evidence than a thumbs-down, not stronger: a copy means “I am using this”,
+     not “this is correct”.`,
+    rankedBars(rows));
+}
+
+function panelLengths(d) {
+  const rel = d.answers.filter(a => a.answer_chars);
+  if (rel.length < 5) return '';
+  return panel('Answer length',
+    `Distribution over ${num(rel.length)} answers. A pile-up at the top end usually means
+     truncation rather than thoroughness.`,
+    histogram(rel.map(a => a.answer_chars), {unit: ' chars', label: 'answer length'}));
+}
+
+fetchJSON('/api/insights').then(d => {
+  const withUsage = d.answers.filter(a => a.has_usage);
+  document.getElementById('stats').innerHTML =
+    `<span><b>${num(d.answers.length)}</b> answers</span>` +
+    `<span><b>${num(withUsage.length)}</b> with telemetry</span>` +
+    `<span><b>${num(new Set(d.answers.map(a => a.conversation_id)).size)}</b> conversations</span>` +
+    `<span><b>${num((d.events || []).length)}</b> events</span>`;
+  const panels = [panelVolume(d), panelDocs(d), panelRetrievedNotCited(d), panelAbstain(d),
+                  panelFollowUp(d), panelEvents(d), panelLengths(d)].filter(Boolean);
+  document.getElementById('dash').innerHTML =
+    (withUsage.length < d.answers.length
+      ? `<div class="note">Per-answer telemetry started on 2026-09-12.
+         ${num(d.answers.length - withUsage.length)} older answers carry only their date and
+         sources, so panels below state their own sample rather than implying all
+         ${num(d.answers.length)}.</div>` : '') +
+    `<div class="panels">${panels.join('')}</div>`;
+}).catch(e => {
+  document.getElementById('dash').innerHTML =
+    '<div class="empty">Could not load: ' + esc(e.message || e) + '</div>';
+});
+</script>

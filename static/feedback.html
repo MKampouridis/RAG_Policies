@@ -1,58 +1,29 @@
 <!doctype html><meta charset="utf-8"><title>Feedback</title>
+<link rel="stylesheet" href="/static/dash.css">
 <style>
-:root{--v:#622567;--lime:#bed600;--bg:#faf9fb;--line:#e5e1e8;--muted:#6b6472}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#1a1620;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-header{position:sticky;top:0;z-index:9;background:var(--v);color:#fff;padding:14px 20px;border-bottom:4px solid var(--lime)}
-header h1{margin:0;font-size:17px}
-.stats{display:flex;gap:18px;margin-top:8px;font-size:13px;opacity:.94;flex-wrap:wrap}
-main{max-width:900px;margin:0 auto;padding:20px}
-.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.filters button{font:inherit;font-size:13px;padding:6px 13px;border:1px solid var(--line);
-  background:#fff;border-radius:999px;cursor:pointer}
-.filters button.on{background:var(--v);color:#fff;border-color:var(--v)}
+/* Only what is specific to this page; everything shared lives in dash.css. */
 .item{background:#fff;border:1px solid var(--line);border-radius:10px;padding:15px 17px;margin-bottom:13px}
-.item.down{border-left:4px solid #b3261e}
-.item.up{border-left:4px solid #2e7d32}
+.item.down{border-left:4px solid var(--bad)}
+.item.up{border-left:4px solid var(--good)}
 .meta{display:flex;gap:12px;font-size:12px;color:var(--muted);margin-bottom:7px;flex-wrap:wrap}
 .who{font-weight:700;color:var(--v)}
 .q{font-weight:600;margin:0 0 8px;font-size:15px}
 .comment{background:#fffbe6;border-left:3px solid #e0c200;border-radius:6px;padding:8px 11px;font-size:13.5px;margin:8px 0}
-/* dashboard */
-.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:13px;margin-bottom:18px}
-.panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px}
-.panel h2{margin:0 0 3px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--v)}
-.panel .why{margin:0 0 11px;font-size:12px;color:var(--muted)}
-.panel.wide{grid-column:1/-1}
-.row{display:grid;grid-template-columns:minmax(90px,auto) 1fr auto;gap:9px;align-items:center;
-  margin-bottom:6px;font-size:13px}
-.row .lbl{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.row .lbl.click{cursor:pointer;text-decoration:underline dotted}
-.bar{height:15px;border-radius:3px;background:#eee;overflow:hidden;display:flex;min-width:2px}
-.bar .dn{background:#b3261e}
-.bar .up{background:#2e7d32}
-.n{font-variant-numeric:tabular-nums;color:var(--muted);font-size:12px;white-space:nowrap}
-.lever{font-size:11.5px;color:var(--muted);margin:-3px 0 7px 0}
-.sparse{font-size:12px;color:var(--muted);font-style:italic}
-table.prov{width:100%;border-collapse:collapse;font-size:13px}
-table.prov th,table.prov td{text-align:left;padding:4px 8px 4px 0;border-bottom:1px solid var(--line)}
-table.prov th{font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
-.tags span{display:inline-block;background:#f1edf4;border-radius:999px;padding:2px 9px;font-size:11.5px;margin-right:5px}
-details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
-.a{white-space:pre-wrap;background:#fbfbfc;border:1px solid var(--line);border-radius:7px;
-  padding:10px 12px;font-size:13.5px;margin-top:7px;max-height:300px;overflow:auto}
-.srcs{font-size:12px;color:var(--muted);margin-top:7px;word-break:break-all}
-.empty{color:var(--muted);text-align:center;padding:40px}
-/* comments feed */
 .quote{border-left:3px solid #e0c200;background:#fffbe6;border-radius:6px;padding:9px 12px;margin-bottom:9px}
 .quote .said{font-size:13.5px;margin:0 0 4px}
 .quote .on{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .quote .on b{color:#1a1620;font-weight:600}
-/* filters */
-.filters select,.filters input{font:inherit;font-size:13px;padding:5px 9px;border:1px solid var(--line);
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filters button{font:inherit;font-size:13px;padding:6px 13px;border:1px solid var(--line);
+  background:#fff;border-radius:999px;cursor:pointer}
+.filters button.on{background:var(--v);color:#fff;border-color:var(--v)}
+.filters select{font:inherit;font-size:13px;padding:5px 9px;border:1px solid var(--line);
   border-radius:7px;background:#fff}
 .filters .count{font-size:12.5px;color:var(--muted);align-self:center;margin-left:auto}
-/* replay */
+details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
+.a{white-space:pre-wrap;background:#fbfbfc;border:1px solid var(--line);border-radius:7px;
+  padding:10px 12px;font-size:13.5px;margin-top:7px;max-height:300px;overflow:auto}
+.srcs{font-size:12px;color:var(--muted);margin-top:7px;word-break:break-all}
 .actions{margin-top:9px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .actions button{font:inherit;font-size:12.5px;padding:5px 12px;border:1px solid var(--v);background:#fff;
   color:var(--v);border-radius:7px;cursor:pointer}
@@ -71,13 +42,11 @@ details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
   border-radius:6px;padding:9px 10px;max-height:260px;overflow:auto}
 .delta{font-size:12.5px;margin-top:9px}
 .delta .gain{color:#1b5e20}.delta .lost{color:#8c1d18}
-.warn{background:#fff4e5;border-left:3px solid #e08600;border-radius:6px;padding:7px 10px;
+.warn{background:#fff4e5;border-left:3px solid var(--warn);border-radius:6px;padding:7px 10px;
   font-size:12.5px;margin-top:8px}
 </style>
-<header>
-  <h1>Feedback</h1>
-  <div class="stats" id="stats">loading…</div>
-</header>
+<div id="hdr"></div>
+
 <main>
   <div id="dash"></div>
   <div class="filters">
@@ -97,15 +66,14 @@ details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
   </div>
   <div id="list"><div class="empty">loading…</div></div>
 </main>
+<script src="/static/dash.js"></script>
 <script>
+document.getElementById('hdr').innerHTML = dashHeader('/feedback');
 let rows = [], filter = 'down';
-const sel = {tag:'', gen:'', age:''};
+const sel = {tag:'', gen:'', age:'', doc:''};
 // Replay results, keyed by row index, so re-rendering after a filter change
 // does not throw away a replay the user just paid a generation for.
 const replays = {};
-function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
-function when(ts){ if(!ts) return ''; try{ return new Date(ts).toLocaleString(); }catch(e){ return ts; } }
-function fileOf(u){ return String(u||'').replace(/\/$/,'').split('/').pop(); }
 
 function matches(r){
   if(filter==='down' && r.rating!=='down') return false;
@@ -117,6 +85,10 @@ function matches(r){
     const t = Date.parse(r.timestamp);
     if(isNaN(t) || t < Date.now() - sel.age*864e5) return false;
   }
+  // Cross-filter: clicking a document bar narrows the list below to the
+  // ratings that cited it. The panels and the list were disconnected, so
+  // reading a panel meant scrolling down and hunting for the rows by hand.
+  if(sel.doc && !(r.sources||[]).some(u=>fileOf(u)===sel.doc)) return false;
   return true;
 }
 
@@ -232,12 +204,6 @@ const LEVER = {
   no_answer:       'abstention or under-specified - retrieval coverage',
   other:           'read the comments',
 };
-const pct = (n,d) => d ? Math.round(n/d*100) : 0;
-function bar(dn, up){
-  const t = dn+up || 1;
-  return `<div class="bar"><div class="dn" style="width:${dn/t*100}%"></div>`+
-         `<div class="up" style="width:${up/t*100}%"></div></div>`;
-}
 function weekOf(ts){
   const d = new Date(ts); if(isNaN(d)) return null;
   const m = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
@@ -288,7 +254,7 @@ function panelTags(){
   const max = Math.max(...keys.map(k=>c[k]), 1);
   const body = keys.map(k=>
     `<div class="row"><span class="lbl">${esc(k)}</span>
-       <div class="bar"><div class="dn" style="width:${c[k]/max*100}%"></div></div>
+       <div class="bar-track"><div class="dn" style="width:${c[k]/max*100}%"></div></div>
        <span class="n">${c[k]}</span></div>
      <div class="lever">&rarr; ${esc(LEVER[k]||'')}</div>`).join('');
   return `<div class="panel"><h2>Why answers were rejected</h2>
@@ -306,12 +272,14 @@ function panelDocs(){
     .sort((a,b)=>c[b].down-c[a].down || (c[b].down+c[b].up)-(c[a].down+c[a].up)).slice(0,10);
   if(!keys.length) return '';
   const body = keys.map(k=>
-    `<div class="row"><span class="lbl" title="${esc(k)}">${esc(k)}</span>
+    `<div class="row pickable${sel.doc===k?' picked':''}" data-doc="${esc(k)}">
+       <span class="lbl" title="${esc(k)}">${esc(k)}</span>
        ${bar(c[k].down, c[k].up)}
        <span class="n">${c[k].down}▼ ${c[k].up}▲</span></div>`).join('');
   return `<div class="panel"><h2>Documents in rejected answers</h2>
-    <p class="why">Cited when a user said the answer was wrong. A document that is all red is worth opening.</p>
-    ${body}</div>`;
+    <p class="why">Cited when a user said the answer was wrong. A document that is all red is
+      worth opening. <b>Click one</b> to filter the list below to its ratings.</p>
+    ${body}${sel.doc?`<div class="lever">&rarr; filtered to <b>${esc(sel.doc)}</b> — click again to clear</div>`:''}</div>`;
 }
 function panelProvenance(){
   const by = (keyFn, label) => {
@@ -368,11 +336,11 @@ function panelAbstain(){
     <p class="why">Of the thumbs-down, how many were the system saying it couldn't answer
       versus answering confidently. They need different fixes.</p>
     <div class="row"><span class="lbl">Couldn't answer</span>
-      <div class="bar"><div class="dn" style="width:${pct(ab,down.length)}%"></div></div>
+      <div class="bar-track"><div class="dn" style="width:${pct(ab,down.length)}%"></div></div>
       <span class="n">${ab}</span></div>
     <div class="lever">&rarr; corpus coverage - the document is missing or unreachable</div>
     <div class="row"><span class="lbl">Answered wrongly</span>
-      <div class="bar"><div class="dn" style="width:${pct(wrong,down.length)}%"></div></div>
+      <div class="bar-track"><div class="dn" style="width:${pct(wrong,down.length)}%"></div></div>
       <span class="n">${wrong}</span></div>
     <div class="lever">&rarr; retrieval ranking, or the generator</div>
     <div class="sparse">Heuristic: matched on how the answer opens, so treat as indicative.</div>
@@ -387,24 +355,32 @@ function panelCoverage(ctx){
     <p class="why">Ratings are self-selected - people click when annoyed - so every
       percentage above describes this share of answers, not all of them.</p>
     <div class="row"><span class="lbl">Answers rated</span>
-      <div class="bar"><div class="up" style="width:${cov}%"></div></div>
+      <div class="bar-track"><div class="up" style="width:${cov}%"></div></div>
       <span class="n">${cov}% · ${rated}/${answers}</span></div>
     <div class="row"><span class="lbl">Failed turns</span>
-      <div class="bar"><div class="dn" style="width:${pct(ctx.failed_turns, answers)}%"></div></div>
+      <div class="bar-track"><div class="dn" style="width:${pct(ctx.failed_turns, answers)}%"></div></div>
       <span class="n">${ctx.failed_turns}</span></div>
     <div class="lever">&rarr; questions that never got an answer, so nobody could rate them</div>
     <div class="row"><span class="lbl">Repeated questions</span>
-      <div class="bar"><div class="dn" style="width:${pct(ctx.repeat_questions, ctx.questions||1)}%"></div></div>
+      <div class="bar-track"><div class="dn" style="width:${pct(ctx.repeat_questions, ctx.questions||1)}%"></div></div>
       <span class="n">${ctx.repeat_questions}</span></div>
     <div class="lever">&rarr; asked again in the same conversation - usually the first answer missed</div>
   </div>`;
 }
 
+let lastCtx = null;
 function renderDash(ctx){
+  lastCtx = ctx;
   const panels = [panelComments(), panelTrend(), panelTags(), panelDocs(), panelAbstain(),
                   panelCoverage(ctx), panelProvenance()].filter(Boolean);
-  document.getElementById('dash').innerHTML = panels.length
-    ? `<div class="panels">${panels.join('')}</div>` : '';
+  const dash = document.getElementById('dash');
+  dash.innerHTML = panels.length ? `<div class="panels">${panels.join('')}</div>` : '';
+  dash.querySelectorAll('[data-doc]').forEach(el=>{
+    el.onclick = ()=>{
+      sel.doc = (sel.doc === el.dataset.doc) ? '' : el.dataset.doc;  // click again to clear
+      renderDash(lastCtx); render();
+    };
+  });
 }
 
 document.querySelectorAll('.filters button').forEach(b=>{

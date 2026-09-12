@@ -24,12 +24,13 @@ So: cheap and broad first, expensive and narrow last.
     2  import the app      catches import cycles and module-scope errors
     3  JS syntax           whole client, ~1s
     4  JS top-level TDZ    the specific blank-page bug
-    5  live request        the ONLY check that caught the 503
-    6  fingerprint         expensive, narrow - run separately
+    5  JS calls resolve    a call to a function that does not exist
+    6  live request        the ONLY check that caught the 503
+    7  fingerprint         expensive, narrow - run separately
 
 Usage:
-    python verify.py            # steps 1-5 (step 5 needs a running server)
-    python verify.py --static   # steps 1-4 only, no server needed
+    python verify.py            # steps 1-6 (step 6 needs a running server)
+    python verify.py --static   # steps 1-5 only, no server needed
 """
 
 import hashlib
@@ -238,7 +239,119 @@ def s4_js_tdz() -> None:
          problems[0] if problems else "checked const/let at module scope")
 
 
-def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> None:
+def _walk_js(node, visit) -> None:
+    if isinstance(node, list):
+        for x in node:
+            _walk_js(x, visit)
+        return
+    if not getattr(node, "type", None):
+        return
+    visit(node)
+    for key in dir(node):
+        if key.startswith("_") or key in ("type", "range"):
+            continue
+        val = getattr(node, key, None)
+        if isinstance(val, list) or getattr(val, "type", None):
+            _walk_js(val, visit)
+
+
+# Globals the browser supplies. Anything called and not bound in the file, not
+# bound in a sibling script, and not on this list is a name that does not exist
+# at runtime.
+_BROWSER_GLOBALS = {
+    "fetch", "JSON", "Date", "Math", "Number", "String", "Array", "Object", "Set",
+    "Map", "console", "document", "window", "setTimeout", "setInterval",
+    "clearTimeout", "clearInterval", "isNaN", "parseInt", "parseFloat",
+    "encodeURIComponent", "decodeURIComponent", "Promise", "Error", "RegExp",
+    "navigator", "localStorage", "sessionStorage", "alert", "confirm", "prompt",
+    "requestAnimationFrame", "cancelAnimationFrame", "structuredClone", "URL",
+    "Boolean", "Symbol", "queueMicrotask", "AbortController", "FormData",
+}
+
+
+def s5_js_undefined_calls() -> None:
+    """A call to a function that does not exist anywhere.
+
+    Steps 3 and 4 both pass on this: it is valid syntax and breaks no temporal
+    dead zone. It throws at CALL time, so a page renders its header and then
+    dies on the panel that needed the missing helper - which looks like an
+    empty dashboard, not like an error.
+
+    This became reachable the moment the three dashboard pages started sharing
+    static/dash.js: a helper renamed in one place and still called in another
+    is invisible until someone opens that page. Cross-file, so it must resolve
+    names across every script a page loads, not file by file.
+
+    Written against a known failure, as this file's other checks were: the
+    negative control below must be CAUGHT, or the check is reporting clean
+    because it stopped looking.
+    """
+    try:
+        import esprima
+    except ImportError:
+        step(5, "JS calls resolve", False, "esprima not installed")
+        return
+
+    def bound(src: str) -> set:
+        """Every name bound anywhere - nested consts and params included. A
+        first version collected only TOP-LEVEL declarations and reported three
+        false positives, all locally-scoped arrow helpers."""
+        names = set()
+
+        def visit(n):
+            if n.type in ("FunctionDeclaration", "FunctionExpression",
+                          "ArrowFunctionExpression"):
+                if getattr(getattr(n, "id", None), "name", None):
+                    names.add(n.id.name)
+                for prm in (getattr(n, "params", None) or []):
+                    if getattr(prm, "name", None):
+                        names.add(prm.name)
+            if n.type == "VariableDeclaration":
+                for d in n.declarations:
+                    if getattr(d.id, "name", None):
+                        names.add(d.id.name)
+        try:
+            _walk_js(esprima.parseScript(src, {"range": True}).body, visit)
+        except Exception:  # noqa: BLE001 - step 3 reports unparseable files
+            pass
+        return names
+
+    def called(src: str) -> set:
+        names = set()
+
+        def visit(n):
+            if n.type == "CallExpression" and getattr(n.callee, "name", None):
+                names.add(n.callee.name)
+        try:
+            _walk_js(esprima.parseScript(src, {"range": True}).body, visit)
+        except Exception:  # noqa: BLE001
+            pass
+        return names
+
+    # Every .js file is a candidate sibling: a page that loads dash.js sees its
+    # names, and resolving per-file would flag every shared helper.
+    shared = set()
+    for p in sorted((ROOT / "static").glob("*.js")):
+        shared |= bound(p.read_text())
+
+    problems = []
+    for label, src in _js_sources():
+        missing = sorted(called(src) - bound(src) - shared - _BROWSER_GLOBALS)
+        if missing:
+            problems.append(f"{label}: calls undefined {', '.join(missing[:4])}")
+
+    # Negative control: a check that has never failed may simply have stopped
+    # looking. This one is cheap enough to re-prove on every run.
+    probe = "function a(){ return __verify_probe_missing__(1); } a();"
+    if not (called(probe) - bound(probe) - shared - _BROWSER_GLOBALS):
+        step(5, "JS calls resolve", False, "self-test failed: check cannot detect a missing call")
+        return
+
+    step(5, "JS calls resolve", not problems,
+         problems[0] if problems else f"across {len(_js_sources())} script(s)")
+
+
+def s6_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> None:
     """The golden request. The ONLY check that caught the 503, and the cheapest
     end-to-end signal available: does the product actually answer?
 
@@ -251,7 +364,7 @@ def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> N
     try:
         import requests
     except ImportError:
-        step(5, "live request", False, "requests not available")
+        step(6, "live request", False, "requests not available")
         return
     h = {"X-User": "verify"}
     # Once RAG_ACCESS_PASSWORD is set, every /api/ path returns 401 without the
@@ -277,7 +390,7 @@ def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> N
         try:
             r = requests.get(f"{base}/api/config", headers=h, cookies=cookies, timeout=10)
             if r.status_code != 200:
-                step(5, "live request", False, f"/api/config returned {r.status_code}")
+                step(6, "live request", False, f"/api/config returned {r.status_code}")
                 return
             cid = requests.post(f"{base}/api/conversations", headers=h, cookies=cookies,
                                 json={"title": "__verify__"}, timeout=15).json()["id"]
@@ -292,14 +405,14 @@ def s5_live_request(base: str = "http://127.0.0.1:8000", attempts: int = 2) -> N
                     note = f"{len(body.get('answer',''))} chars, {len(body.get('sources',[]))} sources"
                     if ok and attempt > 1:
                         note += f"  (needed {attempt - 1} retry — upstream was flaky)"
-                    step(5, "live request answers with sources", ok, note)
+                    step(6, "live request answers with sources", ok, note)
                     return
                 last = f"HTTP {a.status_code}: {a.text[:70]}"
             finally:
                 requests.delete(f"{base}/api/conversations/{cid}", headers=h, cookies=cookies, timeout=15)
         except Exception as exc:  # noqa: BLE001
             last = f"{type(exc).__name__}: {exc}"[:80]
-    step(5, "live request", False, f"{last}  (failed {attempts} attempts)")
+    step(6, "live request", False, f"{last}  (failed {attempts} attempts)")
 
 
 def main() -> int:
@@ -309,10 +422,11 @@ def main() -> int:
     s2_import()
     s3_js_syntax()
     s4_js_tdz()
+    s5_js_undefined_calls()
     if not static_only:
-        s5_live_request()
+        s6_live_request()
     else:
-        print("  [skip] 5. live request (--static)")
+        print("  [skip] 6. live request (--static)")
     print()
     if FAIL:
         print(f"  {len(FAIL)} CHECK(S) FAILED:")
