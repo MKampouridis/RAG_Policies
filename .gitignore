@@ -22,3 +22,7 @@ data/alert_history.jsonl
 # Regenerable, so there is no reason to put staff questions in git history.
 eval/questions_traffic.json
 eval/traffic_replay_*.json
+eval/policy_arena_questions.json
+eval/policy_arena_contexts.json
+eval/policy_arena_answers.json
+eval/policy_arena_judged.json
