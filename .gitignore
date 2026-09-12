@@ -16,3 +16,9 @@ data/monitor_report.md
 data/monitor.out
 data/monitor.err
 data/alert_history.jsonl
+
+# Generated from real traffic in one command, and contains verbatim user
+# questions - which will be colleagues' questions once the link is shared.
+# Regenerable, so there is no reason to put staff questions in git history.
+eval/questions_traffic.json
+eval/traffic_replay_*.json

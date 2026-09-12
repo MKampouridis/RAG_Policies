@@ -117,6 +117,13 @@ def answer_record(*, answer_text: str, sources: list, ranked_top_urls: list,
             "turn_index": len(history) // 2 if history else 0,
             "rewritten": bool(retrieval_query and question
                               and retrieval_query.strip() != question.strip()),
+            # Stored, not just compared, so a FOLLOW-UP turn is replayable
+            # later without re-running the contextualizer - which is a paid
+            # cloud call, and is also the only LLM left in the retrieval path.
+            # Replaying the recorded query keeps a regression check free and
+            # deterministic. Primary turns need this less (their query is the
+            # question) but carry it anyway so one code path reads the set.
+            "retrieval_query": (retrieval_query or "").strip() or None,
             "cited_any": bool(sources),
             "n_sources": len(sources or []),
             "abstained": bool(_ABSTAIN_RE.search((answer_text or "")[:300])),

@@ -109,6 +109,23 @@ a browser smoke test would be needed, and Chrome headless does not run in this e
   turn-type split plus a rejection log to untangle.
 - **`eval/retrieval_replay.py`** scores hit@6 by replaying stored queries — no generation, no
   judging, minutes not hours. Use it for anything retrieval-only.
+- **The regression set now builds itself from real traffic** (2026-09-12). The hand-written
+  151-question set is no longer maintained: its gold went stale after every re-ingest, and the
+  point of it was always to approximate what people ask. `eval/build_traffic_regression.py`
+  emits 146 replayable questions from `chat.db` + `feedback.jsonl`, and
+  `eval/traffic_replay.py <label>` replays them through retrieval alone — no generation, no
+  judge, no contextualizer (each item carries the recorded `retrieval_query`), so it is free
+  and has **no noise floor**: two passes with nothing changed report 0 of 146 changed, verified.
+  Rebuild the set after any ingest; run a pass before and after any retrieval change.
+
+  **It reports "turns changed", never hit@6, and that wording is load-bearing.** The baselines
+  are what retrieval returned at the time, NOT verified gold — treating them as gold would
+  repeat the failure that made the old set stale, only faster. A change is a prompt to look.
+  Tiers carry different weight: a thumbed-UP turn losing a document is a real signal; an
+  unrated turn changing is weak; a thumbed-DOWN turn changing may be the fix working.
+
+  What this cannot do is judge answer quality — it sees retrieval only. Feedback tells you what
+  to fix; this tells you that fixing it broke nothing else.
 
 ## Spend repeats where they change the decision
 
