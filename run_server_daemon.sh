@@ -71,17 +71,21 @@ if [ -z "$RAG_LOCAL_ONLY" ]; then
     # retries such a question on Anthropic, so a quota-exhausted day costs
     # pennies and a slower model instead of an outage.
     #
-    # OFF while this is internal (2026-09-12, user's call). The fallback buys
-    # availability for OTHER people; with one user there is nobody to shield
-    # from a 503, so the right response to a rate limit is to wait for Groq
-    # rather than spend ~26x on Sonnet. A per-minute 429 then waits out the
-    # full retry ladder (~3 min) instead of being capped at 20s, which is what
-    # "wait until it's back" means in practice. A DAILY quota still fails fast,
-    # because that one resets in hours and no request can sit through it.
+    # ON again (2026-09-12, user's call), ahead of colleagues getting the link -
+    # which is the scenario it was written for. It was briefly off while this
+    # was single-user, when waiting for Groq beat paying ~26x for Sonnet.
     #
-    # TURN IT BACK ON the day colleagues get the link - that is the scenario it
-    # was written for. Uncomment:
-    #   [ -n "$ANTHROPIC_API_KEY" ] && export GENERATOR_FALLBACK=anthropic
+    # The arithmetic that decided it: measured usage is ~3,060 tokens per
+    # answer against a 200,000/day free ceiling, so the tier covers ~65
+    # questions a day for EVERYONE combined. Four colleagues asking ten
+    # questions each exhausts it, and without this line every question then
+    # fails outright until midnight. A fully exhausted day on Sonnet costs
+    # about 60p - cheap against colleagues finding a broken tool in week one.
+    #
+    # With a fallback configured, a rate-limited request stops waiting after
+    # ~20s and hands off, rather than burning the full ~3-minute retry ladder
+    # in front of someone. A daily quota hands off on the first 429.
+    [ -n "$ANTHROPIC_API_KEY" ] && export GENERATOR_FALLBACK=anthropic
     # rewriter stays on Haiku, unchanged by this trial
     export CONTEXTUALIZE_PROVIDER=anthropic
     export ANTHROPIC_CONTEXTUALIZE_MODEL=claude-haiku-4-5

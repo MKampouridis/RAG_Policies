@@ -190,8 +190,14 @@ function fetchJSON(url) {
  * more than it looks - it is the one cue visible without the page in focus.
  */
 const SEV_RANK = {critical: 0, high: 1, medium: 2, low: 3};
-/* Hours before a silent monitor is itself treated as a problem. Generous
- * against the hourly schedule, so one missed run is not called a dead monitor. */
+/* Hours before a silent monitor is itself treated as a problem.
+ *
+ * Tied to the FREE hourly job (com.mkampo.ragpoliciesmonitor), not the twice-
+ * daily probe: the free detectors write alerts.json every hour, so 3 hours of
+ * silence means the monitor itself has stopped. Keying this to the probe's
+ * 9am/1pm weekday schedule instead would have declared the monitor dead every
+ * evening and all weekend - an alert that is wrong by design every Saturday is
+ * how a channel stops being read. */
 const MONITOR_STALE_H = 3;
 
 function alertState(m) {
