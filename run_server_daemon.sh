@@ -67,12 +67,21 @@ if [ -z "$RAG_LOCAL_ONLY" ]; then
     # reasoning field before any visible answer (48 of 50 tokens, measured).
     export GENERATOR_REASONING_EFFORT=low
     # Groq's free tier is ~200k tokens/day (~75 questions) and when it runs out
-    # EVERY question 503s for everyone - seen on 2026-09-05. Fall back to
-    # Anthropic, which is paid and uncapped: a quota-exhausted day then costs
-    # pennies and a slower model instead of an outage. Falls back only if the
-    # key is present; provenance records which model actually answered, so the
-    # feedback dashboard does not silently attribute Sonnet's answers to Groq.
-    [ -n "$ANTHROPIC_API_KEY" ] && export GENERATOR_FALLBACK=anthropic
+    # EVERY question 503s for everyone - seen on 2026-09-05. GENERATOR_FALLBACK
+    # retries such a question on Anthropic, so a quota-exhausted day costs
+    # pennies and a slower model instead of an outage.
+    #
+    # OFF while this is internal (2026-09-12, user's call). The fallback buys
+    # availability for OTHER people; with one user there is nobody to shield
+    # from a 503, so the right response to a rate limit is to wait for Groq
+    # rather than spend ~26x on Sonnet. A per-minute 429 then waits out the
+    # full retry ladder (~3 min) instead of being capped at 20s, which is what
+    # "wait until it's back" means in practice. A DAILY quota still fails fast,
+    # because that one resets in hours and no request can sit through it.
+    #
+    # TURN IT BACK ON the day colleagues get the link - that is the scenario it
+    # was written for. Uncomment:
+    #   [ -n "$ANTHROPIC_API_KEY" ] && export GENERATOR_FALLBACK=anthropic
     # rewriter stays on Haiku, unchanged by this trial
     export CONTEXTUALIZE_PROVIDER=anthropic
     export ANTHROPIC_CONTEXTUALIZE_MODEL=claude-haiku-4-5

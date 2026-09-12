@@ -570,7 +570,15 @@ def _generate_once(provider: str, model: str, messages: list[dict], on_token=Non
             # arrives long after the user has given up (2026-09-12: a live
             # request timed out at 240s for exactly this reason).
             if re.search(r"per day|\bTPD\b|\bRPD\b|daily", resp.text, re.I):
-                raise RuntimeError(f"{provider} generator daily quota exhausted: {resp.text[:300]}")
+                # Groq puts the reset in the body ("Please try again in 21m32s").
+                # Surfacing it turns a dead end into a time to come back, which
+                # matters now that waiting - not paying for Sonnet - is the
+                # intended response to a rate limit.
+                back = re.search(r"try again in ([0-9hms.]+)", resp.text, re.I)
+                when = f" Back in {back.group(1).rstrip('.')}." if back else ""
+                raise RuntimeError(
+                    f"{provider} generator daily quota exhausted.{when} "
+                    f"Waiting is not possible inside a request; retry later. {resp.text[:200]}")
             raw = resp.headers.get("retry-after")
             try:
                 wait = float(raw) if raw else min(2 ** attempt, 30)
@@ -586,12 +594,15 @@ def _generate_once(provider: str, model: str, messages: list[dict], on_token=Non
             # someone is still waiting for it; a minute-window 429 that has not
             # cleared in ~20s is not going to clear in the next 160 either.
             waited += wait
-            # Capped for a caller that has somewhere better to be: either a
-            # fallback is configured (hand off to it), or the fallback was
-            # explicitly suppressed for this call (report the failure now).
-            # Both beat a three-minute hang. An eval run is neither, and keeps
-            # the full ladder.
-            if (GENERATOR_FALLBACK or _NO_FALLBACK.get()) and waited > _FALLBACK_MAX_RETRY_WAIT:
+            # The cap exists for ONE reason: to hand off to a fallback while
+            # someone is still waiting. So it applies only when this call
+            # actually has a fallback available to hop to. With none configured
+            # - an eval run, or the internal-only setup where the Sonnet hop is
+            # deliberately off - waiting out the full ladder IS the desired
+            # behaviour, because a per-minute window clears in seconds and
+            # there is nothing better to do with the turn.
+            if (GENERATOR_FALLBACK and not _NO_FALLBACK.get()
+                    and waited > _FALLBACK_MAX_RETRY_WAIT):
                 raise RuntimeError(
                     f"{provider} generator rate-limited (429), gave up after "
                     f"{waited:.0f}s: {resp.text[:200]}"
