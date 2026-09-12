@@ -405,3 +405,18 @@
     .set-wrap { padding: 24px 16px calc(48px + env(safe-area-inset-bottom)); gap: 18px; }
     #menu-btn, .nav-actions .btn { min-height: 40px; }
   }
+
+
+/* Blocking name gate. A full-cover veil rather than a dismissible bar: the
+   name decides whose conversation history you see, so it cannot be optional -
+   skipping it used to drop the person into the first user's history. */
+.name-gate { position: fixed; inset: 0; z-index: 999; background: rgba(26,22,32,.55);
+  display: flex; align-items: center; justify-content: center; padding: 20px; }
+.name-gate-card { background: #fff; border-radius: 12px; padding: 26px 28px; max-width: 380px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.25); }
+.name-gate-card h2 { margin: 0 0 7px; font-size: 18px; color: var(--color-brand, #622567); }
+.name-gate-card p { margin: 0 0 16px; font-size: 13.5px; color: var(--color-text-muted, #6b6472); }
+.name-gate-card input { width: 100%; font: inherit; padding: 9px 11px; margin-bottom: 11px;
+  border: 1px solid var(--color-divider, #e5e1e8); border-radius: 7px; }
+.name-gate-card button { width: 100%; font: inherit; font-weight: 600; padding: 10px;
+  border: 0; border-radius: 7px; background: var(--color-brand, #622567); color: #fff; cursor: pointer; }

@@ -14,6 +14,19 @@ DB_PATH = "data/chat.db"
 
 # Conversations that predate the owner column belong to this name.
 OWNER_LEGACY = "Michael"
+# Where a request with NO name lands. It used to be OWNER_LEGACY, which meant a
+# colleague who signed in and skipped the name prompt was dropped straight into
+# Michael's history - able to read, continue and delete 88 existing
+# conversations. Harmless while nobody else could reach the server; the DEFAULT
+# path the moment the shared password is handed out.
+#
+# A shared bucket, not per-person separation: two people who both skip the
+# prompt still share this one. That is acceptable because it is a safety net -
+# the client now blocks on asking for a name, so reaching this should be rare
+# and means an API client rather than a browser. eval/run_eval.py sends no
+# X-User and lands here, which is fine: it creates and reads its own
+# conversations within a run.
+OWNER_UNNAMED = "(unnamed)"
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS conversations (

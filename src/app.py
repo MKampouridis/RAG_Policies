@@ -93,18 +93,64 @@ def login_page():
         '<button type="submit">Continue</button></form>')
 
 
+# Failed sign-ins per client IP. The password is a short human-memorable phrase
+# shared with colleagues, and without this an attacker who can reach the server
+# gets unlimited guesses at it - which is the whole ballgame for a shared
+# secret. Tailscale-only reachability keeps the risk low today; this is what
+# stops that being the ONLY thing standing in the way.
+#
+# In-memory on purpose: the window is minutes, the server restarts rarely, and
+# persisting it would hand an attacker a way to lock the real user out by
+# filling a file. A restart clearing the counters is an acceptable loss.
+_LOGIN_FAILURES: dict = {}
+LOGIN_MAX_FAILURES = 8        # generous: a human mistyping a 2-word phrase
+LOGIN_WINDOW_S = 900          # 15 minutes
+
+
+def _login_blocked(ip: str) -> int:
+    """Seconds to wait, or 0 to allow. Prunes as it reads, so the dict cannot
+    grow without bound from scanning traffic."""
+    now = time.time()
+    tries = [t for t in _LOGIN_FAILURES.get(ip, []) if now - t < LOGIN_WINDOW_S]
+    if tries:
+        _LOGIN_FAILURES[ip] = tries
+    else:
+        _LOGIN_FAILURES.pop(ip, None)
+    if len(tries) >= LOGIN_MAX_FAILURES:
+        return int(LOGIN_WINDOW_S - (now - tries[0])) + 1
+    return 0
+
+
+def _login_failed(ip: str) -> None:
+    _LOGIN_FAILURES.setdefault(ip, []).append(time.time())
+
+
 @app.post("/login")
 async def login_submit(request: Request):
     # Parsed by hand rather than with request.form(), which needs
     # python-multipart - a dependency this project does not have and does not
     # need for one field. A urlencoded body is two lines to parse.
+    ip = (request.client.host if request.client else "?") or "?"
+    wait = _login_blocked(ip)
+    if wait:
+        # 429 BEFORE comparing, so a blocked client learns nothing about the
+        # password from timing or response shape.
+        return HTMLResponse(
+            '<!doctype html><meta charset="utf-8"><title>Too many attempts</title>'
+            '<body style="font:16px/1.5 -apple-system,sans-serif;background:#faf9fb;'
+            'display:flex;align-items:center;justify-content:center;height:100vh;margin:0">'
+            f'<p style="max-width:340px">Too many failed sign-ins. Try again in '
+            f'{max(1, wait // 60)} minute(s).</p>', status_code=429)
+
     raw = (await request.body()).decode("utf-8", "replace")
     submitted = parse_qs(raw).get("password", [""])[0]
     if hmac.compare_digest(submitted, ACCESS_PASSWORD):
+        _LOGIN_FAILURES.pop(ip, None)   # a success clears the client's record
         r = RedirectResponse("/", status_code=302)
         # session cookie: no expiry, so it dies with the browser
         r.set_cookie("rag_access", _access_token(), httponly=True, samesite="lax")
         return r
+    _login_failed(ip)
     return RedirectResponse("/login", status_code=302)
 
 
@@ -289,11 +335,16 @@ def _friendly_error(exc: Exception) -> str:
 
 def _owner(x_user: str | None) -> str:
     """Who is asking. A name the browser sends, not a credential - see the
-    OWNER note in src/memory.py. Blank falls back to the legacy owner so a
-    client that never set one still sees a coherent history rather than an
-    empty app."""
+    OWNER note in src/memory.py.
+
+    Blank lands in OWNER_UNNAMED, NOT the legacy owner. It used to be the
+    latter, which put anyone who signed in and skipped the name prompt straight
+    into the first user's conversation history with full read and delete
+    access - invisible while the server was single-user, and the default path
+    the moment a shared password was handed out.
+    """
     name = (x_user or "").strip()[:60]
-    return name or memory.OWNER_LEGACY
+    return name or memory.OWNER_UNNAMED
 
 
 @app.get("/")

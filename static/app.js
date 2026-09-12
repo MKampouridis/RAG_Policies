@@ -1268,23 +1268,38 @@ loadConversations();
    trial user who skips it still gets a working assistant, just a shared
    history - which is the pre-existing behaviour, not a regression. */
 (function askName() {
+  // BLOCKING, deliberately. This was a dismissible bar, and a browser that
+  // skipped it sent no X-User at all - which used to land the person in the
+  // first user's conversation history with full read and delete access. The
+  // server-side fallback now routes them to a shared "(unnamed)" bucket
+  // instead, but the right fix is that a browser never gets that far: a name
+  // is what separates one person's history from another's, so it is asked for
+  // before anything can be typed.
+  //
+  // Still NOT a login, and the copy says so - a box demanding a name invites
+  // the assumption that something is being verified, and nothing is.
   if (currentUser) return;
-  const bar = document.createElement('div');
-  bar.className = 'name-bar';
-  bar.innerHTML = `
-    <span>Your name, so your conversations stay separate from other people's:</span>
-    <input id="name-input" placeholder="e.g. Michael" maxlength="60" autocomplete="off">
-    <button id="name-save">Save</button>
-    <span class="name-note">Not a login \u2014 it only separates histories.</span>`;
-  document.body.insertBefore(bar, document.body.firstChild);
-  const inp = bar.querySelector('#name-input');
-  const go = () => {
+  const veil = document.createElement('div');
+  veil.className = 'name-gate';
+  veil.innerHTML = `
+    <form class="name-gate-card">
+      <h2>Who's using this browser?</h2>
+      <p>Your name keeps your conversations separate from other people's.
+         It is <b>not a login</b> — nothing is checked, and anyone can type anything.</p>
+      <input id="name-input" placeholder="e.g. Michael" maxlength="60" autocomplete="off">
+      <button id="name-save" type="submit">Continue</button>
+    </form>`;
+  document.body.appendChild(veil);
+  const inp = veil.querySelector('#name-input');
+  const form = veil.querySelector('form');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
     const v = (inp.value || '').trim();
-    if (!v) return;
-    currentUser = v; saveUser(v); bar.remove();
+    if (!v) { inp.focus(); return; }
+    currentUser = v;
+    saveUser(v);
+    veil.remove();
     if (typeof loadConversations === 'function') loadConversations();
-  };
-  bar.querySelector('#name-save').onclick = go;
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+  });
   inp.focus();
 })();

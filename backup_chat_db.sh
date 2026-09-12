@@ -17,4 +17,21 @@ STAMP=$(date '+%Y%m%d-%H%M')
 sqlite3 data/chat.db ".backup '$DIR/chat-$STAMP.db'"
 # keep 14 nightlies; history is small (~4MB) but not worth unbounded growth
 ls -1t "$DIR"/chat-*.db 2>/dev/null | tail -n +15 | xargs -I{} rm -f {} 2>/dev/null || true
-echo "$(date '+%F %T') backed up -> $DIR/chat-$STAMP.db ($(ls -1 "$DIR"/chat-*.db | wc -l | tr -d ' ') kept)"
+
+# The JSONL side-stores, which this job skipped entirely. feedback.jsonl holds
+# the ratings and - more to the point - the written comments, which are the
+# least reproducible data in the project: a lost answer can be regenerated from
+# the corpus, a colleague's explanation of WHY an answer was wrong cannot.
+# events.jsonl and alert_history.jsonl are cheaper to lose but cost nothing to
+# carry. One tarball per run keeps the restore story simple: untar, and the
+# files are back where they were.
+SIDE=()
+for f in data/feedback.jsonl data/events.jsonl data/alert_history.jsonl; do
+  [ -f "$f" ] && SIDE+=("$f")
+done
+if [ ${#SIDE[@]} -gt 0 ]; then
+  tar -czf "$DIR/side-$STAMP.tgz" "${SIDE[@]}"
+  ls -1t "$DIR"/side-*.tgz 2>/dev/null | tail -n +15 | xargs -I{} rm -f {} 2>/dev/null || true
+fi
+
+echo "$(date '+%F %T') backed up -> $DIR/chat-$STAMP.db${SIDE:+ + side-$STAMP.tgz} ($(ls -1 "$DIR"/chat-*.db | wc -l | tr -d ' ') kept)"
