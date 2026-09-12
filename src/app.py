@@ -18,6 +18,7 @@ from pydantic import BaseModel
 
 from src import feedback as feedback_store
 from src import ingest
+from src import llm
 from src import memory
 from src.rag import answer as rag_answer
 from src.rag import GENERATED_TITLES, generate_title
@@ -360,9 +361,17 @@ def provenance() -> dict:
     return {
         "corpus_version": corpus,
         "code_revision": _GIT_REV,
-        "generator": os.environ.get("GENERATOR_MODEL")
-                     or ("claude-sonnet-5" if os.environ.get("GENERATOR_PROVIDER") == "anthropic"
-                         else "gemma3:12b"),
+        # What ACTUALLY produced the answer, not what was configured to. A
+        # fallback hop (see llm.GENERATOR_FALLBACK) would otherwise be recorded
+        # under the primary's name, making the stored provenance and the
+        # feedback dashboard's per-generator panel quietly wrong - which defeats
+        # the one question provenance exists to answer.
+        "generator": (llm.LAST_GENERATOR.get("model")
+                      or os.environ.get("GENERATOR_MODEL")
+                      or ("claude-sonnet-5" if os.environ.get("GENERATOR_PROVIDER") == "anthropic"
+                          else "gemma3:12b")),
+        **({"fell_back_from": llm.LAST_GENERATOR["fell_back_from"]}
+           if llm.LAST_GENERATOR.get("fell_back_from") else {}),
         "contextualizer": os.environ.get("ANTHROPIC_CONTEXTUALIZE_MODEL")
                           if os.environ.get("CONTEXTUALIZE_PROVIDER") == "anthropic"
                           else "qwen2.5:7b-instruct",

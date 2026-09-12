@@ -60,6 +60,13 @@ if [ -z "$RAG_LOCAL_ONLY" ]; then
     # Without this, gpt-oss spends most of a small token budget on an invisible
     # reasoning field before any visible answer (48 of 50 tokens, measured).
     export GENERATOR_REASONING_EFFORT=low
+    # Groq's free tier is ~200k tokens/day (~75 questions) and when it runs out
+    # EVERY question 503s for everyone - seen on 2026-09-05. Fall back to
+    # Anthropic, which is paid and uncapped: a quota-exhausted day then costs
+    # pennies and a slower model instead of an outage. Falls back only if the
+    # key is present; provenance records which model actually answered, so the
+    # feedback dashboard does not silently attribute Sonnet's answers to Groq.
+    [ -n "$ANTHROPIC_API_KEY" ] && export GENERATOR_FALLBACK=anthropic
     # rewriter stays on Haiku, unchanged by this trial
     export CONTEXTUALIZE_PROVIDER=anthropic
     export ANTHROPIC_CONTEXTUALIZE_MODEL=claude-haiku-4-5

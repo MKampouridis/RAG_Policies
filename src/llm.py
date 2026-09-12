@@ -3,6 +3,7 @@ constants below — nothing else in the codebase needs to change."""
 
 import json
 import os
+import re
 import sys
 import time
 
@@ -428,7 +429,58 @@ def contextualize_chat(messages: list[dict], model: str | None = None) -> str:
     return chat(messages=messages, model=model or CONTEXTUALIZE_MODEL)
 
 
+# Fallback generator (2026-09-12). The free Groq tier is ~200k tokens/day,
+# about 75 questions, and when it runs out EVERY question 503s for EVERYONE -
+# observed. That is the likeliest way this breaks the day colleagues start
+# using it, so a generator failure now degrades the service instead of ending
+# it. Set to a provider name ("anthropic") or "local"; unset disables it and
+# behaviour is exactly as before.
+#
+# One hop only, and never to the provider that just failed.
+GENERATOR_FALLBACK = os.environ.get("GENERATOR_FALLBACK", "").strip().lower()
+
+# What actually produced the last answer, as opposed to what was configured to.
+# provenance() reports this: without it a fallback answer would be labelled
+# with the primary model's name, which would quietly corrupt the feedback
+# dashboard's per-generator panel and every stored provenance record - the
+# exact "the rule was updated vs the tool was wrong" question provenance
+# exists to answer.
+LAST_GENERATOR: dict = {}
+
+# Seconds of 429 back-off a cloud generator may spend before giving up so the
+# fallback can answer. Only applies when GENERATOR_FALLBACK is set - with no
+# fallback configured, waiting out the ladder is still better than failing.
+_FALLBACK_MAX_RETRY_WAIT = 20.0
+
+
+def _record_generator(provider: str, model: str, fell_back_from: str | None = None) -> None:
+    LAST_GENERATOR.clear()
+    LAST_GENERATOR.update({"provider": provider or "local", "model": model,
+                           "fell_back_from": fell_back_from})
+
+
 def generate(messages: list[dict], on_token=None) -> str:
+    """Answer-generation call, with one fallback hop on failure.
+
+    See _generate_once for the routing. If the configured generator raises
+    (rate limit, quota, network, provider error) and GENERATOR_FALLBACK names a
+    different one, the question is retried there rather than lost."""
+    try:
+        return _generate_once(GENERATOR_PROVIDER, GENERATOR_MODEL, messages, on_token)
+    except Exception as exc:
+        target = GENERATOR_FALLBACK
+        if not target or target == (GENERATOR_PROVIDER or "local"):
+            raise
+        print(f"[generate] {GENERATOR_PROVIDER or 'local'} failed ({type(exc).__name__}), "
+              f"falling back to {target}", flush=True)
+        # the fallback uses ITS provider's default model, not the primary's -
+        # a Groq model name means nothing to Anthropic
+        text = _generate_once("" if target == "local" else target, "", messages, on_token)
+        LAST_GENERATOR["fell_back_from"] = GENERATOR_PROVIDER or "local"
+        return text
+
+
+def _generate_once(provider: str, model: str, messages: list[dict], on_token=None) -> str:
     """Answer-generation call. Routes to a cloud generator when
     GENERATOR_PROVIDER is set (else the local CHAT_MODEL via chat()). Kept
     separate from chat() so ONLY answer generation moves to the cloud while the
@@ -438,28 +490,37 @@ def generate(messages: list[dict], on_token=None) -> str:
     Anthropic path. Other providers ignore it and return the whole answer at
     once - callers must not assume streaming happened, only that the return
     value is complete either way."""
-    if GENERATOR_PROVIDER == "anthropic":
-        return _anthropic_generate(messages, on_token=on_token)
-    if not GENERATOR_PROVIDER:
+    if provider == "anthropic":
+        # model passed EXPLICITLY: _anthropic_generate falls back to the module
+        # GENERATOR_MODEL otherwise, which on a Groq->Anthropic hop would be a
+        # Groq model name and a guaranteed 404.
+        text = _anthropic_generate(messages, model=model or ANTHROPIC_DEFAULT_MODEL,
+                                   on_token=on_token)
+        _record_generator("anthropic", model or ANTHROPIC_DEFAULT_MODEL)
+        return text
+    if not provider:
         # local generation: the 14B production generator (LOCAL_GENERATOR_MODEL),
         # or a GENERATOR_MODEL override. CHAT_MODEL (7B) is untouched so the
         # misc local calls that use it (summary, relevance) stay on the 7B.
-        return chat(messages=messages, model=GENERATOR_MODEL or LOCAL_GENERATOR_MODEL)
-    if GENERATOR_PROVIDER not in _CLOUD_GENERATORS:
+        local = model or LOCAL_GENERATOR_MODEL
+        text = chat(messages=messages, model=local)
+        _record_generator("local", local)
+        return text
+    if provider not in _CLOUD_GENERATORS:
         raise ValueError(
-            f"unknown GENERATOR_PROVIDER {GENERATOR_PROVIDER!r}; "
+            f"unknown GENERATOR_PROVIDER {provider!r}; "
             f"known: {sorted(list(_CLOUD_GENERATORS) + ['anthropic'])}"
         )
-    url, key_env, default_model = _CLOUD_GENERATORS[GENERATOR_PROVIDER]
+    url, key_env, default_model = _CLOUD_GENERATORS[provider]
     api_key = os.environ.get(key_env)
     if not api_key:
-        raise RuntimeError(f"GENERATOR_PROVIDER={GENERATOR_PROVIDER!r} set but {key_env} is empty")
+        raise RuntimeError(f"GENERATOR_PROVIDER={provider!r} set but {key_env} is empty")
     payload = {
-        "model": GENERATOR_MODEL or default_model,
+        "model": model or default_model,
         "messages": messages,
         "temperature": 0 if DETERMINISTIC else 0.7,
     }
-    if DETERMINISTIC and GENERATOR_PROVIDER in _SEED_SUPPORTED:
+    if DETERMINISTIC and provider in _SEED_SUPPORTED:
         payload["seed"] = 42
     if GENERATOR_REASONING_EFFORT:
         payload["reasoning_effort"] = GENERATOR_REASONING_EFFORT
@@ -470,26 +531,51 @@ def generate(messages: list[dict], on_token=None) -> str:
     # bubble up - otherwise the eval's turn-level retry immediately re-sends the
     # same big prompt and spikes further over the limit, cascading. TPM windows
     # reset each minute, so a short wait clears it.
+    waited = 0.0
     for attempt in range(10):
         resp = requests.post(url, headers=headers, json=payload, timeout=120)
         if resp.status_code == 429:
+            # A DAILY quota does not clear by waiting: Groq says which limit was
+            # hit ("... on tokens per day (TPD): Limit 200000, Used 197366"), and
+            # burning the full retry ladder on it costs ~5 minutes before the
+            # caller learns anything. That matters now there is a fallback -
+            # spending five minutes on a hopeless retry means the fallback
+            # arrives long after the user has given up (2026-09-12: a live
+            # request timed out at 240s for exactly this reason).
+            if re.search(r"per day|\bTPD\b|\bRPD\b|daily", resp.text, re.I):
+                raise RuntimeError(f"{provider} generator daily quota exhausted: {resp.text[:300]}")
             raw = resp.headers.get("retry-after")
             try:
                 wait = float(raw) if raw else min(2 ** attempt, 30)
             except ValueError:
                 wait = min(2 ** attempt, 30)  # Retry-After can be an HTTP-date, not seconds
-            time.sleep(min(wait + 0.5, 30))
+            wait = min(wait + 0.5, 30)
+            # The full ladder is ~3 minutes of waiting (measured: 10 attempts,
+            # 184s). That is the right behaviour for an EVAL run, which has
+            # nowhere else to go and would rather wait than lose the turn. It is
+            # the wrong behaviour for a live request when a fallback exists: the
+            # user is sitting in front of an empty answer box while a hopeless
+            # ladder runs. Cap the total wait so the fallback gets its turn while
+            # someone is still waiting for it; a minute-window 429 that has not
+            # cleared in ~20s is not going to clear in the next 160 either.
+            waited += wait
+            if GENERATOR_FALLBACK and waited > _FALLBACK_MAX_RETRY_WAIT:
+                raise RuntimeError(
+                    f"{provider} generator rate-limited (429), gave up after "
+                    f"{waited:.0f}s to let the fallback answer: {resp.text[:200]}"
+                )
+            time.sleep(wait)
             continue
         if not resp.ok:
             # surface the provider's error body (rate/quota/model messages) instead
             # of a bare status - the daily-token-limit diagnosis came from this body
-            raise RuntimeError(f"{GENERATOR_PROVIDER} generator HTTP {resp.status_code}: {resp.text[:500]}")
+            raise RuntimeError(f"{provider} generator HTTP {resp.status_code}: {resp.text[:500]}")
         body = resp.json()
         choice = body["choices"][0]
         u = body.get("usage") or {}
         LAST_USAGE.clear()
         LAST_USAGE.update({
-            "provider": GENERATOR_PROVIDER,
+            "provider": provider,
             "model": payload["model"],
             "input_tokens": u.get("prompt_tokens"),
             "output_tokens": u.get("completion_tokens"),
@@ -498,8 +584,9 @@ def generate(messages: list[dict], on_token=None) -> str:
             "reasoning_tokens": (u.get("completion_tokens_details") or {}).get("reasoning_tokens"),
             "stop_reason": choice.get("finish_reason"),
         })
+        _record_generator(provider, payload["model"])
         return choice["message"]["content"]
-    raise RuntimeError(f"{GENERATOR_PROVIDER} generator rate-limited (429) after retries")
+    raise RuntimeError(f"{provider} generator rate-limited (429) after retries")
 
 
 def embed(text: str, model: str = EMBED_MODEL) -> list[float]:
