@@ -462,3 +462,15 @@ def failure_breakdown() -> list[dict]:
             "FROM messages WHERE status IS NOT NULL GROUP BY reason, day ORDER BY day"
         ).fetchall()
     return [dict(r) for r in rows]
+
+
+def recent_failure_count(hours: float = 1.0) -> int:
+    """Failed turns in the last `hours`. Separate from failure_breakdown()'s
+    per-day rollup: a burst inside one hour is the alertable event, while eight
+    spread across a day is a bad day somebody already knows about."""
+    cutoff = time.time() - hours * 3600
+    with _connect() as conn:
+        row = conn.execute(
+            "SELECT COUNT(*) AS n FROM messages WHERE status IS NOT NULL AND created_at >= ?",
+            (cutoff,)).fetchone()
+    return row["n"] if row else 0

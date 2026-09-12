@@ -394,6 +394,25 @@ def api_insights(limit: int = 5000):
             "events": telemetry.load_events()}
 
 
+@app.get("/api/alerts")
+def api_alerts():
+    """Current monitor state, written by run_monitor.py.
+
+    Includes when the monitor last RAN, not only what it found. A monitoring
+    system that has quietly died is indistinguishable from one reporting
+    all-clear, and that is the failure mode most worth designing against - so
+    the page can say "the monitor has not checked in for N hours" rather than
+    showing a reassuring green panel produced by nobody.
+    """
+    path = Path("data/alerts.json")
+    if not path.is_file():
+        return {"alerts": [], "generated_at": None, "never_run": True}
+    try:
+        return json.loads(path.read_text())
+    except Exception:  # noqa: BLE001
+        return {"alerts": [], "generated_at": None, "unreadable": True}
+
+
 @app.get("/api/health/stats")
 def api_health_stats():
     """Latency, spend and failures for /health.

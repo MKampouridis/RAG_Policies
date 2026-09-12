@@ -153,14 +153,53 @@ function panelModelMix(d) {
               : '<div class="lever">&rarr; no fallbacks used</div>'));
 }
 
-fetchJSON('/api/health/stats').then(d => {
+/* Live monitor status. Deliberately the FIRST panel: everything else on this
+   page is history, and this is the only part that says whether anything is
+   wrong right now. */
+function panelAlerts(m) {
+  if (!m) return '';
+  const SEV = {critical: 'var(--bad)', high: 'var(--bad)', medium: 'var(--warn)', low: 'var(--muted)'};
+  if (m.never_run) {
+    return panel('Live monitor', 'Not running yet.',
+      `<div class="note">The monitor has never run. Load the launchd job, or run
+       <code>python run_monitor.py</code>.</div>`, {wide: true});
+  }
+  const age = m.generated_at ? (Date.now() - Date.parse(m.generated_at)) / 3600000 : null;
+  /* A stale heartbeat is itself an alert. The threshold is generous against the
+     hourly schedule so a single missed run is not treated as a dead monitor. */
+  const stale = age == null || age > 3;
+  const alerts = m.alerts || [];
+  const head = stale
+    ? `<div class="note"><b>The monitor has not checked in${age != null ? ' for ' + age.toFixed(1) + ' hours' : ''}.</b>
+        Everything below may be out of date — a silent monitor looks exactly like a healthy one.</div>`
+    : '';
+  const body = alerts.length
+    ? alerts.map(a => `<div class="row" style="grid-template-columns:auto 1fr">
+        <span class="lbl" style="color:${SEV[a.severity] || 'inherit'};font-weight:700">
+          ${esc(a.severity.toUpperCase())}</span>
+        <span><b>${esc(a.title)}</b><br><span class="n">${esc(a.detail)}</span></span></div>`).join('')
+    : `<div class="row"><span class="lbl" style="color:var(--good);font-weight:700">ALL CLEAR</span>
+        <span class="n">No detector fired.</span></div>`;
+  const c = m.context || {};
+  const probe = c.probe
+    ? `live probe ${c.probe.ok ? 'ok' : 'FAILED'}${c.probe.seconds ? ' · ' + c.probe.seconds + 's' : ''}`
+    : 'no live probe this run';
+  return panel('Live monitor',
+    `Checked ${esc(when(m.generated_at))} · window ${esc(m.window_hours)}h · ${esc(probe)}.
+     Thresholds are derived from this system’s own history and backtested — see
+     <code>eval/monitor_backtest.py</code>.`,
+    head + body, {wide: true});
+}
+
+Promise.all([fetchJSON('/api/health/stats'),
+             fetchJSON('/api/alerts').catch(() => null)]).then(([d, mon]) => {
   const withUsage = d.answers.filter(a => a.has_usage);
   document.getElementById('stats').innerHTML =
     `<span><b>${num(d.stages.length)}</b> stage timings</span>` +
     `<span><b>${num(d.answers.length)}</b> answers</span>` +
     `<span><b>${num(withUsage.length)}</b> with token data</span>` +
     `<span><b>${money(withUsage.reduce((n, a) => n + (a.cost_usd || 0), 0))}</b> recorded spend</span>`;
-  const panels = [panelKPIs(d), panelHeadroom(d), panelLatency(d), panelTurnShape(d),
+  const panels = [panelAlerts(mon), panelKPIs(d), panelHeadroom(d), panelLatency(d), panelTurnShape(d),
                   panelTTFT(d), panelSpendOverTime(d), panelFailures(d), panelModelMix(d)]
                  .filter(Boolean);
   document.getElementById('dash').innerHTML =
