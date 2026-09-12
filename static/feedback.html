@@ -43,6 +43,36 @@ details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
   padding:10px 12px;font-size:13.5px;margin-top:7px;max-height:300px;overflow:auto}
 .srcs{font-size:12px;color:var(--muted);margin-top:7px;word-break:break-all}
 .empty{color:var(--muted);text-align:center;padding:40px}
+/* comments feed */
+.quote{border-left:3px solid #e0c200;background:#fffbe6;border-radius:6px;padding:9px 12px;margin-bottom:9px}
+.quote .said{font-size:13.5px;margin:0 0 4px}
+.quote .on{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.quote .on b{color:#1a1620;font-weight:600}
+/* filters */
+.filters select,.filters input{font:inherit;font-size:13px;padding:5px 9px;border:1px solid var(--line);
+  border-radius:7px;background:#fff}
+.filters .count{font-size:12.5px;color:var(--muted);align-self:center;margin-left:auto}
+/* replay */
+.actions{margin-top:9px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.actions button{font:inherit;font-size:12.5px;padding:5px 12px;border:1px solid var(--v);background:#fff;
+  color:var(--v);border-radius:7px;cursor:pointer}
+.actions button:hover:not(:disabled){background:var(--v);color:#fff}
+.actions button:disabled{opacity:.5;cursor:default}
+.actions .hint{font-size:11.5px;color:var(--muted)}
+.replay{margin-top:10px;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.replay .head{padding:7px 12px;font-size:12.5px;font-weight:600;background:#f1edf4;color:var(--v)}
+.replay .head.better{background:#e7f3e8;color:#1b5e20}
+.replay .head.same{background:#fdeaea;color:#8c1d18}
+.replay .body{padding:11px 12px}
+.replay .cols{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+@media(max-width:640px){.replay .cols{grid-template-columns:1fr}}
+.replay h4{margin:0 0 5px;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted)}
+.replay .txt{white-space:pre-wrap;font-size:13px;background:#fbfbfc;border:1px solid var(--line);
+  border-radius:6px;padding:9px 10px;max-height:260px;overflow:auto}
+.delta{font-size:12.5px;margin-top:9px}
+.delta .gain{color:#1b5e20}.delta .lost{color:#8c1d18}
+.warn{background:#fff4e5;border-left:3px solid #e08600;border-radius:6px;padding:7px 10px;
+  font-size:12.5px;margin-top:8px}
 </style>
 <header>
   <h1>Feedback</h1>
@@ -54,18 +84,49 @@ details{margin-top:9px}summary{cursor:pointer;font-size:13px;color:var(--v)}
     <button data-f="down" class="on">Thumbs down</button>
     <button data-f="up">Thumbs up</button>
     <button data-f="all">All</button>
+    <button data-f="comment">With a comment</button>
+    <select id="fTag"><option value="">Any tag</option></select>
+    <select id="fGen"><option value="">Any generator</option></select>
+    <select id="fAge">
+      <option value="">Any date</option>
+      <option value="7">Last 7 days</option>
+      <option value="30">Last 30 days</option>
+      <option value="90">Last 90 days</option>
+    </select>
+    <span class="count" id="shownCount"></span>
   </div>
   <div id="list"><div class="empty">loading…</div></div>
 </main>
 <script>
 let rows = [], filter = 'down';
+const sel = {tag:'', gen:'', age:''};
+// Replay results, keyed by row index, so re-rendering after a filter change
+// does not throw away a replay the user just paid a generation for.
+const replays = {};
 function esc(s){const d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
 function when(ts){ if(!ts) return ''; try{ return new Date(ts).toLocaleString(); }catch(e){ return ts; } }
+function fileOf(u){ return String(u||'').replace(/\/$/,'').split('/').pop(); }
+
+function matches(r){
+  if(filter==='down' && r.rating!=='down') return false;
+  if(filter==='up' && r.rating!=='up') return false;
+  if(filter==='comment' && !(r.comment||'').trim()) return false;
+  if(sel.tag && !(r.tags||[]).includes(sel.tag)) return false;
+  if(sel.gen && ((r.provenance||{}).generator||'(not recorded)')!==sel.gen) return false;
+  if(sel.age){
+    const t = Date.parse(r.timestamp);
+    if(isNaN(t) || t < Date.now() - sel.age*864e5) return false;
+  }
+  return true;
+}
+
 function render(){
-  const shown = filter==='all' ? rows : rows.filter(r => r.rating===filter);
   const el = document.getElementById('list');
-  if(!shown.length){ el.innerHTML='<div class="empty">Nothing here yet.</div>'; return; }
-  el.innerHTML = shown.map(r => `
+  const shown = rows.map((r,i)=>[r,i]).filter(([r])=>matches(r));
+  document.getElementById('shownCount').textContent =
+    `${shown.length} of ${rows.length} shown`;
+  if(!shown.length){ el.innerHTML='<div class="empty">Nothing matches these filters.</div>'; return; }
+  el.innerHTML = shown.map(([r,i]) => `
     <div class="item ${esc(r.rating)}">
       <div class="meta">
         <span class="who">${esc(r.owner || 'unknown')}</span>
@@ -80,9 +141,77 @@ function render(){
       <details><summary>Answer and sources</summary>
         <div class="a">${esc(r.answer)}</div>
         ${r.retrieval_query && r.retrieval_query!==r.question ? `<div class="srcs"><b>Searched for:</b> ${esc(r.retrieval_query)}</div>`:''}
-        <div class="srcs"><b>Sources:</b> ${(r.sources||[]).map(s=>esc(s.split('/').pop())).join(', ')||'none'}</div>
+        <div class="srcs"><b>Sources:</b> ${(r.sources||[]).map(s=>
+          `<a href="${esc(s)}" target="_blank" rel="noopener">${esc(fileOf(s))}</a>`).join(', ')||'none'}</div>
+        ${(r.ranked_top_urls&&r.ranked_top_urls.length) ? `<div class="srcs"><b>Top retrieved:</b> ${
+          r.ranked_top_urls.map(u=>esc(fileOf(u))).join(', ')}</div>`:''}
       </details>
+      <div class="actions">
+        <button data-replay="${i}">Replay against today's index</button>
+        <span class="hint">re-asks the question now &middot; costs one generation</span>
+      </div>
+      ${replays[i] ? replayHTML(replays[i], r) : ''}
     </div>`).join('');
+  el.querySelectorAll('[data-replay]').forEach(b=>{ b.onclick = ()=>doReplay(+b.dataset.replay, b); });
+}
+
+// ---- replay -------------------------------------------------------------
+// A follow-up turn ("anything on the actual process of making the switch?")
+// means nothing on its own, so replaying it standalone answers a DIFFERENT
+// question from the one that was rated and any verdict from it is worthless.
+// retrieval_query differing from question is the tell that the contextualizer
+// ran, i.e. that this was a follow-up - and the rewrite it produced IS the
+// resolved standalone form, so that is what gets replayed instead.
+function replayTarget(r){
+  const rq = (r.retrieval_query||'').trim();
+  return (rq && rq !== (r.question||'').trim()) ? rq : (r.question||'').trim();
+}
+async function doReplay(i, btn){
+  const r = rows[i];
+  btn.disabled = true; btn.textContent = 'Asking…';
+  try{
+    const res = await fetch('/api/feedback/replay', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({question: replayTarget(r),
+                            previous_answer: r.answer || '',
+                            previous_sources: r.sources || []})});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    replays[i] = await res.json();
+  }catch(e){
+    replays[i] = {error: String(e)};
+  }
+  render();
+}
+function replayHTML(res, r){
+  if(res.error) return `<div class="replay"><div class="head same">Replay failed</div>
+    <div class="body"><div class="txt">${esc(res.error)}</div></div></div>`;
+  const gained = res.sources_gained||[], lost = res.sources_lost||[];
+  // Deliberately NOT a verdict of "fixed": only the person who wrote the
+  // complaint can say whether the new answer answers it. The heading reports
+  // what measurably changed and leaves the judgement to the reader.
+  const changed = gained.length || lost.length || !res.answer_identical;
+  const cls = changed ? 'better' : 'same';
+  const head = changed
+    ? `Answer has changed since this was rated — read both and decide`
+    : `Unchanged: same sources, same answer. Still broken.`;
+  const rewritten = replayTarget(r) !== (r.question||'').trim();
+  return `<div class="replay">
+    <div class="head ${cls}">${head}</div>
+    <div class="body">
+      ${rewritten ? `<div class="warn">This was a follow-up, so the raw question
+        (&ldquo;${esc(r.question)}&rdquo;) means nothing on its own. Replayed the
+        contextualizer's resolved form instead: <b>${esc(replayTarget(r))}</b></div>` : ''}
+      <div class="cols">
+        <div><h4>Then &middot; ${esc(when(r.timestamp))}</h4><div class="txt">${esc(r.answer)}</div></div>
+        <div><h4>Now &middot; ${esc(res.seconds)}s &middot; ${esc((res.provenance||{}).generator||'')}</h4>
+             <div class="txt">${esc(res.answer)}</div></div>
+      </div>
+      <div class="delta">
+        ${gained.length?`<div class="gain">+ now cites: ${gained.map(esc).join(', ')}</div>`:''}
+        ${lost.length?`<div class="lost">− no longer cites: ${lost.map(esc).join(', ')}</div>`:''}
+        ${(!gained.length&&!lost.length)?`<div>Same documents cited.</div>`:''}
+      </div>
+    </div></div>`;
 }
 // ---- dashboard ---------------------------------------------------------
 // Diagnostic first: every panel answers "where do I act next", and the
@@ -120,6 +249,26 @@ function panelTrend(){
   }).join('');
   return `<div class="panel wide"><h2>Satisfaction over time</h2>
     <p class="why">Weekly. The panel that most rewards volume - a change that helps should show up here.</p>
+    ${body}</div>`;
+}
+// The written comments are the densest signal in the log - "you gave a
+// document from a partner institution (Kaplan)" names a mechanism, where a
+// tag of `other` names nothing. They were only visible one-per-row below the
+// dashboard and behind the down filter, so a reader had to already be
+// scrolling to find them. Newest first, capped, with a click through to the
+// full row.
+function panelComments(){
+  const withC = rows.filter(r=>(r.comment||'').trim());
+  if(!withC.length) return '';
+  const body = withC.slice(0,8).map(r=>`
+    <div class="quote">
+      <p class="said">${r.rating==='down'?'▼':'▲'} &ldquo;${esc(r.comment)}&rdquo;</p>
+      <div class="on">on <b>${esc(r.question)}</b></div>
+    </div>`).join('');
+  return `<div class="panel wide"><h2>What people wrote</h2>
+    <p class="why">Free text says what the tags cannot. ${withC.length} of ${rows.length}
+      ratings carry a comment${withC.length>8?`; the 8 most recent are shown`:''} -
+      use the &ldquo;With a comment&rdquo; filter below for all of them.</p>
     ${body}</div>`;
 }
 function panelTags(){
@@ -172,11 +321,17 @@ function panelProvenance(){
   const gen = by(r=>(r.provenance||{}).generator, 'By generator');
   const cor = by(r=>((r.provenance||{}).corpus_version||'').slice(0,7), 'By corpus version');
   const missing = rows.filter(r=>!(r.provenance||{}).generator).length;
+  const have = rows.length - missing;
   if(!gen && !cor) return '';
+  // The denominator goes in the subtitle, not a footnote: provenance was added
+  // after most of this log was collected, so this panel can be drawing three
+  // points while looking exactly like the ones drawn on all 38.
   return `<div class="panel"><h2>By model and corpus</h2>
-    <p class="why">Whether a model or corpus change moved real user reactions, not just eval scores.</p>
+    <p class="why">Whether a model or corpus change moved real user reactions, not just eval
+      scores. <b>Based on ${have} of ${rows.length} ratings</b> — the rest predate provenance
+      recording${have < 10 ? ', so this is too thin to read yet' : ''}.</p>
     <table class="prov">${gen}${cor}</table>
-    ${missing?`<div class="sparse">${missing} of ${rows.length} ratings predate provenance recording and are excluded here.</div>`:''}</div>`;
+    ${missing?`<div class="sparse">${missing} ratings excluded: no provenance recorded.</div>`:''}</div>`;
 }
 // How the answer opens is the reliable signal. Mid-answer hedging ("I don't
 // have COMPLETE rules for...", "based on what I can see...") appears in plenty
@@ -238,7 +393,7 @@ function panelCoverage(ctx){
 }
 
 function renderDash(ctx){
-  const panels = [panelTrend(), panelTags(), panelDocs(), panelAbstain(),
+  const panels = [panelComments(), panelTrend(), panelTags(), panelDocs(), panelAbstain(),
                   panelCoverage(ctx), panelProvenance()].filter(Boolean);
   document.getElementById('dash').innerHTML = panels.length
     ? `<div class="panels">${panels.join('')}</div>` : '';
@@ -249,6 +404,18 @@ document.querySelectorAll('.filters button').forEach(b=>{
     document.querySelectorAll('.filters button').forEach(x=>x.classList.toggle('on',x===b));
     render(); };
 });
+document.getElementById('fTag').onchange = e=>{ sel.tag = e.target.value; render(); };
+document.getElementById('fGen').onchange = e=>{ sel.gen = e.target.value; render(); };
+document.getElementById('fAge').onchange = e=>{ sel.age = e.target.value ? +e.target.value : ''; render(); };
+// Options come from the data, so a tag or model that only appears once is
+// still reachable and a vocabulary change needs no edit here.
+function fillFilters(){
+  const tags = [...new Set(rows.flatMap(r=>r.tags||[]))].sort();
+  const gens = [...new Set(rows.map(r=>(r.provenance||{}).generator||'(not recorded)'))].sort();
+  const opt = (v)=>`<option value="${esc(v)}">${esc(v)}</option>`;
+  document.getElementById('fTag').innerHTML = '<option value="">Any tag</option>' + tags.map(opt).join('');
+  document.getElementById('fGen').innerHTML = '<option value="">Any generator</option>' + gens.map(opt).join('');
+}
 // limit raised from the endpoint's default of 200: the dashboard aggregates
 // every rating it is given, so silently truncating would make the percentages
 // wrong - and wrong quietly - once colleagues push the volume past 200.
@@ -265,6 +432,7 @@ fetch('/api/feedback?limit=100000').then(r=>r.json()).then(d=>{
   // just without the coverage panel
   fetch('/api/feedback/context').then(r=>r.json()).then(ctx=>renderDash(ctx))
     .catch(()=>renderDash(null));
+  fillFilters();
   render();
 }).catch(e=>{ document.getElementById('list').innerHTML='<div class="empty">Could not load feedback: '+esc(e)+'</div>'; });
 </script>

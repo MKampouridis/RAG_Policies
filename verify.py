@@ -33,9 +33,9 @@ Usage:
 """
 
 import hashlib
-import json
 import os
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -67,8 +67,39 @@ def s2_import() -> None:
          (r.stderr.strip().splitlines() or [""])[-1][:100])
 
 
-def _js_sources() -> list[pathlib.Path]:
-    return sorted((ROOT / "static").glob("*.js"))
+_INLINE_SCRIPT_RE = re.compile(
+    r"<script(?![^>]*\bsrc=)([^>]*)>(.*?)</script>", re.I | re.S)
+
+
+def _js_sources() -> list[tuple[str, str]]:
+    """(label, source) for every bit of JavaScript this app actually ships.
+
+    Was `static/*.js` only, which meant steps 3 and 4 covered ONE file while
+    every inline <script> in static/*.html - the chat guide, the feedback
+    dashboard, the review pages - went unparsed. That is the same shape as the
+    bug these steps exist to catch: a script that aborts blanks its page, and
+    it makes no difference to the browser whether it arrived in a .js file or
+    between script tags. "Breadth of cases is not breadth of coverage" applied
+    to the checker itself.
+
+    Skips <script src=...> (nothing inline to parse) and any type= that is not
+    JavaScript - an import map or a JSON island is not a script and esprima
+    would report a syntax error that is not one.
+    """
+    units: list[tuple[str, str]] = []
+    for p in sorted((ROOT / "static").glob("*.js")):
+        units.append((p.name, p.read_text()))
+    for p in sorted((ROOT / "static").glob("*.html")):
+        html = p.read_text()
+        for i, m in enumerate(_INLINE_SCRIPT_RE.finditer(html), 1):
+            attrs, body = m.group(1), m.group(2)
+            t = re.search(r'type\s*=\s*["\']?([^"\'\s>]+)', attrs, re.I)
+            if t and t.group(1).lower() not in (
+                    "text/javascript", "application/javascript", "module"):
+                continue
+            if body.strip():
+                units.append((f"{p.name} <script#{i}>", body))
+    return units
 
 
 def s3_js_syntax() -> None:
@@ -77,13 +108,14 @@ def s3_js_syntax() -> None:
     except ImportError:
         step(3, "JS syntax", False, "esprima not installed (pip install esprima)")
         return
+    units = _js_sources()
     bad = []
-    for p in _js_sources():
+    for label, src in units:
         try:
-            esprima.parseScript(p.read_text())
+            esprima.parseScript(src)
         except Exception as exc:  # noqa: BLE001
-            bad.append(f"{p.name}: {exc}")
-    step(3, "JS parses", not bad, bad[0] if bad else f"{len(_js_sources())} file(s)")
+            bad.append(f"{label}: {exc}")
+    step(3, "JS parses", not bad, bad[0] if bad else f"{len(units)} script(s)")
 
 
 def s4_js_tdz() -> None:
@@ -100,8 +132,7 @@ def s4_js_tdz() -> None:
         step(4, "JS top-level dead zone", False, "esprima not installed")
         return
     problems = []
-    for p in _js_sources():
-        src = p.read_text()
+    for label, src in _js_sources():
         try:
             tree = esprima.parseScript(src, {"range": True})
         except Exception:
@@ -202,7 +233,7 @@ def s4_js_tdz() -> None:
                     walk_body(bodies[fn].body, node.range[0], seen)
             for name in sorted(seen):
                 problems.append(
-                    f"{p.name}: '{name}' is read at module scope before its declaration")
+                    f"{label}: '{name}' is read at module scope before its declaration")
     step(4, "no top-level use before declaration", not problems,
          problems[0] if problems else "checked const/let at module scope")
 

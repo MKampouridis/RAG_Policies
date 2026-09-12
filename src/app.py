@@ -322,6 +322,62 @@ def api_feedback_context():
     return memory.usage_stats()
 
 
+class ReplayRequest(BaseModel):
+    question: str
+    # The stored answer and sources, so the server can diff rather than making
+    # the client send back what it thinks they were.
+    previous_answer: str = ""
+    previous_sources: list[str] = []
+
+
+@app.post("/api/feedback/replay")
+def api_feedback_replay(payload: ReplayRequest):
+    """Re-ask a rated question against TODAY's index and diff the result.
+
+    Half the thumbs-down in the log predate the plagiarism retrieval fix, the
+    partner-exclusion work and two re-ingests, so some are already fixed and the
+    log cannot show which - it records what the system said in July, forever.
+    This is the project's own method (a thumbs-down is a hypothesis, replayed
+    against live retrieval) made clickable.
+
+    Deliberately standalone: history=[] and no summary, so this replays the
+    QUESTION, not the conversation. For an original follow-up turn that makes
+    the replay a different question from the one that was rated - the client
+    warns about this and offers the stored retrieval_query, which is the
+    contextualizer's already-resolved standalone form, instead.
+
+    This SPENDS a generation per click (production generator), which is why it
+    is one explicit button per row rather than a batch 'replay everything'.
+    """
+    q = (payload.question or "").strip()
+    if not q:
+        raise HTTPException(status_code=400, detail="question is required")
+    t0 = time.time()
+    answer_text, sources, retrieval_query, ranked_top_urls = rag_answer(q, history=[])
+    before = {_doc_name(u) for u in (payload.previous_sources or [])}
+    after = {_doc_name(u) for u in sources}
+    return {
+        "question": q,
+        "answer": answer_text,
+        "sources": sources,
+        "retrieval_query": retrieval_query,
+        "ranked_top_urls": ranked_top_urls,
+        "seconds": round(time.time() - t0, 1),
+        "provenance": provenance(),
+        # Set arithmetic on filenames, not URLs: the same document at a new URL
+        # after a re-ingest is the same document to a reader asking "did the
+        # right thing come back this time".
+        "sources_gained": sorted(after - before),
+        "sources_lost": sorted(before - after),
+        "sources_same": before == after and bool(before),
+        "answer_identical": answer_text.strip() == (payload.previous_answer or "").strip(),
+    }
+
+
+def _doc_name(url: str) -> str:
+    return str(url).rstrip("/").rsplit("/", 1)[-1]
+
+
 @app.post("/api/sources")
 def api_sources(payload: SourceLookup):
     """Document metadata + a matching passage for the cited URLs, for the source
