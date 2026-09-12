@@ -15,3 +15,4 @@ data/monitor_state.json
 data/monitor_report.md
 data/monitor.out
 data/monitor.err
+data/alert_history.jsonl

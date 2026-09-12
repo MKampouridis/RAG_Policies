@@ -191,6 +191,30 @@ function panelAlerts(m) {
     head + body, {wide: true});
 }
 
+/* Alerts that fired earlier, whether or not the banner was seen. A macOS
+   notification is transient - if the Mac was asleep, in Focus, or nobody was at
+   it, the alert happened and left no visible trace. This is where it is
+   recoverable. */
+function panelAlertHistory(m) {
+  const h = (m && m.history) || [];
+  if (!h.length) {
+    return panel('Alert history', 'Nothing has fired yet.',
+      '<div class="sparse">No alerts recorded.</div>');
+  }
+  const recent = h.slice(-15).reverse();
+  const rows = recent.map(a =>
+    `<div class="row" style="grid-template-columns:auto auto 1fr">
+       <span class="n">${esc(when(a.ts))}</span>
+       <span class="lbl" style="font-weight:700">${esc(a.severity)}</span>
+       <span>${esc(a.title)}${a.notified ? '' : ' <span class="n">(suppressed — already announced)</span>'}</span>
+     </div>`).join('');
+  const missed = h.filter(a => a.notified).length;
+  return panel('Alert history',
+    `Every alert that fired, whether or not the notification was seen.
+     ${num(h.length)} recorded, ${num(missed)} notified. Most recent first.`,
+    rows, {wide: true});
+}
+
 Promise.all([fetchJSON('/api/health/stats'),
              fetchJSON('/api/alerts').catch(() => null)]).then(([d, mon]) => {
   const withUsage = d.answers.filter(a => a.has_usage);
@@ -199,7 +223,7 @@ Promise.all([fetchJSON('/api/health/stats'),
     `<span><b>${num(d.answers.length)}</b> answers</span>` +
     `<span><b>${num(withUsage.length)}</b> with token data</span>` +
     `<span><b>${money(withUsage.reduce((n, a) => n + (a.cost_usd || 0), 0))}</b> recorded spend</span>`;
-  const panels = [panelAlerts(mon), panelKPIs(d), panelHeadroom(d), panelLatency(d), panelTurnShape(d),
+  const panels = [panelAlerts(mon), panelAlertHistory(mon), panelKPIs(d), panelHeadroom(d), panelLatency(d), panelTurnShape(d),
                   panelTTFT(d), panelSpendOverTime(d), panelFailures(d), panelModelMix(d)]
                  .filter(Boolean);
   document.getElementById('dash').innerHTML =

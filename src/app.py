@@ -405,12 +405,25 @@ def api_alerts():
     showing a reassuring green panel produced by nobody.
     """
     path = Path("data/alerts.json")
+    # History is read alongside current state: a banner is transient and easily
+    # missed, so the page must be able to answer "did anything fire overnight?"
+    # and not only "is anything wrong this minute".
+    history = []
+    hist_path = Path("data/alert_history.jsonl")
+    if hist_path.is_file():
+        try:
+            lines = hist_path.read_text().splitlines()[-200:]
+            history = [json.loads(l) for l in lines if l.strip()]
+        except Exception:  # noqa: BLE001
+            history = []
     if not path.is_file():
-        return {"alerts": [], "generated_at": None, "never_run": True}
+        return {"alerts": [], "generated_at": None, "never_run": True, "history": history}
     try:
-        return json.loads(path.read_text())
+        data = json.loads(path.read_text())
+        data["history"] = history
+        return data
     except Exception:  # noqa: BLE001
-        return {"alerts": [], "generated_at": None, "unreadable": True}
+        return {"alerts": [], "generated_at": None, "unreadable": True, "history": history}
 
 
 @app.get("/api/health/stats")

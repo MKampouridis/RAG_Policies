@@ -30,6 +30,12 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from src import memory, monitor, telemetry  # noqa: E402
 
 ALERTS_PATH = pathlib.Path("data/alerts.json")
+# Append-only, because alerts.json is overwritten every run: a problem that
+# fires at 02:00 and clears by 09:00 would otherwise leave NO trace anywhere.
+# That matters more than usual here - a macOS banner is transient, this user
+# has already missed one from this same channel, and an alert nobody can
+# retrieve after the fact is an alert that did not happen.
+HISTORY_PATH = pathlib.Path("data/alert_history.jsonl")
 REPORT_PATH = pathlib.Path("data/monitor_report.md")
 BASE = os.environ.get("RAG_API_BASE", "http://127.0.0.1:8000")
 WINDOW_H = 6          # answers/turns considered "recent"
@@ -201,6 +207,18 @@ def write_outputs(alerts: list, d: dict, sent: list) -> None:
     try:
         ALERTS_PATH.parent.mkdir(parents=True, exist_ok=True)
         ALERTS_PATH.write_text(json.dumps(payload, indent=2))
+    except Exception:  # noqa: BLE001
+        pass
+    # One line per alert per run, so the record survives the condition clearing.
+    try:
+        if alerts:
+            with open(HISTORY_PATH, "a", encoding="utf-8") as f:
+                for a in alerts:
+                    f.write(json.dumps({
+                        "ts": payload["generated_at"],
+                        "id": a["id"], "severity": a["severity"], "title": a["title"],
+                        "notified": a in sent,
+                    }) + "\n")
     except Exception:  # noqa: BLE001
         pass
     lines = ["# Monitor report\n", f"_{payload['generated_at']}_\n"]
