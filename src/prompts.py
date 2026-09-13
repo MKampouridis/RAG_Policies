@@ -241,6 +241,33 @@ _USER_FACING_RULE = (
     "missing, say what is missing and, where useful, name the document or team likely to hold it."
 )
 
+# Completeness on POLICY questions (2026-09-13). Round 33 measured Sonnet
+# beating gpt-oss-120b 19-6 on 40 real policy questions, judged blind in both
+# orders. Reading the pairs, gpt-oss's failure is TERSENESS, not error: on "is
+# an independent chair required for a reexamination of a PhD?" both answer
+# "Yes" correctly, but Sonnet also names who determines the appeal and
+# corroborates from a second policy document gpt-oss never cites at all.
+#
+# Terseness is the kind of thing a prompt can address, so this is the cheap
+# thing to try before routing policy questions to a 26x more expensive model.
+#
+# The last sentence is the important one. Sonnet writes ~2x more, and the judge
+# may simply be rewarding length - a rule that makes gpt-oss merely LONGER would
+# score better while being worth nothing. Every added sentence has to carry a
+# fact from the excerpts, or this is padding with a measurement attached.
+#
+# OFF by default, per this project's rule about unmeasured mechanisms. It is
+# applied to the gpt-oss arm of eval/policy_arena.py and ships only if that
+# arena shows it closing the gap.
+_COMPLETENESS_RULE = (
+    "\n- Answer completely, not just correctly. When more than one excerpt bears on the "
+    "question, use them all rather than stopping at the first that suffices: name the "
+    "conditions, exceptions, and who decides, and cite each document you relied on. "
+    "Do NOT pad - every sentence you add must carry a fact from the excerpts."
+)
+GENERATOR_COMPLETENESS = os.environ.get("RAG_GENERATOR_COMPLETENESS", "") == "1"
+
+
 # Indirect prompt injection (2026-09-12). The retrieved excerpts are pasted into
 # the user turn as plain text, so a document that CONTAINS instructions is
 # indistinguishable, to the model, from instructions the system gave it.
@@ -332,6 +359,7 @@ SYSTEM_PROMPT = (
     + (_ENUMERATION_RULE if ENUMERATION_COMPLETENESS else "")
     + (_USER_FACING_RULE if USER_FACING_LANGUAGE else "")
     + (_INJECTION_RULE if INJECTION_RESISTANCE else "")
+    + (_COMPLETENESS_RULE if GENERATOR_COMPLETENESS else "")
     + "\n"
 )
 

@@ -7620,11 +7620,25 @@ from a SECOND policy document gpt-oss never cites
 (independent-chairs-policy.pdf), and notes the related referral-and-resubmission
 circumstance.
 
-**Production finding, unrelated to quality.** Groq's free tier refuses any
-single request over 8,000 tokens with a 413 — not a rate limit that clears by
-waiting. 1 of these 40 policy contexts exceeded it, so a small share of policy
-questions cannot reach gpt-oss on the free tier at all. Since 2026-09-12 they
-fall back to Sonnet instead of failing outright.
+**Production finding — RETRACTED AND CORRECTED (2026-09-13).** I first recorded
+that "Groq's free tier refuses any single request over 8,000 tokens with a 413 —
+not a rate limit that clears by waiting", and that some policy questions
+therefore cannot reach gpt-oss at all. **That was wrong.** The refused request
+was only 5,810 tokens, and the SAME question succeeded minutes later with a
+LONGER prompt. Groq's "Requested 8190" is the running MINUTE's total, not the
+request: 413 here is a rate condition that clears in seconds, identical in
+substance to a 429.
+
+The mistake had a cost in code, not just in the ledger: `_generate_once` treated
+413 as fatal, so a perfectly answerable question was handed to the paid fallback
+instead of waiting six seconds. Fixed — a 413 whose body mentions TPM is now
+routed through the same retry ladder as a 429, while a genuine context-window
+413 still fails fast. Both verified against their real response bodies.
+
+Worth stating plainly because it is the failure mode this project keeps
+returning to: the first reading came from one error message and was written up
+as a property of the platform. The check that falsified it cost nothing — the
+variant run simply asked the same question again.
 
 Cost of the run: $0.82 (~£0.65), against a £0.45 estimate — the estimate used
 gpt-oss's output length for both arms and Sonnet writes ~2x more.

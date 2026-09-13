@@ -54,6 +54,12 @@ JUDGE_PATH = Path("eval/policy_arena_judged.json")
 
 ARMS = {"gpt-oss": "groq:openai/gpt-oss-120b",
         "sonnet": "anthropic:claude-sonnet-5"}
+# Variant arms: same model, different prompt. The point of keeping Sonnet's
+# answers untouched is that a prompt change applied to BOTH arms would make the
+# comparison rigged - new-prompt gpt-oss against old-prompt Sonnet. So the rule
+# under test is gpt-oss-ONLY, which is also how it would ship (there is
+# precedent: GENERATOR_REASONING_EFFORT is already applied only to gpt-oss).
+VARIANTS = {"gpt-oss-complete": ("groq:openai/gpt-oss-120b", "completeness")}
 JUDGE = "phi4"
 SEED = 20260912       # fixed, so the A/B assignment is reproducible
 
@@ -88,11 +94,19 @@ def generate() -> None:
         [{"i": i, **{k: c[k] for k in ("question", "retrieval_query", "rating", "context")}}
          for i, c in enumerate(ctxs)]
 
-    for arm, spec in ARMS.items():
+    targets = dict(ARMS)
+    if len(sys.argv) > 2:                      # e.g. `generate gpt-oss-complete`
+        want = sys.argv[2]
+        targets = {want: VARIANTS[want][0]} if want in VARIANTS else {want: ARMS[want]}
+    for arm, spec in targets.items():
+        suffix = ""
+        if arm in VARIANTS and VARIANTS[arm][1] == "completeness":
+            from src.prompts import _COMPLETENESS_RULE
+            suffix = _COMPLETENESS_RULE
         todo = [r for r in rows if not r.get(arm) and not r.get(arm + "_error")]
         print(f"\n{arm} ({spec}): {len(todo)} to generate", flush=True)
         for n, r in enumerate(todo, 1):
-            msgs = [{"role": "system", "content": SYSTEM_PROMPT},
+            msgs = [{"role": "system", "content": SYSTEM_PROMPT + suffix},
                     {"role": "user",
                      "content": f"Context:\n{r['context']}\n\nQuestion: {r['question']}"}]
             t0 = time.time()
@@ -155,22 +169,39 @@ ANSWER B:
 """
 
 
+def _pair() -> tuple:
+    """Which two arms to compare. Defaults to the original head-to-head."""
+    if len(sys.argv) > 3:
+        return sys.argv[2], sys.argv[3]
+    return "gpt-oss", "sonnet"
+
+
+def _judge_path(a: str, b: str) -> Path:
+    if (a, b) == ("gpt-oss", "sonnet"):
+        return JUDGE_PATH            # the original run keeps its filename
+    return Path(f"eval/policy_arena_judged_{a}_vs_{b}.json")
+
+
 def judge() -> None:
     """Blind pairwise, both orders. Local phi4 - stop production first."""
     import ollama
+    A, B = _pair()
     rows = json.loads(GEN_PATH.read_text())
-    done = json.loads(JUDGE_PATH.read_text()) if JUDGE_PATH.exists() else {}
+    JP = _judge_path(A, B)
+    done = json.loads(JP.read_text()) if JP.exists() else {}
     rnd = random.Random(SEED)
     # The A/B assignment per question is fixed by SEED so a resumed run does
     # not silently re-randomise and mix two different experiments.
     for r in rows:
-        r["_first"] = "gpt-oss" if rnd.random() < 0.5 else "sonnet"
+        r["_first"] = "gpt-oss" if rnd.random() < 0.5 else "sonnet"   # remapped below
 
-    todo = [r for r in rows if r.get("gpt-oss") and r.get("sonnet")
-            and str(r["i"]) not in done]
-    print(f"judging {len(todo)} pair(s) x 2 orders with {JUDGE}", flush=True)
+    todo = [r for r in rows if r.get(A) and r.get(B) and str(r["i"]) not in done]
+    print(f"judging {A} vs {B}: {len(todo)} pair(s) x 2 orders with {JUDGE}", flush=True)
     for n, r in enumerate(todo, 1):
-        first, second = r["_first"], ("sonnet" if r["_first"] == "gpt-oss" else "gpt-oss")
+        # Same seeded A/B assignment as the original run, remapped to this pair,
+        # so the two comparisons are not accidentally different experiments.
+        first = A if r["_first"] == "gpt-oss" else B
+        second = B if first == A else A
         verdicts = {}
         for order, (x, y) in (("fwd", (first, second)), ("rev", (second, first))):
             prompt = _JUDGE_PROMPT.format(context=r["context"][:12000],
@@ -188,16 +219,17 @@ def judge() -> None:
             except Exception as exc:  # noqa: BLE001
                 verdicts[order] = {"A": x, "B": y, "winner": None, "why": repr(exc)[:120]}
         done[str(r["i"])] = verdicts
-        JUDGE_PATH.write_text(json.dumps(done, indent=1))
+        JP.write_text(json.dumps(done, indent=1))
         if n % 5 == 0:
             print(f"  {n}/{len(todo)}", flush=True)
-    print(f"wrote {JUDGE_PATH}")
+    print(f"wrote {JP}")
 
 
 def report() -> None:
+    A, B = _pair()
     rows = {r["i"]: r for r in json.loads(GEN_PATH.read_text())}
-    judged = json.loads(JUDGE_PATH.read_text())
-    wins = {"gpt-oss": 0, "sonnet": 0}
+    judged = json.loads(_judge_path(A, B).read_text())
+    wins = {A: 0, B: 0}
     ties = flipped = 0
     for k, v in judged.items():
         f, rv = v.get("fwd", {}), v.get("rev", {})
@@ -213,18 +245,18 @@ def report() -> None:
         else:
             flipped += 1
     n = wins["gpt-oss"] + wins["sonnet"] + ties + flipped
-    print(f"\n=== 40 policy questions from real traffic, judged by {JUDGE} ===")
+    print(f"\n=== {A} vs {B} — 40 policy questions from real traffic, judged by {JUDGE} ===")
     print(f"pairs with a verdict in both orders: {n}\n")
-    print(f"  gpt-oss-120b wins (both orders agree) : {wins['gpt-oss']}")
-    print(f"  Sonnet 5 wins     (both orders agree) : {wins['sonnet']}")
+    print(f"  {A} wins (both orders agree) : {wins[A]}")
+    print(f"  {B} wins (both orders agree) : {wins[B]}")
     print(f"  genuine ties      (tie in both)       : {ties}")
     print(f"  order-dependent   (flipped on swap)   : {flipped}  <- judge could not tell them apart")
-    decisive = wins["gpt-oss"] + wins["sonnet"]
+    decisive = wins[A] + wins[B]
     if decisive:
-        print(f"\n  of {decisive} decisive pairs: gpt-oss {wins['gpt-oss']/decisive*100:.0f}%"
-              f" / Sonnet {wins['sonnet']/decisive*100:.0f}%")
+        print(f"\n  of {decisive} decisive pairs: {A} {wins[A]/decisive*100:.0f}%"
+              f" / {B} {wins[B]/decisive*100:.0f}%")
     print(f"\n  position-bias check: {flipped} of {n} pairs ({flipped/n*100:.0f}%) depended on order.")
-    for arm in ARMS:
+    for arm in (A, B):
         lens = [len(rows[int(k)][arm]) for k in judged if rows.get(int(k), {}).get(arm)]
         secs = [rows[int(k)].get(arm + "_seconds") for k in judged
                 if rows.get(int(k), {}).get(arm + "_seconds")]

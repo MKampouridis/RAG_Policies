@@ -561,6 +561,16 @@ def _generate_once(provider: str, model: str, messages: list[dict], on_token=Non
     waited = 0.0
     for attempt in range(10):
         resp = requests.post(url, headers=headers, json=payload, timeout=120)
+        # 413 from Groq is a RATE condition, not a size one, and treating it as
+        # fatal was a real defect. Measured 2026-09-13: a 5,810-token request
+        # was refused with "Request too large ... on tokens per minute (TPM):
+        # Limit 8000, Requested 8190" - the 8,190 is the MINUTE's running total,
+        # not the request. The same question succeeded seconds later with a
+        # LONGER prompt. So the condition clears by waiting, exactly like a 429,
+        # and raising immediately sent a perfectly answerable question to the
+        # paid fallback instead of waiting six seconds.
+        if resp.status_code == 413 and re.search(r"per minute|\bTPM\b", resp.text, re.I):
+            resp.status_code = 429      # handled by the retry ladder below
         if resp.status_code == 429:
             # A DAILY quota does not clear by waiting: Groq says which limit was
             # hit ("... on tokens per day (TPD): Limit 200000, Used 197366"), and
