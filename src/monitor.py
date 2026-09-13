@@ -209,6 +209,35 @@ def check_fallback(answers: list) -> dict | None:
     return None
 
 
+def check_drift(running_rev: str | None, head_rev: str | None) -> dict | None:
+    """Is the server running the code that is saved?
+
+    A running process holds the code it loaded at startup. Edit a file
+    afterwards and the server keeps serving the old version - the fix is on
+    disk, visible in the editor, and not in production, with nothing anywhere
+    saying so. Found on 2026-09-13: production was stamping answers with a
+    revision it had never run.
+
+    Costs nothing: one HTTP GET to /api/config on this machine (which reads a
+    few environment variables and returns) and one `git rev-parse`. No model is
+    involved, so this runs in the FREE hourly job and not the twice-daily probe.
+
+    Silent when the revision is unknown or the server is unreachable - the
+    first is not a fact, and the second is check_liveness's job to report.
+    """
+    if not running_rev or not head_rev or running_rev == "unknown":
+        return None
+    if running_rev == head_rev:
+        return None
+    return {"id": "code_drift", "severity": "medium",
+            "title": f"Server is running {running_rev}, saved code is {head_rev}",
+            "detail": "The running server loaded its code at startup and has not picked up "
+                      "later changes. Restart it (launchctl unload/load "
+                      "com.mkampo.ragpolicies) - until then, fixes on disk are not live and "
+                      "every answer's recorded revision is wrong.",
+            "value": f"{running_rev}->{head_rev}"}
+
+
 def check_liveness(probe: dict | None) -> dict | None:
     """Can the system answer a question AT ALL.
 

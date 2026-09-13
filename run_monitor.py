@@ -100,6 +100,26 @@ def probe() -> dict:
             pass
 
 
+def running_revision() -> str | None:
+    """What the live server says it is running. A plain GET - no model call."""
+    try:
+        import requests
+        r = requests.get(f"{BASE}/api/config", cookies=_access_cookie(), timeout=10)
+        if r.status_code != 200:
+            return None
+        return ((r.json().get("provenance") or {}).get("code_revision")) or None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def head_revision() -> str | None:
+    try:
+        return subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                              capture_output=True, text=True, timeout=5).stdout.strip() or None
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def recent_turn_seconds(hours: float) -> list:
     """answer_total timings from the last `hours`, read off the timing log."""
     cutoff = _dt.datetime.now(_dt.timezone.utc) - _dt.timedelta(hours=hours)
@@ -150,6 +170,8 @@ def gather(with_probe: bool) -> dict:
         "failures": failures,
         "recent_failures": recent_failures,
         "turns_recent": recent_turn_seconds(WINDOW_H),
+        "running_rev": running_revision(),
+        "head_rev": head_revision(),
         "probe": probe() if with_probe else None,
     }
 
@@ -158,6 +180,7 @@ def evaluate(d: dict) -> list:
     cap = telemetry.FREE_TIER_DAILY_TOKENS.get("groq")
     checks = [
         monitor.check_liveness(d["probe"]),
+        monitor.check_drift(d["running_rev"], d["head_rev"]),
         monitor.check_failures(d["failures"], d["recent_failures"]),
         monitor.check_ungrounded(d["answers_recent"]),
         monitor.check_headroom(d["tokens_today"], cap),
@@ -201,6 +224,8 @@ def write_outputs(alerts: list, d: dict, sent: list) -> None:
             "tokens_today": d["tokens_today"],
             "spend_today": round(d["spend_today"], 4),
             "recent_failures": d["recent_failures"],
+            "running_rev": d["running_rev"],
+            "head_rev": d["head_rev"],
             "probe": d["probe"],
         },
     }

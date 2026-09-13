@@ -1,0 +1,30 @@
+#!/bin/sh
+# Run the static verification ladder before anything leaves this machine.
+#
+# WHY: verify.py has caught real bugs repeatedly - an undefined name that made
+# every answer 503, a const used before declaration that blanked a page, a
+# missing browser global, a `??` this project's JS parser rejects. It caught
+# them because someone remembered to run it. A hook removes the remembering.
+#
+# Static steps only (1-5): pyflakes, the app imports, JS parses, no top-level
+# dead zone, no call to a function that does not exist. Step 6 needs a running
+# server and is left to the human - a hook that depends on production being up
+# would fail for the wrong reason and get bypassed out of habit.
+#
+# Takes a few seconds. To push anyway (a WIP branch, a docs-only fix on a
+# machine without the venv):   git push --no-verify
+set -e
+cd "$(git rev-parse --show-toplevel)"
+
+if [ ! -x .venv/bin/python3 ]; then
+  echo "pre-push: no .venv, skipping verification" >&2
+  exit 0
+fi
+
+echo "pre-push: running static verification..."
+if ! .venv/bin/python3 verify.py --static; then
+  echo "" >&2
+  echo "pre-push: verification FAILED - push refused." >&2
+  echo "  fix the above, or bypass with: git push --no-verify" >&2
+  exit 1
+fi

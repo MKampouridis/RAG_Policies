@@ -257,6 +257,14 @@ check exists so re-enabling it is a decision made on evidence.
 ## Conventions
 
 - Commit directly to `main`; no PR workflow.
+- **`hooks/install.sh` installs a pre-push hook** that runs `verify.py --static` and refuses a
+  push that fails it. Run it once after a fresh clone - `.git/hooks/` is not version controlled.
+  Bypass a single push with `git push --no-verify`.
+- **The repo is PUBLIC.** Do not quote real user questions in committed files - `eval/report.md`
+  included. Paraphrase them. Own questions are one thing; colleagues' questions become public
+  the moment they are pasted into the ledger. Secrets live in `~/.config/*/env`, chmod 600, and
+  a scan of the full history (password, Groq, Anthropic, Gemini prefixes) found none committed
+  as of 2026-09-13.
 - `eval/report.md` is the ledger — record falsifications as carefully as successes, including
   retractions.
 - Don't delete files without asking.

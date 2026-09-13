@@ -175,7 +175,24 @@ WARMUP_QUERY = "What are the rules of assessment?"
 # alone says nothing about whether the next question will be fast. A FAILED
 # warmup previously only printed to a log nobody reads.
 WARMUP_STATE = {"status": "starting", "seconds": None, "error": None}
-_GIT_REV = None
+def _read_git_rev() -> str:
+    try:
+        import subprocess
+        return subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"], capture_output=True,
+            text=True, timeout=5, cwd=Path(__file__).resolve().parent.parent,
+        ).stdout.strip() or "unknown"
+    except Exception:  # noqa: BLE001
+        return "unknown"
+
+
+# Resolved AT IMPORT, deliberately. It used to be filled lazily on the first
+# provenance() call, which meant it recorded whatever HEAD was when someone
+# first asked a question - not the code this process actually loaded. Commit
+# after starting the server and every answer was then stamped with a revision
+# the running code had never been. Reading it at import makes it "HEAD when
+# this process started", which is the closest honest proxy for what is running.
+_GIT_REV = _read_git_rev()
 
 
 def _warmup() -> None:
@@ -622,16 +639,6 @@ def provenance() -> dict:
     "why did this say 40?" is unanswerable without knowing which corpus and
     which generator produced it. Cheap to record, impossible to reconstruct
     later."""
-    global _GIT_REV
-    if _GIT_REV is None:
-        try:
-            import subprocess
-            _GIT_REV = subprocess.run(
-                ["git", "rev-parse", "--short", "HEAD"], capture_output=True,
-                text=True, timeout=5, cwd=Path(__file__).resolve().parent.parent,
-            ).stdout.strip() or "unknown"
-        except Exception:
-            _GIT_REV = "unknown"
     try:
         corpus = ingest.read_corpus_version()
     except Exception:
