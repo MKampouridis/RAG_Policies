@@ -7648,3 +7648,49 @@ NOT settled by this: rules-of-assessment questions (Round 5 had gpt-oss ahead,
 sensible next step is the cheap one — prompt gpt-oss for more completeness on
 policy questions and re-run this arena — before considering a per-question-type
 route or a full switch back.
+
+## Round 34 — does prompting gpt-oss for completeness close the policy gap? (2026-09-13)
+
+**Finding: it narrows the gap from 3:1 to 2:1, and does not close it. Promising,
+not settled — NOT shipped.**
+
+Round 33 found gpt-oss's policy failure is TERSENESS, not error, so the cheap
+thing to try was a prompt. `_COMPLETENESS_RULE` (src/prompts.py, OFF by
+default) applied to the gpt-oss arm ONLY — a shared-prompt change would have
+made the comparison rigged, since Sonnet's answers were written under the old
+prompt and are reused here unchanged.
+
+| | baseline | + completeness rule |
+|---|---|---|
+| Sonnet decisive wins | 19 | **14** |
+| gpt-oss decisive wins | 6 | **7** |
+| gpt-oss share of decisive | 24% | **33%** |
+| order-dependent | 13 (33%) | **18 (45%)** |
+| gpt-oss median length | 676 ch | 933 ch (Sonnet 1,240) |
+| winner was the longer answer | 76% | **62%** |
+
+Six of Sonnet's decisive wins stopped being decisive: five became
+order-dependent (the judge can no longer tell the answers apart, which is the
+goal) and one flipped to gpt-oss.
+
+**The length confound weakened rather than strengthened** — "winner was the
+longer answer" fell 76% -> 62% while gpt-oss got longer. If the rule worked
+purely by adding words, that number should have gone UP.
+
+Read the biggest overshoot, per the rule about what scores cannot see. On the
+viva-referral question the variant grew 1,103 -> 1,878 chars and now lists all
+five triggers for appointing an Independent Chair, marking which applies and
+which does not. That is completeness, not filler.
+
+**Why it is not shipped.** Three reasons, in order of weight:
+1. It is a base-prompt rule and would apply to EVERY answer, including
+   rules-of-assessment questions where gpt-oss already beats Sonnet (4.39 vs
+   4.03, Round 5). Collateral damage there is untested. Of this project's four
+   prior base-prompt rules, two helped and two hurt.
+2. Not repeated. A 5-pair shift on 40 questions is the "looks promising" tier,
+   not the "run it on the regression set" tier.
+3. Order-dependence rose to 45%. Nearly half the pairs are now calls the judge
+   cannot make, which makes both numbers noisier than they look.
+
+Cost: £0. The gpt-oss arm is free-tier, Sonnet's answers were reused, and the
+judge is local. Total spend for Rounds 33-34 remains the $0.80 of Round 33.

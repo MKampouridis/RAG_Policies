@@ -244,7 +244,7 @@ def report() -> None:
             ties += 1
         else:
             flipped += 1
-    n = wins["gpt-oss"] + wins["sonnet"] + ties + flipped
+    n = wins[A] + wins[B] + ties + flipped
     print(f"\n=== {A} vs {B} — 40 policy questions from real traffic, judged by {JUDGE} ===")
     print(f"pairs with a verdict in both orders: {n}\n")
     print(f"  {A} wins (both orders agree) : {wins[A]}")

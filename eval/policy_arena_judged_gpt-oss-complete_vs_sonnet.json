@@ -1,0 +1,562 @@
+{
+ "0": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a more complete and accurate summary of the relevant policies regarding switching between full-time and part-time PhD status."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers relevant conditions and exceptions more comprehensively and accurately."
+  }
+ },
+ "1": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A is more concise and directly uses the relevant excerpt without additional context."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A is more concise and directly uses the relevant excerpt without unnecessary embellishments."
+  }
+ },
+ "2": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A directly addresses the question using the excerpts, while Answer B introduces unnecessary speculation."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B is more concise and directly addresses the question without unnecessary elaboration."
+  }
+ },
+ "3": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B accurately reflects the absence of a comprehensive list of accredited programmes in the provided excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A accurately reflects the absence of specific accredited programme information in the excerpts."
+  }
+ },
+ "4": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B provides a clear and concise explanation of why an Independent Chair is required, directly aligning with the policy excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a comprehensive explanation of the role and purpose of an Independent Chair, directly aligning with the policy excerpts."
+  }
+ },
+ "5": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B provides a more comprehensive and accurate summary of the policy, covering all relevant conditions and exceptions."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more concise and accurate summary of the relevant policy excerpts, covering all necessary conditions and roles without unnecessary repetition."
+  }
+ },
+ "6": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B provides a more complete and accurate summary of the conditions for appointing an Independent Chair."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a complete and accurate summary of the conditions for appointing an Independent Chair, including specific examples and context."
+  }
+ },
+ "7": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive and accurate summary of the relevant policies using the provided excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A more accurately and completely addresses the question using the provided excerpts."
+  }
+ },
+ "8": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B provides a more complete and accurate summary of the conditions requiring an Independent Chair, including a clear explanation of the circumstances affecting the candidate."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a more complete and accurate summary of the conditions requiring an Independent Chair, including specific examples and context."
+  }
+ },
+ "9": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A is more accurate and concise, directly addressing the question without unnecessary elaboration."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A more accurately reflects the limitations based on the excerpts and is more useful to a university staff member."
+  }
+ },
+ "10": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "tie",
+   "why": "Both answers accurately and completely cover the eligibility criteria and restrictions for a PhD internal examiner using the provided excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A covers all relevant conditions, exceptions, and figures accurately and concisely."
+  }
+ },
+ "11": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more comprehensive explanation, referencing multiple sources and covering relevant conditions and exceptions."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive and accurate explanation using specific excerpts and conditions."
+  }
+ },
+ "12": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant conditions, exceptions, and figures accurately and comprehensively for both research and taught programmes."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a more complete and accurate summary of the eligibility criteria for external examiners, covering both research and taught programmes with specific conditions and exceptions."
+  }
+ },
+ "13": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive and accurate overview of PGT programmes exceeding 180 credits, including additional details and exceptions."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B covers more relevant conditions and exceptions, including the Masters' degree with a professional placement and the upper limit of 185/190 credits."
+  }
+ },
+ "14": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "tie",
+   "why": "Both answers accurately reflect the lack of specific programme names and departments in the excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "tie",
+   "why": "Both answers accurately reflect the lack of specific programme names and departments in the excerpts."
+  }
+ },
+ "15": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a more complete and accurate summary of the relevant excerpts, covering the necessary discussions and adjustments required when switching between full-time and part-time status."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "tie",
+   "why": "Both answers accurately reflect the excerpts, noting the lack of detailed procedural information and emphasizing discussions with supervisors and administrators."
+  }
+ },
+ "16": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more complete and accurate comparison, including relevant details about both the Five-Year and Four-Year Integrated Masters Degrees."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A is more concise and directly addresses the question using the relevant figures from the excerpts."
+  }
+ },
+ "17": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a comprehensive overview of various scenarios and specific durations for different types of master's programs, while accurately reflecting the excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a comprehensive overview of various scenarios and specific programme structures, aligning closely with the excerpts."
+  }
+ },
+ "18": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B covers all relevant conditions and exceptions accurately and concisely, while Answer A includes unnecessary details about the nomination process not directly related to eligibility."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant conditions and exceptions directly from the excerpts without adding unnecessary details."
+  }
+ },
+ "19": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B accurately and concisely covers the relevant conditions and figures from the excerpts."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive and accurate summary of the payment terms using the excerpts."
+  }
+ },
+ "20": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B accurately and concisely covers the minimum credit requirements and criteria for passing, gaining a Merit, or achieving Distinction using the provided excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A directly addresses the question with complete and accurate information from the excerpts, while Answer B includes unnecessary details and lacks direct focus on the MSc Physiotherapy (Pre-regi"
+  }
+ },
+ "21": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A accurately and completely covers the relevant conditions and figures using the excerpts."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a more detailed and accurate explanation using specific policy references."
+  }
+ },
+ "22": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B accurately and concisely covers the relevant conditions and figures using the excerpts, while Answer A includes unsupported details."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more comprehensive and accurate summary of the excerpts, covering relevant conditions, exceptions, and procedures."
+  }
+ },
+ "23": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "tie",
+   "why": "Both answers accurately and completely convey the maximum number of credits that can be carried forward for progression."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more complete and accurate explanation using the excerpts, including specific details about progression to Year 2 or Year 3."
+  }
+ },
+ "24": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A directly addresses the scenario of an SLC application refusal and its consequences, aligning closely with the provided excerpts."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive explanation, covering relevant conditions and exceptions, and accurately reflects the policy excerpts."
+  }
+ },
+ "25": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides the complete relevant condition and uses the exact phrasing from the excerpts, enhancing clarity and usefulness."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A is more concise and directly aligned with the policy excerpts without unnecessary embellishments."
+  }
+ },
+ "26": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A covers all relevant responsibilities, exceptions, and figures more comprehensively and accurately."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant responsibilities of the Course Lead with accuracy and completeness, while Answer B includes some unsupported details."
+  }
+ },
+ "27": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more comprehensive and accurate summary of the induction requirements for new research students, including both postgraduate research and professional doctorate students, and refer"
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive and accurate summary of the relevant excerpts, covering both postgraduate research and professional doctorate students, and includes additional context from the "
+  }
+ },
+ "28": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B covers the relevant conditions and exceptions more comprehensively."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant conditions and exceptions, including the treatment of marks of 40, while Answer B omits this detail."
+  }
+ },
+ "29": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B covers all relevant conditions, exceptions, and figures more comprehensively and accurately."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant admissions criteria, exceptions, and figures accurately and completely."
+  }
+ },
+ "30": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A covers the purpose of providing uniforms in relation to health and safety requirements, professional appearance, and compliance with partner organization standards, aligning well with the exc"
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "gpt-oss-complete",
+   "why": "Answer B more accurately and completely covers the purpose, including health and safety requirements and professional appearance, as outlined in the excerpts."
+  }
+ },
+ "31": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more complete and accurate summary of the requirements, including the context of attempting 60 credits and the condition of condoning the remaining credits."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers the relevant conditions and exceptions accurately and consistently across both academic years."
+  }
+ },
+ "32": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B covers all relevant responsibilities, exceptions, and figures more comprehensively and accurately."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant responsibilities, exceptions, and figures from the excerpts comprehensively."
+  }
+ },
+ "33": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "tie",
+   "why": "Both answers accurately and completely cover the frequency and conditions for reviewing departmental arrangements using the provided excerpts."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A is more concise and directly aligned with the excerpts, while Answer B includes unnecessary formatting and symbols."
+  }
+ },
+ "34": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more comprehensive and accurate summary of the risks, including specific risk assessments and mitigation strategies."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant risks, exceptions, and figures more comprehensively and accurately."
+  }
+ },
+ "35": {
+  "fwd": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant principles with specific details and context, while Answer B is more general."
+  },
+  "rev": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A covers all relevant principles with precise alignment to the excerpts, while Answer B omits the specific mention of 'real-world learning and research' and 'employability' as stated in the exc"
+  }
+ },
+ "36": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "gpt-oss-complete",
+   "why": "Answer A provides a detailed, step-by-step process for raising a complaint, aligning closely with the excerpts."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more complete and accurate overview of the process and potential outcomes for complaints related to course continuity, directly referencing the relevant policy."
+  }
+ },
+ "37": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B covers the pass mark comprehensively across multiple documents, including specific conditions and exceptions."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A covers all relevant conditions and exceptions, including specific details from multiple documents, while Answer B only provides a general statement."
+  }
+ },
+ "38": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more complete and accurate summary of the excerpts, including the recognition of statutory obligations and the importance of tolerance for diverse ideas."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more complete and accurate summary of the excerpts, including the importance of tolerance and inclusivity."
+  }
+ },
+ "39": {
+  "fwd": {
+   "A": "gpt-oss-complete",
+   "B": "sonnet",
+   "winner": "sonnet",
+   "why": "Answer B provides a more comprehensive and accurate summary of the policy's conditions, exclusions, and relevant figures."
+  },
+  "rev": {
+   "A": "sonnet",
+   "B": "gpt-oss-complete",
+   "winner": "sonnet",
+   "why": "Answer A provides a more comprehensive and accurate summary of the policy's scope, exclusions, and procedures."
+  }
+ }
+}
