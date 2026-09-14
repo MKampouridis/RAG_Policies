@@ -257,6 +257,10 @@ check exists so re-enabling it is a decision made on evidence.
 ## Conventions
 
 - Commit directly to `main`; no PR workflow.
+- **Use `./deploy.sh` to put a change live** - it verifies, restarts, waits, and then checks the
+  revision production REPORTS against HEAD, so a deploy is not "done" until production says it is
+  running the code you meant. `--no-verify` skips the checks, `--full` adds the live-request one.
+  Restarting by hand was forgotten repeatedly, including for the drift detector's own commit.
 - **`hooks/install.sh` installs a pre-push hook** that runs `verify.py --static` and refuses a
   push that fails it. Run it once after a fresh clone - `.git/hooks/` is not version controlled.
   Bypass a single push with `git push --no-verify`.
