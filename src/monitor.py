@@ -209,7 +209,25 @@ def check_fallback(answers: list) -> dict | None:
     return None
 
 
-def check_drift(running_rev: str | None, head_rev: str | None) -> dict | None:
+# Paths whose contents the SERVER PROCESS actually loads. A commit touching
+# only CI config, the ledger, docs or eval scripts changes nothing the running
+# server does, so demanding a restart for it is crying wolf - and this detector
+# fired twice in its first two days, once for exactly that (a commit that added
+# only .github/workflows/verify.yml).
+SERVER_PATHS = ("src/", "static/", "run_server.py", "run_server_daemon.sh",
+                "requirements.txt")
+
+
+def _touches_server_code(changed_files: list | None) -> bool:
+    """None means 'could not tell' - then assume it matters and alert, because
+    a missed stale deployment is worse than one unnecessary notification."""
+    if changed_files is None:
+        return True
+    return any(f.startswith(SERVER_PATHS) for f in changed_files)
+
+
+def check_drift(running_rev: str | None, head_rev: str | None,
+                changed_files: list | None = None) -> dict | None:
     """Is the server running the code that is saved?
 
     A running process holds the code it loaded at startup. Edit a file
@@ -228,6 +246,11 @@ def check_drift(running_rev: str | None, head_rev: str | None) -> dict | None:
     if not running_rev or not head_rev or running_rev == "unknown":
         return None
     if running_rev == head_rev:
+        return None
+    if not _touches_server_code(changed_files):
+        # The recorded revision is stale, but no code the server runs has
+        # changed - so answers are not affected and a restart is cosmetic.
+        # Not worth waking anyone; the next real deploy corrects the label.
         return None
     return {"id": "code_drift", "severity": "medium",
             "title": f"Server is running {running_rev}, saved code is {head_rev}",

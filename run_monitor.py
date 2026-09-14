@@ -112,6 +112,22 @@ def running_revision() -> str | None:
         return None
 
 
+def changed_since(rev: str | None) -> list | None:
+    """Files changed between the running revision and HEAD. None when it cannot
+    be determined (an unknown revision, a shallow clone), which check_drift
+    treats as 'assume it matters'."""
+    if not rev:
+        return None
+    try:
+        r = subprocess.run(["git", "diff", "--name-only", f"{rev}..HEAD"],
+                           capture_output=True, text=True, timeout=10)
+        if r.returncode != 0:
+            return None
+        return [f for f in r.stdout.split("\n") if f.strip()]
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def head_revision() -> str | None:
     try:
         return subprocess.run(["git", "rev-parse", "--short", "HEAD"],
@@ -170,8 +186,9 @@ def gather(with_probe: bool) -> dict:
         "failures": failures,
         "recent_failures": recent_failures,
         "turns_recent": recent_turn_seconds(WINDOW_H),
-        "running_rev": running_revision(),
+        "running_rev": (_rr := running_revision()),
         "head_rev": head_revision(),
+        "changed_files": changed_since(_rr),
         "probe": probe() if with_probe else None,
     }
 
@@ -180,7 +197,7 @@ def evaluate(d: dict) -> list:
     cap = telemetry.FREE_TIER_DAILY_TOKENS.get("groq")
     checks = [
         monitor.check_liveness(d["probe"]),
-        monitor.check_drift(d["running_rev"], d["head_rev"]),
+        monitor.check_drift(d["running_rev"], d["head_rev"], d["changed_files"]),
         monitor.check_failures(d["failures"], d["recent_failures"]),
         monitor.check_ungrounded(d["answers_recent"]),
         monitor.check_headroom(d["tokens_today"], cap),
