@@ -1,0 +1,44 @@
+# Run the static verification ladder on a MACHINE THAT HAS NOTHING ON IT.
+#
+# The pre-push hook already runs these locally, so why both? Because this Mac
+# has years of accumulated software, and code can work here because of
+# something installed long ago that was never written into requirements.txt.
+# A fresh runner has only what that file names, so a missing dependency fails
+# here instead of a year from now when the project moves to a real host.
+#
+# NOT run here, deliberately:
+#   - the live-request check (step 6). It needs a running server, local models
+#     and API keys. A workflow must never hold those keys, and a check that
+#     depends on production being up would fail for the wrong reason.
+#   - any eval. Those cost money or hours and are a human decision.
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:          # so it can be run by hand from the Actions tab
+
+jobs:
+  static:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'          # matches the local .venv
+          cache: pip
+
+      # The heavy runtime deps (chromadb, torch) are only needed by step 2,
+      # "app imports cleanly". Installed in their own step so a failure there
+      # is distinguishable from a failure in the checks themselves.
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pyflakes esprima
+
+      - name: Static verification ladder
+        run: python verify.py --static
