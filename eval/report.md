@@ -7813,3 +7813,53 @@ and refuses to call them regressions.
 
 **Not measured, same limit as Round 35:** whether any ANSWER improved or got
 worse. This instrument sees retrieval only.
+
+## Round 37 — widening k to fix a completeness loss: FALSIFIED (2026-09-16)
+
+**Hypothesis: the CSEE/CCFEA precision loss from Round 36 is the N_RESULTS=6
+ceiling, so k=8 should recover it. Measured: it does not, and it disturbs 79%
+of validated questions. NOT shipped.**
+
+The named failure. "Are there any programmes at Essex that have an oral/viva
+element... and require a pass on both?" - a thumbed-UP question. After Round 36
+the answer names five programmes correctly, but
+`csee-non-accredited-full-time-msc-25.pdf` dropped out of the top 6, and that
+document holds MSc Computer Systems Engineering and MSc Computing with the same
+requirement. A real completeness loss, confirmed by opening the document rather
+than inferring it from the diff.
+
+The hypothesis was reasonable and this project had already written it down:
+"N_RESULTS=6 is a hard ceiling... needs per-entity retrieval or a widened k for
+this shape" (multi-entity work).
+
+**Result at k=8, on 146 real questions:**
+
+| tier | changed |
+|---|---|
+| thumbed UP | **11 of 14 (79%)** |
+| unrated | 58 of 116 (50%) |
+| thumbed DOWN | 8 of 16 (50%) |
+
+And it did not even work: k=8 pulled in a DIFFERENT CSEE document, not the one
+needed. The reason is decisive - **the target sits at rank 54 of an 87-candidate
+pool before reranking**. Reaching it needs k~54, not k=8. The ceiling was never
+the constraint; the ranking is.
+
+Shipping this would have cost 79% of the validated set for zero gain.
+
+**The better finding, not acted on.** The live ranking shows `viva-process`
+occupying THREE of seven slots on this question. There is no per-document cap
+anywhere in the retrieval path, and across the 146 questions **122 return fewer
+than 6 distinct documents; 20 return chunks from a single document.**
+
+A cap of ~2 chunks per document would free slots widely - but it cuts directly
+against `_adjacent_chunks` and document completion, which deliberately pull
+MORE chunks from one document for enumeration questions. That is its own
+investigation with its own control, not a bolt-on. Recorded, not attempted.
+
+This question specifically is NOT fixable by retrieval tuning: freeing the two
+wasted slots still would not reach rank 54. The answer remains correct on five
+programmes and incomplete on two. Accepted.
+
+`N_RESULTS` is now env-overridable (`RAG_N_RESULTS`) so both passes ran
+identical code. **The shipped default is unchanged at 6.**

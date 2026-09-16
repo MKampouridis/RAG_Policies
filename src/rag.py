@@ -21,7 +21,9 @@ from src.ingest import query as vector_query
 from src.entities import detect_departments, department_filter_values
 from src.llm import CONTEXTUALIZE_MODEL, chat, contextualize_chat, generate
 
-N_RESULTS = 6
+# Env-overridable so a widened-k experiment can be replayed without editing
+# code between passes (2026-09-16). The SHIPPED value is unchanged at 6.
+N_RESULTS = int(os.environ.get("RAG_N_RESULTS", "6"))
 # over-fetch so recency filtering AND reranking have real depth to work with -
 # failure analysis (eval/report.md) found relevant-but-mis-ranked documents as
 # deep as rank 60 in a wide dense+BM25 union, so 4x (24 candidates) wasn't
