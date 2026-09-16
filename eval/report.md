@@ -7694,3 +7694,66 @@ which does not. That is completeness, not filler.
 
 Cost: £0. The gpt-oss arm is free-tier, Sonnet's answers were reused, and the
 judge is local. Total spend for Rounds 33-34 remains the $0.80 of Round 33.
+
+## Round 35 — the PGR student section, and 5 missing award types (2026-09-16)
+
+**Finding: /student/postgraduate-research/ had 1 of its 36 pages in the corpus.
+Six documents added; retrieval on 146 real questions shows no change on
+anything a person validated.**
+
+Triggered by a user question ("is this page part of the corpus?" - it was not).
+The survey: 36 pages in that section, 30 carrying 1,500+ characters of
+substantive policy, ONE indexed (pgr-progress). Those pages link 47 documents
+the corpus lacked.
+
+**Filename classification was wrong on 2 of 3 non-RoA candidates.** Opening
+them changed the list from 9 to 6:
+- `responsible-research.pdf` is an IOSH publication merely hosted on the Essex
+  site, not Essex policy.
+- `doctors-recommendations.pdf` is a blank FORM ("Name of student: ... Date of
+  birth: ..."), not a rule.
+Both would have shipped as policy on the strength of their names.
+
+Added: 5 professional doctorate rules of assessment, all "applicable to
+students first starting in 2025/26" (3yr FT accredited, 4yr FT accredited,
+part-time, top-up, HSC Doctorate in Clinical Psychology) plus the Code of Good
+Research Practice (REO, published April 2026). An entire award type the corpus
+could not answer on. Skipped: ~15 forms, ~12 superseded RoA editions
+(2017-2024), ~11 out-of-scope items including US federal aid policy and H&S
+risk tools.
+
+Ingest: 1,799 fetched, 13 kept, 0 errors. Corpus 1,784 documents / 26,965
+chunks.
+
+**Retrieval effect, `eval/traffic_replay.py` before and after (free, local):**
+
+| tier | changed |
+|---|---|
+| thumbed UP (strongest signal) | **0 of 14** |
+| unrated (weak baseline) | 10 of 116 (9%) |
+| thumbed DOWN | 2 of 16 |
+
+Most movement is the new documents being correctly relevant -
+`code-of-good-research-practice.pdf` now appears for plagiarism, academic
+offences and code-of-practice questions.
+
+**Two displacements examined rather than assumed.** On "minimum pass mark for
+taught modules under Model A" the top four documents are IDENTICAL before and
+after; only positions 5-6 changed, so the answer's basis is untouched. But on
+"general principles for reassessment" a professional doctorate RoA took the
+**#1 slot**, and on "criteria for a student to receive credit from taught
+modules" one entered at #3, displacing two taught RoA documents.
+
+That is the predictable cost of adding five more documents that legitimately
+discuss pass marks, credit and reassessment: they compete on GENERIC RoA
+questions that name no programme. It slightly widens the pre-existing
+`wrong_programme` failure (7 of 18 thumbs-down). **Not measured here:** whether
+any ANSWER got worse - this instrument sees retrieval only. Watch the
+`wrong_programme` tag on /feedback.
+
+**Still not answerable: PhD by Publication.** Its rules live on the web page,
+not in any PDF - candidacy criteria, the 7,000-10,000 word critical analysis,
+co-authorship rules, and a notice that admissions are currently PAUSED. That
+needs the ~30 substantive HTML pages, deliberately left as a separate decision:
+they are edited in place rather than re-issued, so the weekly watch's coverage
+of HTML needs confirming first.

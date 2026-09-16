@@ -75,6 +75,34 @@ SEED_URLS = [
     #
     # These four are the survey's actual yield. A PDF seed has no links to
     # follow, so each brings itself and nothing else.
+    # Professional doctorate rules of assessment + the research practice code
+    # (2026-09-16). Found by surveying /student/postgraduate-research/, which
+    # had exactly ONE page in the corpus (pgr-progress) out of 36. Those pages
+    # link 47 documents the corpus lacked; these six are the yield.
+    #
+    # The five RoA documents are all "APPLICABLE TO STUDENTS FIRST STARTING IN
+    # ACADEMIC YEAR 2025/26" - i.e. CURRENT rules for professional doctorates,
+    # a whole award type the corpus could not answer on. Their superseded
+    # editions (2017, 2018, 2020, 2024) are deliberately NOT seeded: the corpus
+    # already answers from a 2018-19 document when a current one is missing,
+    # and adding known-old editions invites exactly that.
+    #
+    # Two candidates were REJECTED after opening them, having looked fine by
+    # filename - the check that classifying from names alone would have failed:
+    #   responsible-research.pdf  is an IOSH publication, not Essex policy,
+    #                             merely hosted here.
+    #   doctors-recommendations.pdf  is a blank FORM ("Name of student: ...
+    #                             Date of birth: ..."), not a rule.
+    # Roughly 15 more of the 47 are forms and 12 are superseded editions; all
+    # skipped on the same grounds.
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/rules-of-assessment/ft-accredited-3yr-prof-doc-roa-,-a-,-variations-oct-2025.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/rules-of-assessment/ft-accredited-4yr-prof-doc-roa-,-a-,-variations-oct-2025.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/rules-of-assessment/pt-prof-doc-roa-oct-2025.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/rules-of-assessment/top-up-prof-doc-roa-oct-2025.pdf",
+    "https://www.essex.ac.uk/-/media/documents/directories/academic-section/pgre/rules-of-assessment/hsc-dcp-roa-oct-2025.pdf",
+    # Research and Enterprise Office, published 22 April 2026, review 2029 - so
+    # current, and 30 pages of actual policy.
+    "https://www.essex.ac.uk/-/media/documents/directories/reo/code-of-good-research-practice.pdf",
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/taught-external-examiner-policy.pdf",
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/code-of-practice-when-sharing-open-educational-resources.pdf",
     "https://www.essex.ac.uk/-/media/documents/directories/academic-section/academic-standards-and-quality/responsible-use-of-education-data-and-metrics.pdf",
