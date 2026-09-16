@@ -32,6 +32,64 @@ SEED_URLS = [
     # HTML content page, not a PDF - see _INCLUDED_HTML_URLS below for why this
     # one is exempt from the PDF-only hub-page guard.
     "https://www.essex.ac.uk/student/postgraduate-research/pgr-progress",
+    # The rest of /student/postgraduate-research/ (2026-09-16). That section
+    # has 36 pages and exactly ONE was indexed - the line above. 30 of the
+    # others carry 1,500+ characters of substantive policy: pgr-intermission
+    # and pgr-progress are ~21,000 each, comparable to a policy PDF.
+    #
+    # These are pages whose RULES live in the HTML, not in a linked PDF. The
+    # PhD by Publication candidacy criteria, its 7,000-10,000 word critical
+    # analysis requirement and the current admissions pause exist nowhere else
+    # in the corpus - verified by retrieval before adding: two live queries
+    # returned plausible PGR documents and ZERO chunks mentioning the route.
+    #
+    # Safe to add on two checks made first, not assumed:
+    #   EXTRACTION - pgr-progress stores 37 chunks with 0 containing site-menu
+    #     boilerplate, so the Essex student-directory template is stripped
+    #     properly. One page was thin evidence for thirty; it is now the
+    #     evidence that the template works.
+    #   STALENESS - these pages are edited IN PLACE rather than re-issued, so
+    #     "admissions are paused" will vanish without the URL changing. The
+    #     manifest records content_hash for HTML (20 pages already), and
+    #     check_new_documents.py compares that hash weekly, so an edit is
+    #     caught the same way a replaced PDF is.
+    #
+    # Excluded: pgr-appeals (224 chars) and pgr-examination-policy (591), which
+    # only signpost elsewhere, and the section index itself. Everything else is
+    # seeded and left to src/relevance.py to keep or reject - that gate runs on
+    # the LOCAL qwen2.5:7b, so judging 32 pages costs nothing.
+    "https://www.essex.ac.uk/student/postgraduate-research/after-your-thesis-has-been-uploaded",
+    "https://www.essex.ac.uk/student/postgraduate-research/after-your-viva",
+    "https://www.essex.ac.uk/student/postgraduate-research/copyright-guidance",
+    "https://www.essex.ac.uk/student/postgraduate-research/financial-support-and-training-for-carers",
+    "https://www.essex.ac.uk/student/postgraduate-research/guidance-on-leave-for-pgr-students",
+    "https://www.essex.ac.uk/student/postgraduate-research/how-to-prepare-for-your-viva",
+    "https://www.essex.ac.uk/student/postgraduate-research/how-to-submit-your-thesis",
+    "https://www.essex.ac.uk/student/postgraduate-research/new-proficio-courses",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-change-of-course",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-examination",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-extenuating-circumstances",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-external-courses",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-intermission",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-rules-of-assessment",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-skills",
+    "https://www.essex.ac.uk/student/postgraduate-research/phd-by-publication",
+    "https://www.essex.ac.uk/student/postgraduate-research/preparing-to-submit-thesis",
+    "https://www.essex.ac.uk/student/postgraduate-research/proficio",
+    "https://www.essex.ac.uk/student/postgraduate-research/proficio-funding",
+    "https://www.essex.ac.uk/student/postgraduate-research/proficio-internal-courses",
+    "https://www.essex.ac.uk/student/postgraduate-research/research-degrees-cosupervision",
+    "https://www.essex.ac.uk/student/postgraduate-research/research-misconduct",
+    "https://www.essex.ac.uk/student/postgraduate-research/research-risk-assessment",
+    "https://www.essex.ac.uk/student/postgraduate-research/skills-training-and-support",
+    "https://www.essex.ac.uk/student/postgraduate-research/supervisor-of-the-year",
+    "https://www.essex.ac.uk/student/postgraduate-research/thesis-as-a-series-of-papers",
+    "https://www.essex.ac.uk/student/postgraduate-research/thesis-format",
+    "https://www.essex.ac.uk/student/postgraduate-research/thesis-submission-guidance-covid-impact-statement",
+    "https://www.essex.ac.uk/student/postgraduate-research/travel-and-fieldwork",
+    "https://www.essex.ac.uk/student/postgraduate-research/uploading-thesis-to-repository",
+    "https://www.essex.ac.uk/student/postgraduate-research/use-of-ai",
+    "https://www.essex.ac.uk/student/postgraduate-research/viva-process",
     # Staff exams-and-assessment pages (2026-09-07). Added because a live
     # question about PGT external examiners was answered from a 2018-19
     # document: the current rule lives in assessment-policies-summary.pdf,
@@ -144,6 +202,40 @@ _EXCLUDED_URLS = {
 # keep/reject call same as any PDF; this only lets it be asked the question.
 _INCLUDED_HTML_URLS = {
     "https://www.essex.ac.uk/student/postgraduate-research/pgr-progress",
+    # See the SEED_URLS note above. Without this the hub guard rejects them as
+    # "hub/navigation page (non-PDF)" before relevance is ever consulted.
+    "https://www.essex.ac.uk/student/postgraduate-research/after-your-thesis-has-been-uploaded",
+    "https://www.essex.ac.uk/student/postgraduate-research/after-your-viva",
+    "https://www.essex.ac.uk/student/postgraduate-research/copyright-guidance",
+    "https://www.essex.ac.uk/student/postgraduate-research/financial-support-and-training-for-carers",
+    "https://www.essex.ac.uk/student/postgraduate-research/guidance-on-leave-for-pgr-students",
+    "https://www.essex.ac.uk/student/postgraduate-research/how-to-prepare-for-your-viva",
+    "https://www.essex.ac.uk/student/postgraduate-research/how-to-submit-your-thesis",
+    "https://www.essex.ac.uk/student/postgraduate-research/new-proficio-courses",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-change-of-course",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-examination",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-extenuating-circumstances",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-external-courses",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-intermission",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-rules-of-assessment",
+    "https://www.essex.ac.uk/student/postgraduate-research/pgr-skills",
+    "https://www.essex.ac.uk/student/postgraduate-research/phd-by-publication",
+    "https://www.essex.ac.uk/student/postgraduate-research/preparing-to-submit-thesis",
+    "https://www.essex.ac.uk/student/postgraduate-research/proficio",
+    "https://www.essex.ac.uk/student/postgraduate-research/proficio-funding",
+    "https://www.essex.ac.uk/student/postgraduate-research/proficio-internal-courses",
+    "https://www.essex.ac.uk/student/postgraduate-research/research-degrees-cosupervision",
+    "https://www.essex.ac.uk/student/postgraduate-research/research-misconduct",
+    "https://www.essex.ac.uk/student/postgraduate-research/research-risk-assessment",
+    "https://www.essex.ac.uk/student/postgraduate-research/skills-training-and-support",
+    "https://www.essex.ac.uk/student/postgraduate-research/supervisor-of-the-year",
+    "https://www.essex.ac.uk/student/postgraduate-research/thesis-as-a-series-of-papers",
+    "https://www.essex.ac.uk/student/postgraduate-research/thesis-format",
+    "https://www.essex.ac.uk/student/postgraduate-research/thesis-submission-guidance-covid-impact-statement",
+    "https://www.essex.ac.uk/student/postgraduate-research/travel-and-fieldwork",
+    "https://www.essex.ac.uk/student/postgraduate-research/uploading-thesis-to-repository",
+    "https://www.essex.ac.uk/student/postgraduate-research/use-of-ai",
+    "https://www.essex.ac.uk/student/postgraduate-research/viva-process",
 }
 
 

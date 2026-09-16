@@ -7757,3 +7757,59 @@ co-authorship rules, and a notice that admissions are currently PAUSED. That
 needs the ~30 substantive HTML pages, deliberately left as a separate decision:
 they are edited in place rather than re-issued, so the weekly watch's coverage
 of HTML needs confirming first.
+
+## Round 36 — 25 PGR web pages, and a 36% change on validated questions (2026-09-16)
+
+**Finding: added, net positive, but a materially bigger disturbance than the
+PDF round - and the headline number is more alarming than the detail.**
+
+Rules that live in HTML rather than in any PDF. PhD by Publication is the case
+that started it: candidacy criteria, the 7,000-10,000 word critical analysis,
+co-authorship rules and a current admissions PAUSE, none of it in the corpus.
+Verified absent by retrieval first - two queries returned plausible PGR
+documents and ZERO chunks mentioning the route.
+
+**Two preconditions checked before seeding, not assumed:**
+- EXTRACTION: pgr-progress stores 37 chunks with 0 containing site-menu
+  boilerplate, so the Essex student-directory template is stripped properly.
+- STALENESS: these pages are edited IN PLACE, so "admissions are paused" will
+  vanish without the URL changing. The manifest records content_hash for HTML
+  and check_new_documents.py compares it weekly, so an edit is caught the same
+  way a replaced PDF is.
+
+32 pages seeded; `src/relevance.py` (LOCAL qwen2.5:7b, so free) kept 25 and
+rejected 8. Its rejections match the manual assessment exactly: Proficio course
+listings, skills-training pages, a news article, award nominations. Corpus now
+1,809 documents / 27,257 chunks.
+
+**Retrieval effect, before -> after on 146 real questions:**
+
+| tier | changed |
+|---|---|
+| thumbed UP | **5 of 14 (36%)** |
+| unrated | 22 of 116 (19%) |
+| thumbed DOWN | 7 of 16 (44%) |
+
+36% of validated questions is far above the PDF round's 0%, so all five were
+read in full rather than summarised:
+
+1. **Improvement.** "Isn't there a study abroad or research leave policy for
+   PhD students?" - `guidance-on-leave-for-pgr-students` is now the top hit,
+   displacing `pgr-intermission-absence.pdf`. The page is literally the answer.
+2. **Neutral.** "Independent chair required for PGR examination" - top TWO
+   unchanged, position 3 swapped between two plausible documents.
+3. **Neutral.** "Reexamination after a viva referral" - same shape, top two
+   unchanged.
+4. **Not a signal.** "Are you able to search the internet?" - a meta-question
+   about the assistant; retrieval was junk before and after.
+5. **Mild precision loss.** "Programmes with an oral/viva element" - two
+   CSEE/CCFEA programme documents displaced by general PGR viva pages. The
+   question asks WHICH PROGRAMMES, and process pages do not list programmes.
+   Four of six programme documents remain.
+
+So: one gain, two neutral swaps, one irrelevant, one small loss. The 36% is
+real but almost entirely benign - which is why the tool reports turns changed
+and refuses to call them regressions.
+
+**Not measured, same limit as Round 35:** whether any ANSWER improved or got
+worse. This instrument sees retrieval only.
