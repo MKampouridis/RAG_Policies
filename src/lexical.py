@@ -11,6 +11,7 @@ bump the marker, and the next query here notices and rebuilds, so the BM25
 side can't serve deleted chunks or stale is_current flags indefinitely.
 """
 
+import os
 import re
 import threading
 
@@ -49,6 +50,53 @@ _ALPHA_RUN = re.compile(r"[a-z]+|[0-9]+")
 # BM25-only, lazy rebuild, no re-embed; gated with the alpha/digit split.
 _DEGREE_SYNONYMS = {"2yr": "two", "3yr": "three", "4yr": "four", "5yr": "five", "6yr": "six"}
 
+# Vocabulary the ASKER uses and the DOCUMENTS do not (2026-09-17). Real failure:
+# "how many to have quorate in a pgt board of examiners?" abstained, while "how
+# many members to have quorum in a board of examiners" answered correctly from
+# the same corpus. The documents say "quorum" (15 chunks) and almost never
+# "quorate" (2), so the rarer word carries no lexical signal - and on its own
+# that is survivable, because the dense side still gets there. It fails when
+# combined with a STRONG wrong-direction token: "pgt" pulls hard toward the PGT
+# rules-of-assessment documents, which do not discuss quorum at all, and with
+# no lexical anchor to counterbalance it the right documents lose. Two weak
+# signals, one of them pointing the wrong way.
+#
+# Same shape and same place as _DEGREE_SYNONYMS above: BM25-only, lazy rebuild,
+# no re-embed. Applied in _tokenize so it is SYMMETRIC - a document saying
+# "quorate" also indexes "quorum" - which is correct for true synonyms and is
+# why this list must stay true synonyms, not loose associations.
+#
+# DELIBERATELY only terms that have failed in REAL traffic. A synonym list is
+# unbounded and inventing vocabulary is how it becomes unmaintainable; each
+# entry should cite the question that earned it.
+_TERM_SYNONYMS = {"quorate": "quorum"}
+QUERY_TERM_SYNONYMS = os.environ.get("RAG_TERM_SYNONYMS", "1") == "1"
+
+
+def expand_query_text(text: str) -> str:
+    """Append synonyms to a query STRING, for consumers that score against raw
+    text rather than tokens - i.e. the reranker.
+
+    Needed because _tokenize only reaches BM25. Measured: with the synonym in
+    the tokenizer, BM25 found the quorum chunks (top-40 positions 5, 11, 28, 29
+    where it previously found NONE) and they entered the 91-candidate pool - and
+    the reranker then dropped every one of them, because ColBERT scores the
+    user's literal words and still saw only "quorate". The user's own control
+    confirms the mechanism: rewording to "quorum" while keeping "pgt" answers
+    correctly, so the reranker CAN surface these documents when the word it
+    reads matches the documents.
+
+    Appended rather than substituted: the original wording still carries the
+    question's meaning, and replacing a user's word is a bigger claim than
+    adding to it.
+    """
+    if not QUERY_TERM_SYNONYMS or not text:
+        return text
+    extra = [v for k, v in _TERM_SYNONYMS.items()
+             if re.search(r"(?<![a-z])" + re.escape(k) + r"(?![a-z])", text, re.I)
+             and not re.search(r"(?<![a-z])" + re.escape(v) + r"(?![a-z])", text, re.I)]
+    return f"{text} {' '.join(extra)}" if extra else text
+
 # Tried boosting this (repeating the header several times so identity terms
 # like "CSEE"/"4yr" outweigh generic boilerplate body text) to help
 # disambiguate near-identical RoA siblings - regressed RoA hit@6 in the full
@@ -76,6 +124,8 @@ def _tokenize(text: str) -> list[str]:
         if t in _DEGREE_SYNONYMS:  # "4yr" -> also "four" (+ "year") so degree length matches "Four-Year" queries
             out.append(_DEGREE_SYNONYMS[t])
             out.append("year")
+        if QUERY_TERM_SYNONYMS and t in _TERM_SYNONYMS:
+            out.append(_TERM_SYNONYMS[t])
     return out
 
 

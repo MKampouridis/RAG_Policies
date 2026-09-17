@@ -7863,3 +7863,62 @@ programmes and incomplete on two. Accepted.
 
 `N_RESULTS` is now env-overridable (`RAG_N_RESULTS`) so both passes ran
 identical code. **The shipped default is unchanged at 6.**
+
+## Round 38 — a term synonym, and why it needed applying TWICE (2026-09-17)
+
+**Finding: a user-reported abstention was a vocabulary miss, but fixing it at
+the lexical layer alone did nothing. The reranker scores the user's literal
+words, so a synonym that only reaches BM25 gets the right documents into the
+pool and then watches ColBERT discard them.**
+
+Named failure, from real use: a question about whether a PGT board of examiners
+is quorate abstained, while the same question worded with "quorum" answered
+correctly from the same corpus. Not a regression from the Round 35/36 ingests -
+verified by replaying both wordings against today's index.
+
+Cause, isolated stage by stage. The documents say "quorum" (15 chunks) and
+almost never "quorate" (2), so the rarer word carries no lexical signal. Alone
+that is survivable because the dense side still reaches the answer. It fails
+when combined with a STRONG wrong-direction token: "pgt" pulls hard toward the
+PGT rules-of-assessment documents, which do not discuss quorum at all.
+
+**The instructive part.** Adding `quorate -> quorum` to the BM25 tokenizer
+(alongside the existing `_DEGREE_SYNONYMS`, same mechanism, same place) worked
+exactly as designed and changed nothing the user would see:
+
+| stage | without | with |
+|---|---|---|
+| BM25 top-40 | NO quorum chunks | positions 5, 11, 28, 29 |
+| candidate pool (91) | - | positions 14, 24, 54, 56, 83 |
+| final top-6 | none | **still none** |
+
+The user's own control pinned it: rewording to "quorum" while KEEPING "pgt"
+answered correctly, so the reranker can surface these documents when the word
+it reads matches the documents. ColBERT scores raw query text, and the
+tokenizer synonym never reaches it. `lexical.expand_query_text()` now appends
+synonyms to the query string passed to `_rerank.rerank`.
+
+Appended, not substituted - the original wording still carries the question's
+meaning, and replacing a user's word is a bigger claim than adding to it.
+
+**Targeted probe** (flag off/on): the named failure goes NO -> YES; the working
+reword stays YES; two unrelated PGT controls stay unchanged.
+
+**Blast radius, 146 real questions:** thumbed-UP 0 of 14 changed, thumbed-DOWN
+0 of 16, unrated 2 of 116 - and both of those GAINED
+`assessment-policies-summary.pdf`, the document that states the quorum. The set
+contains zero occurrences of "quorate", so this control could only ever show
+absence of harm, which is what it shows.
+
+Live end to end: 4.4s, correct answer, quorum of four.
+
+`_TERM_SYNONYMS` holds only terms that have failed in REAL traffic, and each
+entry should cite the question that earned it. A synonym list is unbounded;
+inventing vocabulary is how it becomes unmaintainable.
+
+**Unrelated operational note from the same session.** Four client-side timeouts
+during diagnosis left the SERVER still processing those requests - a timed-out
+request does not cancel the work. Four abandoned ColBERT encodes contended on
+the Apple GPU, warmup sat at "warming" for 17 minutes at 198% CPU, and a
+`sample` of the process showed Metal/MPS frames rather than a deadlock. Retry
+makes this worse, not better. A clean restart warmed in 30s.

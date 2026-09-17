@@ -1131,7 +1131,10 @@ def retrieve(question: str, history: list[dict], summary: str = "",
             candidates = _boost_home_institution(candidates, places=PARTNER_BOOST)
 
     _ts = _perf.time()
-    results = _rerank.rerank(retrieval_query, candidates, N_RESULTS)
+    # Reranked on the EXPANDED query: ColBERT scores the user's literal words,
+    # so a term synonym that only reaches BM25 gets the right documents into the
+    # pool and then watches the reranker discard them (measured, 2026-09-17).
+    results = _rerank.rerank(lexical.expand_query_text(retrieval_query), candidates, N_RESULTS)
     _stage_timer("r_rerank", _ts)
 
     if MULTI_ENTITY_RETRIEVAL:
