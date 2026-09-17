@@ -7922,3 +7922,75 @@ request does not cancel the work. Four abandoned ColBERT encodes contended on
 the Apple GPU, warmup sat at "warming" for 17 minutes at 198% CPU, and a
 `sample` of the process showed Metal/MPS frames rather than a deadlock. Retry
 makes this worse, not better. A clean restart warmed in 30s.
+
+## Round 39 — reranker investigation: the spoiler, and two dead ends (2026-09-17)
+
+**Findings: (1) reranking earns its place - removing it is the largest effect
+measured here by 7x; (2) the per-document cap is a NO-OP where it sits and was
+abandoned; (3) the first instrument could not resolve the arms it was built to
+compare, and its own positive control caught that.**
+
+Prompted by the reranker turning out to be the constraint twice in two days.
+Before designing anything, the area was read: widening 30->100 is already
+falsified (J0b: 2 rescues, 5 losses, RoA hit@6 70%->62.5%), targeted widening
+is worse (0 rescues, 4 losses), identity-enriched reranking is falsified, and
+ColBERT vs cross-encoder is settled (ColBERT +10pts RoA hit@6). The genuinely
+untested levers were only two: reranking against its own ABSENCE, and a
+per-document cap.
+
+**A correction to Round 37/38.** `RERANK_POOL_SIZE = 30`, and candidates beyond
+it are dropped BEFORE scoring. The CSEE document at pool position 54 therefore
+never reached the reranker at all - "the reranker discarded it" was wrong. The
+quorum case was genuinely mixed: positions 14 and 24 were scored and rejected;
+54, 56 and 83 were never seen.
+
+**The instrument failed its own control, and that was the point of having one.**
+Anchor recall on the 14 thumbed-UP questions put `pool100` - the known-bad
+configuration - at **+0.020 vs production**, i.e. better. Resolution check: one
+question is worth 0.071 of that mean, so the entire spread across the pool and
+cap arms was **0.28 of a single question**. The instrument had no resolution;
+it was not detecting anything.
+
+Rescoring the SAME data across all 146 questions (n x10) restored it, and the
+control then behaved:
+
+| arm | recall (n=146) | vs production |
+|---|---|---|
+| production (colbert, pool 30) | 0.7705 | — |
+| **norerank (SPOILER)** | **0.5990** | **-0.1716** |
+| pool100 (positive control, known-bad) | 0.7467 | -0.0239 |
+| pool50 | 0.7559 | -0.0146 |
+| cap2 / cap3 | 0.7705 | +0.0000 |
+
+pool100 loses ground as the ledger says it should, pool50 loses less, and the
+effect is monotonic in pool size - the control passes at this n.
+
+**Reranking earns its place.** Removing it costs 7x what the known-bad widening
+costs, and the thumbed-UP subset points the same way (-0.104, full-recall
+questions 5 -> 4). It is worth the ~2GB of GPU footprint and most of the
+retrieval latency.
+
+**The circularity caveat, which limits all of the above.** `baseline_docs` were
+recorded from answers produced by production-like configurations, so production
+is partly being scored against its own past output and any arm that differs
+scores lower for that reason alone. This metric is therefore part
+similarity-to-production. It does not undermine the ordering - norerank is 7x
+further away than a configuration already known to be worse - but "different"
+and "worse" are not the same word, and the independent evidence that reranker
+choice moves a GOLD-based metric is the older ColBERT vs cross-encoder result,
+not this one.
+
+**Per-document cap: no-op, abandoned.** cap2 and cap3 scored EXACTLY 0.0000,
+which is the signature of a mechanism that never fires. Direct check: with
+cap=2, a monopolised question still returned THREE chunks of the same document.
+`_adjacent_chunks` and `_complete_small_documents` run after rerank() and
+deliberately re-add chunks from documents already present. Capping properly
+means overriding two measured, shipped mechanisms - a much larger change than
+the observation motivating it. Left at 0 with the falsification in the code.
+
+The original observation stands and is still unaddressed: 122 of 146 questions
+return fewer than 6 distinct documents, and 20 return chunks from a single one.
+
+**Nothing shipped.** `RAG_RERANK`, `RAG_RERANK_POOL` and `RAG_MAX_PER_DOC` are
+env-overridable so arms differ by configuration rather than edited code; all
+three defaults are unchanged.

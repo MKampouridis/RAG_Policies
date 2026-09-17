@@ -28,7 +28,9 @@ COLBERT_MODEL_NAME = "lightonai/GTE-ModernColBERT-v1"
 # hit@6 70%->62.5%) because the extra ~60 candidates per query are mostly
 # near-duplicate boilerplate the reranker can't reliably distinguish from the
 # right sibling, on queries that didn't need the extra depth at all.
-RERANK_POOL_SIZE = 30
+# Env-overridable for the 2026-09-17 reranker investigation so arms differ by
+# configuration, not by edited code between passes. Default unchanged at 30.
+RERANK_POOL_SIZE = int(os.environ.get("RAG_RERANK_POOL", "30"))
 
 # Idea 4 (targeted widening) - tried, regressed WORSE than J0b's naive
 # global widening (eval/report.md "Code review round"): 0 rescues / 4 losses
@@ -37,6 +39,50 @@ RERANK_POOL_SIZE = 30
 # document is deeper in the pool" - it fired on queries where widening only
 # added noise, and never once on the out-of-pool cases it was meant to
 # catch. Off by default; kept for reference.
+# The SPOILER arm for the reranker investigation (2026-09-17). Reranking has
+# never been measured against its own absence - ColBERT was measured against a
+# cross-encoder (it won, RoA hit@6 60%->70%) and both widening variants were
+# measured against the shipped pool, but nothing ever asked whether reranking
+# beats the fused order it replaces. It costs ~2GB of GPU footprint and most of
+# the retrieval latency, so "is it earning that" is worth one free pass.
+# RAG_RERANK=0 returns the fusion order untouched.
+RERANK_ENABLED = os.environ.get("RAG_RERANK", "1") == "1"
+
+# Per-document cap - TRIED AND ABANDONED (2026-09-17), kept with its
+# falsification like this file's other rejected ideas.
+#
+# It is a NO-OP where it sits, and the arena measured that without noticing at
+# first: cap2 and cap3 both scored EXACTLY 0.0000 against production across 146
+# questions, which is the signature of a mechanism that never fires rather than
+# one that does not help. Direct check on a question known to be monopolised:
+# with cap=2, assessment-policies-summary.pdf still returned THREE chunks.
+#
+# Cause: `_adjacent_chunks` and `_complete_small_documents` run AFTER rerank()
+# in retrieve() and both deliberately add chunks from a document already in the
+# results - one so a rule split across a chunk boundary stays whole, the other
+# so a small document can be enumerated completely. A cap applied inside
+# rerank() is undone by them a few lines later.
+#
+# Testing it properly means capping AFTER those stages, i.e. deciding to
+# override two mechanisms that were measured and shipped ON. That is a much
+# larger change than the observation motivating it, and the existing evidence
+# argues against it. Not pursued. Left at 0 with this note so the next person
+# does not rediscover the no-op.
+#
+# Original observation, still true and still unaddressed: one page took 3 of 7
+# slots on a real question, and across 146 real questions 122 return fewer than
+# 6 distinct documents while 20 return chunks from a single document.
+#
+# (original note) Per-document cap on the FINAL results. Observed:
+# one page took 3 of 7 slots on a real question, and across 146 real questions
+# 122 return fewer than 6 DISTINCT documents while 20 return chunks from a
+# single document. 0 = off (shipped default), N = at most N chunks per document.
+#
+# The obvious risk, and why this is measured rather than assumed: _adjacent_chunks
+# and document completion deliberately pull MORE chunks from one document so an
+# enumeration question can list every milestone. A cap fights those directly.
+RERANK_MAX_PER_DOC = int(os.environ.get("RAG_MAX_PER_DOC", "0"))
+
 TARGETED_WIDENING_ENABLED = False
 WIDE_RERANK_POOL_SIZE = 100
 FRAGMENTATION_THRESHOLD = 1
@@ -261,6 +307,24 @@ def _rerank_colbert(query: str, pool_docs: list[str], pool_metas: list[dict], to
     return [r["id"] for r in results[0][:top_n]]
 
 
+def _cap_per_document(order: list, metas: list, top_n: int, cap: int) -> list:
+    """At most `cap` chunks per source document, refilled from the next best."""
+    seen, kept, spill = {}, [], []
+    for i in order:
+        key = str((metas[i] or {}).get("source_url") or i)
+        if seen.get(key, 0) < cap:
+            seen[key] = seen.get(key, 0) + 1
+            kept.append(i)
+        else:
+            spill.append(i)
+        if len(kept) >= top_n:
+            return kept
+    # Not enough distinct documents to fill top_n - fall back to the capped
+    # ones rather than returning a short list, so a narrow corpus area still
+    # gets a full context window.
+    return (kept + spill)[:top_n]
+
+
 def rerank(query: str, results: dict, top_n: int) -> dict:
     """Rescores the top RERANK_POOL_SIZE candidates in `results` and returns
     the top_n reordered. Candidates beyond the rerank pool are dropped (they
@@ -279,10 +343,19 @@ def rerank(query: str, results: dict, top_n: int) -> dict:
     pool_docs = documents[:pool_size]
     pool_metas = metadatas[:pool_size]
 
-    if BACKEND == "colbert":
+    if not RERANK_ENABLED:
+        order = list(range(min(top_n, len(pool_docs))))   # fusion order, untouched
+    elif BACKEND == "colbert":
         order = _rerank_colbert(query, pool_docs, pool_metas, top_n)
     else:
         order = _rerank_cross_encoder(query, pool_docs, pool_metas, top_n)
+
+    if RERANK_MAX_PER_DOC > 0:
+        # Applied AFTER scoring, so the cap changes which chunks survive but
+        # never which are considered. Scored order is preserved among keepers,
+        # and the freed slots are refilled from the next-best candidates the
+        # reranker already ranked - so the pool is not simply shortened.
+        order = _cap_per_document(order, pool_metas, top_n, RERANK_MAX_PER_DOC)
 
     return {
         "documents": [[pool_docs[i] for i in order]],
